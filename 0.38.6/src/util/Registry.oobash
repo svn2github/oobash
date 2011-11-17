@@ -1,0 +1,173 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+#######################
+#######################
+##                   ##
+##     REGISTRY      ##
+##                   ##
+#######################
+#######################
+
+
+# public 
+# registers a given function in the registry
+# called by:
+# by bash during source process
+__registerFunction()
+{
+   local value="$1"
+   __Registry__["$value"]=function
+   return 0
+}
+__registerFunction __registerFunction
+
+# public  
+# registers a given class in the registry
+# called by:
+# by bash during source process
+__registerClass()
+{
+   local value="$1"
+   __Registry__["$value"]=class
+   return 0
+}
+__registerFunction __registerClass
+
+# public  
+# registers a given variable in the registry
+# called by:
+# by bash during source process
+__registerVar()
+{
+   local value="$1"
+   __Registry__["$value"]=var
+   return 0
+}
+__registerFunction __registerVar
+
+# public
+# registers a given alias in the registry
+# called by:
+# by bash during source process
+__registerAlias()
+{
+   local value="$1"
+   __Registry__["$value"]=alias
+   return 0
+}
+__registerFunction __registerAlias
+
+# private  
+# destroys all objects
+# called by:
+# __cleanUp
+__cleanUpObjectsPool()
+{
+   local obj
+   for obj in ${!__OBJECTPOOL__[@]} 
+   do 
+      __destructor ${obj}
+   done
+   return 0
+}
+
+# private  
+# unsets all functions
+# called by:
+# __cleanUp
+__cleanUpFunctions()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "function" ]]
+      then
+         unset -f ${value} 
+      fi
+   done
+   return 0
+}
+
+# private  
+# unsets all class constructors, class arrays, class help functions, class methods
+# called by:
+# __cleanUp
+__cleanUpClasses()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "class" ]]
+      then
+         local meth
+         for meth in $(eval echo \${__${value}__[@]})
+         do 
+            unset -f __${meth}
+         done
+         unset $(eval echo __${value}__  __${value}Methods__)
+         unset -f $(eval echo $value ${value}.help)
+      fi
+   done
+   return 0
+}
+
+# private  
+# unsets the used variables
+# called by:
+# __cleanUp
+__cleanUpVars()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "var" ]]
+      then
+         unset ${value}
+      fi
+   done   
+   return 0
+}
+
+# private
+# unsets the used aliases
+# called by:
+# __cleanUp
+__cleanUpAliases()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "alias" ]]
+      then
+         unalias ${value}
+      fi
+   done   
+   return 0
+}
+
+# public  
+# cleans the environment
+__cleanUp()
+{
+   __cleanUpObjectsPool
+   __cleanUpClasses
+   __cleanUpFunctions
+   __cleanUpVars
+   __cleanUpAliases   
+   unset __Registry__
+   unset -f __cleanUpObjectsPool
+   unset -f __cleanUpClasses
+   unset -f __cleanUpFunctions
+   unset -f __cleanUpVars
+   unset -f __cleanUpAliases
+   unset -f __cleanUp
+   # i have to access BASH_ALIASES to see the changes with the "set" command (i don't know why...)
+   echo ${BASH_ALIASES[@]} >/dev/null 2>&1
+   return 0
+}
+

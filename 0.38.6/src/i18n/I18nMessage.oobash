@@ -1,0 +1,83 @@
+I18n.out.message()
+{
+   if (( $# <= 1  ))
+   then
+      local printStream=out
+      local message="$1"
+      __i18nMessage "$message"
+      return 0
+   fi
+   local printStream=err
+   System.help $FUNCNAME
+   return 1
+}
+__registerFunction i18n.out.message
+
+I18n.err.message()
+{
+   if (( $# <= 1  ))
+   then
+      local printStream=err
+      local message="$1"
+      __i18nMessage "$message"
+      return 0
+   fi
+   local printStream=err
+   System.help $FUNCNAME
+   return 1
+}
+__registerFunction i18n.err.message
+
+#################
+#               #
+#     HELP      # 
+#               #
+#################
+
+complete -W  "out.message err.message all" I18n.help
+
+I18n.help()
+{  
+   local printStream=${printStream:-out}
+   if (( $# == 0 ))
+   then
+      System.${printStream}.println "
+      Usage: System.help all|methodname
+      Available methods:
+      -System.exit -System.currentTimeMillis
+      -System.err.println -System.out.println
+      Constructor: 
+      None
+                 "
+      return 0
+   fi
+   while (($#))
+   do
+         I18n.out.message|out.message|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.out.println
+               Prints a String and then terminate the line to \"standard\" output 
+            Parameters:
+               x - The String to be printed.
+            ";;&
+         I18n.err.message|err.message|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.err.println
+               Prints a String and then terminate the line to \"standard\" error output
+            Parameters:
+               x - The String to be printed.
+            ";;&   
+         *)   if [[ $match == $(Boolean.FALSE) ]]
+              then
+                 System.${printStream}.println "                                  
+                       No help found for $1
+                    "   
+              fi
+              ;;& 
+      esac    
+      shift
+   done            
+}
+__registerFunction I18n.help
