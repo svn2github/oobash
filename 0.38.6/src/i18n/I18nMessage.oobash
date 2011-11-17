@@ -42,10 +42,10 @@ I18n.help()
    if (( $# == 0 ))
    then
       System.${printStream}.println "
-      Usage: System.help all|methodname
+      Usage: I18n.help all|methodname
       Available methods:
-      -System.exit -System.currentTimeMillis
-      -System.err.println -System.out.println
+      -System.exit -I18n.out.message
+      -I18n.err.message
       Constructor: 
       None
                  "
@@ -53,25 +53,29 @@ I18n.help()
    fi
    while (($#))
    do
+      local match=$(Boolean.FALSE)  
+      case $1 in 
          I18n.out.message|out.message|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            System.out.println
-               Prints a String and then terminate the line to \"standard\" output 
+            I18n.out.message
+               Translates a natural language message into the user’s language, by looking 
+               up the translation in a message catalog and prints the message to stdout.
             Parameters:
-               x - The String to be printed.
+               x - The message to be translated and printed.
             ";;&
          I18n.err.message|err.message|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            System.err.println
-               Prints a String and then terminate the line to \"standard\" error output
+            I18n.err.message
+               Translates a natural language message into the user’s language, by looking 
+               up the translation in a message catalog and prints the message to sterr.
             Parameters:
-               x - The String to be printed.
+               x - The message to be translated and printed.
             ";;&   
          *)   if [[ $match == $(Boolean.FALSE) ]]
               then
-                 System.${printStream}.println "                                  
+                 I18n.${printStream}.println "                                  
                        No help found for $1
                     "   
               fi

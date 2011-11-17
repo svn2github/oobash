@@ -230,7 +230,7 @@ __alias()
    local method
    for method in $(eval echo \${__${class}__[@]})
    do
-      BASH_ALIASES["${this}"."${method}"]="${this}"."${method}"
+      BASH_ALIASES["${this}"."${method}"]=""${this}"."${method}""
    done
    return 0
 }   
@@ -586,17 +586,23 @@ __posixFilePermissionsConverter()
 }
 __registerFunction __posixFilePermissionsConverter
 
+# private
+# translates and prints message
+# called by:
+# -I18n.err.message -I18n.out.message
 __i18nMessage()
 {
+      local message="$1"
+      export TEXTDOMAIN="${TEXTDOMAIN}"
+      export TEXTDOMAINDIR="${TEXTDOMAINDIR}"
       if command -v gettext >/dev/null 2>&1
       then
-         date +%s%N
+         System.${printStream}.println "$(gettext "$message")"
          return 0
       else
          # Fallback to old (obsolet) i18n 
-         __throw "NotInPathException" ": date not in path"
-         return 1
+         System.${printStream}.println $"$message"
+         return 0
       fi
-      System.${printStream}.println
 }
 __registerFunction __i18nMessage

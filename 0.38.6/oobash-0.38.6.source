@@ -14,7 +14,7 @@
 ######################
 ######################
 
-__VERSION__="0.38.5.1"
+__VERSION__="0.38.6"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 TEXTDOMAIN=oobash
@@ -37,7 +37,7 @@ fi
 
 if [[ ${BASH_ARGV[0]} == ${__FILENAME__} ]]
 then
-   TEXTDOMAINDIR="./locale"
+   TEXTDOMAINDIR="${PWD}/locale"
 else
    TEXTDOMAINDIR="${BASH_ARGV[0]%/*}/locale"
 fi
@@ -97,6 +97,9 @@ __import oobash.lang.Boolean
 
 # import io classes
 __import oobash.io.File
+
+# import i18n functions 
+__import oobash.i18n.I18nMessage
 
 # Register already defined vars and functions
 __registerVar __ObjectMethods__

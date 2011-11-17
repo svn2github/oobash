@@ -12,3 +12,4 @@ rm
 rmdir
 stat
 touch
+gettext
