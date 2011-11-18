@@ -6,12 +6,12 @@ msgstr ""
 "Last-Translator: Andreas Frank <andreas.gregor.frank@googlemail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:29
 msgid "Sorry, you should: source ${__FILENAME__} and not execute it..."
-msgstr "Tut mir leid, Sie sollten: 'source ${__FILENAME__}' ausfuehren..."
+msgstr "Tut mir leid, Sie sollten: 'source ${__FILENAME__}' ausführen..."
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:43
 msgid "Sorry, you need a bash version 4..."
@@ -23,7 +23,7 @@ msgstr "bash: $str: Kommando nicht gefunden."
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:214
 msgid " oo-style framework for bash 4"
-msgstr " oo-style Framework fuer bash 4"
+msgstr " oo-style Framework für bash 4"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:215
 msgid " Version:      ${__VERSION__}"
@@ -71,23 +71,23 @@ msgstr " Einige Boolean Konstanten: -Boolean.TRUE -Boolean.FALSE"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:259
 msgid " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help"
-msgstr " Verfuegbares Hilfe System: String.help, File.help, Math.help, System.help, Boolean.help"
+msgstr " Verfügbares Hilfe System: String.help, File.help, Math.help, System.help, Boolean.help"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:260
 msgid " Usage: \\$Class.help  methodname(s)|constructor|constant or keyword: all"
-msgstr " Anwendung: \\$Class.help  methodname(s)|constructor|constant oder Schluesselwort all"
+msgstr " Anwendung: \\$Class.help  methodname(s)|constructor|constant oder Schlüsselwort all"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:261
 msgid " Example: String.help zfill"
 msgstr " Beispiel: String.help zfill"
 
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:27
-msgid "Sorry, no valid classname: '$userClass'"
-msgstr "Tut mir leid, aber der Klassenname '$userClass' ist nicht gueltig."
+msgid "Sorry, no valid classname: '${userClass}'"
+msgstr "Tut mir leid, aber der Klassenname '${userClass}' ist nicht gültig."
 
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:46
-msgid "Sorry, no valid attribute name: '$attribute'"
-msgstr "Tut mir leid, aber der Attributname '$attribute' ist nicht gueltig."
+msgid "Sorry, no valid attribute name: '${attribute}'"
+msgstr "Tut mir leid, aber der Attributname '${attribute}' ist nicht gültig."
 
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:263
 msgid "   Please enter one class name and the attributes"
@@ -154,12 +154,12 @@ msgid "   Happy bashing !"
 msgstr ""
 
 #: /home/franka/Bash/oobash/src/lang/String.oobash:40
-msgid "Sorry, objectname '$this' is not valid"
-msgstr "Tut mir leid, aber der Objektname '$this' ist nicht gueltig"
+msgid "Sorry, objectname '${this}' is not valid"
+msgstr "Tut mir leid, aber der Objektname '${this}' ist nicht gültig"
 
 #: /home/franka/Bash/oobash/src/lang/String.oobash:46
-msgid "Sorry, objectname '$this' is a keyword"
-msgstr "Tut mir leid, aber der Objektname '$this' ist ein Schlueselwort."
+msgid "Sorry, objectname '${this}' is a keyword"
+msgstr "Tut mir leid, aber der Objektname '${this}' ist ein Schlüsselwort."
 
 #: /home/franka/Bash/oobash/src/lang/String.oobash:59
 msgid "Sorry, no full stop character allowed in objectname"

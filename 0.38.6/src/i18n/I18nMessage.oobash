@@ -1,3 +1,19 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+#################
+#################
+##             ##
+##     I18N    ## 
+##             ##
+#################
+#################
+
+
 I18n.out.message()
 {
    if (( $# <= 1  ))
@@ -69,7 +85,7 @@ I18n.help()
             System.${printStream}.println "
             I18n.err.message
                Translates a natural language message into the user’s language, by looking 
-               up the translation in a message catalog and prints the message to sterr.
+               up the translation in a message catalog and prints the message to stderr.
             Parameters:
                x - The message to be translated and printed.
             ";;&   

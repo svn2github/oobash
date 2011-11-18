@@ -17,8 +17,14 @@
 __VERSION__="0.38.6"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
-TEXTDOMAIN=oobash
-TEXTDOMAINDIR="${0%${0##*/}}"locale
+export TEXTDOMAIN=oobash
+export TEXTDOMAINDIR="${0%${0##*/}}"locale
+
+# i18n function library from the gnu textutils
+if command -v gettext.sh >/dev/null 2>&1
+then
+   source gettext.sh
+fi
 
 # ----------------------------------------------------
 # Some start up tests:
@@ -37,9 +43,9 @@ fi
 
 if [[ ${BASH_ARGV[0]} == ${__FILENAME__} ]]
 then
-   TEXTDOMAINDIR="${PWD}/locale"
+   export TEXTDOMAINDIR="${PWD}/locale"
 else
-   TEXTDOMAINDIR="${BASH_ARGV[0]%/*}/locale"
+   export TEXTDOMAINDIR="${BASH_ARGV[0]%/*}/locale"
 fi
 
 # you need a bash 4 
@@ -228,17 +234,17 @@ __registerFunction command_not_found_handle
 if [[ $(Boolean.parseBoolean "$QUIET") != $(Boolean.TRUE) ]] && [[ -t 1 ]] && [[ ${0##*/} == "bash" ]]
 then
    System.out.println 
-   System.out.println $" oo-style framework for bash 4"
-   System.out.println $" Version:      ${__VERSION__}"
-   System.out.println $" Author:       andreas.gregor.frank@googlemail.com"
+   I18n.out.message " oo-style framework for bash 4"
+   I18n.out.message " Version:      ${__VERSION__}"
+   I18n.out.message " Author:       andreas.gregor.frank@googlemail.com"
    System.out.println 
-   System.out.println $" Stop showing this message by setting QUIET=true"
+   I18n.out.message " Stop showing this message by setting QUIET=true"
    System.out.println 
-   System.out.println $" Try the developer tool: Class.generator"
+   I18n.out.message " Try the developer tool: Class.generator"
    System.out.println 
-   System.out.println $" Classes: String, File, Boolean, System, Math"
-   System.out.println $" Constructors: String, File, Boolean"
-   System.out.println $" Usage: String a teststring or File a testfile or Boolean a True"
+   I18n.out.message " Classes: String, File, Boolean, System, Math"
+   I18n.out.message " Constructors: String, File, Boolean"
+   I18n.out.message " Usage: String a teststring or File a testfile or Boolean a True"
    System.out.println 
    System.out.println " String:"
    System.out.println "  -base64Decode -base64Encode -capitalize -center -charAt -concat -contains -count -endsWith"
@@ -256,7 +262,7 @@ then
    System.out.println "  -File.createTemporaryFile -File.createTempFile"
    System.out.println " Boolean:"
    System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"
-   System.out.println $" Usage: a.toString"
+   I18n.out.message " Usage: a.toString"
    System.out.println 
    System.out.println " Math:"
    System.out.println "  -Math.random -Math.cos -Math.sin -Math.tan -Math.sqrt -Math.exp -Math.abs -Math.acos"
@@ -267,15 +273,15 @@ then
    System.out.println "  -System.exit -System.currentTimeMillis -System.currentTimeNanos -System.out.println"
    System.out.println "  -System.err.println"
    System.out.println 
-   System.out.println $" Some String constants:"
+   I18n.out.message " Some String constants:"
    System.out.println "  -String.digits -String.asciiLetters -String.asciiLettersLowerCase"
    System.out.println "  -String.asciiLettersUpperCase -String.hexDigits -String.octDigits"
-   System.out.println $" Some Math constants: -Math.E -Math.PI"
-   System.out.println $" Some Boolean constants:  -Boolean.TRUE -Boolean.FALSE"
+   I18n.out.message " Some Math constants: -Math.E -Math.PI"
+   I18n.out.message " Some Boolean constants:  -Boolean.TRUE -Boolean.FALSE"
    System.out.println 
-   System.out.println $" Available help systems: String.help, File.help, Math.help, System.help, Boolean.help"
-   System.out.println $" Usage: \$Class.help  methodname(s)|constructor|constant or keyword: all"
-   System.out.println $" Example: String.help zfill"
+   I18n.out.message " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help"
+   I18n.out.message " Usage: \$Class.help  methodname(s)|constructor|constant or keyword: all"
+   I18n.out.message " Example: String.help zfill"
    System.out.println 
 fi
 
