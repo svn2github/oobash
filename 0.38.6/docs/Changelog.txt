@@ -186,7 +186,7 @@
 #    -a first really small README.txt file in the docs directory
 #    -changed filesystem structure
 #    -License tag in every file
-# Version:      0.38.6   Date:       28.10.2011, 31.10.2011, 03.11.2011, 07.11.2011, 16.11.2011
+# Version:      0.38.6   Date:       28.10.2011, 31.10.2011, 03.11.2011, 07.11.2011, 16.11.2011, 22.11.2011
 #    -Fixed/modified german po/mo files (i18n)
 #    -Fixed wrong check order in constructor checks + code cleanup 
 #    -Hope for better macos support (can't test), by looking for gnu date/gdate in /opt/local/bin
