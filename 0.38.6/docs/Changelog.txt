@@ -195,13 +195,15 @@
 #    -new functions for registry: __registerAlias, __cleanUpAliases
 #    -deleted message "#"-frame -- better for i18n
 #    -po file:charset=utf-8 now
-#    in process...:
-#    -rewrite of Class.generator function: 
-#     * generated getters: get$Class$Atrribute (to avoid name clashes for the generated functions)
-#     * added missing help for the object methods 
 #    -new function for arg test: __periodCheck (checks if given string contains "." character) called by every constructor
 #    -new i18n package with I18nMessage file, content:I18n.out.message I18n.err.message I18n.help. New private function:__i18nMessage
 #     http://tldp.org/LDP/abs/html/localization.html: $"..." syntax is deprecated --> use of gettext now
+#    still to do ...:
+#    -rewrite of Class.generator function: 
+#     * generated getters: get$Class$Atrribute (to avoid name clashes for the generated functions)
+#     * added missing help for the object methods 
+#    -DependencyCheck function
+#    -man pages for existing code
 
 #################################################################
 # Features:

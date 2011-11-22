@@ -39,7 +39,7 @@ msgstr " Diese Meldung kann durch QUIET=true deaktiviert werden"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:220
 msgid " Try the developer tool: Class.generator"
-msgstr " Versuchen Sie das Entwickler Werkzeug: Class.generator"
+msgstr " Versuchen Sie das Entwicklerwerkzeug: Class.generator"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:222
 msgid " Classes: String, File, Boolean, System, Math"
@@ -74,20 +74,20 @@ msgid " Available help systems: String.help, File.help, Math.help, System.help, 
 msgstr " Verfügbares Hilfe System: String.help, File.help, Math.help, System.help, Boolean.help"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:260
-msgid " Usage: \\$Class.help  methodname(s)|constructor|constant or keyword: all"
-msgstr " Anwendung: \\$Class.help  methodname(s)|constructor|constant oder Schlüsselwort all"
+msgid " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
+msgstr " Anwendung: Klassenname.help  Methodenname(s)|Konstruktorname|Konstantenname oder Schlüsselwort all"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:261
 msgid " Example: String.help zfill"
 msgstr " Beispiel: String.help zfill"
 
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:27
-msgid "Sorry, no valid classname: '${userClass}'"
-msgstr "Tut mir leid, aber der Klassenname '${userClass}' ist nicht gültig."
+msgid "Sorry, no valid classname: '$userClass'"
+msgstr "Tut mir leid, aber der Klassenname '$userClass' ist nicht gültig."
 
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:46
-msgid "Sorry, no valid attribute name: '${attribute}'"
-msgstr "Tut mir leid, aber der Attributname '${attribute}' ist nicht gültig."
+msgid "Sorry, no valid attribute name: '$attribute'"
+msgstr "Tut mir leid, aber der Attributname '$attribute' ist nicht gültig."
 
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:263
 msgid "   Please enter one class name and the attributes"
@@ -154,12 +154,12 @@ msgid "   Happy bashing !"
 msgstr ""
 
 #: /home/franka/Bash/oobash/src/lang/String.oobash:40
-msgid "Sorry, objectname '${this}' is not valid"
-msgstr "Tut mir leid, aber der Objektname '${this}' ist nicht gültig"
+msgid "Sorry, objectname '$this' is not valid"
+msgstr "Tut mir leid, aber der Objektname '$this' ist nicht gültig"
 
 #: /home/franka/Bash/oobash/src/lang/String.oobash:46
-msgid "Sorry, objectname '${this}' is a keyword"
-msgstr "Tut mir leid, aber der Objektname '${this}' ist ein Schlüsselwort."
+msgid "Sorry, objectname '$this' is a keyword"
+msgstr "Tut mir leid, aber der Objektname '$this' ist ein Schlüsselwort."
 
 #: /home/franka/Bash/oobash/src/lang/String.oobash:59
 msgid "Sorry, no full stop character allowed in objectname"

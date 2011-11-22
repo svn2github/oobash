@@ -2143,7 +2143,7 @@ File.help()
                   true if the named file does not exist and was successfully created; false if the 
                   named file already exists
                Throws:
-                  NotInPathException - iftouch is not in path
+                  NotInPathException - if touch is not in path
                Example:
                   File a /tmp/abc
                   a.createNewFile

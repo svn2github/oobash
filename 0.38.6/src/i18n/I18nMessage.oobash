@@ -31,14 +31,13 @@ __registerFunction i18n.out.message
 
 I18n.err.message()
 {
+   local printStream=err
    if (( $# <= 1  ))
    then
-      local printStream=err
       local message="$1"
       __i18nMessage "$message"
       return 0
    fi
-   local printStream=err
    System.help $FUNCNAME
    return 1
 }

@@ -587,7 +587,7 @@ __posixFilePermissionsConverter()
 __registerFunction __posixFilePermissionsConverter
 
 # private
-# translates and prints message
+# translates and prints message to given channel
 # called by:
 # -I18n.err.message -I18n.out.message
 __i18nMessage()
@@ -604,9 +604,8 @@ __i18nMessage()
          System.${printStream}.println "$(eval_gettext "$message")"
          return 0
       else
-         # fall back...no i18n
-         echo "i fall back"
-         System.${printStream}.println "$message"
+         # fall back to old scool bash i18n
+         System.${printStream}.println "$(eval System.out.println $\"$message\")"
          return 0
       fi
 }

@@ -214,7 +214,7 @@ command_not_found_handle()
 
    if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.FALSE) || $(Boolean.parseBoolean "$methodExists") == $(Boolean.FALSE) ]]
    then
-      System.err.println $"bash: $str: command not found."
+      I18n.err.message "bash: \$str: command not found."
       return 127
    fi
 
@@ -280,7 +280,7 @@ then
    I18n.out.message " Some Boolean constants:  -Boolean.TRUE -Boolean.FALSE"
    System.out.println 
    I18n.out.message " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help"
-   I18n.out.message " Usage: \$Class.help  methodname(s)|constructor|constant or keyword: all"
+   I18n.out.message " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
    I18n.out.message " Example: String.help zfill"
    System.out.println 
 fi
