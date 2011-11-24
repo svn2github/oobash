@@ -743,7 +743,7 @@ __setReadable()
       fi
       return 0
    else
-      __throw "NotInPathException" ": chmod not in path"
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       return 1  
    fi 
 }
@@ -808,7 +808,7 @@ __setWritable()
       fi
       return 0
    else
-      __throw "NotInPathException" ": chmod not in path"
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       return 1  
    fi 
 }
@@ -874,7 +874,7 @@ __setExecutable()
       fi
       return 0
    else
-      __throw "NotInPathException" ": chmod not in path"
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       return 1  
    fi      
 }

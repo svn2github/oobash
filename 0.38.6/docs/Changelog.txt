@@ -190,7 +190,7 @@
 #    -Fixed/modified german po/mo files (i18n)
 #    -Fixed wrong check order in constructor checks + code cleanup 
 #    -Hope for better macos support (can't test), by looking for gnu date/gdate in /opt/local/bin
-#    -Dependencies.txt file (all used commands in this framework)
+#    -Dependencies.txt file (all used external commands in this framework)
 #    -replaced dirname command in oobash-0.38.6.source with bash code
 #    -new functions for registry: __registerAlias, __cleanUpAliases
 #    -deleted message "#"-frame -- better for i18n
@@ -198,12 +198,20 @@
 #    -new function for arg test: __periodCheck (checks if given string contains "." character) called by every constructor
 #    -new i18n package with I18nMessage file, content:I18n.out.message I18n.err.message I18n.help. New private function:__i18nMessage
 #     http://tldp.org/LDP/abs/html/localization.html: $"..." syntax is deprecated --> use of gettext now
+#    -moved private registry functions to the private package
+#    -__dependencyCheck,__gnudateCheck are new private functions to check the external commands that are used in this framework
 #    still to do ...:
-#    -rewrite of Class.generator function: 
-#     * generated getters: get$Class$Atrribute (to avoid name clashes for the generated functions)
-#     * added missing help for the object methods 
-#    -DependencyCheck function
+#    -added missing help for the object methods in Class.generator function
+#    -generated getters: get$Class$Atrribute (Class.generator) to avoid name clashes
+#    -define special format for class arrays and simple vars to avoid name clashes
 #    -man pages for existing code
+#    -set "command not found" in some languages (extract from find /usr/share/locale -name bash.mo)
+#    -colors in console
+#    -replace readlink
+#    -smaller __mathConverter
+#    -__gnudateCheck instead of command -v date
+
+
 
 #################################################################
 # Features:

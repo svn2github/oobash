@@ -9,6 +9,10 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: /home/franka/Bash/oobash/oobash-0.38.5.source:194
+msgid "bash: $str: command not found."
+msgstr "bash: $str: Kommando nicht gefunden."
+
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:29
 msgid "Sorry, you should: source ${__FILENAME__} and not execute it..."
 msgstr "Tut mir leid, Sie sollten: 'source ${__FILENAME__}' ausführen..."
@@ -16,10 +20,6 @@ msgstr "Tut mir leid, Sie sollten: 'source ${__FILENAME__}' ausführen..."
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:43
 msgid "Sorry, you need a bash version 4..."
 msgstr "Tut mir leid, Sie benoetigen eine bash mit Version 4..."
-
-#: /home/franka/Bash/oobash/oobash-0.38.5.source:194
-msgid "bash: $str: command not found."
-msgstr "bash: $str: Kommando nicht gefunden."
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:214
 msgid " oo-style framework for bash 4"

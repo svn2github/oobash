@@ -18,7 +18,7 @@
 # check for log4oobash.properties file in the same directory
 # from where this file gets sourced
 # called by:
-# every time you source this code (in MAIN)
+# every time you source this framework
 __lookForLoggingPropertiesFile()
 {
    local call="$1"
@@ -237,7 +237,7 @@ __alias()
 __registerFunction __alias
 
 # private
-# check if given string i visible 
+# check if given string is visible 
 # called by:
 # -every constructor
 # -isVisible (String method)
@@ -604,10 +604,150 @@ __i18nMessage()
          System.${printStream}.println "$(eval_gettext "$message")"
          return 0
       else
-         # fall back to old scool bash i18n
+         # fall back to old school bash i18n
          System.${printStream}.println "$(eval System.out.println $\"$message\")"
          return 0
       fi
 }
 __registerFunction __i18nMessage
 
+# private  
+# destroys all objects
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpObjectsPool()
+{
+   local obj
+   for obj in ${!__OBJECTPOOL__[@]} 
+   do 
+      __destructor ${obj}
+   done
+   return 0
+}
+
+# private  
+# unsets all functions
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpFunctions()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "function" ]]
+      then
+         unset -f ${value} 
+      fi
+   done
+   return 0
+}
+
+# private  
+# unsets all class constructors, class arrays, class help functions, class methods
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpClasses()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "class" ]]
+      then
+         local meth
+         for meth in $(eval echo \${__${value}__[@]})
+         do 
+            unset -f __${meth}
+         done
+         unset $(eval echo __${value}__  __${value}Methods__)
+         unset -f $(eval echo $value ${value}.help)
+      fi
+   done
+   return 0
+}
+
+# private  
+# unsets the used variables
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpVars()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "var" ]]
+      then
+         unset ${value}
+      fi
+   done   
+   return 0
+}
+
+# private
+# unsets the used aliases
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpAliases()
+{
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "alias" ]]
+      then
+         unalias ${value}
+      fi
+   done   
+   return 0
+}
+
+# private
+# check for external commands that are used in this framework
+# called by:
+# every time you source this framework
+__dependencyCheck()
+{
+   declare -i i
+   for ((i=0; i < ${#__Dependencies__[@]}; i++))
+   do
+      if ! command -v ${__Dependencies__[$i]} >/dev/null 2>&1
+      then
+         __throw "NotInPathException" " ${__Dependencies__[$i]} is used by this framework and is not in path"
+      else 
+         if [[ "${__Dependencies__[$i]}" == "date" ]]
+         then
+            if ! __gnudateCheck
+            then 
+               __throw "NotInPathException" " GNU date is used by this framework and is not in path"
+            fi
+         fi         
+      fi
+   done
+   return 0
+}
+
+# private
+# check for gnu date
+# called by:
+# __dependencyCheck
+__gnudateCheck()
+{
+   # For this framework it is important to work with a gnu date, so:
+   # special check for gnu date with nanaoseconds gnu feature:
+   # can't test but hope it works...
+   local testtimestamp
+   testtimestamp=$(date +%s%N)
+   if command -v date >/dev/null 2>&1
+   then
+      if [[ "${testtimestamp:$((${#testtimestamp}-1))}" == "N" ]]
+      then
+         return 1
+      fi
+   else
+      return 1
+   fi
+   return 0
+}

@@ -66,6 +66,9 @@ fi
 # Used arrays
 declare -A __Registry__
 
+# all external commands used in this framework:
+declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext)
+
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
 
 declare -a __ComparableMethods__=(compareTo)
@@ -110,6 +113,7 @@ __import oobash.i18n.I18nMessage
 # Register already defined vars and functions
 __registerVar __ObjectMethods__
 __registerVar __ComparableMethods__
+__registerVar __Dependencies__
 __registerVar __VERSION__
 __registerVar __FILENAME__
 __registerVar __LOGGINGPROPERTIESFILE__
@@ -283,6 +287,7 @@ then
    I18n.out.message " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
    I18n.out.message " Example: String.help zfill"
    System.out.println 
+   __dependencyCheck
 fi
 
 ##################################################
