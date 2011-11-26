@@ -1,10 +1,9 @@
 ##################################################################
-## Author:  andreas.gregor.frank@googlemail.com                                
-##     
-## License: The MIT License
-##
-## Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
 #
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
 
 ######################
 ######################
@@ -17,8 +16,6 @@
 __VERSION__="0.38.6"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
-export TEXTDOMAIN=oobash
-export TEXTDOMAINDIR="${0%${0##*/}}"locale
 
 # i18n function library from the gnu textutils
 if command -v gettext.sh >/dev/null 2>&1
@@ -28,6 +25,9 @@ fi
 
 # ----------------------------------------------------
 # Some start up tests:
+
+export TEXTDOMAIN=oobash
+export TEXTDOMAINDIR="${0%${0##*/}}"locale
 
 # you should source not execute
 if [[ ${0##*/} == ${__FILENAME__} ]]
@@ -63,7 +63,9 @@ fi
 # End start up tests
 # ----------------------------------------------------
 
-# Used arrays
+# Used arrays:
+###############
+
 declare -A __Registry__
 
 # all external commands used in this framework:
@@ -81,6 +83,9 @@ declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__Compa
 
 declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile)
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+
+# source code:
+###############
 
 __import()
 {
@@ -121,6 +126,9 @@ __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
 __registerFunction __import
 
+# gnu date search:
+###################
+
 # hope to find a gnu date on macos systems (can't test this)
 if [ -x "/opt/local/bin/date" ]
 then
@@ -142,7 +150,6 @@ fi
 ###################
 ###################
 
-# Object pool:
 declare -A __OBJECTPOOL__
 __registerVar __OBJECTPOOL__
 
@@ -287,13 +294,14 @@ then
    I18n.out.message " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
    I18n.out.message " Example: String.help zfill"
    System.out.println 
+   # Check for external commands --> NotInPathException if command not found
    __dependencyCheck
 fi
 
 ##################################################
 ##################################################
 ##                                              ##
-##     LOGGING (coming in version 0.39...)      ## 
+##     LOGGING (coming in version 0.4)          ## 
 ##                                              ##
 ##################################################
 ##################################################
@@ -309,6 +317,7 @@ then
    declare -a __LevelMethods__=(toInt getSyslogEquivalent isGreaterOrEqual)
    declare -a __Level__=(${__LevelMethods__[@]} ${__ObjectMethods__[@]})
 
+   # import log4oobash classes
    __import oobash.log4oobash.Layout
    __import oobash.log4oobash.Level
    
