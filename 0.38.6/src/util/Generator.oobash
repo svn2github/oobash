@@ -27,31 +27,22 @@ Class.generator()
          return 1
       fi         
 
-      # define attributes in array
       declare -a  attributes=("$@")
 
-      # check for valid attribute name
-      while (($#))
-      do
-         local attribute="$1"
-         declare -i i
-         for ((i=0; i < ${#attribute}; i++))
-         do
-            eval local \'"$attribute"\'=test 2>/dev/null
-            if (( $? != 0 ))
-            then
-               I18n.err.message "Sorry, no valid attribute name: '\$attribute'"
-               return 1
-            fi             
-         done
-         shift
-      done
-      
-      # generate array of getters
       declare -a getters
-      for (( i=0; i < ${#attributes[@]}; i++))
+
+      # check for valid attribute name + generate array of getters
+      declare -i i
+      for ((i=0; i < ${#attributes[@]}; i++))
       do
-         getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
+         eval local \'"${attributes[$i]}"\'=test 2>/dev/null
+         if (( $? != 0 ))
+         then
+            I18n.err.message "Sorry, no valid attribute name: '\${attributes[$i]}'"
+            return 1
+         else
+            getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
+         fi             
       done
 
 System.out.println "#############################################################
@@ -62,10 +53,10 @@ System.out.println "############################################################
 #############################################################
 
  
-# Your \"Starter\" method array for later inheritance actions
+# Definition of ${userClass} method array for inheritance actions
 declare -a __${userClass}Methods__=($(echo ${getters[@]}))
 
-# Your \"Starter\" method array:
+# Definition of ${userClass} method array:
 declare -a __${userClass}__=(\${__${userClass}Methods__[@]} \${__ObjectMethods__[@]})
 "
 
@@ -114,7 +105,7 @@ $userClass()
       "
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "      __attribute ${attributes[$i]}=\"\$${attributes[$i]}\""
+         System.out.println "      __attribute ${attributes[$i]} \"\$${attributes[$i]}\""
       done
       System.out.println "
       return 0
@@ -136,9 +127,9 @@ System.out.println "
 ######################
 "
 declare -i j
-for (( j=0; j < ${#getters[@]}; j++))
+for (( j=0; j < ${#attributes[@]}; j++))
 do
-   System.out.println "__${getters[$j]}()
+   System.out.println "__get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$j]:0:1})${attributes[$j]:1}()
 {
    if (( \$# == 2 ))
    then
@@ -161,7 +152,7 @@ do
             done              
          fi
       done
-      System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${att}]}\" 
+      System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${attributes[$j]}]}\" 
       return 0
    fi
    local class=\$2 
@@ -190,12 +181,15 @@ ${userClass}.help()
       System.\${printStream}.println \"
                     Usage: ${userClass}.help all|methodname
                     Available methods:
-                    -getClass"
-   for att in $attrs
-   do
-      System.out.println "                    -get$(__strUpper ${att:0:1})${att:1}"
-   done
-   System.out.println "                    Constructor: 
+                    -getClass
+                    -toString
+                    -equals
+                    -hashCode"
+      for (( i=0; i < ${#attributes[@]}; i++))
+      do
+         System.out.println "                    -get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}"
+      done
+      System.out.println "                    Constructor: 
                     -${userClass}
       \" 
       return 0
@@ -212,37 +206,37 @@ ${userClass}.help()
                Parameters:
                   objectname" 
 
-   for arg in $args
-   do
-      echo "                  <$arg>"
-   done
+      for (( i=0; i < ${#attributes[@]}; i++))
+      do
+         System.out.println "                  <${attributes[$i]}>"
+      done
    System.out.println "                  No \".\" character is allowed in the objectname string.
                Returns:
                   None
                Example:"
    echo -ne "                  ${userClass} a "
-   for arg in $args
+   for (( i=0; i < ${#attributes[@]}; i++))
    do
-   echo -ne  "<$arg> "
+      echo -ne  "<${attributes[$i]}> "
    done
    System.out.println "
             \";;& "
    declare -i count=0
-   declare -a values=($(eval echo {1..$argcount}))
-   for att in $attrs
+   declare -a values=($(eval echo {1..${#attributes[@]}}))
+   for (( i=0; i < ${#attributes[@]}; i++))
    do
-      System.out.println "         get$(__strUpper ${att:0:1})${att:1}|all)
+      System.out.println "         get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}|all)
             match=\$(Boolean.TRUE)
             System.\${printStream}.println \"
-               get$(__strUpper ${att:0:1})${att:1}
-                  Returns the value of $att
+               get$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
+                  Returns the value of ${attributes[$i]}
                Parameters:
                   None
                Returns:
-                  The value of $att.
+                  The value of ${attributes[$i]}.
                Example:
-                  ${userClass} b $(eval echo {1..$argcount})
-                  b.get$(__strUpper ${att:0:1})${att:1}
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.get$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
                   >>>$(echo ${values[$count]})
             \";;& "
       count+=1
@@ -257,9 +251,65 @@ ${userClass}.help()
                Returns:
                   The Class object that represents the runtime class of this object.
                Example:
-                  ${userClass} b $(eval echo {1..$argcount})
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.getClass
                   >>>class ${userClass}
+            \";;&
+         toString|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               toString
+                  Returns a String object representing this ${userClass} object. 
+               Parameters:
+                  None
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.toString
+                  >>>$(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " )"
+
+      declare -a special=($(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " )) 
+      echo -ne "                  "
+      for (( i=0; i < ${#special[@]}; i++))
+      do
+         if (( $i != 0 ))
+         then
+            echo -ne                 \|\<"${special[$i]}"\>
+         else
+            echo -ne                 \<"${special[$i]}"\>
+         fi
+      done
+   System.out.println "
+            \";;&
+         hashCode|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               hashCode
+                  Returns a hash code for this ${userClass} object.
+               Parameters:
+                  None
+               Returns:
+                  a hash code for this ${userClass}.
+               Throws:
+                  NotInPathException - if bc not in path
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.hashCode
+            \";;&
+         equals|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               equals
+                  Returns true if and only if the argument is a ${userClass} object that 
+                  represents the same ${userClass} value as this object. 
+               Parameters:
+                  anObject - The object to compare this ${userClass} against
+               Returns:
+                  true if the ${userClass} objects represent the same value; false otherwise.
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  ${userClass} c $(eval echo {1..${#attributes[@]}})
+                  a.equals b
+                  >>>true
             \";;&
          *)   if [[ \$match == \$(Boolean.FALSE) ]]
               then
@@ -298,4 +348,3 @@ ${userClass}.help()
    return 1   
 }
 __registerFunction Class.generator
-
