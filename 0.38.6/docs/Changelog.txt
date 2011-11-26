@@ -186,30 +186,27 @@
 #    -a first really small README.txt file in the docs directory
 #    -changed filesystem structure
 #    -License tag in every file
-# Version:      0.38.6   Date:       28.10.2011, 31.10.2011, 03.11.2011, 07.11.2011, 16.11.2011, 22.11.2011, 24.11.2011
+# Version:      0.38.6   Date:       28.10.2011, 31.10.2011, 03.11.2011, 07.11.2011, 16.11.2011, 22.11.2011, 24.11.2011, 26.11.2011
 #    -Italian po file (Thanks to David Costa <david.at.zarel.net>)
-#    -Fixed/modified german po/mo files (i18n)
+#    -Fixed/modified german po/mo files (i18n)/po files:charset=utf-8 now
 #    -Fixed wrong check order in constructor checks + code cleanup 
 #    -Hope for better macos support (can't test), by looking for gnu date/gdate in /opt/local/bin
 #    -Dependencies.txt file (all used external commands in this framework)
 #    -replaced dirname command in oobash-0.38.6.source with bash code
 #    -new functions for registry: __registerAlias, __cleanUpAliases
 #    -deleted message "#"-frame -- better for i18n
-#    -po file:charset=utf-8 now
 #    -new function for arg test: __periodCheck (checks if given string contains "." character) called by every constructor
 #    -new i18n package with I18nMessage file, content:I18n.out.message I18n.err.message I18n.help. New private function:__i18nMessage
 #     http://tldp.org/LDP/abs/html/localization.html: $"..." syntax is deprecated --> use of gettext now
 #    -moved private registry functions to the private package
 #    -__dependencyCheck,__gnudateCheck are new private functions to check the external commands that are used in this framework
-#    still to do ...:
+#    -generated getters: get$Class$Attribute (Class.generator) to avoid name clashes
 #    -added missing help for the object methods in Class.generator function
-#    -generated getters: get$Class$Atrribute (Class.generator) to avoid name clashes
-#    -define special format for class arrays and simple vars to avoid name clashes
+#    still to do ...:
 #    -man pages for existing code
-#    -colors in console
-#    -replace readlink
-#    -smaller __mathConverter
 #    -__gnudateCheck instead of command -v date
+#    -substitue dirname in __import function with bash
+#    -better readme file
 
 
 
