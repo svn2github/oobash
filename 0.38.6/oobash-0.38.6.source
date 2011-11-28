@@ -290,7 +290,7 @@ then
    I18n.out.message " Some Math constants: -Math.E -Math.PI"
    I18n.out.message " Some Boolean constants:  -Boolean.TRUE -Boolean.FALSE"
    System.out.println 
-   I18n.out.message " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help"
+   I18n.out.message " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help ..."
    I18n.out.message " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
    I18n.out.message " Example: String.help zfill"
    System.out.println 

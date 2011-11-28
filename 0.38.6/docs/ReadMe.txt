@@ -17,7 +17,7 @@ To finally clean up your environment again:
 How it works
 =============
 
-R) command_not_found_handle
+A) command_not_found_handle
 ############################
 Every object.method command is not existing. THe last step before the bash gives you a "command not found" is to see,
 if there is a command_not_found_handle function.
@@ -29,14 +29,16 @@ This function is part of this framework and is used to handle the object.method 
     with the arguments object class and the other arguments if there are some:
     __$method "$this" "$class" "$@"
 All this action makes the framework a relative slow thing, but everything has its price...
+Because the shell executes the command_not_found_handle function in a separate execution environment, no "setters" are available.
+You could echo some setter functionality into the environment, but at the moment, this does not happen to avoid environemnt pollution.
 
-R) Registry
+B) Registry
 ###########
 Every variable, function, array, alias and class is registered in an associative array with the name __Registry__.
 With the pulic __cleanUp function this __Registry__ is used to clean the environment.
 Use the __cleanUp function after using the oobash.
 
-R) Objectpool and Attributepool
+C) Objectpool and Attributepool
 ###############################
 After using a constructor, let's see what happened:
 String a abc
@@ -61,17 +63,19 @@ abc (value of attribute)
 If there are more than one attributes describing the "object", then following code is used for the toString "method":
 echo "${!__ATTRIBUTEPOOL__[@]}"  | tr " " "\n" | sort | tr "\n" " "
 
-) Naming conventions
+D) Conventions
+##############
+
+* Boolean return values:
+-------------------------
+All public "methods" call a Boolean.TRUE or Boolean.FALSE to represent true or false --> true ore false is echoed to the output channel.
+If there is no failure calling the "method" the return value will be 0, independent of true/false.
+
+Only private functions make use of a 0/1 return value to represent a false or true.
+
+E) Create own classes
 #####################
 
-) existing classes
-###################
-
-*) class
-*) abstract class
-*) function collection
-
-*) own class files
 if you want to make your own class file
 then:
 1) use the Class.generator tool
@@ -85,13 +89,22 @@ oobash-<version>.source file
 # import myClassFile classes
 __import oobash.myClassFiles.<nameOfYourFileWithoutOobashPostfix>
 
-) "Constructor"
-################
-
-) Methods declaration
+F) Methods declaration
 ######################
 
-R) "Inheritance" 
+All methods begin with two underscore characters (you can see this in the section command_not_found_handle).
+Even if your method doesn't use any argument, the command_not_found_handle function will add two arguments:
+1) objectname
+2) class name
+
+Method concatenation like a.toLoweCase.toUpperCase is not possible, but you certainly can simulate this by generating new "objects" e.g.
+String a abc
+String a $(a.toLowerCase)
+String a $(a.toUpperCase)
+
+Only the constructors do not follow this main principle (looks to ugly ;-) ).
+ 
+G) "Inheritance" 
 ################
 Inheritance is done by array nesting.
 Every class has a __$ClassMethods__ array. The elements of this array are the methods that are defined in this $Class file.
@@ -100,10 +113,7 @@ Every (not abstract) class has another array named: __$Class__. The elements of 
 e.g.
 declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
  
-) Creating classes
-###################
-
-) Autocompletion
+H) Autocompletion
 #################
 
  * for our object.method commands
@@ -121,8 +131,9 @@ declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__Com
    This way an argument wordlist for the $Class.help function is generated and used by the bash autocompletion.  
    The content of the wordlist is every method that can be used by a $Class "object" plus the consructor of the $Class class and the keyword 'all'.
 
-) I8N
+I) I8N
 ######
+The i18n of the bash uses the GNU gettext package.
 
 if you want to make your own oobash.po, oobash.mo file for i18n,
 then: 
@@ -131,3 +142,6 @@ then:
 3) edit the oobash/locale/<yourLocaleDir>oobash.po
 4) create your mo file: msgfmt -o oobash.mo oobash.po
 
+Iy you have some text output that should be translated, ther are two functions available:
+I18n.out.message
+I18n.err.message

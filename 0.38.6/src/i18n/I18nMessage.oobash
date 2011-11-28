@@ -59,7 +59,7 @@ I18n.help()
       System.${printStream}.println "
       Usage: I18n.help all|methodname
       Available methods:
-      -System.exit -I18n.out.message
+      -I18n.out.message
       -I18n.err.message
       Constructor: 
       None
