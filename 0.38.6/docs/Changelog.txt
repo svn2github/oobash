@@ -202,12 +202,12 @@
 #    -__dependencyCheck,__gnudateCheck are new private functions to check the external commands that are used in this framework
 #    -generated getters: get$Class$Attribute (Class.generator) to avoid name clashes
 #    -added missing help for the object methods in Class.generator function
+#    -better readme file
+#    -integration of __dependencyCheck and "start source"
 #    still to do ...:
 #    -man pages for existing code
 #    -__gnudateCheck instead of command -v date
 #    -substitue dirname in __import function with bash
-#    -better readme file
-
 
 
 #################################################################

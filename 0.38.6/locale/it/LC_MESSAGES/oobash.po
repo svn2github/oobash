@@ -81,6 +81,18 @@ msgstr " Utilizzo: Classe.help  metodo(i)|costruttore|costante o 'all'"
 msgid " Example: String.help zfill"
 msgstr " Esempio: String.help zfill"
 
+#: /home/franka/Bash/oobash/oobash-0.38.5.source
+msgid " Doing depedency check..."
+msgstr " "
+
+#: /home/franka/Bash/oobash/oobash-0.38.5.source
+msgid " Everything ok!"
+msgstr " "
+
+#: /home/franka/Bash/oobash/oobash-0.38.5.source
+msgid " Please install the missing package(s) to have complete functionality"
+msgstr " "
+
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:27
 msgid "Sorry, no valid classname: '$userClass'"
 msgstr "Spiacente, nome di classe non valido: '$userClass'."

@@ -69,7 +69,7 @@ fi
 declare -A __Registry__
 
 # all external commands used in this framework:
-declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext)
+declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext) 
 
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
 
@@ -295,7 +295,13 @@ then
    I18n.out.message " Example: String.help zfill"
    System.out.println 
    # Check for external commands --> NotInPathException if command not found
-   __dependencyCheck
+   I18n.out.message " Doing dependency check..."
+   if __dependencyCheck
+   then
+      I18n.out.message " Everything ok!"
+   else
+      I18n.out.message " Please install the missing package(s) to have complete functionality"
+   fi
 fi
 
 ##################################################

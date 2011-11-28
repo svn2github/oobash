@@ -710,23 +710,31 @@ __cleanUpAliases()
 # every time you source this framework
 __dependencyCheck()
 {
+   local bool="true"
    declare -i i
    for ((i=0; i < ${#__Dependencies__[@]}; i++))
    do
       if ! command -v ${__Dependencies__[$i]} >/dev/null 2>&1
       then
-         __throw "NotInPathException" " ${__Dependencies__[$i]} is used by this framework and is not in path"
+         bool="false"
+         __throw "      NotInPathException" " ${__Dependencies__[$i]} is used by this framework and is not in path"
       else 
          if [[ "${__Dependencies__[$i]}" == "date" ]]
          then
             if ! __gnudateCheck
             then 
-               __throw "NotInPathException" " GNU date is used by this framework and is not in path"
+               bool="false"
+               __throw "      NotInPathException" " GNU date is used by this framework and is not in path"
             fi
          fi         
       fi
    done
-   return 0
+   if [[ "$bool" == "true" ]]
+   then
+      return 0
+   else
+      return 1
+   fi
 }
 
 # private
