@@ -296,10 +296,12 @@ then
    System.out.println 
    # Check for external commands --> NotInPathException if command not found
    I18n.out.message " Doing dependency check..."
+   System.out.println
    if __dependencyCheck
    then
       I18n.out.message " Everything ok!"
    else
+      System.out.println
       I18n.out.message " Please install the missing package(s) to have complete functionality"
    fi
 fi

@@ -27,6 +27,8 @@
 #    system.
 # Parameters:
 #    None
+# Throws:
+#    NotInPathException - if GNU date is not in path
 # Returns:
 #    the difference, measured in milliseconds, between the current 
 #    time and midnight, January 1, 1970 UTC.
@@ -34,13 +36,13 @@ System.currentTimeMillis()
 {
    if (( $# == 0 ))
    then
-      if command -v date >/dev/null 2>&1
+      if __gnudateCheck
       then
          local date=$(date +%s%N)
          System.out.println ${date:0:13}
          return 0
       else
-         __throw "NotInPathException" ": date not in path"
+         __throw "NotInPathException" " GNU date is not in path"
          return 1
       fi
    fi
@@ -57,6 +59,8 @@ __registerFunction System.currentTimeMillis
 #    system.
 # Parameters:
 #    None
+# Throws:
+#    NotInPathException - if GNU date is not in path
 # Returns:
 #    the difference, measured in nanoseconds, between the current 
 #    time and midnight, January 1, 1970 UTC.
@@ -64,12 +68,12 @@ System.currentTimeNanos()
 {
    if (( $# == 0 ))
    then
-      if command -v date >/dev/null 2>&1
+      if __gnudateCheck
       then
          date +%s%N
          return 0
       else
-         __throw "NotInPathException" ": date not in path"
+         __throw "NotInPathException" ": GNU date not in path"
          return 1
       fi
    fi
@@ -190,6 +194,8 @@ System.help()
                system.
             Parameters:
                None
+            Throws:
+               NotInPathException - if GNU date is not in path
             Returns:
                the difference, measured in nanoseconds, between the current 
                time and midnight, January 1, 1970 UTC.
@@ -223,6 +229,8 @@ System.help()
                system.
             Parameters:
                None
+            Throws:
+               NotInPathException - if GNU date is not in path
             Returns:
                the difference, measured in milliseconds, between the current 
                time and midnight, January 1, 1970 UTC.

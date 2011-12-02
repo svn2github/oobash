@@ -1203,7 +1203,7 @@ __lastModified()
 #    true if and only if the operation succeeded; false otherwise
 # Throws:
 #    IllegalArgumentException - if the parameter cannot be treated as a number
-#    NotInPathException - if date is not in path
+#    NotInPathException - if GNU date is not in path
 #    NotInPathException - if touch is not in path
 # Example:
 #    File a /tmp/abc
@@ -1217,7 +1217,7 @@ __setLastModified()
    then
       if command -v touch >/dev/null 2>&1
       then
-         if command -v date >/dev/null 2>&1
+         if __gnudateCheck
          then
             local this="$1"
             local file="$("$this".toString)"
@@ -1245,7 +1245,7 @@ __setLastModified()
             fi
             return 0
          else
-            __throw "NotInPathException" ": date not in path"
+            __throw "NotInPathException" " GNU date is not in path"
             return 1  
          fi
       else
@@ -2057,7 +2057,7 @@ File.help()
                   true if and only if the operation succeeded; false otherwise
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
-                  NotInPathException - if date is not in path
+                  NotInPathException - if GNU date is not in path
                   NotInPathException - if touch is not in path
                Example:
                   File a /tmp/abc

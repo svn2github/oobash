@@ -204,11 +204,11 @@
 #    -added missing help for the object methods in Class.generator function
 #    -better readme file
 #    -integration of __dependencyCheck and "start source"
+#    -__gnudateCheck instead of command -v date
 #    still to do ...:
 #    -man pages for existing code
-#    -__gnudateCheck instead of command -v date
 #    -substitue dirname in __import function with bash
-
+#    -catch System.currentTimeNanos exceptions
 
 #################################################################
 # Features:

@@ -706,25 +706,27 @@ __cleanUpAliases()
 
 # private
 # check for external commands that are used in this framework
+# Throws:
+#    NotInPathException - if element of __Dependencies__ array is not in path
 # called by:
 # every time you source this framework
 __dependencyCheck()
 {
-   local bool="true"
+   local bool="$(Boolean.TRUE)"
    declare -i i
    for ((i=0; i < ${#__Dependencies__[@]}; i++))
    do
       if ! command -v ${__Dependencies__[$i]} >/dev/null 2>&1
       then
-         bool="false"
-         __throw "      NotInPathException" " ${__Dependencies__[$i]} is used by this framework and is not in path"
+         bool="$(Boolean.FALSE)"
+         __throw "NotInPathException" " ${__Dependencies__[$i]} is used by this framework and is not in path"
       else 
          if [[ "${__Dependencies__[$i]}" == "date" ]]
          then
             if ! __gnudateCheck
             then 
                bool="false"
-               __throw "      NotInPathException" " GNU date is used by this framework and is not in path"
+               __throw "NotInPathException" " GNU date is not in path"
             fi
          fi         
       fi
@@ -744,10 +746,11 @@ __dependencyCheck()
 __gnudateCheck()
 {
    # For this framework it is important to work with a gnu date, so:
-   # special check for gnu date with nanaoseconds gnu feature:
+   # special check for gnu date with nanoseconds gnu feature:
    # can't test but hope it works...
    local testtimestamp
-   testtimestamp=$(date +%s%N)
+   testtimestamp=$(date +%N)
+   #testtimestamp=N
    if command -v date >/dev/null 2>&1
    then
       if [[ "${testtimestamp:$((${#testtimestamp}-1))}" == "N" ]]
