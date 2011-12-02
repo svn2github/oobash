@@ -317,6 +317,10 @@ fi
 # Do we have logging propeties to use ?
 __lookForLoggingPropertiesFile "$(caller)"
 
+#[franka@localhost 0.38.6]$ echo ${BASH_ALIASES[@]}
+#FATAL.getClass ALL.getSyslogEquivalent DEBUG.equals ALL.hashCode alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde OFF.toString FATAL.hashCode ERROR.getSyslogEquivalent ERROR.equals TRACE.getClass OFF.hashCode ERROR.getClass ERROR.toString WARN.isGreaterOrEqual INFO.isGreaterOrEqual DEBUG.getClass ERROR.toInt WARN.getClass INFO.getClass DEBUG.hashCode ls --color=auto OFF.getClass FATAL.isGreaterOrEqual FATAL.equals TRACE.toString ls -l --color=auto OFF.equals FATAL.toString TRACE.isGreaterOrEqual TRACE.hashCode WARN.equals INFO.equals ALL.toInt ALL.getClass ALL.toString ls -d . .. .svn --color=auto FATAL.toInt WARN.toString INFO.toString DEBUG.isGreaterOrEqual TRACE.getSyslogEquivalent vim OFF.toInt ERROR.isGreaterOrEqual OFF.isGreaterOrEqual WARN.toInt INFO.toInt DEBUG.getSyslogEquivalent TRACE.equals WARN.getSyslogEquivalent WARN.hashCode INFO.getSyslogEquivalent INFO.hashCode DEBUG.toInt DEBUG.toString OFF.getSyslogEquivalent ALL.isGreaterOrEqual ALL.equals FATAL.getSyslogEquivalent ERROR.hashCode TRACE.toInt
+
+
 if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]
 then
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
