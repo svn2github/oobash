@@ -924,6 +924,9 @@ __equalsIgnoreCase()
             then
                Boolean.TRUE
                return 0
+            else
+               Boolean.FALSE
+               return 0
             fi
          fi
          __throw "WrongClassException" "argument $argobject: $("$argobject".getClass)"
@@ -1823,9 +1826,9 @@ String.help()
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                center  
-               This function centers a string in a field of given width. It returns a string 
-               that is at least width characters wide, created by padding the string with the 
-               space character until the given width on the right, left or both sides.
+                  This function centers a string in a field of given width. It returns a string 
+                  that is at least width characters wide, created by padding the string with the 
+                  space character until the given width on the right, left or both sides.
                Parameters:
                   width - integer
                Returns:
@@ -2509,7 +2512,7 @@ String.help()
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                toString
-               This object (which is already a string!) is itself returned.
+                  This object (which is already a string!) is itself returned.
                Parameters:
                   None
                Returns:

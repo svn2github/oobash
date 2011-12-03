@@ -205,12 +205,11 @@
 #    -better readme file
 #    -integration of __dependencyCheck and "start source"
 #    -__gnudateCheck instead of command -v date
+#    -fix for __equalsIgnoreCase
+#    -substitue dirname in __import function with bash
 #    still to do ...:
 #    -man pages for existing code
-#    -substitue dirname in __import function with bash
 #    -catch System.currentTimeNanos exceptions
-#    -create ALIASES for logging before sourcing --> speed
-#    - naming like __lookForLoggingPropertiesFile for registry, dependencies... --> avoid name clashes
 
 #################################################################
 # Features:

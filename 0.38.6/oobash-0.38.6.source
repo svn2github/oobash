@@ -44,8 +44,10 @@ fi
 if [[ ${BASH_ARGV[0]} == ${__FILENAME__} ]]
 then
    export TEXTDOMAINDIR="${PWD}/locale"
+   __OODIR__="${PWD}"
 else
    export TEXTDOMAINDIR="${BASH_ARGV[0]%/*}/locale"
+   __OODIR__="${BASH_ARGV[0]%/*}"
 fi
 
 # you need a bash 4 
@@ -55,6 +57,7 @@ then
    unset __FILENAME__
    unset __VERSION__
    unset __LOGGINGPROPERTIESFILE__
+   unset __OODIR__
    unset TEXTDOMAINDIR
    unset TEXTDOMAIN
    return 0
@@ -90,8 +93,7 @@ declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__Comparabl
 __import()
 {
 local packageOrClass="${1/"oobash."/}"
-local oodir="$(dirname "${BASH_ARGV[0]}")"
-source $oodir/src/${packageOrClass//"."/"/"}.oobash
+source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
 }
 
 # import util functions
@@ -122,6 +124,7 @@ __registerVar __Dependencies__
 __registerVar __VERSION__
 __registerVar __FILENAME__
 __registerVar __LOGGINGPROPERTIESFILE__
+__registerVar __OODIR__
 __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
 __registerFunction __import
