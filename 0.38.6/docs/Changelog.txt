@@ -208,9 +208,10 @@
 #    -fix for __equalsIgnoreCase in String
 #    -fix for __length in File
 #    -bash substitution for dirname in __import function
+#    -catch System.currentTimeNanos exceptions
 #    still to do ...:
 #    -man pages for existing code
-#    -catch System.currentTimeNanos exceptions
+#    -substitution for readlink
 
 
 #################################################################

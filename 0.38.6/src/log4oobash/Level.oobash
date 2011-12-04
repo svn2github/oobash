@@ -47,8 +47,13 @@ Level()
          return 1
       fi
      
+      local pointer
+      if ! pointer=$(System.currentTimeNanos)
+      then
+         return 1
+      fi
+
       local class=$FUNCNAME
-      local pointer=$(System.currentTimeNanos)  
 
       __destructor "$this"
 

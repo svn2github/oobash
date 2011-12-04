@@ -54,9 +54,14 @@ File()
          return 1
       fi
 
+      local pointer
+      if ! pointer=$(System.currentTimeNanos)
+      then
+         return 1
+      fi
+
       local pathname="$2"
       local class=$FUNCNAME
-      local pointer=$(System.currentTimeNanos)  
 
       __destructor "$this"
 

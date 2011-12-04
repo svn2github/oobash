@@ -58,10 +58,15 @@ Boolean()
          return 1
       fi
 
+      local pointer
+      if ! pointer=$(System.currentTimeNanos)
+      then
+         return 1
+      fi
+
       local bool="$2"
       bool=$(Boolean.parseBoolean "$bool")
       local class=$FUNCNAME
-      local pointer=$(System.currentTimeNanos)  
 
       __destructor "$this"
 

@@ -1,6 +1,6 @@
-###############################################
-# oobash -- my stillborn, but funny child :-) #
-###############################################
+##########
+# oobash #
+##########
 
 oobash is only a fun project and no, there are no real objects, but who cares... ;-)
 There is no downward compatibility until version 1.0.
