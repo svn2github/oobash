@@ -184,7 +184,7 @@ System.help()
             Parameters:
                status - exit status (0-255)
             ";;&
-         System.currentTimeNanos|nanoTime|all)
+         System.currentTimeNanos|currentTimeNanos|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.currentTimeNanos
