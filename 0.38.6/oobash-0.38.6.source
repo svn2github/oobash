@@ -17,12 +17,6 @@ __VERSION__="0.38.6"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 
-# i18n function library from the gnu textutils
-if command -v gettext.sh >/dev/null 2>&1
-then
-   source gettext.sh
-fi
-
 # ----------------------------------------------------
 # Some start up tests:
 
@@ -65,6 +59,12 @@ fi
 
 # End start up tests
 # ----------------------------------------------------
+
+# i18n function library from the gnu textutils
+if command -v gettext.sh >/dev/null 2>&1
+then
+   source gettext.sh
+fi
 
 # Used arrays:
 ###############
