@@ -1588,7 +1588,19 @@ __length()
       local str="$("$this".toString)"
       case $class in
          File)
-            cat "$str" 2>/dev/null | wc -c;;
+            if command -v wc >/dev/null 2>&1
+            then
+               if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]
+               then
+                  wc -c -- < "$("$this".toString)"
+               else
+                  System.out.println 0
+               fi
+            else
+               __throw "NotInPathException" ": wc not in path"
+               return 1
+            fi
+            ;;
          String)
             System.out.println ${#str};;  
          # Default for user created classes         

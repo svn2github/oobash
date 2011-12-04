@@ -186,7 +186,7 @@
 #    -a first really small README.txt file in the docs directory
 #    -changed filesystem structure
 #    -License tag in every file
-# Version:      0.38.6   Date:       28.10.2011, 31.10.2011, 03.11.2011, 07.11.2011, 16.11.2011, 22.11.2011, 24.11.2011, 26.11.2011
+# Version:      0.38.6 
 #    -Italian po file (Thanks to David Costa <david.at.zarel.net>)
 #    -Fixed/modified german po/mo files (i18n)/po files:charset=utf-8 now
 #    -Fixed wrong check order in constructor checks + code cleanup 
@@ -205,11 +205,13 @@
 #    -better readme file
 #    -integration of __dependencyCheck and "start source"
 #    -__gnudateCheck instead of command -v date
-#    -fix for __equalsIgnoreCase
-#    -substitue dirname in __import function with bash
+#    -fix for __equalsIgnoreCase in String
+#    -fix for __length in File
+#    -bash substitution for dirname in __import function
 #    still to do ...:
 #    -man pages for existing code
 #    -catch System.currentTimeNanos exceptions
+
 
 #################################################################
 # Features:
