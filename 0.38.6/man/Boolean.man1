@@ -1,0 +1,5 @@
+.TH oobash 1 "05 Dez 2011" bash4-Environment User Manuals "oobash-0.38.6.source"
+.SH NAME
+Boolean.parseBollean equals hashCode getClass compareTo toString Boolean Boolean.TRUE Boolean.FALSE 
+.SH DESCRIPTION
+The Boolean.oobash file is part of the oobash framework.
