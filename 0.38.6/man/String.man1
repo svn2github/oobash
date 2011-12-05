@@ -1,5 +1,0 @@
-.TH oobash 1 "05 Dez 2011" bash4-Environment User Manuals "oobash-0.38.6.source"
-.SH NAME
-base64Decode base64Encode capitalize center charAt concat contains count endsWith equals equalsIgnoreCase reverse hashCode indexOf isAlnum isAlpha isAscii isDigit isEmpty isHexDigit isLowerCase isSpace isPrintable isUpperCase isVisible lastIndexOf length matches replaceAll replaceFirst startsWith substring swapCase toLowerCase toString toUpperCase trim title zfill compareTo compareToIgnoreCase getClass String String.digits String.asciiLetters String.asciiLettersLowerCase String.asciiLettersUpperCase String.hexDigits String.octDigits 
-.SH DESCRIPTION
-The String.oobash file is part of the oobash framework.
