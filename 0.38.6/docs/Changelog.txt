@@ -209,10 +209,7 @@
 #    -fix for __length in File
 #    -bash substitution for dirname in __import function
 #    -catch System.currentTimeNanos exceptions
-#    still to do ...:
 #    -man pages for existing code
-#    -substitution for readlink
-
 
 #################################################################
 # Features:
@@ -223,4 +220,5 @@
 # Use of bash autocompletion
 # Registry for environment cleanUp
 # i18n
+# man pages
 #################################################################

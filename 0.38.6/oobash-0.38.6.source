@@ -60,6 +60,8 @@ fi
 # End start up tests
 # ----------------------------------------------------
 
+export MANPATH=$MANPATH:${__OODIR__}/man
+
 # i18n function library from the gnu textutils
 if command -v gettext.sh >/dev/null 2>&1
 then

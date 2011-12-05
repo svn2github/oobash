@@ -914,7 +914,7 @@ __getCanonicalPath()
       if command -v readlink >/dev/null 2>&1
       then 
          local result=''
-         result=$(readlink -e "$file")
+         result=$(readlink -e -- "$file")
          if (( $? == 0 ))
          then
             System.out.println "$result"

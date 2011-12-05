@@ -1933,14 +1933,14 @@ Math.help()
       System.${printStream}.println "
       Usage: Math.help all|methodname|constant
       Available methods:
-      Math.random, Math.cos, Math.sin, Math.tan, Math.atan
-      Math.asin, Math.acos, Math.min, Math.max, Math.abs, 
-      Math.sqrt, Math.exp, Math.adder, Math.multiplier,
-      Mat.log, Math.log10, Math.log1p  
+      -Math.random -Math.cos -Math.sin -Math.tan -Math.atan
+      -Math.asin -Math.acos -Math.min -Math.max -Math.abs
+      -Math.sqrt -Math.exp -Math.adder -Math.multiplier
+      -Mat.log -Math.log10 -Math.log1p
       Constructor: 
       None
       Constants:
-      -Math.E Math.PI  
+      -Math.E -Math.PI  
                "
       return 0
    fi
