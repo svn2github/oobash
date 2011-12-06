@@ -9,16 +9,13 @@ then
    "
    exit 0
 fi
-
+class="$1"
 mypath=$(dirname ${0})
 source ${mypath}/../oobash-*.source
-destination=${mypath}/man1/$class.1
+destination="${mypath}/man1/$class.1"
 
-class="$1"
-#.\\\" Copyright (c) <$(date +%Y)> <andreas.gregor.frank@googlemail.com>
-# .\\\" Copyright (c) <$(date +%Y)> <$USER>
 echo "
-.\\\" Copyright (c) <$(date +%Y)> <andreas.gregor.frank@googlemail.com>
+.\\\" Copyright (c) <$(date +%Y)> <$USER>
 .\\\"
 .\\\" Permission is hereby granted, free of charge, to any person obtaining a copy
 .\\\" of this software and associated documentation files (the \"Software\"), to deal
@@ -37,9 +34,9 @@ echo "
 .\\\" LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISIN110G FROM,
 .\\\" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 .\\\" THE SOFTWARE.
-" >${mypath}/man1/$class.man1
+" >${destination}
 
-echo -en .TH oobash 1 >>${mypath}/man1/$class.man1
+echo -en .TH oobash 1 >>${destination}
 echo -en " \"$(date "+%d %b %Y")\"" bash4-Environment "User Manuals">>${destination}
 echo -en " \""${__FILENAME__}"\"" >>${destination}
 echo >>${destination}
@@ -54,8 +51,6 @@ echo The ${class}.oobash file is part of the oobash framework. >>${destination}
 echo ".SH EXAMPLES">>${destination}
 echo "$(${class}.help all)" >>${destination}
 echo ".SH AUTHOR">>${destination}
-echo "Andreas Frank <andreas.gregor.frank@googlemail.com>" >>${destination}
-# echo $USER >>${destination}
+echo $USER >>${destination}
 
-gzip ${mypath}/man1/$class.1 
-
+gzip ${destination}
