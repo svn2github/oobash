@@ -1,5 +1,5 @@
 
-.\" Copyright (c) <2011> <franka>
+.\" Copyright (c) <2011> <andreas.gregor.frank@googlemail.com>
 .\"
 .\" Permission is hereby granted, free of charge, to any person obtaining a copy
 .\" of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,7 @@
 .\" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 .\" THE SOFTWARE.
 
-.TH oobash 1 "05 Dez 2011" bash4-Environment User Manuals "oobash-0.38.6.source"
+.TH oobash 1 "06 Dez 2011" bash4-Environment User Manuals "oobash-0.38.6.source"
 .SH NAME
 Boolean.parseBollean equals hashCode getClass compareTo toString Boolean Boolean.TRUE Boolean.FALSE 
 .SH DESCRIPTION

@@ -1,6 +1,7 @@
 if (( $# != 1 ))
 then
    echo "
+         Ugly tool, but i hope it works for you...
          Usage:
             $0 classname
          Example:
@@ -11,10 +12,13 @@ fi
 
 mypath=$(dirname ${0})
 source ${mypath}/../oobash-*.source
+destination=${mypath}/man1/$class.1
+
 class="$1"
 #.\\\" Copyright (c) <$(date +%Y)> <andreas.gregor.frank@googlemail.com>
+# .\\\" Copyright (c) <$(date +%Y)> <$USER>
 echo "
-.\\\" Copyright (c) <$(date +%Y)> <$USER>
+.\\\" Copyright (c) <$(date +%Y)> <andreas.gregor.frank@googlemail.com>
 .\\\"
 .\\\" Permission is hereby granted, free of charge, to any person obtaining a copy
 .\\\" of this software and associated documentation files (the \"Software\"), to deal
@@ -36,20 +40,22 @@ echo "
 " >${mypath}/man1/$class.man1
 
 echo -en .TH oobash 1 >>${mypath}/man1/$class.man1
-echo -en " \"$(date "+%d %b %Y")\"" bash4-Environment "User Manuals">>${mypath}/man1/$class.man1
-echo -en " \""${__FILENAME__}"\"" >>${mypath}/man1/$class.man1
-echo >>${mypath}/man1/$class.man1
-echo ".SH NAME" >>${mypath}/man1/$class.man1
+echo -en " \"$(date "+%d %b %Y")\"" bash4-Environment "User Manuals">>${destination}
+echo -en " \""${__FILENAME__}"\"" >>${destination}
+echo >>${destination}
+echo ".SH NAME" >>${destination}
 for i in $($class.help | grep "-")
 do 
-   echo -en "$i " | sed 's/-//' >>${mypath}/man1/$class.man1
+   echo -en "$i " | sed 's/-//' >>${destination}
 done
-echo >>${mypath}/man1/$class.man1
-echo ".SH DESCRIPTION">>${mypath}/man1/$class.man1
-echo The ${class}.oobash file is part of the oobash framework. >>${mypath}/man1/$class.man1
-echo ".SH EXAMPLES">>${mypath}/man1/$class.man1
-echo "$(${class}.help all)" >>${mypath}/man1/$class.man1
-echo ".SH AUTHOR">>${mypath}/man1/$class.man1
-echo "Andreas Frank <andreas.gregor.frank@googlemail.com>" >>${mypath}/man1/$class.man1 
-# echo $USER >>${mypath}/man1/$class.man1
+echo >>${destination}
+echo ".SH DESCRIPTION">>${destination}
+echo The ${class}.oobash file is part of the oobash framework. >>${destination}
+echo ".SH EXAMPLES">>${destination}
+echo "$(${class}.help all)" >>${destination}
+echo ".SH AUTHOR">>${destination}
+echo "Andreas Frank <andreas.gregor.frank@googlemail.com>" >>${destination}
+# echo $USER >>${destination}
+
+gzip ${mypath}/man1/$class.1 
 
