@@ -93,6 +93,10 @@ msgstr " "
 msgid " Please install the missing package(s) to have complete functionality"
 msgstr " "
 
+#: /home/franka/Bash/oobash/oobash-0.38.5.source
+msgid " Could not change MANPATH !"
+msgstr " "
+
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:27
 msgid "Sorry, no valid classname: '$userClass'"
 msgstr "Spiacente, nome di classe non valido: '$userClass'."

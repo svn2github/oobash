@@ -90,6 +90,10 @@ msgid " Everything ok!"
 msgstr " Alles in Ordnung!"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source
+msgid " Could not change MANPATH !"
+msgstr " Konnte MANPATH nicht anpassen"
+
+#: /home/franka/Bash/oobash/oobash-0.38.5.source
 msgid " Please install the missing package(s) to have complete functionality"
 msgstr " Bitte installieren Sie die fehlenden Pakete um volle Funktionalität zu haben."
 

@@ -44,6 +44,8 @@ else
    __OODIR__="${BASH_ARGV[0]%/*}"
 fi
 
+#return  0
+
 # you need a bash 4 
 if [ $BASH_VERSINFO -lt 4 ]
 then
@@ -59,8 +61,6 @@ fi
 
 # End start up tests
 # ----------------------------------------------------
-
-export MANPATH=$MANPATH:${__OODIR__}/man
 
 # i18n function library from the gnu textutils
 if command -v gettext.sh >/dev/null 2>&1
@@ -309,6 +309,15 @@ then
       System.out.println
       I18n.out.message " Please install the missing package(s) to have complete functionality"
    fi
+fi
+
+# Add oobash man pages
+if command -v dirname >/dev/null 2>&1
+then
+   export MANPATH=$MANPATH:"$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && System.out.println ${PWD} )"/man
+else
+   __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
+   I18n.out.message " Could not change MANPATH !"
 fi
 
 ##################################################
