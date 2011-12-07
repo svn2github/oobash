@@ -751,7 +751,7 @@ __gnudateCheck()
    local testtimestamp
    testtimestamp=$(date +%N)
    #testtimestamp=N
-   if command -v datexx >/dev/null 2>&1
+   if command -v date >/dev/null 2>&1
    then
       if [[ "${testtimestamp:$((${#testtimestamp}-1))}" == "N" ]]
       then
