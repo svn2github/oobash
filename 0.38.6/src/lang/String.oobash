@@ -57,6 +57,7 @@ String()
       local pointer
       if ! pointer=$(System.currentTimeNanos)
       then
+         I18n.err.message "Sorry, could not create object '\$this'"
          return 1
       fi
 

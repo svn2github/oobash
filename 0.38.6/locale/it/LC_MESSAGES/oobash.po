@@ -181,3 +181,7 @@ msgstr "Spiacente, il nome oggetto '$this' è una parola riservata"
 msgid "Sorry, no full stop character allowed in objectname"
 msgstr "Spiacente, il carattere '.' punto non è permesso nel nome oggetto"
 
+#: /home/franka/Bash/oobash/src/lang/String.oobash
+msgid  "Sorry, could not create object '$this'"
+msgstr ""
+

@@ -57,6 +57,7 @@ File()
       local pointer
       if ! pointer=$(System.currentTimeNanos)
       then
+         I18n.err.message "Sorry, could not create object '\$this'"
          return 1
       fi
 
@@ -923,7 +924,6 @@ __getCanonicalPath()
             then
                if command -v dirname >/dev/null 2>&1
                then
-                  # next line from this blog: http://blog.publicobject.com/2006/06/canonical-path-of-file-in-bash.html
                   cd -P -- "$(dirname -- "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(basename -- "${file}")"
                   if (( $? != 0 ))
                   then

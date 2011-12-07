@@ -1,4 +1,4 @@
-if (( $# != 1 ))
+if (( $# != 1 )) &&  (( $# != 2 ))
 then
    echo "
          Ugly tool, but i hope it works for you...
@@ -10,8 +10,11 @@ then
    exit 0
 fi
 class="$1"
+pathToFile="$2"
+
 mypath=$(dirname ${0})
 source ${mypath}/../oobash-*.source
+source ${pathToFile}/${class}.oobash
 destination="${mypath}/man1/$class.1"
 
 echo "

@@ -181,3 +181,6 @@ msgstr "Tut mir leid, aber der Objektname '$this' ist ein Schlüsselwort."
 msgid "Sorry, no full stop character allowed in objectname"
 msgstr "Tut mir leid, aber das Zeichen '.' ist in Objektnamen nicht erlaubt."
 
+#: /home/franka/Bash/oobash/src/lang/String.oobash
+msgid  "Sorry, could not create object '$this'"
+msgstr "Tut mir leid, konnte das Object '$this' nicht erstellen"
