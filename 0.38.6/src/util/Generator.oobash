@@ -264,16 +264,14 @@ ${userClass}.help()
             match=\$(Boolean.TRUE)
             System.\${printStream}.println \"
                toString
-                  Returns a String object representing this ${userClass} object. 
+                  Returns a String object representing this ${userClass} object in sorted order. 
                Parameters:
                   None
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
-                  b.toString
-                  >>>$(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " )"
-
+                  b.toString"
       declare -a special=($(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " )) 
-      echo -ne "                  "
+      echo -ne "                  >>>"
       for (( i=0; i < ${#special[@]}; i++))
       do
          if (( $i != 0 ))
