@@ -39,11 +39,11 @@ decoratorCheck()
    shift
    declare -a lineOffset
 
-   declare -i j=4
-   while [[ ${Arr[$((${BASH_LINENO}-$j))]:0:1} == "@" ]]
+   declare -i offset=4
+   while [[ ${Arr[$((${BASH_LINENO}-$offset))]:0:1} == "@" ]]
    do
-      lineOffset[$[${#lineOffset[@]}]]=$j
-      ((j++))
+      lineOffset[$[${#lineOffset[@]}]]=$offset
+      ((offset++))
    done
 
    declare -i i=0
