@@ -1,3 +1,10 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com
+#
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
 mapfile Arr < $0
 
 #####################
