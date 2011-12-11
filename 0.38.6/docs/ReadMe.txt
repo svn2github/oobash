@@ -2,7 +2,8 @@
 # oobash #
 ##########
 
-oobash is only a fun project and no, there are no real objects, but who cares... ;-)
+oobash is only a fun project and no, there are no real objects and no real decorators, but who cares... ;-)
+It is perfect to amaze some friends, but don't use it in production environments ;-) !
 There is no downward compatibility until version 1.0.
 
 Fast start
@@ -71,7 +72,7 @@ D) Conventions
 All public "methods" call a Boolean.TRUE or Boolean.FALSE to represent true or false --> true ore false is echoed to the output channel.
 If there is no failure calling the "method" the return value will be 0, independent of any boolean true/false return value.
 
-Only private functions make use of a 0/1 return value to represent a false or true.
+Only private functions and decorators make use of a 0/1 return value to represent a false or true.
 
 E) Create own classes
 #####################
