@@ -207,6 +207,8 @@
 #    -Fix for __length in File
 #    -Dependencies.txt file (all used external commands in this framework)
 #    -moved private registry functions to the private package
+TODO: export path to oobash
+TODO: file2man 
 
 #################################################################
 # Features:
