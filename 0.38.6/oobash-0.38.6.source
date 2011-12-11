@@ -101,6 +101,7 @@ source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
 # import util functions
 __import oobash.util.Registry
 __import oobash.util.Generator
+__import oobash.util.Decorator
 
 # import private functions
 __import oobash.private.Private
