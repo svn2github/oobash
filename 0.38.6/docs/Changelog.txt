@@ -209,6 +209,7 @@
 #    -moved private registry functions to the private package
 TODO: export path to oobash
 TODO: file2man 
+TODO: use the exported oopath in file2man and decorator example
 
 #################################################################
 # Features:
