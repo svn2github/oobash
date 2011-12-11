@@ -1,4 +1,9 @@
-source ../../oobash-0.38.6.source
+source ../../oobash-0.38.6.source 1>/dev/null 2>&1
+if (( $? != 0 ))
+then
+   echo "Sorry, but could not find oobash"
+   exit 0
+fi
 
 # START -- My addon decorator
 @false()
