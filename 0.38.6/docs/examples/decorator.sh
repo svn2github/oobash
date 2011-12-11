@@ -6,8 +6,9 @@ source ../../oobash-0.38.6.source
    if (($# != 0))
    then
       System.err.println "I am false and will return 1"
+      return 1 
    fi
-   return 1
+   return 0
 }
 # END -- My addon decorator
 
