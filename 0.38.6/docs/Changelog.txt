@@ -210,6 +210,7 @@
 TODO: export path to oobash
 TODO: file2man 
 TODO: use the exported oopath in file2man and decorator example
+TODO: link methodnames to manpages
 
 #################################################################
 # Features:
