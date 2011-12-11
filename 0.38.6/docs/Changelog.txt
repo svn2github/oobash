@@ -198,8 +198,8 @@
 #    -generated getters: get$Class$Attribute (Class.generator) to avoid name clashes
 #     http://tldp.org/LDP/abs/html/localization.html: $"..." syntax is deprecated --> use of gettext now
 #    -better readme file
+#    -__dependencyCheck,__gnudateCheck are new private functions to check the external commands that are used in this framework
 #    -__gnudateCheck instead of command -v date
-#    -"decorator" idea in docs/ideas
 #    -added missing help for the object methods in Class.generator function
 #    -Fixed/modified german po/mo files (i18n)/po files:charset=utf-8 now
 #    -Fixed wrong check order in constructor checks + code cleanup 
@@ -207,7 +207,6 @@
 #    -Fix for __length in File
 #    -Dependencies.txt file (all used external commands in this framework)
 #    -moved private registry functions to the private package
-#    -__dependencyCheck,__gnudateCheck are new private functions to check the external commands that are used in this framework
 
 #################################################################
 # Features:
@@ -219,5 +218,5 @@
 # Registry for environment cleanUp
 # i18n
 # man pages
-# decorators
+# "decorators"
 #################################################################
