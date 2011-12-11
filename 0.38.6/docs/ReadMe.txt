@@ -148,3 +148,4 @@ I18n.err.message
 
 J) Decorators
 ##############
+You can see an example script in the docs/examples directory. You can only decorate functions in your own script, that are not sourced into your script.

@@ -188,7 +188,7 @@
 #    -License tag in every file
 # Version:      0.38.6 
 #    -Italian po file (Thanks to David Costa <david.at.zarel.net>)
-#    -Possibility to "decorate" your functions
+#    -Possibility to "decorate" your functions (@calling @timestamp @deprecated)
 #    -man pages for existing code
 #    -Hope for better macos support (can't test), by looking for gnu date/gdate in /opt/local/bin
 #    -new functions for registry: __registerAlias, __cleanUpAliases
