@@ -46,6 +46,11 @@ __registerFunction @deprecated
 
 __decoratorCheck()
 {
+   # we will not fill the array with /bin/bash...
+   if [[ "${0##*/}" == "bash" ]]
+   then
+      return 0
+   fi
    mapfile Arr < $0
    declare -i returnValue=0
    local decorated="$1"
