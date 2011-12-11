@@ -189,7 +189,7 @@
 # Version:      0.38.6 
 #    -Italian po file (Thanks to David Costa <david.at.zarel.net>)
 #    -Possibility to "decorate" your functions (@calling @timestamp @deprecated)
-#    -man pages for existing code
+#    -some man pages
 #    -Hope for better macos support (can't test), by looking for gnu date/gdate in /opt/local/bin
 #    -new functions for registry: __registerAlias, __cleanUpAliases
 #    -deleted message "#"-frame -- better for i18n
@@ -210,7 +210,6 @@
 TODO: export path to oobash
 TODO: file2man 
 TODO: use the exported oopath in file2man and decorator example
-TODO: link methodnames to manpages
 
 #################################################################
 # Features:
@@ -222,5 +221,5 @@ TODO: link methodnames to manpages
 # Registry for environment cleanUp
 # i18n
 # man pages
-# "decorators"
+# decorators for your functions
 #################################################################
