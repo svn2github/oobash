@@ -1,5 +1,16 @@
 source ../../oobash-0.38.6.source
 
+# START -- My addon decorator
+@false()
+{
+   if (($# != 0))
+   then
+      System.err.println "I am false and will return 1"
+   fi
+   return 1
+}
+# END -- My addon decorator
+
 @deprecated
 function printer1()
 {
@@ -40,9 +51,11 @@ function printer4() {
 
 @calling
 @timestamp
+@false
 @deprecated
 function printer5() {
    __decoratorCheck "$FUNCNAME" "$@"
+   echo My return value is $?, because of @false, but i could be a validator too!
    echo "i print printer5"
    echo "---------------------------"
    echo
