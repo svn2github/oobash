@@ -43,6 +43,7 @@
 __decoratorCheck()
 {
    mapfile Arr < $0
+   declare -i returnValue=0
    local decorated="$1"
    shift
 
@@ -68,6 +69,7 @@ __decoratorCheck()
    for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
    do
       eval ${Arr[$((${BASH_LINENO}-${lineOffset[$i]}))]} "${decorated}" "$@"
+      returnValue=$(($returnValue+$?))
    done
-   return 0
+   return $returnValue
 }
