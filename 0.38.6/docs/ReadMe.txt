@@ -145,3 +145,6 @@ then:
 Iy you have some text output that should be translated, there are two functions available:
 I18n.out.message
 I18n.err.message
+
+J) Decorators
+##############
