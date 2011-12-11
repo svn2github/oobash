@@ -171,7 +171,7 @@ Boolean.help()
       System.${printStream}.println "
       Usage: Boolean.help all|methodname|constructor|constant
       Available methods:
-      -Boolean.parseBollean -equals -hashCode
+      -Boolean.parseBoolean -equals -hashCode
       -getClass -compareTo -toString
       Constructor: 
       -Boolean
