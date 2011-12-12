@@ -5,7 +5,7 @@ then
    exit 0
 fi
 
-# START -- My addon decorator
+# START -- My own addon decorator
 @false()
 {
    if (($# != 0))
@@ -15,7 +15,7 @@ fi
    fi
    return 0
 }
-# END -- My addon decorator
+# END -- My own addon decorator
 
 @deprecated
 function printer1()
@@ -68,6 +68,9 @@ function printer5() {
    return 0
 }
 
+########
+# MAIN #
+########
 printer1
 printer2
 printer3 Arg1 Arg2
