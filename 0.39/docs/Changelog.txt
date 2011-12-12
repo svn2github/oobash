@@ -208,10 +208,9 @@
 #    -Fix for __length in File
 #    -Dependencies.txt file (all used external commands in this framework)
 #    -moved private registry functions to the private package
-TODO: filename always oobash.source (with version request by argument or/and always if you execute)
-TODO: export path to oobash
+#    -oobash path is exported with the name __OODIR__
 TODO: file2man 
-TODO: use the exported oopath in file2man and decorator example
+TODO: use the exported oopath in file2man example
 
 #################################################################
 # Features:

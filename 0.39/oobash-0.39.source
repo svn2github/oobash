@@ -35,16 +35,8 @@ then
    exit 0
 fi
 
-if [[ ${BASH_ARGV[0]} == ${__FILENAME__} ]]
-then
-   export TEXTDOMAINDIR="${PWD}/locale"
-   __OODIR__="${PWD}"
-else
-   export TEXTDOMAINDIR="${BASH_ARGV[0]%/*}/locale"
-   __OODIR__="${BASH_ARGV[0]%/*}"
-fi
-
-#return  0
+export __OODIR__=$(cd -P "${BASH_ARGV[0]%/*}" 2>/dev/null; echo "${PWD}")
+export TEXTDOMAINDIR="${__OODIR__}/locale"
 
 # you need a bash 4 
 if [ $BASH_VERSINFO -lt 4 ]
