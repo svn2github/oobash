@@ -1,0 +1,26 @@
+# MAYBE ROADMAP:
+
+# 0.38.7
+# Generator features:
+# -Automatic man page generation for generated class file
+# -Generate class file in myclasses
+# Man pages for existing source
+
+# 0.38.8
+# Analyze log4oobash.properties
+
+# 0.40
+# Logging
+
+# 0.41
+# add Assert class
+
+# 0.42
+# Use of /dev/tcp and /dev/udp
+# for network sockets
+
+# 0.43
+# add Path class
+
+# 0.44
+# Classes: ZipFile, TarFile

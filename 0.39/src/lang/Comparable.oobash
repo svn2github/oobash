@@ -1,0 +1,208 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+##################################
+##################################
+##                              ##
+##     ABSTRACT COMPARABLE      ## 
+##                              ##
+##################################
+##################################
+
+
+#####################
+#                   #
+#      METHODS      # 
+#                   #
+#####################
+
+# String:
+# compareTo
+#  Compares two strings lexicographically. The comparison is based on the value of each character 
+#  in the strings. The character sequence represented by this String object is compared lexicographically 
+#  to the character sequence represented by the argument string. The result is a negative integer if this 
+#  String object lexicographically precedes the argument string. The result is a positive integer if this 
+#  String object lexicographically follows the argument string. The result is zero if the strings are equal; 
+#  compareTo returns 0 exactly when the equals(Object) method would return true. 
+#  This is the definition of lexicographic ordering. If two strings are different, then either they have 
+#  different characters at some index that is a valid index for both strings, or their lengths are different, 
+#  or both. If they have different characters at one or more index positions, let k be the smallest such index; 
+#  then the string whose character at position k has the smaller value, as determined by using the < operator, 
+#  lexicographically precedes the other string. In this case, compareTo returns the difference of the two character 
+#  values at position k in the two string -- that is, the value: 
+#
+#  this.charAt(k)-anotherString.charAt(k)
+#
+#  If there is no index position at which they differ, then the shorter string lexicographically precedes the 
+#  longer string. In this case, compareTo returns the difference of the lengths of the strings -- that is, the value: 
+#
+#  this.length()-anotherString.length()
+#
+#  Parameters:
+#     s - the primitive string to be compared.
+#  Returns:
+#     the value 0 if the argument string is equal to this string; a value less than 0 
+#     if this string is lexicographically less than the string argument;
+#     and a value greater than 0 if this string is lexicographically greater than the string argument.
+# Example:
+#    String a abcd
+#    a.compareTo abcd
+#    >>>0
+#    a.compareTo ab
+#    >>>2
+#    a.compareTo abcde
+#    >>>-1
+#    a.compareTo ""
+#    >>>4
+#    a.compareTo x
+#    >>>-23
+#    a.compareTo "ab c"
+#    >>>67
+
+# File:
+# compareTo
+#    Compares two abstract pathnames lexicographically. 
+#    The ordering defined by this method depends upon the underlying system. 
+#    Alphabetic case is significant in comparing pathnames.
+# Parameters:
+#    f - a File object
+# Returns:
+#    Zero if the argument is equal to this abstract pathname, a value less 
+#    than zero if this abstract pathname is lexicographically less than the 
+#    argument, or a value greater than zero if this abstract pathname is 
+#    lexicographically greater than the argument
+# Example:
+#    File a abcd
+#    File b abcd
+#    a.compareTo b
+#    >>>0
+#    File b ab
+#    a.compareTo b
+#    >>>2
+#    File b abcde
+#    a.compareTo b
+#    >>>-1
+#    File b ""
+#    a.compareTo b
+#    >>>4
+#    File b x
+#    a.compareTo a
+#    >>>-23
+#    File b "ab c"
+#    a.compareTo b
+#    >>>67
+
+# Boolean:
+# compareTo
+#    Compares this Boolean instance with another. 
+# Parameters:
+#    b - a Boolean object
+# Returns:
+#    zero if this object represents the same boolean value as the argument; 
+#    a positive value if this object represents true and the argument 
+#    represents false; and a negative value if this object represents false
+#    and the argument represents true
+# Example:
+#    Boolean a true
+#    Boolean b xxx
+#    a.compareTo a
+#    >>>0
+#    a.compareTo b
+#    >>>1
+#    b.compareTo b
+#    >>>0
+#    b.compareTo a
+#    >>>-1
+__compareTo()
+{
+   local class="$2"
+   if (( $# == 3 ))
+   then
+      local this="$1"
+      local class="$2"
+      local argobject="$3"
+      local argclass
+      local str
+      argclass="$("$argobject".getClass 2>/dev/null)" 
+      if (( $? == 0 )) || [[ "$class" == "String" ]]
+      then
+         if [[ "$("$this".getClass)" == "$argclass" || "$class" == "String" ]]
+         then
+            case $class in
+               String)  str="$3"
+                        ;;
+               Boolean) if [[ "$("$this".toString)" == $(Boolean.TRUE) ]]
+                        then
+                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]
+                           then
+                              System.out.println 0
+                           else
+                              System.out.println 1
+                           fi
+                        else
+                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]
+                           then
+                              System.out.println -1
+                           else
+                              System.out.println 0
+                           fi
+                        fi
+                        return 0
+                        ;;
+               *)       String "$argobject" "$("$argobject".toString)"
+                        String "$this" "$("$this".toString)"
+                        str="$("$argobject".toString)"
+                        ;;
+            esac
+         else
+            __throw "WrongClassException" "argument $argobject: $("$argobject".getClass)" 
+            return 1   
+         fi
+      else
+         __throw "IllegalArgumentException" ": Wrong argument: $3"
+         return 1
+      fi                    
+      declare -i length=-1
+      if (( $("$this".length) == ${#str} ))
+      then
+         length=${#str}
+         if [[ "$("$this".toString)" == "$str" ]]
+         then
+            System.out.println 0
+            return 0
+         fi
+      fi
+      if (( $length == -1 ))
+      then
+         declare -i result=$(($("$this".length)-${#str}))
+         if (( $("$this".length) < ${#str} ))
+         then
+            length=$("$this".length)
+         else
+            length=${#str}
+         fi
+      fi	
+      declare -i i=0
+      for ((i=0; i < $length; i++))
+      do    
+         local charArg="${str:i:1}"
+         declare -i valueArg=$(printf '%d\n' "'$charArg")
+         local charStr="$("$this".charAt $i)"
+         declare -i valueStr=$(printf '%d\n' "'$charStr")
+         if (( $valueStr != $valueArg ))
+         then
+            System.out.println $(( $valueStr - $valueArg ))
+            return 0
+         fi	
+      done
+      System.out.println $result
+      return 0
+   fi
+   local printStream=err
+   ${class}.help ${FUNCNAME:2}
+   return 1   
+}
