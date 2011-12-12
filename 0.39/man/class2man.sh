@@ -16,6 +16,7 @@ mypath=$(dirname ${0})
 source ${mypath}/../oobash-*.source
 source ${pathToFile}/${class}.oobash
 destination="${mypath}/man1/$class.1"
+destination=/tmp/$class.1
 
 echo "
 .\\\" Copyright (c) <$(date +%Y)> <$USER>
@@ -46,7 +47,7 @@ echo >>${destination}
 echo ".SH NAME" >>${destination}
 for i in $($class.help | grep "-")
 do 
-   echo -en "$i " | sed 's/-//' >>${destination}
+   echo -en "${i//-/} " >>${destination}
 done
 echo >>${destination}
 echo ".SH DESCRIPTION">>${destination}
