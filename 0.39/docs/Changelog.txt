@@ -213,7 +213,6 @@ TODO: file2man  --> into the Generator.oobash file --> grep into Dependencies ar
 TODO: use the exported oopath in file2man example
 TODO: NotInPath Exceptions for sort and tr
 TODO: very often something like "throw WrongNumberOfArgumentsException" + the help text
-TODO: getClass --> Returns: The Class object -->  The Class namestring or something like that
 
 #################################################################
 # Features:
