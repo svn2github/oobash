@@ -212,7 +212,7 @@
 TODO: file2man  --> into the Generator.oobash file --> grep into Dependencies array
 TODO: use the exported oopath in file2man example
 TODO: NotInPath Exceptions for sort and tr
-TODO: very often something like "throw WrongNumberOfArgumentsException" + the help text
+TODO: use of IllegalArgumentException + description (where to use in sources!) description example: IllegalArgumentException: wrong number of arguments
 
 #################################################################
 # Features:
