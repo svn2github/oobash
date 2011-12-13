@@ -86,8 +86,8 @@ declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__Comparabl
 
 __import()
 {
-local packageOrClass="${1/"oobash."/}"
-source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
+   local packageOrClass="${1/"oobash."/}"
+   source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
 }
 
 # import util functions

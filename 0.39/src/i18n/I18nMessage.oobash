@@ -24,7 +24,7 @@ I18n.out.message()
       return 0
    fi
    local printStream=err
-   System.help $FUNCNAME
+   I18n.help $FUNCNAME
    return 1
 }
 __registerFunction i18n.out.message
@@ -38,7 +38,7 @@ I18n.err.message()
       __i18nMessage "$message"
       return 0
    fi
-   System.help $FUNCNAME
+   I18n.help $FUNCNAME
    return 1
 }
 __registerFunction i18n.err.message
@@ -49,7 +49,7 @@ __registerFunction i18n.err.message
 #               #
 #################
 
-complete -W  "out.message err.message all" I18n.help
+complete -W  "I18n.err.message I18n.out.message all" I18n.help
 
 I18n.help()
 {  

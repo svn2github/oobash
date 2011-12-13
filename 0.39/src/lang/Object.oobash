@@ -115,7 +115,19 @@ __toString()
       esac
       local str=''
       local first=$(Boolean.TRUE)
-      local keys=$(echo "${!__ATTRIBUTEPOOL__[@]}"  | tr " " "\n" | sort | tr "\n" " " )
+      if command -v tr >/dev/null 2>&1
+      then
+         if command -v sort  >/dev/null 2>&1
+         then
+            local keys=$(echo "${!__ATTRIBUTEPOOL__[@]}"  | tr " " "\n" | sort | tr "\n" " " )
+         else
+            __throw "NotInPathException" ": sort not in path"
+            return 1
+         fi
+      else
+         __throw "NotInPathException" ": tr not in path"
+         return 1
+      fi         
       for key in $keys
       do
          if [[ "$key" == "${pointer}"* ]];
