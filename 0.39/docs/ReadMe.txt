@@ -3,7 +3,6 @@
 ##########
 
 oobash is only a fun project and no, there are no real objects and no real decorators, but who cares... ;-)
-It is perfect to amaze some friends, but don't use it in production environments ;-) !
 There is no downward compatibility until version 1.0.
 
 Fast start
@@ -147,6 +146,7 @@ Iy you have some text output that should be translated, there are two functions 
 I18n.out.message
 I18n.err.message
 
-J) Decorators
-##############
-You can see an example script in the docs/examples directory. You can only decorate functions in your own script, that are not sourced into your script.
+J) "Decorators"
+################
+You can see an example script in the docs/examples directory. (At the moment) You can only decorate functions in your own script, that are not sourced into your script, but defined there.
+__decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
