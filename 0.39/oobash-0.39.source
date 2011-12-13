@@ -66,7 +66,7 @@ fi
 declare -A __Registry__
 
 # all external commands used in this framework:
-declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort) 
+declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr) 
 
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
 
