@@ -215,6 +215,7 @@ TODO: use of IllegalArgumentException + description (where to use in sources!) d
 TODO: stacktrace
 TODO: add IllegalArgumentException to help 
 TODO: look at code e.g. equalsIgnoreCase: IllegalArgumentException is sometimes not the problem
+TODO: should there really be a help instead of a stacktrace ?  --> help=yes/no stacktrace=yes/no
 
 #################################################################
 # Features:
