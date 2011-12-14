@@ -20,20 +20,6 @@
 #                       #
 #########################
 
-# Boolean
-# Constructor for the Boolean objects.
-# Allocates a Boolean object representing the value true if the string argument
-# is equal, ignoring case, to the string "true". Otherwise, allocate a Boolean
-# object representing the value false. 
-# Parameters:
-#    objectname string
-#    s - the string to be converted to a Boolean.
-#    No "." character is allowed in the objectname string.
-# Returns:
-#    None
-# Example:
-# Boolean a "True" produces a Boolean object that represents true.
-# Boolean a "yes"  produces a Boolean object that represents false.  
 Boolean() {
    if (( $# == 2 ))
    then
@@ -123,19 +109,6 @@ Boolean.FALSE() {
 }
 __registerFunction Boolean.FALSE
 
-# Boolean.parseBoolean
-#    Parses the string argument as a boolean. The boolean 
-#    returned represents the value true if the string argument 
-#    is not null and is equal, ignoring case, to the string "true".
-# Parameters:
-#    s - the String containing the boolean representation to be parsed
-# Returns:
-#    the boolean represented by the string argument
-# Example: 
-#    Boolean.parseBoolean "True"
-#    >>>true
-#    Boolean.parseBoolean "yes"
-#    >>>false
 Boolean.parseBoolean() {
    if (( $# == 1 ))
    then

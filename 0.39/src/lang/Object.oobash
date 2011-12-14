@@ -20,22 +20,6 @@
 #                   #
 #####################
 
-# getClass
-#    Returns the class of this Object.
-#    Parameters:
-#       None
-#    Returns:
-#       The Class object that represents the runtime class of this object.
-# Example:
-#    File a xxx
-#    String b xxx
-#    Boolean c xxx
-#    a.getClass
-#    >>>class File
-#    b.getClass
-#    >>>class String
-#    c.getClass
-#    >>>class Boolean
 __getClass() {
    local class="$2"
    if (( $# == 2 ))
@@ -49,40 +33,6 @@ __getClass() {
    return 1
 }
 
-# String:
-# toString
-#    This object (which is already a string!) is itself returned.
-# Parameters:
-#    None
-# Returns:
-#    the string itself.
-# Example:
-#    String a abc
-#    a.toString
-#    >>>abc
-
-# File:
-# toString
-# Parameters:
-#    None
-# Returns:
-#    Returns the pathname string of this abstract pathname. 
-# Example:
-#    File a /tmp/A
-#    a.toString
-#    >>>/tmp/A
-
-# Boolean
-# toString
-#    Returns a String object representing this Boolean's value. 
-#    If this object represents the value true, a string equal to "true" 
-#    is returned. Otherwise, a string equal to "false" is returned. 
-# Parameters:
-#    None
-# Example:
-#    Boolean b xxx
-#    b.toString
-#    >>>false  
 __toString() {
    if (( $# == 2 ))
    then
@@ -152,61 +102,6 @@ __toString() {
 
 
 
-# String:
-# equals
-#    Compares this string to the specified object. 
-#    The result is true if and only if the argument is not null 
-#    and is a String object that represents the same sequence of 
-#    characters as this object.
-# Parameters:
-#    anObject - The object to compare this String against
-# Returns:
-#    true if the given object represents a String equivalent 
-#    to this string, false otherwise
-# Example:
-#    String a abc
-#    String b abc
-#    String c ddd
-#    a.equals b
-#    >>>true
-#    a.equals c
-#    >>>false
-
-
-# File:
-# equals
-#    Tests this abstract pathname for equality with the given object. 
-#    Returns true if and only if the argument is not null and is an 
-#    abstract pathname that denotes the same file or directory as this 
-#    abstract pathname.
-# Parameters:
-#    anObject - The object to be compared with
-# Returns:
-#    true if and only if the objects are the same; false otherwise
-# Example:
-#    File a yyy
-#    File b yyy
-#    File c xxx
-#    a.equals c
-#    >>>false
-#    a.equals b
-#    >>>true
-
-# Boolean
-# equals
-#    Returns true if and only if the argument is a Boolean object that 
-#    represents the same boolean value as this object. 
-# Parameters:
-#    anObject - The object to compare this Boolean against
-# Returns:
-#    true if the Boolean objects represent the same value; false otherwise.
-# Example:
-#    Boolean a abc
-#    Boolean b true
-#    a.equals a
-#    >>>true
-#    a.equals b
-#    >>>false
 __equals() {
    if (( $# == 3 ))
    then
@@ -244,35 +139,6 @@ __equals() {
    return 1
 }
 
-# String:
-# hashCode
-# Parameters:
-#    None 
-# Returns 
-#    a hash code for this string. The hash code for a String object is computed as
-#         s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]         
-#    using int arithmetic, where s[i] is the ith character of the string, 
-#    n is the length of the string, and ^ indicates exponentiation. 
-#    (The hash value of the empty string is zero.)  
-# Example:
-#    String a abcdef
-#    a.hashCode
-#    >>>-1424385949
-# File:
-# hashCode
-#    Computes a hash code for this abstract pathname. Because 
-#    equality of abstract pathnames is inherently system-dependent, 
-#    so is the computation of their hash codes. On UNIX systems, the 
-#    hash code of an abstract pathname is equal to the exclusive or of 
-#    the hash code of its pathname string and the decimal value 1234321.
-#    Parameters:
-#       None 
-#    Returns:
-#       A hash code for this abstract pathname
-#    Example:
-#       File a /tmp/abc
-#       a.hashCode
-#       >>>-889608758
 __hashCode() {
    # for being compatible with java:
    # simulating 32-bit modular arithmetic ignoring overflow  ==>

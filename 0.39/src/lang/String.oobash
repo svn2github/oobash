@@ -20,16 +20,6 @@
 #                       #
 #########################
 
-# String
-# Constructor for the string objects.
-# Parameters:
-#    objectname 
-#    string
-#    No "." character is allowed in the objectname string.
-# Returns
-#    None
-# Example:
-#    String a teststring    
 String() {
    if (( $# == 2 ))
    then
@@ -84,25 +74,6 @@ __registerClass String
 #                   #
 #####################
 
-# compareToIgnoreCase
-#    Compares two strings lexicographically, ignoring case differences. 
-#    This method returns an integer whose sign is that of calling 
-#    compareTo with normalized versions of the strings where case differences 
-#    have been eliminated.
-# Parameters:
-#    str - the String to be compared.
-# Returns:
-#    a negative integer, zero, or a positive integer as the specified String 
-#    is greater than, equal to, or less than this String, 
-#    ignoring case considerations.
-# Example:
-#    String a ab
-#    x.compareToIgnoreCase abc
-#    >>>-1
-#    x.compareToIgnoreCase aY
-#    >>>-23
-#    x.compareToIgnoreCase ay
-#    >>>-23
 __compareToIgnoreCase() {
    if (( $# == 3 ))
    then
@@ -152,15 +123,6 @@ __compareToIgnoreCase() {
    return 1   
 }
 
-# base64Encode
-#    Parameters:
-#       None
-#    Returns:
-#       base64 encoded data
-#    Example:
-#       String a abc
-#       a.base64Encode
-#       >>>YWJjCg==
 __base64Encode() {
    if (( $# == 2 ))
    then
@@ -180,15 +142,6 @@ __base64Encode() {
    return 1
 }
 
-# base64Decode
-#    Parameters:
-#       None 
-#    Returns:
-#       base64 decoded data
-#    Example:
-#       String a YWJjCg==
-#       a.base64Decode
-#       >>>abc  
 __base64Decode() {
    if (( $# == 2 ))
    then
@@ -217,16 +170,6 @@ __base64Decode() {
    return 1
 }
 
-# rstrip
-# Parameters:
-#    None
-# Returns:
-#    It returns a copy of the string in which all chars have been stripped 
-#    from the end of the string (whitespace characters).
-# Example:
-#    String a "   abc    "
-#    echo "'$(a.rstrip)'"
-#    >>>'   abc'
 __rstrip() {
    if (( $# == 2 ))
    then
@@ -245,16 +188,6 @@ __rstrip() {
    return 1
 }
 
-# lstrip
-# Parameters:
-#    None
-# Returns:
-#    It returns a copy of the string in which all chars have been stripped 
-#    from the beginning of the string (whitespace characters).     
-# Example:
-#    String a "   abc    "
-#    echo "'$(a.lstrip)'"
-#    >>>'abc    '
 __lstrip() {
    if (( $# == 2 ))
    then
@@ -273,16 +206,6 @@ __lstrip() {
    return 1
 }
 
-# title
-#    Parameters:
-#       None
-#    Returns:
-#       Return a titlecased version of the string: words start with uppercase characters, 
-#       all remaining cased characters are lowercase.
-#    Example:
-#       String a "AbC...y aber"
-#       a.title
-#       >>>Abc...Y Aber  
 __title() {
    if (( $# == 2 ))
    then
@@ -298,19 +221,6 @@ __title() {
    return 1
 }
 
-# isTitle
-#    This method checks whether all the case-based characters in the string following non-
-#    casebased letters are uppercase and all other case-based characters are lowercase.
-#    Parameters:
-#       None
-#    Returns:
-#       It returns true if the string is a titlecased string and there is at least one character, 
-#       for example uppercase characters may only follow uncased characters and lowercase characters 
-#       only cased ones. Returns false otherwise.
-#   Example:
-#      String a 'This Is String Example...Wow!!!'
-#      a.isTitle
-#      >>>true
 __isTitle() {
    if (( $# == 2 ))
    then
@@ -335,17 +245,6 @@ __isTitle() {
    return 1
 }
 
-# isAscii
-#    based on POSIX standard character class: ascii 
-#    Parameters:
-#       None
-#    Returns:
-#       true if all characters in the string are ascii and there is at least one character, 
-#       false otherwise.
-#    Example:
-#       String a \E4\F6\FC
-#       a.isAscii
-#       >>>false
 __isAscii() {
    if (( $# == 2 ))
    then
@@ -372,17 +271,6 @@ __isAscii() {
    return 1
 }
 
-# isHexDigit
-#    based on POSIX standard character class: xdigit
-#    Parameters:
-#       None
-#    Returns:
-#       true if all characters in the string are hexdigits and there is at least one character, 
-#       false otherwise.     
-#    Example:
-#       String a "a01"
-#       a.isHexDigit
-#       >>>true 
 __isHexDigit() {
    if (( $# == 2 ))
    then
@@ -409,17 +297,6 @@ __isHexDigit() {
    return 1
 }
 
-# isPrintable
-#    based on POSIX standard character class: print
-# Parameters:
-#    None
-# Returns:
-#    true if all characters in the string are printable and there is at least one character, 
-#    false otherwise.
-# Example:
-#    String a abc
-#    a.isPrintable
-#    >>>true 
 __isPrintable() {
    if (( $# == 2 ))
    then
@@ -446,17 +323,6 @@ __isPrintable() {
    return 1
 }
 
-# isVisible
-#    based on POSIX standard character class: graph
-# Parameters:
-#    None
-# Returns:
-#    true if all characters in the string are visible and there is at least one character, 
-#    false otherwise.     
-# Example:
-#    String a "a c"
-#    a.isVisible
-#    >>>false
 __isVisible() {
    if (( $# == 2 ))
    then
@@ -478,17 +344,6 @@ __isVisible() {
    return 1
 }
 
-# count
-# Parameters:
-#    a primitive string
-# Returns:
-#    the number of non-overlapping occurrences of parameter in string.   
-# Example:
-#    String a acdccde
-#    a.count c
-#    >>>3
-#    a.count cd
-#    >>>2
 __count() {
    if (( $# == 3 ))
    then
@@ -520,18 +375,6 @@ __count() {
    return 1
 }
 
-# isLowerCase
-#    Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-#    swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
-# Parameters:
-#    None
-# Returns:
-#    true if all cased characters in the string are lowercase and there is at least one cased character, 
-#    false otherwise.     
-# Example:
-#    String a aBc
-#    a.isLowerCase
-#    >>>false
 __isLowerCase() {
    if (( $# == 2 ))
    then
@@ -563,18 +406,6 @@ __isLowerCase() {
    return 1
 }
 
-# isUpperCase
-#    Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-#    swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
-# Parameters:
-#    None
-# Returns:
-#    true if all cased characters in the string are uppercase and there is at least one cased character,
-#    false otherwise.     
-# Example:
-#    String a ABC
-#    a.isUpperCase
-#    >>>true
 __isUpperCase() {
    if (( $# == 2 ))
    then
@@ -606,17 +437,6 @@ __isUpperCase() {
    return 1
 }
 
-# isAlnum
-#    based on POSIX standard character class: alnum
-# Parameters:
-#    None
-# Returns:
-#    true if all characters in the string are alphanumeric and there is at least one character, 
-#    false otherwise.
-# Example:
-#    String a a1
-#    a.isAlnum
-#    >>>true
 __isAlnum() {
    if (( $# == 2 ))
    then
@@ -643,17 +463,6 @@ __isAlnum() {
    return 1
 }
 
-# isAlpha
-#    based on POSIX standard character class: alpha
-# Parameters:
-#    None
-# Returns:
-#    true if all characters in the string are alphabetic and there is at least one character, 
-#    false otherwise.
-# Example:
-#    String a abc
-#    a.isAlpha
-#    >>>true
 __isAlpha() {
    if (( $# == 2 ))
    then
@@ -680,17 +489,6 @@ __isAlpha() {
    return 1
 }
 
-# isDigit
-#    based on POSIX standard character class: digit
-# Parameters:
-#    None
-# Returns:
-#    true if all characters in the string are digits and there is at least one character, 
-#    false otherwise.     
-# Example:
-#    String a 23424
-#    a.isDigit
-#    >>>true
 __isDigit() {
    if (( $# == 2 ))
    then
@@ -717,17 +515,6 @@ __isDigit() {
    return 1
 }
 
-# isSpace
-#    based on POSIX standard character class: space
-# Parameters:
-#    None 
-# Returns:
-#    true if there are only whitespace characters in the string and there is at least one character, 
-#    false otherwise.     
-# Example:
-#    String a "   "
-#    a.isSpace
-#    >>>true
 __isSpace() {
    if (( $# == 2 ))
    then
@@ -754,15 +541,6 @@ __isSpace() {
    return 1
 }
 
-# zfill
-# Parameters:
-#    an integer  - The width of the return String
-# Returns:
-#    Pad a numeric string on the left with zero digits until the given width is reached. 
-# Example:
-#    String a abc
-#    a.zfill 5
-#    >>>00abc
 __zfill() {
    if (( $# == 3 ))
    then
@@ -792,15 +570,6 @@ __zfill() {
    return 1
 }
 
-# swapCase
-# Parameters:
-#    None
-# Returns:
-#    a copy of s, but with lower case letters converted to upper case and vice versa. 
-# Example:
-#    String a AbC
-#    a.swapCase
-#    >>>aBc    
 __swapCase() {
    if (( $# == 2 ))
    then
@@ -832,19 +601,6 @@ __swapCase() {
    return 1
 }
 
-# center  
-#    This function centers a string in a field of given width. It returns a string that is at least width characters wide, 
-#    created by padding the string with the space character until the given width on the right, left or both sides.
-# Parameters:
-#    width - integer
-# Returns:
-#    centered string
-# Example:
-#    String a abc
-#    a.center 5
-#    >>>abc 
-#    echo "'$(a.center 5)'"
-#    >>>' abc '
 __center() {
    if (( $# == 3 ))
    then
@@ -888,32 +644,6 @@ __center() {
    return 1
 }
 
-# equalsIgnoreCase
-#    Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-#    swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
-#    Compares this String to another String, ignoring case considerations. Two strings are considered equal 
-#    ignoring case if they are of the same length and corresponding characters 
-#    in the two strings are equal ignoring case.
-#    Two characters c1 and c2 are considered the same ignoring case if at least one of the following is true:
-#       * The two characters are the same (as compared by the == operator)
-#       * Applying the method Character.toUpperCase(char) to each character produces the same result
-#       * Applying the method Character.toLowerCase(char) to each character produces the same result 
-# Parameters:
-#    a String object - The String object to compare this String against
-# Returns:
-#    true if the argument is not null and it represents an equivalent String ignoring case; 
-#    false otherwise
-# Example:
-#    String a abc
-#    String b AbC
-#    String c ddd
-#    File d abc
-#    a.equalsIgnoreCase b
-#    >>>true
-#    a.equalsIgnoreCase c
-#    >>>false 
-#    a.equalsIgnoreCase d
-#    >>>WrongClassException d: class File
 __equalsIgnoreCase() {
    if (( $# == 3 ))
    then
@@ -945,17 +675,6 @@ __equalsIgnoreCase() {
    return 1
 }
 
-# toUpperCase
-#    Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-#    swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
-# Parameters:
-#    None
-# Returns:
-#    A copy of the string with all cased characters in upper case.
-# Example:
-#    String a abc
-#    a.toUpperCase
-#    >>>ABC    
 __toUpperCase() {
    if (( $# == 2 ))
    then
@@ -972,17 +691,6 @@ __toUpperCase() {
    return 1
 }
 
-# toLowerCase
-#    Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-#    swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
-# Parameters:
-#    None
-# Returns:
-#    A copy of the string with all cased characters in lower case.
-# Example:
-#    String a AbC
-#    a.toLowerCase
-#    >>>abc      
 __toLowerCase() {
    if (( $# == 2 ))
    then
@@ -999,17 +707,6 @@ __toLowerCase() {
    return 1
 }
 
-# capitalize
-#    Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-#    swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
-# Parameters:
-#    None  
-# Returns:
-#    It returns a copy of the string with only its first character capitalized   
-# Example:
-#    String abC
-#    a.capitalize
-#    >>>Abc
 __capitalize() {
    if (( $# == 2 ))
    then
@@ -1027,19 +724,6 @@ __capitalize() {
    return 1
 }
 
-# concat
-#    Concatenates the specified string to the end of this string.
-#    If the length of the argument string is 0, then this String object is returned. Otherwise, a new String object is returned, 
-#    representing a character sequence that is the concatenation of the character sequence represented by this String object and 
-#    the character sequence represented by the argument string.
-# Parameters:
-#    str - the primitive string that is concatenated to the end of this string.
-# Returns:
-#    a string that represents the concatenation of this object's characters followed by the string argument's characters
-# Example:
-#    String a fff
-#    a.concat abc
-#    >>>fffabc  
 __concat() {
    if (( $# == 3 ))
    then
@@ -1055,18 +739,6 @@ __concat() {
    return 1
 } 
 
-# trim
-# Parameters:
-#    None
-# Returns:
-#    A copy of this string with leading and trailing white space removed, or this 
-#    string if it has no leading or trailing white space.     
-# Example:
-#    String a "   abc"
-#    a.toString
-#    >>>   abc
-#    a.trim
-#    >>>abc
 __trim() { 
    if (( $# == 2 ))
    then
@@ -1086,18 +758,6 @@ __trim() {
    return 1
 }
 
-# contains
-# Returns true if and only if this string contains the specified sequence of char values.
-# Parameters:
-#    s - the primitive string to search for
-# Returns:
-#    true if this string contains s, false otherwise
-# Example:
-#    String a "abc cd"
-#    a.contains " c"
-#    >>>true
-#    a.contains "x"
-#    >>>false
 __contains() {
    if (( $# == 3 ))
    then
@@ -1119,20 +779,6 @@ __contains() {
    return 1
 }
 
-# matches
-#    Tells whether or not this string matches the given regular expression.
-#    If you have a problem with globbing (expansion of wildcards):
-#    set -f :This command disables the globbing
-#    set +f :This command enables the globbing again   
-# Parameters:
-#    regex - the regular expression to which this string is to be matched
-# Returns:
-#    true if, and only if, this string matches the given regular expression,
-#    false otherwise.
-# Example:
-#    String a abc
-#    a.matches ^[[:alnum:]]*$
-#    >>>true
 __matches() {
    if (( $# == 3 ))
    then
@@ -1154,16 +800,6 @@ __matches() {
    return 1
 }
 
-# isEmpty
-#    Returns true if, and only if, length is 0.
-# Parameters:
-#    None
-# Returns:
-#    true if length is 0, otherwise false     
-# Example:
-#    String a ""
-#    a.isEmpty
-#    >>>true
 __isEmpty() {
    if (( $# == 2 ))
    then
@@ -1184,16 +820,6 @@ __isEmpty() {
    return 1
 }
 
-# startsWith
-# Parameters:
-#    prefix - the prefix string.
-#    toffset - where to begin looking in this string. Default: 0
-# Returns:
-#    true if string starts with parameter string, false otherwise.
-# Example:
-#    String a abcdef
-#    a.startsWith ab
-#    >>>true
 __startsWith() {
    case $# in 
       3) declare -i toffset=0;;
@@ -1221,23 +847,6 @@ __startsWith() {
    return 0
 }
 
-# lastIndexOf
-#    Returns the index within this string of the last occurrence of the specified substring, 
-#    searching backward starting at the specified index. 
-#    If no such value exists, then -1 is returned.
-# Parameters:
-#    str - the substring to search for.
-#    [fromIndex - the index to start the search from.]
-# Returns:
-#    the index within this string of the last occurrence of the specified substring.
-# Examples:
-#    String a "eacc eadee"
-#    a.lastIndexOf " e" 2
-#    >>>-1
-#    a.lastIndexOf " e" 20
-#    >>>4
-#    a.lastIndexOf e
-#    >>>9
 __lastIndexOf() {
    local this="$1"
    case $# in
@@ -1286,20 +895,6 @@ __lastIndexOf() {
    return 0
 }
 
-# indexOf
-#    Returns the index within this string of the first occurrence of the specified substring, 
-#    starting at the specified index. 
-#    If no such value exists, then -1 is returned.
-#    Simulation of following java behavior:  k >= Math.min(fromIndex, str.length()) && this.startsWith(str, k)
-# Parameters:
-#    str - the substring to search for.
-#    [fromIndex - the index to start the search from.]
-# Returns:
-#    the index within this string of the first occurrence of the specified substring.
-# Examples:
-#    String a abc
-#    a.indexOf a 
-#    >>>0
 __indexOf() {
    case $# in
       3) local pattern="$3"
@@ -1352,17 +947,6 @@ __indexOf() {
    return 0
 }
 
-# charAt
-# Returns the char value at the specified index. An index ranges from 0 to length - 1. 
-# The first char value of the sequence is at index 0, the next at index 1, and so on, as for array indexing.
-# Parameters:
-#    index - the index of the char value (integer)
-# Returns:
-#    the char value at the specified index of this string. The first char value is at index 0.
-# Example:
-#    String a abc
-#    a.charAt 2
-#    >>>c
 __charAt() {
    if (( $# == 3 ))
    then
@@ -1391,21 +975,6 @@ __charAt() {
    return 1
 }
 
-# endsWith suffix
-#    Tests if this string ends with the specified suffix.
-# Parameters:
-#     suffix - the suffix (a primitive string).
-# Returns:
-#     true if the character sequence represented by the argument is a suffix of the 
-#     character sequence represented by this object; false otherwise. 
-#     Note that the result will be true if the argument is the empty string or is equal 
-#     to this String object as determined by the equals Object method.  
-# Example:
-#    String a xyz
-#    a.endsWith z
-#    >>>true
-#    a.endsWith yz
-#    >>>true
 __endsWith() {
    if (( $# == 3 ))
    then
@@ -1428,16 +997,6 @@ __endsWith() {
    return 1
 }
 
-# replaceFirst
-# Parameters:
-#    oldSub
-#    newSub
-# Returns:
-#    Returns a new string resulting from replacing the first occurrence of oldSub in this string with newSub.  
-# Example:
-#    String a abca
-#    a.replaceFirst a X
-#    >>>Xbca 
 __replaceFirst() {
    if (( $# == 4 ))
    then
@@ -1456,16 +1015,6 @@ __replaceFirst() {
    return 1
 }
 
-# replaceAll
-# Parameters:
-#    char oldSub
-#    char newSub
-# Returns:
-#    Returns a new string resulting from replacing all occurrences of oldSub in this string with newSub.  
-# Example:
-#    String a abca
-#    a.replaceAll a X
-#    >>>XbcX
 __replaceAll() {
    case $# in
       3) local replacement="";;
@@ -1484,18 +1033,6 @@ __replaceAll() {
    return 0
 }
 
-# substring 
-# Parameters:
-#    beginIndex - the beginning index, inclusive.
-#    [endIndex - the ending index, inclusive. Default: end of string]
-# Returns:
-#    Returns a new string that is a substring of this string. 
-#    The substring begins at the specified beginIndex and extends to the character at index endIndex - 1. 
-#    Thus the length of the substring is endIndex-beginIndex.
-# Example:
-#    String a abcdef
-#    a.substring 2 4
-#    >>>cde
 __substring() {
    local this="$1" 
    declare -i count=$("$this".length)
@@ -1542,15 +1079,6 @@ __substring() {
    return 0
 }
 
-# reverse
-# Parameters:
-#    None
-# Returns:
-#    a reversed version of the string 
-# Example:
-#    String a AbC
-#    a.reverse
-#    >>>CbA  
 __reverse() {
    if (( $# == 2 ))
    then
@@ -1574,17 +1102,6 @@ __reverse() {
    return 1 
 }
 
-# String:
-# length
-#    Returns the length of this string.
-# Parameters:
-#    None  
-# Returns:
-#    the length of the sequence of characters.
-# Example:
-#    String a abc
-#    a.length
-#    >>>3
 __length() {  
    local class="$2"
    if (( $# == 2 ))
@@ -1626,14 +1143,6 @@ __length() {
 #                #
 ##################
 
-# String.digits
-#    Parameters:
-#       None
-#    Returns:
-#       The string '0123456789'
-#    Example
-#       String.digits
-#       >>>0123456789
 String.digits() {
    if (( $# == 0 ))
    then
@@ -1647,15 +1156,6 @@ String.digits() {
 }
 __registerFunction String.digits
 
-# String.asciiLetters
-#    Parameters:
-#       None
-#    Returns:
-#       The concatenation of the String.asciiLettersLowerCase and String.asciiLettersUpperCase. 
-#       This value is not locale-dependent.
-#    Example:
-#       String.asciiLetters
-#       >>>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 String.asciiLetters() {
    if (( $# == 0 ))
    then
@@ -1669,14 +1169,6 @@ String.asciiLetters() {
 }
 __registerFunction String.asciiLetters
 
-# String.asciiLettersLowerCase
-#       None
-#    Returns:
-#       The lowercase letters 'abcdefghijklmnopqrstuvwxyz'. 
-#       This value is not locale-dependent and will not change.
-#    Example:
-#       String.asciiLettersLowerCase
-#       >>abcdefghijklmnopqrstuvwxyz 
 String.asciiLettersLowerCase() {
    if (( $# == 0 ))
    then
@@ -1690,15 +1182,6 @@ String.asciiLettersLowerCase() {
 }
 __registerFunction String.asciiLettersLowerCase
 
-# String.asciiLettersUpperCase
-#    Parameters:
-#       None
-#    Returns:
-#       The uppercase letters 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'. 
-#       This value is not locale-dependent and will not change.
-#    Example:
-#       String.asciiLettersUpperCase
-#       >>>ABCDEFGHIJKLMNOPQRSTUVWXYZ
 String.asciiLettersUpperCase() {
    if (( $# == 0 ))
    then
@@ -1712,14 +1195,6 @@ String.asciiLettersUpperCase() {
 }
 __registerFunction String.asciiLettersUpperCase
 
-# String.hexDigits
-#    Parameters:
-#       None
-#    Returns:
-#       The string '0123456789abcdefABCDEF' 
-#    Example:
-#       String.hexDigits
-#       >>>0123456789abcdefABCDEF 
 String.hexDigits() {
    if (( $# == 0 ))
    then
@@ -1733,14 +1208,6 @@ String.hexDigits() {
 }
 __registerFunction String.hexDigits
 
-# String.octDigits
-#    Parameters:
-#       None
-#    Returns:
-#       The string '01234567'
-#    Example:
-#       String.octDigits
-#       >>>01234567
 String.octDigits() {
    if (( $# == 0 ))
    then
