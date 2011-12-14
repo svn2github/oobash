@@ -213,6 +213,8 @@
 #    -Fix in I18n.help
 TODO: use of IllegalArgumentException + description (where to use in sources!) description example: IllegalArgumentException: wrong number of arguments
 TODO: stacktrace
+TODO: add IllegalArgumentException to help 
+TODO: look at code e.g. equalsIgnoreCase: IllegalArgumentException is sometimes not the problem
 
 #################################################################
 # Features:
