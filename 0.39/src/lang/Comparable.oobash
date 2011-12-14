@@ -202,7 +202,7 @@ __compareTo()
       System.out.println $result
       return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
    return 1   

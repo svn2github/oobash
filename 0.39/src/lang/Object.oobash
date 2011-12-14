@@ -44,7 +44,7 @@ __getClass()
       System.out.println "class $class"
       return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
    return 1
@@ -145,7 +145,7 @@ __toString()
       System.out.println "${str}"
       return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -240,7 +240,7 @@ __equals()
          return 0
       fi
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $($#-2))"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -323,7 +323,7 @@ __hashCode()
          return 1
       fi   
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
    return 1

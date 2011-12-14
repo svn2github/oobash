@@ -32,7 +32,7 @@ __getContentType()
       esac
       return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -74,7 +74,7 @@ Log session start time '"$(date)"'<br>
       esac
       return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -94,7 +94,7 @@ __getFooter()
    esac
       return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}
