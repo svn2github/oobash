@@ -77,6 +77,7 @@ Boolean()
 
       return 0      
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
    local printStream=err
    ${FUNCNAME}.help $FUNCNAME
    return 1	
@@ -104,6 +105,7 @@ Boolean.TRUE()
       System.out.println 'true'
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
    local printStream=err
    Boolean.help $FUNCNAME
    return 1
@@ -117,6 +119,7 @@ Boolean.FALSE()
       System.out.println 'false'
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
    local printStream=err
    Boolean.help $FUNCNAME
    return 1
@@ -149,6 +152,7 @@ Boolean.parseBoolean()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
    local printStream=err
    Boolean.help $FUNCNAME
    return 1	
@@ -199,6 +203,8 @@ Boolean.help()
                   No "." character is allowed in the objectname string.
                Returns:
                   None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
                Example:
                   Boolean a \"True\" produces a Boolean object that represents true.
                   Boolean a \"yes\"  produces a Boolean object that represents false.
@@ -210,6 +216,8 @@ Boolean.help()
                   The Boolean object corresponding to the primitive value true. 
                Parameters:
                   None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Boolean.TRUE
                   >>>true   
@@ -221,6 +229,8 @@ Boolean.help()
                   The Boolean object corresponding to the primitive value false. 
                Parameters:
                   None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Boolean.FALSE
                   >>>false  
@@ -236,6 +246,8 @@ Boolean.help()
                   s - the String containing the boolean representation to be parsed
                Returns:
                   the boolean represented by the string argument
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example: 
                   Boolean.parseBoolean \"True\"
                   >>>true
@@ -252,6 +264,8 @@ Boolean.help()
                   anObject - The object to compare this Boolean against
                Returns:
                   true if the Boolean objects represent the same value; false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   Boolean a abc
                   Boolean b true
@@ -269,6 +283,8 @@ Boolean.help()
                   None
                Returns:
                   The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Boolean b xxx
                   b.getClass
@@ -283,6 +299,10 @@ Boolean.help()
                   is returned. Otherwise, a string equal to \"false\" is returned. 
                Parameters:
                   None
+               Throws:
+                  NotInPathException - if sort not in path
+                  NotInPathException - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Boolean b xxx
                   b.toString
@@ -298,6 +318,8 @@ Boolean.help()
                Returns:
                   the integer 1231 if this object represents true; returns the integer 
                   1237 if this object represents false.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Boolean b xxx
                   b.hashCode
@@ -315,9 +337,10 @@ Boolean.help()
                   a positive value if this object represents \"true\" and the argument 
                   represents \"false\"; and a negative value if this object represents \"false\"
                   and the argument represents \"true\"
-               Throws
+               Throws:
                   WrongClassException  - if argument has the wrong class  
-                  IllegalArgumentException - argument is no object
+                  IllegalArgumentException - if argument is no object
+                                             if number of arguments != 1
                Example:
                   Boolean a true
                   Boolean b xxx

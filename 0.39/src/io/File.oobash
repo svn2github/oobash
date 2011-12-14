@@ -72,6 +72,7 @@ File()
 
       return 0      
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    ${FUNCNAME}.help $FUNCNAME
    return 1	
@@ -110,6 +111,7 @@ __canRead()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -142,6 +144,7 @@ __canWrite()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -174,6 +177,7 @@ __canExecute()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -202,6 +206,7 @@ __getName()
       System.out.println "${file##*/}"
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -233,6 +238,7 @@ __isDirectory()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -264,6 +270,7 @@ __exists()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -293,6 +300,7 @@ __isFile()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -322,6 +330,7 @@ __isHidden()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -356,6 +365,7 @@ __mkdir()
          return 1
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -392,6 +402,7 @@ __mkdirs()
          return 1
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -431,6 +442,7 @@ __getParent()
          return 1
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -462,6 +474,7 @@ __isSymbolicLink()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -493,6 +506,7 @@ __isNamedPipe()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -524,6 +538,7 @@ __hasStickyBit()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -555,6 +570,7 @@ __isSocket()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -587,6 +603,7 @@ __isCharacterSpecial()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -618,6 +635,7 @@ __isBlockSpecial()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -683,6 +701,7 @@ __renameTo()
          return 1
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -717,7 +736,8 @@ __setReadable()
       4) local readable=$(Boolean.parseBoolean "$3")
          local ownerOnly=$(Boolean.parseBoolean "$4")
          ;;
-      *) local class="$2"
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+         local class="$2"
          local printStream=err
          ${class}.help ${FUNCNAME:2}
          return 1;;
@@ -782,7 +802,8 @@ __setWritable()
       4) local writable=$(Boolean.parseBoolean "$3")
          local ownerOnly=$(Boolean.parseBoolean "$4")
          ;;
-      *) local class="$2"
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+         local class="$2"
          local printStream=err
          ${class}.help ${FUNCNAME:2}
          return 1;;
@@ -848,7 +869,8 @@ __setExecutable()
       4) local executable=$(Boolean.parseBoolean "$3")
          local ownerOnly=$(Boolean.parseBoolean "$4")
          ;;
-      *) local class="$2"
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+         local class="$2"
          local printStream=err
          ${class}.help ${FUNCNAME:2}
          return 1;;
@@ -943,6 +965,7 @@ __getCanonicalPath()
       __throw "NotInPathException" ": readlink not in path (install the GNU coreutils ?)"
       return 1
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -978,6 +1001,7 @@ __getAbsolutePath()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1003,6 +1027,7 @@ __getPath()
       System.out.println "$file" 
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1034,6 +1059,7 @@ __isAbsolute()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1085,6 +1111,7 @@ __delete()
          return 1  
       fi      
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1131,6 +1158,7 @@ __createNewFile()
          return 1  
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1188,6 +1216,7 @@ __lastModified()
          return 1  
       fi    
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1258,6 +1287,7 @@ __setLastModified()
          return 1  
       fi    
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1298,6 +1328,7 @@ __setReadOnly()
          return 1  
       fi    
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class="$2"
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -1409,6 +1440,7 @@ File.createTemporaryFile()
          return 1
       fi
    fi 
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    File.help ${FUNCNAME}
    return 1      
@@ -1450,6 +1482,7 @@ File.createTempFile()
       File.createTemporaryFile "$prefix" "$suffix"
       return 0
    fi 
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    File.help ${FUNCNAME}
    return 1
@@ -1683,6 +1716,9 @@ File.help()
                   None
                Returns:
                   The string form of this abstract pathname
+               Throws:
+                  NotInPathException - if sort not in path
+                  NotInPathException - if tr not in path
                Example:
                   File a /tmp/abc
                   a.toString

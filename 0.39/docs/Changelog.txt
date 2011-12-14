@@ -206,13 +206,12 @@
 #    -Fixed wrong check order in constructor checks + code cleanup 
 #    -Fix for __equalsIgnoreCase in String
 #    -Fix for __length in File
-#    -Dependencies.txt file (all used external commands in this framework)
+#    -Dependencies.txt file (all used external commands in this framework) and Version.txt
 #    -moved private registry functions to the private package
 #    -oobash path is exported with the name __OODIR__
 #    -added NotInPath Exceptions for sort and tr (toString and Class.generator)
 #    -Fix in I18n.help
-TODO: file2man  --> into the Generator.oobash file --> grep into Dependencies array
-TODO: use the exported oopath in file2man example
+TODO: file2man  --> into the Generator.oobash file --> grep into Dependencies array + use the exported oopath
 TODO: use of IllegalArgumentException + description (where to use in sources!) description example: IllegalArgumentException: wrong number of arguments
 
 #################################################################

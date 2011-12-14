@@ -68,6 +68,7 @@ Level()
 
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    Level.help $FUNCNAME
    return 1	
@@ -106,7 +107,7 @@ __toInt()
       System.out.println "${__ATTRIBUTEPOOL__[${pointer}@level]}" 
       return 0
    fi
-
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -139,7 +140,7 @@ __getSyslogEquivalent()
       System.out.println "${__ATTRIBUTEPOOL__[${pointer}@syslogEquivalent]}" 
       return 0
    fi
-
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}
@@ -166,6 +167,7 @@ __isGreaterOrEqual()
       fi
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}

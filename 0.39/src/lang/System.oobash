@@ -29,6 +29,7 @@
 #    None
 # Throws:
 #    NotInPathException - if GNU date is not in path
+#    IllegalArgumentException - if number of arguments != 0
 # Returns:
 #    the difference, measured in milliseconds, between the current 
 #    time and midnight, January 1, 1970 UTC.
@@ -46,6 +47,7 @@ System.currentTimeMillis()
          return 1
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    System.help $FUNCNAME
    return 1
@@ -61,6 +63,7 @@ __registerFunction System.currentTimeMillis
 #    None
 # Throws:
 #    NotInPathException - if GNU date is not in path
+#    IllegalArgumentException - if number of arguments != 0
 # Returns:
 #    the difference, measured in nanoseconds, between the current 
 #    time and midnight, January 1, 1970 UTC.
@@ -77,6 +80,7 @@ System.currentTimeNanos()
          return 1
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    System.help $FUNCNAME
    return 1
@@ -87,6 +91,10 @@ __registerFunction System.currentTimeNanos
 #    Terminates the currently running bash. 
 #    The argument serves as a status code; by convention, a 
 #    nonzero status code indicates abnormal termination.
+# Throws:
+#    IllegalArgumentException - if number of arguments != 1
+#                               if argument can not be treated as integer
+#                               if argument not betewwen 0 and 255
 # Parameters:
 #    status - exit status (0-255)
 System.exit()
@@ -97,14 +105,22 @@ System.exit()
       if (( $? != 0 ))
       then
          __throw "IllegalArgumentException" ": Wrong argument: $1"
+         local printStream=err
+         System.help $FUNCNAME
          return 1         
       fi
       declare -i status="$1"
       if (( $status >= 0 && $status <= 255 ))
       then
          exit $status
+      else
+         __throw "IllegalArgumentException" ": Wrong argument $status -- must be between 0 and 255"
+         local printStream=err
+         System.help $FUNCNAME
+         return 1
       fi
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    System.help $FUNCNAME
    return 1
@@ -113,6 +129,8 @@ __registerFunction System.exit
 
 # System.err.println
 #    Prints a String and then terminate the line to \"standard\" error output
+# Throws:
+#    IllegalArgumentException - if number of arguments != 1
 # Parameters:
 #    x - The String to be printed.
 System.err.println()
@@ -123,6 +141,7 @@ System.err.println()
       printf "%s\n" "$message" >&2
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    System.help $FUNCNAME
    return 1
@@ -133,6 +152,8 @@ __registerFunction System.err.println
 #    Prints a String and then terminate the line to \"standard\" output 
 # Parameters:
 #    x - The String to be printed.
+# Throws:
+#    IllegalArgumentException - if number of arguments != 1
 System.out.println()
 {
    if (( $# <= 1  ))
@@ -141,6 +162,7 @@ System.out.println()
       printf "%s\n" "$message"
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    System.help $FUNCNAME
    return 1
@@ -183,6 +205,10 @@ System.help()
                nonzero status code indicates abnormal termination.
             Parameters:
                status - exit status (0-255)
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+                                          if argument can not be defined as integer
+                                          if argument not between 0 and 255
             ";;&
          System.currentTimeNanos|currentTimeNanos|all)
             match=$(Boolean.TRUE)
@@ -196,6 +222,7 @@ System.help()
                None
             Throws:
                NotInPathException - if GNU date is not in path
+               IllegalArgumentException - if number of arguments != 0
             Returns:
                the difference, measured in nanoseconds, between the current 
                time and midnight, January 1, 1970 UTC.
@@ -210,6 +237,11 @@ System.help()
                Prints a String and then terminate the line to \"standard\" output 
             Parameters:
                x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.println "hello"
+               >>>hello
             ";;&
          System.err.println|err.println|all)
             match=$(Boolean.TRUE)
@@ -218,6 +250,11 @@ System.help()
                Prints a String and then terminate the line to \"standard\" error output
             Parameters:
                x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.println "hello"
+               >>>hello
             ";;&         
          System.currentTimeMillis|currentTimeMillis|all)
             match=$(Boolean.TRUE)
@@ -231,6 +268,7 @@ System.help()
                None
             Throws:
                NotInPathException - if GNU date is not in path
+               IllegalArgumentException - if number of arguments != 0
             Returns:
                the difference, measured in milliseconds, between the current 
                time and midnight, January 1, 1970 UTC.

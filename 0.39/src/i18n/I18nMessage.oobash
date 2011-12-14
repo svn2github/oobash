@@ -49,7 +49,7 @@ __registerFunction i18n.err.message
 #               #
 #################
 
-complete -W  "I18n.err.message I18n.out.message all" I18n.help
+complete -W  "err.message out.message all" I18n.help
 
 I18n.help()
 {  
