@@ -216,6 +216,8 @@ TODO: stacktrace
 TODO: add IllegalArgumentException to help 
 TODO: look at code e.g. equalsIgnoreCase: IllegalArgumentException is sometimes not the problem
 TODO: should there really be a help instead of a stacktrace ?  --> help=yes/no stacktrace=yes/no and if yes --> where to call ?
+TODO: different return values for different exceptions ?
+TODO: doc about all possible exceptions
 
 #################################################################
 # Features:
