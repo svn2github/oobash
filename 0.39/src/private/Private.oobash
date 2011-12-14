@@ -19,8 +19,7 @@
 # from where this file gets sourced
 # called by:
 # every time you source this framework
-__lookForLoggingPropertiesFile()
-{
+__lookForLoggingPropertiesFile() {
    local call="$1"
    local directory=$(dirname ${call/[0-9]* /})
    if [[ -r $directory/${__LOGGINGPROPERTIESFILE__} ]]
@@ -39,8 +38,7 @@ __registerVar __LOGGERPROPS__
 # for a constructor is a keyword
 # called by:
 # -every constructor
-__checkForKeywords()
-{
+__checkForKeywords() {
    local word="$1"
    local keyword
    for keyword in ${__Keywords__[@]}
@@ -59,8 +57,7 @@ __registerVar __Keywords__
 # check if given string contains "." character 
 # called by:
 # -every constructor
-__periodCheck()
-{
+__periodCheck() {
       str="$1"
       declare -i i
       for ((i=0; i < ${#str}; i++))
@@ -135,8 +132,7 @@ __registerFunction __periodCheck
 # -__compareTo
 # -__equals
 # -__isGreaterOrEqual
-__throw()
-{
+__throw() {
    local exception="$1"
    local message="$2"
    System.err.println "${exception}${message}"
@@ -148,8 +144,7 @@ __registerFunction __throw
 # stores an attribute of an object
 # called by:
 # -every constructor
-__attribute()
-{
+__attribute() {
    local key="$1"
    local value="$2"
    __OBJECTPOOL__["${this}"]=$class@$pointer
@@ -162,8 +157,7 @@ __registerFunction __attribute
 # destroys a given object
 # called by:
 # -every constructor
-__destructor()
-{
+__destructor() {
    local this="$1"
    local string="${__OBJECTPOOL__["${this}"]}"
    if [[ ! -z "${string}" ]]
@@ -202,8 +196,7 @@ __registerFunction __destructor
 # of a given object
 # called by:
 # -__destructor
-__unalias()
-{
+__unalias() {
    local this="$1"
    local lastClass="$2"
    local method
@@ -223,8 +216,7 @@ __registerFunction __unalias
 # in the interactive bash. 
 # called by:
 # -every constructor
-__alias()
-{
+__alias() {
    local this="$1"
    local class="$2"
    local method
@@ -241,8 +233,7 @@ __registerFunction __alias
 # called by:
 # -every constructor
 # -isVisible (String method)
-__visible()
-{
+__visible() {
    local str="$1"
    local unsetAtEnd="$(Boolean.FALSE)" 
    local bool="$(Boolean.FALSE)" 
@@ -280,8 +271,7 @@ __registerFunction __visible
 # -__compareToIgnoreCase
 # -__toUpperCase
 # -__capitalize
-__strUpper()
-{
+__strUpper() {
    declare -u str="$1"
    local upper=''
    declare -i i=0
@@ -308,8 +298,7 @@ __registerFunction __strUpper
 # returns given string lowercase
 # called by:
 # -__toLowerCase
-__strLower()
-{
+__strLower() {
    declare -l str="$1"
    local lower=''
    declare -i i=0
@@ -360,8 +349,7 @@ __registerFunction __strLower
 # -Math.ceil
 # -Math.floor
 # -Math.hypot
-__mathConverter()
-{
+__mathConverter() {
    local input="$1"
    if [[ $input == "NaN" ]]
    then
@@ -537,8 +525,7 @@ __registerFunction __mathConverter
 # string to octal (eg 777)
 # called by:
 # -File.createTemporaryFile
-__posixFilePermissionsConverter()
-{
+__posixFilePermissionsConverter() {
       local unsetAtEnd=$(Boolean.FALSE) 
       # is extglob set ?
       shopt -q extglob
@@ -590,8 +577,7 @@ __registerFunction __posixFilePermissionsConverter
 # translates and prints message to given channel
 # called by:
 # -I18n.err.message -I18n.out.message
-__i18nMessage()
-{
+__i18nMessage() {
       local message="$1"
       # msgid "" can be mapped to meta informations 
       if [[ "$message" == "" ]]
@@ -616,8 +602,7 @@ __registerFunction __i18nMessage
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
-__cleanUpObjectsPool()
-{
+__cleanUpObjectsPool() {
    local obj
    for obj in ${!__OBJECTPOOL__[@]} 
    do 
@@ -631,8 +616,7 @@ __cleanUpObjectsPool()
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
-__cleanUpFunctions()
-{
+__cleanUpFunctions() {
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -649,8 +633,7 @@ __cleanUpFunctions()
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
-__cleanUpClasses()
-{
+__cleanUpClasses() {
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -673,8 +656,7 @@ __cleanUpClasses()
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
-__cleanUpVars()
-{
+__cleanUpVars() {
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -691,8 +673,7 @@ __cleanUpVars()
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
-__cleanUpAliases()
-{
+__cleanUpAliases() {
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -710,8 +691,7 @@ __cleanUpAliases()
 #    NotInPathException - if element of __Dependencies__ array is not in path
 # called by:
 # every time you source this framework
-__dependencyCheck()
-{
+__dependencyCheck() {
    local bool="$(Boolean.TRUE)"
    declare -i i
    for ((i=0; i < ${#__Dependencies__[@]}; i++))
@@ -743,8 +723,7 @@ __dependencyCheck()
 # check for gnu date
 # called by:
 # __dependencyCheck
-__gnudateCheck()
-{
+__gnudateCheck() {
    # For this framework it is important to work with a gnu date, so:
    # special check for gnu date with nanoseconds gnu feature:
    # can't test but hope it works...

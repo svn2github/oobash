@@ -18,8 +18,7 @@
 # registers a given function in the registry
 # called by:
 # by bash during source process
-__registerFunction()
-{
+__registerFunction() {
    local value="$1"
    __Registry__["$value"]=function
    return 0
@@ -30,8 +29,7 @@ __registerFunction __registerFunction
 # registers a given class in the registry
 # called by:
 # by bash during source process
-__registerClass()
-{
+__registerClass() {
    local value="$1"
    __Registry__["$value"]=class
    return 0
@@ -42,8 +40,7 @@ __registerFunction __registerClass
 # registers a given variable in the registry
 # called by:
 # by bash during source process
-__registerVar()
-{
+__registerVar() {
    local value="$1"
    __Registry__["$value"]=var
    return 0
@@ -54,8 +51,7 @@ __registerFunction __registerVar
 # registers a given alias in the registry
 # called by:
 # by bash during source process
-__registerAlias()
-{
+__registerAlias() {
    local value="$1"
    __Registry__["$value"]=alias
    return 0
@@ -64,8 +60,7 @@ __registerFunction __registerAlias
 
 # public  
 # cleans the environment
-__cleanUp()
-{
+__cleanUp() {
    __cleanUpObjectsPool
    __cleanUpClasses
    __cleanUpFunctions

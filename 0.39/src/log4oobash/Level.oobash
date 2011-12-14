@@ -20,8 +20,7 @@
 #                       #
 #########################
 
-Level()
-{
+Level() {
    if (( $# == 4 ))
    then
       local this="$1"
@@ -81,8 +80,7 @@ __registerClass Level
 #                   #
 #####################
 
-__toInt()
-{
+__toInt() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -114,8 +112,7 @@ __toInt()
    return 1
 }
 
-__getSyslogEquivalent()
-{
+__getSyslogEquivalent() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -147,8 +144,7 @@ __getSyslogEquivalent()
    return 1
 }
 
-__isGreaterOrEqual()
-{
+__isGreaterOrEqual() {
    if (( $# == 3 ))
    then
       this=$1
@@ -183,8 +179,7 @@ __isGreaterOrEqual()
 complete -W  "$(echo ${__Level__[@]}) all Level" Level.help
 
 # Your Level help system:
-Level.help()
-{  
+Level.help() {  
    local printStream=${printStream:-out}  
    if (( $# == 0 ))
    then

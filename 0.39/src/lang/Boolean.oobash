@@ -34,8 +34,7 @@
 # Example:
 # Boolean a "True" produces a Boolean object that represents true.
 # Boolean a "yes"  produces a Boolean object that represents false.  
-Boolean()
-{
+Boolean() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -98,8 +97,7 @@ __registerClass Boolean
 #                #
 ##################
 
-Boolean.TRUE()
-{
+Boolean.TRUE() {
    if (( $# == 0 ))
    then
       System.out.println 'true'
@@ -112,8 +110,7 @@ Boolean.TRUE()
 }
 __registerFunction Boolean.TRUE
 
-Boolean.FALSE()
-{
+Boolean.FALSE() {
    if (( $# == 0 ))
    then
       System.out.println 'false'
@@ -139,8 +136,7 @@ __registerFunction Boolean.FALSE
 #    >>>true
 #    Boolean.parseBoolean "yes"
 #    >>>false
-Boolean.parseBoolean()
-{
+Boolean.parseBoolean() {
    if (( $# == 1 ))
    then
       declare -l bool="$1"
@@ -167,8 +163,7 @@ __registerFunction Boolean.parseBoolean
 
 complete -W  "$(echo ${__String__[@]}) all Boolean parseBoolean TRUE FALSE" Boolean.help
 
-Boolean.help()
-{  
+Boolean.help() {  
    local printStream=${printStream:-out};
    if (( $# == 0 ))
    then

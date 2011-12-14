@@ -13,8 +13,7 @@
 #########################
 #########################
 
-Class.generator()
-{
+Class.generator() {
    if (( $# >= 2 ))
    then
       # check for valid class name
@@ -68,8 +67,7 @@ System.out.println "
 #########################
 # constructor  function #
 #########################
-$userClass()
-{
+$userClass() {
    if (( \$# == $((${#attributes[@]} + 1 )) ))
    then
       local this=\"\$1\""
@@ -134,8 +132,7 @@ System.out.println "
 declare -i j
 for (( j=0; j < ${#attributes[@]}; j++))
 do
-   System.out.println "__get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$j]:0:1})${attributes[$j]:1}()
-{
+   System.out.println "__get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$j]:0:1})${attributes[$j]:1}() {
    if (( \$# == 2 ))
    then
       local this=\"\$1\"
@@ -160,6 +157,7 @@ do
       System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${attributes[$j]}]}\" 
       return 0
    fi
+   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$((\$#-2))\"
    local class=\$2 
    local printStream=err
    \${class}.help \${FUNCNAME:2}
@@ -178,8 +176,7 @@ complete -W  \"\$(echo \${__${userClass}__[@]}) all ${userClass}\" ${userClass}.
 #################
 # help function #
 #################
-${userClass}.help()
-{  
+${userClass}.help() {  
    local printStream=\${printStream:-out}  
    if (( \$# == 0 ))
    then

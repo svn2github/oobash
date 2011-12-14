@@ -117,8 +117,7 @@
 #    >>>0
 #    b.compareTo a
 #    >>>-1
-__compareTo()
-{
+__compareTo() {
    local class="$2"
    if (( $# == 3 ))
    then

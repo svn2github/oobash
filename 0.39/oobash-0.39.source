@@ -84,8 +84,7 @@ declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__Comparabl
 # source code:
 ###############
 
-__import()
-{
+__import() {
    local packageOrClass="${1/"oobash."/}"
    source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
 }
@@ -156,8 +155,7 @@ __registerVar __ATTRIBUTEPOOL__
 
 # if a command is not found (like all our object.method commands),
 # then this function will be called to handle the situation.  
-command_not_found_handle()
-{
+command_not_found_handle() {
    local this=''
    local str="$1" 
    declare -i i=0

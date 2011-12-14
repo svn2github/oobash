@@ -30,8 +30,7 @@
 #    None
 # Example:
 #    String a teststring    
-String()
-{
+String() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -104,8 +103,7 @@ __registerClass String
 #    >>>-23
 #    x.compareToIgnoreCase ay
 #    >>>-23
-__compareToIgnoreCase()
-{
+__compareToIgnoreCase() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -163,8 +161,7 @@ __compareToIgnoreCase()
 #       String a abc
 #       a.base64Encode
 #       >>>YWJjCg==
-__base64Encode()
-{
+__base64Encode() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -192,8 +189,7 @@ __base64Encode()
 #       String a YWJjCg==
 #       a.base64Decode
 #       >>>abc  
-__base64Decode()
-{
+__base64Decode() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -231,8 +227,7 @@ __base64Decode()
 #    String a "   abc    "
 #    echo "'$(a.rstrip)'"
 #    >>>'   abc'
-__rstrip()
-{
+__rstrip() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -260,8 +255,7 @@ __rstrip()
 #    String a "   abc    "
 #    echo "'$(a.lstrip)'"
 #    >>>'abc    '
-__lstrip()
-{
+__lstrip() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -289,8 +283,7 @@ __lstrip()
 #       String a "AbC...y aber"
 #       a.title
 #       >>>Abc...Y Aber  
-__title()
-{
+__title() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -318,8 +311,7 @@ __title()
 #      String a 'This Is String Example...Wow!!!'
 #      a.isTitle
 #      >>>true
-__isTitle()
-{
+__isTitle() {
    if (( $# == 2 ))
    then
       local this="$1"   
@@ -354,8 +346,7 @@ __isTitle()
 #       String a \E4\F6\FC
 #       a.isAscii
 #       >>>false
-__isAscii()
-{
+__isAscii() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -392,8 +383,7 @@ __isAscii()
 #       String a "a01"
 #       a.isHexDigit
 #       >>>true 
-__isHexDigit()
-{
+__isHexDigit() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -430,8 +420,7 @@ __isHexDigit()
 #    String a abc
 #    a.isPrintable
 #    >>>true 
-__isPrintable()
-{
+__isPrintable() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -468,8 +457,7 @@ __isPrintable()
 #    String a "a c"
 #    a.isVisible
 #    >>>false
-__isVisible()
-{
+__isVisible() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -501,8 +489,7 @@ __isVisible()
 #    >>>3
 #    a.count cd
 #    >>>2
-__count()
-{
+__count() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -545,8 +532,7 @@ __count()
 #    String a aBc
 #    a.isLowerCase
 #    >>>false
-__isLowerCase()
-{
+__isLowerCase() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -589,8 +575,7 @@ __isLowerCase()
 #    String a ABC
 #    a.isUpperCase
 #    >>>true
-__isUpperCase()
-{
+__isUpperCase() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -632,8 +617,7 @@ __isUpperCase()
 #    String a a1
 #    a.isAlnum
 #    >>>true
-__isAlnum()
-{
+__isAlnum() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -670,8 +654,7 @@ __isAlnum()
 #    String a abc
 #    a.isAlpha
 #    >>>true
-__isAlpha()
-{
+__isAlpha() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -708,8 +691,7 @@ __isAlpha()
 #    String a 23424
 #    a.isDigit
 #    >>>true
-__isDigit()
-{
+__isDigit() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -746,8 +728,7 @@ __isDigit()
 #    String a "   "
 #    a.isSpace
 #    >>>true
-__isSpace()
-{
+__isSpace() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -782,8 +763,7 @@ __isSpace()
 #    String a abc
 #    a.zfill 5
 #    >>>00abc
-__zfill()
-{
+__zfill() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -821,8 +801,7 @@ __zfill()
 #    String a AbC
 #    a.swapCase
 #    >>>aBc    
-__swapCase()
-{
+__swapCase() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -866,8 +845,7 @@ __swapCase()
 #    >>>abc 
 #    echo "'$(a.center 5)'"
 #    >>>' abc '
-__center()
-{
+__center() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -936,8 +914,7 @@ __center()
 #    >>>false 
 #    a.equalsIgnoreCase d
 #    >>>WrongClassException d: class File
-__equalsIgnoreCase()
-{
+__equalsIgnoreCase() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -979,8 +956,7 @@ __equalsIgnoreCase()
 #    String a abc
 #    a.toUpperCase
 #    >>>ABC    
-__toUpperCase()
-{
+__toUpperCase() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1007,8 +983,7 @@ __toUpperCase()
 #    String a AbC
 #    a.toLowerCase
 #    >>>abc      
-__toLowerCase()
-{
+__toLowerCase() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1035,8 +1010,7 @@ __toLowerCase()
 #    String abC
 #    a.capitalize
 #    >>>Abc
-__capitalize()
-{
+__capitalize() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1066,8 +1040,7 @@ __capitalize()
 #    String a fff
 #    a.concat abc
 #    >>>fffabc  
-__concat()
-{
+__concat() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -1094,8 +1067,7 @@ __concat()
 #    >>>   abc
 #    a.trim
 #    >>>abc
-__trim()
-{ 
+__trim() { 
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1126,8 +1098,7 @@ __trim()
 #    >>>true
 #    a.contains "x"
 #    >>>false
-__contains()
-{
+__contains() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -1162,8 +1133,7 @@ __contains()
 #    String a abc
 #    a.matches ^[[:alnum:]]*$
 #    >>>true
-__matches()
-{
+__matches() {
    if (( $# == 3 ))
    then
       local this="$1"   
@@ -1194,8 +1164,7 @@ __matches()
 #    String a ""
 #    a.isEmpty
 #    >>>true
-__isEmpty()
-{
+__isEmpty() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1225,8 +1194,7 @@ __isEmpty()
 #    String a abcdef
 #    a.startsWith ab
 #    >>>true
-__startsWith()
-{
+__startsWith() {
    case $# in 
       3) declare -i toffset=0;;
       4) (declare -i tooffset=$4) 2>/dev/null ||  (return 1)
@@ -1270,8 +1238,7 @@ __startsWith()
 #    >>>4
 #    a.lastIndexOf e
 #    >>>9
-__lastIndexOf() 
-{
+__lastIndexOf() {
    local this="$1"
    case $# in
       3) local pattern="$3"
@@ -1333,8 +1300,7 @@ __lastIndexOf()
 #    String a abc
 #    a.indexOf a 
 #    >>>0
-__indexOf()
-{
+__indexOf() {
    case $# in
       3) local pattern="$3"
          declare -i from=0;;
@@ -1397,8 +1363,7 @@ __indexOf()
 #    String a abc
 #    a.charAt 2
 #    >>>c
-__charAt()
-{
+__charAt() {
    if (( $# == 3 ))
    then
       this="$1"
@@ -1441,8 +1406,7 @@ __charAt()
 #    >>>true
 #    a.endsWith yz
 #    >>>true
-__endsWith()
-{
+__endsWith() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -1474,8 +1438,7 @@ __endsWith()
 #    String a abca
 #    a.replaceFirst a X
 #    >>>Xbca 
-__replaceFirst()
-{
+__replaceFirst() {
    if (( $# == 4 ))
    then
       local this="$1"
@@ -1503,8 +1466,7 @@ __replaceFirst()
 #    String a abca
 #    a.replaceAll a X
 #    >>>XbcX
-__replaceAll()
-{
+__replaceAll() {
    case $# in
       3) local replacement="";;
       4) local replacement="$4";;
@@ -1534,8 +1496,7 @@ __replaceAll()
 #    String a abcdef
 #    a.substring 2 4
 #    >>>cde
-__substring()
-{
+__substring() {
    local this="$1" 
    declare -i count=$("$this".length)
    case $# in
@@ -1590,8 +1551,7 @@ __substring()
 #    String a AbC
 #    a.reverse
 #    >>>CbA  
-__reverse()
-{
+__reverse() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1625,8 +1585,7 @@ __reverse()
 #    String a abc
 #    a.length
 #    >>>3
-__length()
-{  
+__length() {  
    local class="$2"
    if (( $# == 2 ))
    then
@@ -1675,8 +1634,7 @@ __length()
 #    Example
 #       String.digits
 #       >>>0123456789
-String.digits()
-{
+String.digits() {
    if (( $# == 0 ))
    then
       System.out.println '0123456789'
@@ -1698,8 +1656,7 @@ __registerFunction String.digits
 #    Example:
 #       String.asciiLetters
 #       >>>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-String.asciiLetters()
-{
+String.asciiLetters() {
    if (( $# == 0 ))
    then
       System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -1720,8 +1677,7 @@ __registerFunction String.asciiLetters
 #    Example:
 #       String.asciiLettersLowerCase
 #       >>abcdefghijklmnopqrstuvwxyz 
-String.asciiLettersLowerCase()
-{
+String.asciiLettersLowerCase() {
    if (( $# == 0 ))
    then
       System.out.println 'abcdefghijklmnopqrstuvwxyz'
@@ -1743,8 +1699,7 @@ __registerFunction String.asciiLettersLowerCase
 #    Example:
 #       String.asciiLettersUpperCase
 #       >>>ABCDEFGHIJKLMNOPQRSTUVWXYZ
-String.asciiLettersUpperCase()               
-{
+String.asciiLettersUpperCase() {
    if (( $# == 0 ))
    then
       System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -1765,8 +1720,7 @@ __registerFunction String.asciiLettersUpperCase
 #    Example:
 #       String.hexDigits
 #       >>>0123456789abcdefABCDEF 
-String.hexDigits()
-{
+String.hexDigits() {
    if (( $# == 0 ))
    then
       System.out.println '0123456789abcdefABCDEF'
@@ -1787,8 +1741,7 @@ __registerFunction String.hexDigits
 #    Example:
 #       String.octDigits
 #       >>>01234567
-String.octDigits()
-{
+String.octDigits() {
    if (( $# == 0 ))
    then
       System.out.println '01234567'
@@ -1809,8 +1762,7 @@ __registerFunction String.octDigits
 
 complete -W  "$(echo ${__String__[@]}) all String digits asciiLetters asciiLettersLowerCase asciiLettersUpperCase hexDigits octDigits" String.help
 
-String.help()
-{    
+String.help() {    
    local printStream=${printStream:-out}
    if (( $# == 0 ))
    then

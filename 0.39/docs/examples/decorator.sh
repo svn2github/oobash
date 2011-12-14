@@ -6,8 +6,7 @@ then
 fi
 
 # START -- My own addon decorator
-@false()
-{
+@false() {
    if (($# != 0))
    then
       System.err.println "I am false and will return 1"
@@ -18,8 +17,7 @@ fi
 # END -- My own addon decorator
 
 @deprecated
-function printer1()
-{
+function printer1() {
    __decoratorCheck "$FUNCNAME" "$@"
    echo "i print printer1"
    echo "---------------------------"

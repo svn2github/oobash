@@ -30,8 +30,7 @@
 #    None
 # Example:
 #    File a testfile    
-File()
-{
+File() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -97,8 +96,7 @@ __registerClass File
 #    File a /XXX/yyy
 #    a.canRead
 #    >>>false
-__canRead()
-{
+__canRead() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -130,8 +128,7 @@ __canRead()
 #    File a /XXX/yyy
 #    a.canWrite
 #    >>>false
-__canWrite()
-{
+__canWrite() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -163,8 +160,7 @@ __canWrite()
 #    File a /XXX/yyy
 #    a.canExecute
 #    >>>false
-__canExecute()
-{
+__canExecute() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -197,8 +193,7 @@ __canExecute()
 #    File a /tmp/abc
 #    a.getName
 #    >>>abc
-__getName()
-{
+__getName() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -224,8 +219,7 @@ __getName()
 #    File a /XXX/yyy
 #    a.isDirectory
 #    >>>false
-__isDirectory()
-{
+__isDirectory() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -256,8 +250,7 @@ __isDirectory()
 #    File a /XXX/yyy
 #    a.exists
 #    >>>false
-__exists()
-{
+__exists() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -286,8 +279,7 @@ __exists()
 # Returns:
 #    true if and only if the file denoted by this abstract pathname exists and 
 #    is a normal file; false otherwise
-__isFile()
-{
+__isFile() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -316,8 +308,7 @@ __isFile()
 # Returns:
 #    true if and only if the file denoted by this abstract pathname is hidden 
 #    according to the conventions of the underlying platform.
-__isHidden()
-{
+__isHidden() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -343,8 +334,7 @@ __isHidden()
 #    None
 # Returns:
 #    true if and only if the directory was created; false otherwise
-__mkdir()
-{
+__mkdir() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -380,8 +370,7 @@ __mkdir()
 # Returns:
 #    true if and only if the directory was created, along with all necessary parent directories; 
 #    false otherwise
-__mkdirs()
-{
+__mkdirs() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -427,8 +416,7 @@ __mkdirs()
 #    File x /tmp/ee/ergr
 #    x.getParent
 #    >>>/tmp/ee
-__getParent()
-{
+__getParent() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -460,8 +448,7 @@ __getParent()
 #    File a /XXX
 #    a.isSymbolicLink
 #    >>>false 
-__isSymbolicLink()
-{
+__isSymbolicLink() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -492,8 +479,7 @@ __isSymbolicLink()
 #    File a /XXX
 #    a.isNamedPipe
 #    >>>false 
-__isNamedPipe()
-{
+__isNamedPipe() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -524,8 +510,7 @@ __isNamedPipe()
 #    File a /XXX
 #    a.hasStickyBit
 #    >>>false 
-__hasStickyBit()
-{
+__hasStickyBit() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -556,8 +541,7 @@ __hasStickyBit()
 #    File a /XXX
 #    a.isSocket
 #    >>>false 
-__isSocket()
-{
+__isSocket() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -589,8 +573,7 @@ __isSocket()
 #    File a /XXX
 #    a.isCharacterSpecial
 #    >>>false 
-__isCharacterSpecial()
-{
+__isCharacterSpecial() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -621,8 +604,7 @@ __isCharacterSpecial()
 #    File a /XXX
 #    a.isBlockSpecial
 #    >>>false
-__isBlockSpecial()
-{
+__isBlockSpecial() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -660,8 +642,7 @@ __isBlockSpecial()
 #    File b /tmp/xxx 
 #    a.renameTo b
 #    >>>true
-__renameTo()
-{
+__renameTo() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -727,8 +708,7 @@ __renameTo()
 #    >>>true
 #    a.setReadable true false
 #    >>>true   
-__setReadable()
-{   
+__setReadable() {   
    case $# in
       3) local readable=$(Boolean.parseBoolean "$3")
          local ownerOnly=$(Boolean.TRUE)
@@ -793,8 +773,7 @@ __setReadable()
 #    >>>true
 #    a.setWritable true false
 #    >>>true         
-__setWritable()
-{
+__setWritable() {
    case $# in
       3) local writable=$(Boolean.parseBoolean "$3")
          local ownerOnly=$(Boolean.TRUE)
@@ -860,8 +839,7 @@ __setWritable()
 #    >>>true
 #    a.setExecutable true false
 #    >>>true         
-__setExecutable()
-{
+__setExecutable() {
    case $# in
       3) local executable=$(Boolean.parseBoolean "$3")
          local ownerOnly=$(Boolean.TRUE)
@@ -928,8 +906,7 @@ __setExecutable()
 #    File a /xxx/s
 #    a.getCanonicalPath
 #    >>>/xxx/s    
-__getCanonicalPath()
-{
+__getCanonicalPath() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -987,8 +964,7 @@ __getCanonicalPath()
 #    File a /tmp/abc
 #    a.getAbsolutePath
 #    >>>/tmp/abc
-__getAbsolutePath()
-{
+__getAbsolutePath() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1018,8 +994,7 @@ __getAbsolutePath()
 #    File a /tmp/abc
 #    a.getPath
 #    >>>/tmp/abc
-__getPath()
-{
+__getPath() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1045,8 +1020,7 @@ __getPath()
 #    File a /tmp/abc
 #    a.isAbsolute
 #    >>>true
-__isAbsolute()
-{
+__isAbsolute() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -1079,8 +1053,7 @@ __isAbsolute()
 #    File a /tmp/abc
 #    a.delete
 #    >>>true
-__delete()
-{
+__delete() {
    if (( $# == 2 ))
    then
       if command -v rm >/dev/null 2>&1
@@ -1132,8 +1105,7 @@ __delete()
 #    File a /tmp/abc
 #    a.createNewFile
 #    >>>true
-__createNewFile()
-{
+__createNewFile() {
    if (( $# == 2 ))
    then
       if command -v touch >/dev/null 2>&1
@@ -1179,8 +1151,7 @@ __createNewFile()
 #    File a /tmp/abc
 #    a.lastModified
 #    >>>1297000
-__lastModified()
-{
+__lastModified() {
    if (( $# == 2 ))
    then
       if command -v stat >/dev/null 2>&1
@@ -1245,8 +1216,7 @@ __lastModified()
 #    >>>true
 #    a.lastModified
 #    >>>1297000
-__setLastModified()
-{
+__setLastModified() {
    if (( $# == 3 ))
    then
       if command -v touch >/dev/null 2>&1
@@ -1306,8 +1276,7 @@ __setLastModified()
 #    File a /tmp/iExist
 #    a.setReadOnly
 #    >>>true 
-__setReadOnly()
-{
+__setReadOnly() {
    if (( $# == 2 ))
    then
       if command -v chmod >/dev/null 2>&1
@@ -1391,8 +1360,7 @@ __setReadOnly()
 #               TMPDIR=/
 #               File.createTemporaryFile xxx .tmp rwxrwxrwx
 #               >>>IOException: file could not be created
-File.createTemporaryFile()
-{
+File.createTemporaryFile() {
    if (( $# == 2 )) || (( $# == 3 ))
    then
       if command -v mktemp >/dev/null 2>&1
@@ -1473,8 +1441,7 @@ __registerFunction File.createTemporaryFile
 #    >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
 #    File.createTempFile fff xxx
 #    >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
-File.createTempFile()
-{
+File.createTempFile() {
    if (( $# == 1 )) || (( $# == 2 ))
    then
       local prefix="$1"
@@ -1497,8 +1464,7 @@ __registerFunction File.createTempFile
 
 complete -W  "$(echo ${__File__[@]}) all File createTempFile createTemporaryFile" File.help
 
-File.help()
-{  
+File.help() {  
    local printStream=${printStream:-out}
    if (( $# == 0 ))
    then

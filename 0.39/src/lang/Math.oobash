@@ -40,8 +40,7 @@
 #    >>>0.97060061981194775668
 #    Math.sin NaN
 #    >>>NaN
-Math.sin()
-{
+Math.sin() {
    if (( $# == 1 ))
    then
       local val
@@ -100,8 +99,7 @@ __registerFunction Math.sin
 #    >>>0.24069573494489437645
 #    Math.cos NaN
 #    >>>NaN
-Math.cos()
-{
+Math.cos() {
    if (( $# == 1 ))
    then
       local val
@@ -160,8 +158,7 @@ __registerFunction Math.cos
 #    >>>-4.03247951208674326799
 #    Math.tan NaN
 #    >>>NaN
-Math.tan()
-{
+Math.tan() {
    if (( $# == 1 ))
    then
       local val
@@ -234,8 +231,7 @@ __registerFunction Math.tan
 #    >>>-1.57049329650114180705
 #    Math.atan NaN
 #    >>>NaN
-Math.atan()
-{
+Math.atan() {
    if (( $# == 1 ))
    then
       local val
@@ -302,8 +298,7 @@ __registerFunction Math.atan
 #    >>>1.5707963267948966
 #    Math.asin +1
 #    >>>1.5707963267948966
-Math.asin()
-{
+Math.asin() {
    if (( $# == 1 ))
    then
       local val
@@ -379,8 +374,7 @@ __registerFunction Math.asin
 #    >>>0.00033333182098444678
 #    Math.acos +3,2E-3
 #    >>>0.00031249838982353477
-Math.acos()
-{
+Math.acos() {
    if (( $# == 1 ))
    then
       local val
@@ -451,8 +445,7 @@ __registerFunction Math.acos
 #    >>>2
 #    Math.max 2 3e+5
 #    >>>3e+5
-Math.max()
-{
+Math.max() {
    if (( $# == 2 ))
    then
       local val1
@@ -522,8 +515,7 @@ __registerFunction Math.max
 #    >>>1.999
 #    Math.min 2 3e+5
 #    >>>2
-Math.min()
-{
+Math.min() {
    if (( $# == 2 ))
    then
       local val1
@@ -592,8 +584,7 @@ __registerFunction Math.min
 #    >>>3e-2
 #    Math.abs 3e-2
 #    >>>3e-2
-Math.abs()
-{
+Math.abs() {
    if (( $# == 1 ))
    then
       local val1
@@ -650,8 +641,7 @@ __registerFunction Math.abs
 #    >>>1.10995495404092863573
 #    Math.sqrt 1.232
 #    >>>1.10995495404092863573
-Math.sqrt()
-{
+Math.sqrt() {
    if (( $# == 1 ))
    then
       local val
@@ -716,8 +706,7 @@ __registerFunction Math.sqrt
 #        >>>3.00416602394643311205
 #        Math.exp 10e-1
 #        >>>2.71828182845904523536
-Math.exp()
-{
+Math.exp() {
    if (( $# == 1 ))
    then
       local val
@@ -786,8 +775,7 @@ __registerFunction Math.exp
 #       >>>-1
 #       Math.expm1 0
 #       >>>0
-Math.expm1()
-{
+Math.expm1() {
    if (( $# == 1 ))
    then
       local val
@@ -856,8 +844,7 @@ __registerFunction  Math.expm1
 #       >>>-4872401723.12445129996600694425
 #       Math.sinh 2.233
 #       >>>4.61030062038019454226
-Math.sinh()
-{
+Math.sinh() {
    if (( $# == 1 ))
    then
       local val
@@ -927,8 +914,7 @@ __registerFunction Math.sinh
 #       >>>1
 #       Math.cosh 33e-6
 #       >>>1.00000000054450000004
-Math.cosh()
-{
+Math.cosh() {
    if (( $# == 1 ))
    then
       local val
@@ -1004,8 +990,7 @@ __registerFunction Math.cosh
 #       >>>-1
 #       Math.tanh 3.21
 #       >>>0.99674798394664436803
-Math.tanh()
-{
+Math.tanh() {
    if (( $# == 1 ))
    then
       local val
@@ -1063,8 +1048,7 @@ __registerFunction Math.tanh
 #    Example:
 #       Math.E
 #       >>>2.71828182845904523536
-Math.E()
-{
+Math.E() {
    if (( $# == 0 ))
    then
       System.out.println 2.71828182845904523536
@@ -1088,8 +1072,7 @@ __registerFunction Math.E
 #    Example:
 #       Math.PI
 #       >>>3.14159265358979323846
-Math.PI()
-{
+Math.PI() {
    if (( $# == 0 ))
    then
       System.out.println 3.14159265358979323846
@@ -1112,8 +1095,7 @@ __registerFunction Math.PI
 # Example:
 #    Math.random
 #    >>>0.327545166015625
-Math.random()
-{
+Math.random() {
    if (( $# == 0 ))
    then
       if command -v bc >/dev/null 2>&1
@@ -1162,8 +1144,7 @@ __registerFunction Math.random
 #    >>>NaN
 #    Math.adder 3 Infinity 
 #    >>>Infinity
-Math.adder()
-{
+Math.adder() {
    if (( $# >= 2 ))
    then
       if command -v bc >/dev/null 2>&1
@@ -1263,8 +1244,7 @@ __registerFunction Math.adder
 #    >>>NaN
 #    Math.multiplier 3 Infinity 
 #    >>>Infinity
-Math.multiplier()
-{
+Math.multiplier() {
    if (( $# >= 2 ))
    then
       if command -v bc >/dev/null 2>&1
@@ -1368,8 +1348,7 @@ __registerFunction Math.multiplier
 #      >>>NaN
 #      Math.log 0
 #      >>>-Infinity
-Math.log()
-{
+Math.log() {
    if (( $# == 1 ))
    then
       local val
@@ -1443,8 +1422,7 @@ __registerFunction Math.log
 #       >>>NaN
 #       Math.log10 0
 #       >>>-Infinity
-Math.log10()
-{
+Math.log10() {
    if (( $# == 1 ))
    then
       local val
@@ -1518,8 +1496,7 @@ __registerFunction Math.log10
 #       >>>NaN
 #       Math.log1p 3E-4
 #       >>>0.00029995500899797548
-Math.log1p()
-{
+Math.log1p() {
    if (( $# == 1 ))
    then
       local val
@@ -1590,8 +1567,7 @@ __registerFunction Math.log1p
 #       >>>1948.05650344479890981256
 #       Math.toDegrees 1.32
 #       >>>75.63042895726866355742
-Math.toDegrees()
-{
+Math.toDegrees() {
    if (( $# == 1 ))
    then
       local val
@@ -1657,8 +1633,7 @@ __registerFunction Math.toDegrees
 #       >>>0.55850536063818546432
 #       Math.toRadians -42
 #       >>>-0.73303828583761842192
-Math.toRadians()
-{
+Math.toRadians() {
    if (( $# == 1 ))
    then
       local val
@@ -1735,8 +1710,7 @@ __registerFunction Math.toRadians
 #       >>>0
 #       Math.ceil 2,23
 #       >>>3
-Math.ceil()
-{
+Math.ceil() {
    if (( $# == 1 ))
    then
       local val
@@ -1809,8 +1783,7 @@ __registerFunction Math.ceil
 #       >>>-2
 #       Math.floor 1.22
 #       >>>1
-Math.floor()
-{
+Math.floor() {
    if (( $# == 1 ))
    then
       local val
@@ -1884,8 +1857,7 @@ __registerFunction Math.floor
 #       >>>4.68130580073551700034
 #       Math.hypot  2.432 NaN
 #       >>>NaN
-Math.hypot()
-{
+Math.hypot() {
    if (( $# == 2 ))
    then
       local val1
@@ -1953,8 +1925,7 @@ __registerFunction Math.hypot
 
 complete -W  "random cos sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
 
-Math.help()
-{  
+Math.help() {  
    local printStream=${printStream:-out}
    if (( $# == 0 ))
    then

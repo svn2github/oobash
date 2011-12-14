@@ -20,8 +20,7 @@
 #                   #
 #####################
 
-__getContentType()
-{
+__getContentType() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -40,8 +39,7 @@ __getContentType()
 }
 __registerFunction __getContentType
 
-__getHeader()
-{
+__getHeader() {
    if (( $# == 4 ))
    then
       local class="$2"
@@ -82,8 +80,7 @@ Log session start time '"$(date)"'<br>
 }
 __registerFunction __getHeader
    
-__getFooter()
-{
+__getFooter() {
    if (( $# == 2 ))
    then
    local class="$2"

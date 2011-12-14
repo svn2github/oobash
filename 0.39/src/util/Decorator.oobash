@@ -9,8 +9,7 @@
 # pseudo decorators #
 #####################
 
-@calling()
-{
+@calling() {
    if (($# != 0))
    then
       System.err.println "Calling: $* "
@@ -19,8 +18,7 @@
 }
 __registerFunction @calling
 
-@timestamp()
-{
+@timestamp() {
    if (($# != 0))
    then
       System.err.println "Time is $(date "+%s.%N")"
@@ -30,8 +28,7 @@ __registerFunction @calling
 __registerFunction @timestamp
 
 
-@deprecated()
-{
+@deprecated() {
    if (($# != 0))
    then
       System.err.println "DeprecatedWarning for $1"
@@ -44,8 +41,7 @@ __registerFunction @deprecated
 # function to handle decorators, if there are some #
 ####################################################
 
-__decoratorCheck()
-{
+__decoratorCheck() {
    # we will not fill the array with /bin/bash...
    if [[ "${0##*/}" == "bash" ]]
    then

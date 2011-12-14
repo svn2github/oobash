@@ -33,8 +33,7 @@
 # Returns:
 #    the difference, measured in milliseconds, between the current 
 #    time and midnight, January 1, 1970 UTC.
-System.currentTimeMillis()
-{
+System.currentTimeMillis() {
    if (( $# == 0 ))
    then
       if __gnudateCheck
@@ -67,8 +66,7 @@ __registerFunction System.currentTimeMillis
 # Returns:
 #    the difference, measured in nanoseconds, between the current 
 #    time and midnight, January 1, 1970 UTC.
-System.currentTimeNanos()
-{
+System.currentTimeNanos() {
    if (( $# == 0 ))
    then
       if __gnudateCheck
@@ -97,8 +95,7 @@ __registerFunction System.currentTimeNanos
 #                               if argument not betewwen 0 and 255
 # Parameters:
 #    status - exit status (0-255)
-System.exit()
-{
+System.exit() {
    if (( $# == 1 ))
    then
       (declare -i status=$1) 2>/dev/null ||  (return 1)
@@ -133,8 +130,7 @@ __registerFunction System.exit
 #    IllegalArgumentException - if number of arguments != 1
 # Parameters:
 #    x - The String to be printed.
-System.err.println()
-{
+System.err.println() {
    if (( $# <= 1  ))
    then
       local message="$1"
@@ -154,8 +150,7 @@ __registerFunction System.err.println
 #    x - The String to be printed.
 # Throws:
 #    IllegalArgumentException - if number of arguments != 1
-System.out.println()
-{
+System.out.println() {
    if (( $# <= 1  ))
    then
       local message="$1"
@@ -177,8 +172,7 @@ __registerFunction System.out.println
 
 complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println all" System.help
 
-System.help()
-{  
+System.help() {  
    local printStream=${printStream:-out}
    if (( $# == 0 ))
    then

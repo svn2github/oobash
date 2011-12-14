@@ -36,8 +36,7 @@
 #    >>>class String
 #    c.getClass
 #    >>>class Boolean
-__getClass() 
-{
+__getClass() {
    local class="$2"
    if (( $# == 2 ))
    then
@@ -84,8 +83,7 @@ __getClass()
 #    Boolean b xxx
 #    b.toString
 #    >>>false  
-__toString()
-{
+__toString() {
    if (( $# == 2 ))
    then
       local this="$1"
@@ -209,8 +207,7 @@ __toString()
 #    >>>true
 #    a.equals b
 #    >>>false
-__equals()
-{
+__equals() {
    if (( $# == 3 ))
    then
       local this="$1"
@@ -276,8 +273,7 @@ __equals()
 #       File a /tmp/abc
 #       a.hashCode
 #       >>>-889608758
-__hashCode() 
-{
+__hashCode() {
    # for being compatible with java:
    # simulating 32-bit modular arithmetic ignoring overflow  ==>
    # MAX_VALUE 	= 	2147483647

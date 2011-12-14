@@ -14,8 +14,7 @@
 #################
 
 
-I18n.out.message()
-{
+I18n.out.message() {
    if (( $# <= 1  ))
    then
       local printStream=out
@@ -29,8 +28,7 @@ I18n.out.message()
 }
 __registerFunction i18n.out.message
 
-I18n.err.message()
-{
+I18n.err.message() {
    local printStream=err
    if (( $# <= 1  ))
    then
@@ -51,8 +49,7 @@ __registerFunction i18n.err.message
 
 complete -W  "err.message out.message all" I18n.help
 
-I18n.help()
-{  
+I18n.help() {  
    local printStream=${printStream:-out}
    if (( $# == 0 ))
    then
