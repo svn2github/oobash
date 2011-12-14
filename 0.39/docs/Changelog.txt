@@ -213,6 +213,7 @@
 #    -Fix in I18n.help
 TODO: file2man  --> into the Generator.oobash file --> grep into Dependencies array + use the exported oopath
 TODO: use of IllegalArgumentException + description (where to use in sources!) description example: IllegalArgumentException: wrong number of arguments
+TODO: stacktrace
 
 #################################################################
 # Features:
