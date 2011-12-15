@@ -130,9 +130,12 @@ __equals() {
          fi
          Boolean.FALSE
          return 0
+      else
+         __throw "IllegalArgumentException" ": $3 is no object"
+         return 1
       fi
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $($#-2))"
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    local class=$2 
    local printStream=err
    ${class}.help ${FUNCNAME:2}

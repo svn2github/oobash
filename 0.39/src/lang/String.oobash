@@ -666,6 +666,9 @@ __equalsIgnoreCase() {
          fi
          __throw "WrongClassException" "argument $argobject: $("$argobject".getClass)"
          return 1
+      else
+         __throw "IllegalArgumentException" ": $3 is no object"
+         return 1
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"

@@ -211,13 +211,7 @@
 #    -oobash path is exported with the name __OODIR__
 #    -added NotInPath Exceptions for sort and tr (toString and Class.generator)
 #    -Fix in I18n.help
-TODO: use of IllegalArgumentException + description (where to use in sources!) description example: IllegalArgumentException: wrong number of arguments
-TODO: stacktrace
 TODO: add IllegalArgumentException to help 
-TODO: look at code e.g. equalsIgnoreCase: IllegalArgumentException is sometimes not the problem
-TODO: should there really be a help instead of a stacktrace ?  --> help=yes/no stacktrace=yes/no and if yes --> where to call ?
-TODO: different return values for different exceptions ?
-TODO: doc about all possible exceptions
 
 #################################################################
 # Features:

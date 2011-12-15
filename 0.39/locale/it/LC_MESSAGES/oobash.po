@@ -83,19 +83,19 @@ msgstr " Esempio: String.help zfill"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source
 msgid " Doing depedency check..."
-msgstr " "
+msgstr ""
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source
 msgid " Everything ok!"
-msgstr " "
+msgstr ""
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source
 msgid " Please install the missing package(s) to have complete functionality"
-msgstr " "
+msgstr ""
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source
 msgid " Could not change MANPATH !"
-msgstr " "
+msgstr ""
 
 #: /home/franka/Bash/oobash/src/util/Generator.oobash:27
 msgid "Sorry, no valid classname: '$userClass'"
