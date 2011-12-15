@@ -50,6 +50,9 @@ Math.sin() {
          fi
          __throw "NotInPathException" ": bc not in path"
          return 1
+      else
+         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         return 1
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -88,6 +91,9 @@ Math.cos() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
+         return 1
+      else
+         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -141,6 +147,9 @@ Math.tan() {
          fi
          __throw "NotInPathException" ": bc not in path"
          return 1
+      else
+         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         return 1
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -187,6 +196,9 @@ Math.atan() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
+         return 1
+      else
+         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -246,6 +258,9 @@ Math.asin() {
          fi
          __throw "NotInPathException" ": bc not in path"
          return 1
+      else
+         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         return 1
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -298,6 +313,9 @@ Math.acos() {
          fi
          __throw "NotInPathException" ": bc not in path"
          return 1
+      else
+         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         return 1
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -347,7 +365,13 @@ Math.max() {
             fi
             __throw "NotInPathException" ": bc not in path"
             return 1
+         else
+            __throw "MathIllegalArgumentException" ": illegal argument is \"$2\""
+            return 1
          fi
+      else
+         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         return 1
       fi  
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -433,8 +457,8 @@ Math.abs() {
             fi
             return 0 
          fi
-            __throw "NotInPathException" ": bc not in path"
-            return 1
+         __throw "NotInPathException" ": bc not in path"
+         return 1
       fi  
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"

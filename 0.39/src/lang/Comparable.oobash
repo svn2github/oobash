@@ -65,7 +65,7 @@ __compareTo() {
             return 1   
          fi
       else
-         __throw "IllegalArgumentException" ": Wrong argument: $3"
+         __throw "IllegalArgumentException" ": \"$3\" is no object"
          return 1
       fi                    
       declare -i length=-1

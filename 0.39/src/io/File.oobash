@@ -1063,7 +1063,7 @@ File.help() {
                   >>>-23
                   File b \"ab c\"
                   a.compareTo b
-                 >>>67
+                  >>>67
             ";;&
          exists|all)
             match=$(Boolean.TRUE)
