@@ -22,6 +22,7 @@ I18n.out.message() {
       __i18nMessage "$message"
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    local printStream=err
    I18n.help $FUNCNAME
    return 1
@@ -36,6 +37,7 @@ I18n.err.message() {
       __i18nMessage "$message"
       return 0
    fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    I18n.help $FUNCNAME
    return 1
 }
