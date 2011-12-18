@@ -1,13 +1,10 @@
-# MAYBE ROADMAP:
+# MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.X
-# Generator features:
+# -stacktrace
 # -Automatic man page generation for generated class file
 # -Generate class file in myclasses
-# Man pages for existing source
-
-# 0.39.X
-# Analyze log4oobash.properties
+# -Analyze log4oobash.properties
 
 # 0.40
 # Logging

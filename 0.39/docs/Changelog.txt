@@ -189,11 +189,10 @@
 # Version:      0.39
 #    -Italian po file (Thanks to David Costa <david.at.zarel.net>)
 #    -Possibility to "decorate" your functions (@calling @timestamp @deprecated)
-#     with almost pythonic look ;-) (see the example script)
+#     with almost pythonic look ;-) (see the decorator.sh script docs/examples)
 #    -some man pages
 #    -Hope for better macos support (can't test), by looking for gnu date/gdate in /opt/local/bin
 #    -new functions for registry: __registerAlias, __cleanUpAliases
-#    -deleted message "#"-frame -- better for i18n
 #    -new function for arg test: __periodCheck (checks if given string contains "." character) called by every constructor
 #    -new i18n package with I18nMessage file, content:I18n.out.message I18n.err.message I18n.help. New private function:__i18nMessage
 #    -generated getters: get$Class$Attribute (Class.generator) to avoid name clashes
@@ -201,17 +200,17 @@
 #    -better readme file
 #    -__dependencyCheck,__gnudateCheck are new private functions to check the external commands that are used in this framework
 #    -__gnudateCheck instead of command -v date
-#    -added missing help for the object methods in Class.generator function
-#    -Fixed/modified german po/mo files (i18n)/po files:charset=utf-8 now
-#    -Fixed wrong check order in constructor checks + code cleanup 
-#    -Fix for __equalsIgnoreCase in String
-#    -Fix for __length in File
 #    -Dependencies.txt file (all used external commands in this framework) and Version.txt
-#    -moved private registry functions to the private package
 #    -oobash path is exported with the name __OODIR__
-#    -added NotInPath Exceptions for sort and tr (toString and Class.generator)
-#    -Fix in I18n.help
+#    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
+#    -many fixes
+#    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
+#    -style corection
+
+TODO: use of IllegalArgumentException + description (where to use in sources!) description example: IllegalArgumentException: wrong number of arguments
 TODO: add IllegalArgumentException to help 
+TODO: recreate man pages
+TODO: stacktrace -->remove help output when exception
 
 #################################################################
 # Features:
@@ -223,5 +222,5 @@ TODO: add IllegalArgumentException to help
 # Registry for environment cleanUp
 # i18n
 # man pages
-# decorators for your functions (with almost pythonic look)
+# "decorators" for your functions (with almost pythonic look)
 #################################################################
