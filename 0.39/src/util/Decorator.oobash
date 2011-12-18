@@ -54,7 +54,7 @@ __decoratorCheck() {
 
    declare -i offset=0
    # bottom-up search for function start by looking for "()"
-   while [[ ${Arr[$((${BASH_LINENO}-$offset))]} == ${Arr[$((${BASH_LINENO}-$offset))]/"()"/} ]]
+   while [[ ${Arr[BASH_LINENO-offset]} == ${Arr[BASH_LINENO-offset]/"()"/} ]]
    do
       ((offset++))
    done
@@ -63,7 +63,7 @@ __decoratorCheck() {
 
    # bottom-up search for decorators
    declare -a lineOffset
-   while [[ ${Arr[$((${BASH_LINENO}-$offset))]:0:1} == "@" ]]
+   while [[ ${Arr[BASH_LINENO-offset]:0:1} == "@" ]]
    do
       lineOffset[$[${#lineOffset[@]}]]=$offset
       ((offset++))
@@ -73,7 +73,7 @@ __decoratorCheck() {
    declare -i i=0
    for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
    do
-      eval ${Arr[$((${BASH_LINENO}-${lineOffset[$i]}))]} "${decorated}" "$@"
+      eval ${Arr[BASH_LINENO-lineOffset[i]]} "${decorated}" "$@"
       returnValue=$(($returnValue+$?))
    done
    return $returnValue
