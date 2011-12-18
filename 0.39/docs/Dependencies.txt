@@ -2,7 +2,7 @@ base64
 basename
 bc
 chmod
-date (gnu!!!)
+date (gnu!)
 dirname
 mkdir
 mktemp
@@ -13,3 +13,8 @@ rmdir
 stat
 touch
 gettext
+wc
+sort
+tr
+pwd
+
