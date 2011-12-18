@@ -4,6 +4,7 @@
 # -Man.generator
 # -Generate class file in myclasses
 # -Analyze log4oobash.properties
+# -quote String function
 
 # 0.40
 # Logging
