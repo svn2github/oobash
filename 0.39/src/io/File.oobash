@@ -214,6 +214,7 @@ __isHidden() {
    then
       local this="$1"
       local file="$("$this".toString)"
+      file=${file##*/}
       if [[ "${file:0:1}" == "." ]]
       then
          Boolean.TRUE
@@ -628,10 +629,16 @@ __getCanonicalPath() {
             then
                if command -v dirname >/dev/null 2>&1
                then
-                  cd -P -- "$(dirname -- "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(basename -- "${file}")"
-                  if (( $? != 0 ))
+                  if command -v pwd >/dev/null 2>&1
                   then
-                     readlink -m -- "$file"
+                     cd -P -- "$(dirname -- "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(basename -- "${file}")"
+                     if (( $? != 0 ))
+                     then
+                        readlink -m -- "$file"
+                     fi
+                  else
+                     __throw "NotInPathException" ": pwd not in path"
+                     return 1
                   fi
                else
                   __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
@@ -661,7 +668,7 @@ __getAbsolutePath() {
       local file="$("$this".toString)"
       if [[ ${file:0:1} == "." ]]
       then
-         System.out.println "$(pwd)"/"$file"
+         System.out.println "$(PWD)"/"$file"
       else
          System.out.println "$file"
       fi
@@ -1039,6 +1046,7 @@ File.help() {
                Throws:
                   WrongClassException  - if argument has the wrong class  
                   IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
                Returns:
                   Zero if the argument is equal to this abstract pathname, a value less 
                   than zero if this abstract pathname is lexicographically less than the 
@@ -1075,6 +1083,8 @@ File.help() {
                Returns:
                   true if and only if the file or directory denoted by this abstract pathname 
                   exists; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX/yyy
                   a.exists
@@ -1092,6 +1102,8 @@ File.help() {
                   anObject - The object to be compared with
                Returns:
                   true if and only if the objects are the same; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   File a yyy
                   File b yyy
@@ -1110,6 +1122,8 @@ File.help() {
                  None
                Returns:
                   The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a xxx
                   a.getClass
@@ -1125,6 +1139,8 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname exists and 
                   is a directory; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX/yyy
                   a.isDirectory
@@ -1141,6 +1157,8 @@ File.help() {
                Returns:
                   true if and only if the file specified by this abstract pathname exists
                   and can be read by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX/yyy
                   a.canRead
@@ -1157,6 +1175,8 @@ File.help() {
                Returns:
                   true if and only if the file specified by this abstract pathname exists
                   and can be executed by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX/yyy
                   a.canExecute
@@ -1173,6 +1193,8 @@ File.help() {
                Returns:
                   true if and only if the file specified by this abstract pathname exists
                   and can be written by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX/yyy
                   a.canWrite
@@ -1188,6 +1210,8 @@ File.help() {
                   None  
                Returns:
                   The length, in bytes, of the file denoted by this abstract pathname. 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   echo abc > /tmp/abc
@@ -1205,7 +1229,8 @@ File.help() {
                   The string form of this abstract pathname
                Throws:
                   NotInPathException - if sort not in path
-                  NotInPathException - if tr not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.toString
@@ -1224,6 +1249,8 @@ File.help() {
                   None 
                Returns:
                   A hash code for this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.hashCode
@@ -1245,6 +1272,7 @@ File.help() {
                   or "." if this pathname does not name a parent
                Throws:
                   NotInPathException - if dirname is not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File x dfve
                   x.getParent
@@ -1266,10 +1294,11 @@ File.help() {
                   necessary parent directories; false otherwise
                Throws:
                   NotInPathException - if mkdir is not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
-                  File a /XXX
-                  a.isFile
-                  >>>false 
+                  File a /tmp/a/b/c
+                  a.mkdirs
+                  >>>true
             ";;&
          mkdir|all)
             match=$(Boolean.TRUE)
@@ -1282,10 +1311,14 @@ File.help() {
                   true if and only if the directory was created; false otherwise
                Throws:
                   NotInPathException - if mkdir is not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
-                  File a /XXX
-                  a.isFile
-                  >>>false 
+                  File a /tmp/a/b/c
+                  a.mkdir
+                  >>>false
+                  File a /tmp/a
+                  a.mkdir
+                  >>>true
             ";;&
          isHidden|all)
             match=$(Boolean.TRUE)
@@ -1299,10 +1332,14 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname is hidden 
                   according to the conventions of the underlying platform.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
-                  File a /XXX
-                  a.isFile
-                  >>>false 
+                  File a /tmp/abc
+                  a.isHidden
+                  >>>false
+                  File a /tmp/.abc
+                  >>>true
             ";;&
          isFile|all)
             match=$(Boolean.TRUE)
@@ -1316,6 +1353,8 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname exists and 
                   is a normal file; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX
                   a.isFile
@@ -1331,6 +1370,8 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname exists and 
                   is a symbolic link; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX
                   a.isSymbolicLink
@@ -1346,6 +1387,8 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname exists and 
                   is a named pipe; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX
                   a.isNamedPipe
@@ -1361,6 +1404,8 @@ File.help() {
                Returns:
                   true if and only if the stick bit is set on the file denoted by this abstract pathname; 
                   false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX
                   a.hasStickyBit
@@ -1376,6 +1421,8 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname exists and 
                   is a socket; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX
                   a.isSocket
@@ -1392,6 +1439,8 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname exists and 
                   is a character special; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX
                   a.isCharacterSpecial
@@ -1407,6 +1456,8 @@ File.help() {
                Returns:
                   true if and only if the file denoted by this abstract pathname exists and 
                   is a block special; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /XXX
                   a.isBlockSpecial
@@ -1432,6 +1483,7 @@ File.help() {
                   WrongClassException - if argument has the wrong class 
                   NotInPathException - if mv is not in path
                   IllegalArgumentException - if the argument is no object
+                                           - if number of arguments != 1
                Example:
                   File a /tmp/iExist
                   File b /tmp/xxx 
@@ -1454,6 +1506,8 @@ File.help() {
                Returns:
                   true if and only if the operation succeeded. The operation will fail if the user does not have 
                   permission to change the access permissions of this abstract pathname.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
                Example:
                   File a /tmp/iExist
                   a.setWritable true
@@ -1477,6 +1531,8 @@ File.help() {
                   true if and only if the operation succeeded. The operation will fail if the user does not have permission
                   to change the access permissions of this abstract pathname. If readable is false and the underlying file 
                   system does not implement a read permission, then the operation will fail.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
                Example:
                   File a /tmp/iExist
                   a.setReadable true
@@ -1501,6 +1557,8 @@ File.help() {
                   true if and only if the operation succeeded. The operation will fail if the user does not have 
                   permission to change the access permissions of this abstract pathname. If executable is false 
                   and the underlying file system does not implement an execute permission, then the operation will fail.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
                Example:
                   File a /tmp/iExist
                   a.setExecutable true
@@ -1529,6 +1587,8 @@ File.help() {
                   None
                Returns:
                   The canonical pathname string denoting the same file or directory as this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /xxx/s
                   a.getCanonicalPath
@@ -1545,6 +1605,7 @@ File.help() {
                   true if and only if the operation succeeded; false otherwise
                Throws:
                   NotInPathException - if chmod is not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/iExist
                   a.setReadOnly
@@ -1563,6 +1624,7 @@ File.help() {
                   an I/O error occurs
                Throws:
                   NotInPathException - if stat is not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.lastModified
@@ -1585,8 +1647,9 @@ File.help() {
                   true if and only if the operation succeeded; false otherwise
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 3
                   NotInPathException - if GNU date is not in path
-                  NotInPathException - if touch is not in path
+                                     - if touch is not in path
                Example:
                   File a /tmp/abc
                   a.setLastModified 1297632
@@ -1606,6 +1669,7 @@ File.help() {
                   true if and only if the file or directory is successfully deleted; false otherwise
                Throws:
                   NotInPathException - if rm is not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.delete
@@ -1621,6 +1685,8 @@ File.help() {
                   None
                Returns:
                   true if this abstract pathname is absolute, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.isAbsolute
@@ -1640,6 +1706,8 @@ File.help() {
                   None
                Returns:
                   The absolute pathname string denoting the same file or directory as this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.getAbsolutePath
@@ -1654,6 +1722,8 @@ File.help() {
                   None
                Returns:
                   The string form of this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.getPath
@@ -1672,6 +1742,7 @@ File.help() {
                   named file already exists
                Throws:
                   NotInPathException - if touch is not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.createNewFile
@@ -1698,9 +1769,10 @@ File.help() {
                   An abstract pathname denoting a newly-created empty file
                Throws:
                   IllegalArgumentException - If the prefix argument contains fewer than three characters
+                                             if number of arguments !=1 AND !=2
                   IOException - if file could not be created 
                   NotInPathException - if mktemp is not in path
-                  NotInPathException - if chmod is not in path
+                                     - if chmod is not in path
                Example:
                   File.createTempFile fff
                   >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
@@ -1734,9 +1806,10 @@ File.help() {
                   An abstract pathname denoting a newly-created empty file
                Throws:
                   IllegalArgumentException - If the prefix argument contains fewer than three characters
+                                           - if number of arguments !=2 AND !=3
                   IOException - if file could not be created 
                   NotInPathException - if mktemp is not in path
-                  NotInPathException - if chmod is not in path
+                                     - if chmod is not in path
                Example:
                   File.createTemporaryFile xxx .tmp rwxrwxrwx
                   >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
@@ -1758,6 +1831,8 @@ File.help() {
                   pathname. This is just the last name in the pathname's name 
                   sequence. If the pathname's name sequence is empty, then the 
                   empty string is returned.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.getName

@@ -1353,7 +1353,7 @@ String.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                compareTo
-                  Compares two strings lexicographically. The comparison is based on the Unicode value of each character 
+                  Compares two strings lexicographically. The comparison is based on the value of each character 
                   in the strings. The character sequence represented by this String object is compared lexicographically 
                   to the character sequence represented by the argument string. The result is a negative integer if this 
                   String object lexicographically precedes the argument string. The result is a positive integer if this 

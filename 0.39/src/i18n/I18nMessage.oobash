@@ -77,6 +77,8 @@ I18n.help() {
                up the translation in a message catalog and prints the message to stdout.
             Parameters:
                x - The message to be translated and printed.
+            Throws:
+               IllegalArgumentException - if number of arguments > 1 
             ";;&
          I18n.err.message|err.message|all)
             match=$(Boolean.TRUE)
@@ -86,6 +88,8 @@ I18n.help() {
                up the translation in a message catalog and prints the message to stderr.
             Parameters:
                x - The message to be translated and printed.
+            Throws:
+               IllegalArgumentException - if number of arguments > 1
             ";;&   
          *)   if [[ $match == $(Boolean.FALSE) ]]
               then
