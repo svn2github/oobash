@@ -1,8 +1,7 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.X
-# -stacktrace
-# -Automatic man page generation for generated class file
+# -Man.generator
 # -Generate class file in myclasses
 # -Analyze log4oobash.properties
 

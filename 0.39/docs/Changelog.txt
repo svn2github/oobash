@@ -207,7 +207,6 @@
 #    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
 #    -style corection
 
-TODO: use of IllegalArgumentException + description (where to use in sources!) description example: IllegalArgumentException: wrong number of arguments
 TODO: add IllegalArgumentException to help 
 TODO: recreate man pages
 TODO: stacktrace -->remove help output when exception
