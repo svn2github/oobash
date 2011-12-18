@@ -53,7 +53,7 @@ __decoratorCheck() {
    shift
 
    declare -i offset=0
-   # bootom-up search for function start by looking for "()"
+   # bottom-up search for function start by looking for "()"
    while [[ ${Arr[$((${BASH_LINENO}-$offset))]} == ${Arr[$((${BASH_LINENO}-$offset))]/"()"/} ]]
    do
       ((offset++))
@@ -61,7 +61,7 @@ __decoratorCheck() {
    
    ((offset++))
 
-   # bootom-up search for decorators
+   # bottom-up search for decorators
    declare -a lineOffset
    while [[ ${Arr[$((${BASH_LINENO}-$offset))]:0:1} == "@" ]]
    do

@@ -2,9 +2,12 @@
 
 # 0.39.X
 # -Man.generator
-# -Generate class file in myclasses
+# -Generate class file directly into myClasses package structure
 # -Analyze log4oobash.properties
 # -quote String function
+# $Class.getAll(array) functions
+# I18n.xy.messages only if tty open ?
+# Different Exceptions --> different return values ?
 
 # 0.40
 # Logging
