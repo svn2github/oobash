@@ -80,7 +80,6 @@ __throw() {
    local exception="$1"
    local message="$2"
    System.err.println "${exception}${message}"
-   __stacktrace
    return 0
 }
 __registerFunction __throw
