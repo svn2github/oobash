@@ -63,8 +63,6 @@ function printer5() {
    echo "i print printer5"
    echo "---------------------------"
    echo
-   __stacktrace
-
    return 0
 }
 
