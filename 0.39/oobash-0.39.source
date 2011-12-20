@@ -16,7 +16,6 @@
 __VERSION__="0.39"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
-__STACKTRACE__=true
 
 # ----------------------------------------------------
 # Some start up tests:
@@ -31,7 +30,6 @@ then
    unset __FILENAME__
    unset __VERSION__
    unset __LOGGINGPROPERTIESFILE__
-   unset __STACKTRACE__
    unset TEXTDOMAINDIR
    unset TEXTDOMAIN
    exit 0
@@ -48,7 +46,6 @@ then
    unset __VERSION__
    unset __LOGGINGPROPERTIESFILE__
    unset __OODIR__
-   unset __STACKTRACE__
    unset TEXTDOMAINDIR
    unset TEXTDOMAIN
    return 0
@@ -123,7 +120,6 @@ __registerVar __VERSION__
 __registerVar __FILENAME__
 __registerVar __LOGGINGPROPERTIESFILE__
 __registerVar __OODIR__
-__registerVar __STACKTRACE__
 __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
 __registerFunction __import
@@ -305,12 +301,6 @@ then
       System.out.println
       I18n.out.message " Please install the missing package(s) to have complete functionality"
    fi
-fi
-
-# Stacktrace
-if [[ "$(Boolean.parseBoolean "${__STACKTRACE__}")" = "$(Boolean.TRUE)" ]]
-then
-   shopt -s extdebug
 fi
 
 # Add oobash man pages
