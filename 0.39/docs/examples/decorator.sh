@@ -1,14 +1,12 @@
 source ../../oobash-0.39.source 1>/dev/null 2>&1
-if (( $? != 0 ))
-then
+if (( $? != 0 )); then
    echo "Sorry, but could not find oobash"
    exit 0
 fi
 
 # START -- My own addon decorator
 @false() {
-   if (($# != 0))
-   then
+   if (($# != 0)); then
       System.err.println "I am false and will return 1"
       return 1 
    fi
