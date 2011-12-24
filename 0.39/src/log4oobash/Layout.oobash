@@ -21,8 +21,7 @@
 #####################
 
 __getContentType() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local class="$2"
       case $class in
@@ -40,8 +39,7 @@ __getContentType() {
 __registerFunction __getContentType
 
 __getHeader() {
-   if (( $# == 4 ))
-   then
+   if (( $# == 4 )); then
       local class="$2"
       case $class in
          HTMLLayout)
@@ -81,8 +79,7 @@ Log session start time '"$(date)"'<br>
 __registerFunction __getHeader
    
 __getFooter() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
    local class="$2"
    case $class in
       HTMLLayout) System.out.println '</table>

@@ -21,31 +21,26 @@
 #########################
 
 File() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
 
-      if ! __visible "$this"
-      then
+      if ! __visible "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is not valid"
          return 1
       fi  
 
-      if ! __checkForKeywords "$this"
-      then
+      if ! __checkForKeywords "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is a keyword"
          return 1
       fi 
 
-      if ! __periodCheck "$this"
-      then
+      if ! __periodCheck "$this"; then
          I18n.err.message "Sorry, no full stop character allowed in objectname"
          return 1
       fi
 
       local pointer
-      if ! pointer=$(System.currentTimeNanos)
-      then
+      if ! pointer=$(System.currentTimeNanos); then
          I18n.err.message "Sorry, could not create object '\$this'"
          return 1
       fi
@@ -75,12 +70,10 @@ __registerClass File
 #####################
 
 __canRead() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -r "$file" ]]
-      then
+      if [[ -r "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -95,12 +88,10 @@ __canRead() {
 }
 
 __canWrite() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -w "$file" ]]
-      then
+      if [[ -w "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -115,12 +106,10 @@ __canWrite() {
 }
 
 __canExecute() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -x "$file" ]]
-      then
+      if [[ -x "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -135,8 +124,7 @@ __canExecute() {
 }
 
 __getName() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
       System.out.println "${file##*/}"
@@ -150,12 +138,10 @@ __getName() {
 }
 
 __isDirectory() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -d "$file" ]]
-      then
+      if [[ -d "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -170,12 +156,10 @@ __isDirectory() {
 }
 
 __exists() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -e "$file" ]]
-      then
+      if [[ -e "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -190,12 +174,10 @@ __exists() {
 }
 
 __isFile() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -f "$file" ]]
-      then
+      if [[ -f "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -210,13 +192,11 @@ __isFile() {
 }
 
 __isHidden() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
       file=${file##*/}
-      if [[ "${file:0:1}" == "." ]]
-      then
+      if [[ "${file:0:1}" == "." ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -231,16 +211,13 @@ __isHidden() {
 }
 
 __mkdir() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if command -v mkdir >/dev/null 2>&1
-      then 
+      if command -v mkdir >/dev/null 2>&1; then 
          mkdir -- "$file" >/dev/null 2>&1
          declare -i result=$?
-         if (( $result == 0 ))
-         then
+         if (( $result == 0 )); then
             Boolean.TRUE
          else
             Boolean.FALSE
@@ -259,16 +236,13 @@ __mkdir() {
 }
 
 __mkdirs() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if command -v mkdir >/dev/null 2>&1
-      then 
+      if command -v mkdir >/dev/null 2>&1; then 
          mkdir -p -- "$file" >/dev/null 2>&1
          declare -i result=$?
-         if (( $result == 0 ))
-         then
+         if (( $result == 0 )); then
             Boolean.TRUE
          else
             Boolean.FALSE
@@ -287,12 +261,10 @@ __mkdirs() {
 }
 
 __getParent() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if command -v dirname >/dev/null 2>&1
-      then 
+      if command -v dirname >/dev/null 2>&1; then 
          dirname -- "$file"
          return $?
       else
@@ -308,12 +280,10 @@ __getParent() {
 }
 
 __isSymbolicLink() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -L "$file" ]]
-      then
+      if [[ -L "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -328,12 +298,10 @@ __isSymbolicLink() {
 }
 
 __isNamedPipe() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -p "$file" ]]
-      then
+      if [[ -p "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -348,12 +316,10 @@ __isNamedPipe() {
 }
 
 __hasStickyBit() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -k "$file" ]]
-      then
+      if [[ -k "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -368,12 +334,10 @@ __hasStickyBit() {
 }
 
 __isSocket() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -S "$file" ]]
-      then
+      if [[ -S "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -388,12 +352,10 @@ __isSocket() {
 }
 
 __isCharacterSpecial() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -c "$file" ]]
-      then
+      if [[ -c "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -408,12 +370,10 @@ __isCharacterSpecial() {
 }
 
 __isBlockSpecial() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -b "$file" ]]
-      then
+      if [[ -b "$file" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -428,25 +388,19 @@ __isBlockSpecial() {
 }
 
 __renameTo() {
-   if (( $# == 3 ))
-   then
+   if (( $# == 3 )); then
       local this="$1"
       local argobject="$3"
       local argclass
       argclass="$("$argobject".getClass 2>/dev/null)"
-      if (( $? == 0 ))
-      then
-         if [[ "$("$this".getClass)" == "$argclass" ]]
-         then
+      if (( $? == 0 )); then
+         if [[ "$("$this".getClass)" == "$argclass" ]]; then
             local str="$("$argobject".toString)" 
-            if [[ $("$this".exists) == $(Boolean.TRUE) ]]
-            then
-               if command -v mv >/dev/null 2>&1
-               then
+            if [[ $("$this".exists) == $(Boolean.TRUE) ]]; then
+               if command -v mv >/dev/null 2>&1; then
                   mv -- "$("$this".toString)" "$("$argobject".toString)" 2>/dev/null
                   declare -i result=$?
-                  if (( $result == 0 ))
-                  then
+                  if (( $result == 0 )); then
                      Boolean.TRUE
                      return $result
                   fi
@@ -488,18 +442,15 @@ __setReadable() {
          ${class}.help ${FUNCNAME:2}
          return 1;;
    esac
-   if command -v chmod >/dev/null 2>&1
-   then
+   if command -v chmod >/dev/null 2>&1; then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ "$readable" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$readable" == $(Boolean.TRUE) ]]; then
          local setOrDenyPermission="+"
       else
          local setOrDenyPermission="-"   
       fi
-      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
          # owner
          local ownerOrAll="u"
       else
@@ -507,8 +458,7 @@ __setReadable() {
          local ownerOrAll="a"
       fi
       chmod ${ownerOrAll}${setOrDenyPermission}r -- "$file" 2>/dev/null
-      if (( $? == 0 ))
-      then
+      if (( $? == 0 )); then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -534,18 +484,15 @@ __setWritable() {
          ${class}.help ${FUNCNAME:2}
          return 1;;
    esac
-   if command -v chmod >/dev/null 2>&1
-   then
+   if command -v chmod >/dev/null 2>&1; then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ "$writable" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$writable" == $(Boolean.TRUE) ]]; then
          local setOrDenyPermission="+"
       else
          local setOrDenyPermission="-"   
       fi
-      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
          # owner
          local ownerOrAll="u"
       else
@@ -553,8 +500,7 @@ __setWritable() {
          local ownerOrAll="a"
       fi
       chmod ${ownerOrAll}${setOrDenyPermission}w -- "$file" 2>/dev/null
-      if (( $? == 0 ))
-      then
+      if (( $? == 0 )); then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -580,18 +526,15 @@ __setExecutable() {
          ${class}.help ${FUNCNAME:2}
          return 1;;
    esac
-   if command -v chmod >/dev/null 2>&1
-   then
+   if command -v chmod >/dev/null 2>&1; then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ "$executable" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$executable" == $(Boolean.TRUE) ]]; then
          local setOrDenyPermission="+"
       else
          local setOrDenyPermission="-"   
       fi
-      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
          # owner
          local ownerOrAll="u"
       else
@@ -599,8 +542,7 @@ __setExecutable() {
          local ownerOrAll="a"
       fi
       chmod ${ownerOrAll}${setOrDenyPermission}x -- "$file" 2>/dev/null
-      if (( $? == 0 ))
-      then
+      if (( $? == 0 )); then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -613,27 +555,20 @@ __setExecutable() {
 }
 
 __getCanonicalPath() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".getAbsolutePath)"
-      if command -v readlink >/dev/null 2>&1
-      then 
+      if command -v readlink >/dev/null 2>&1; then 
          local result=''
          result=$(readlink -e -- "$file")
-         if (( $? == 0 ))
-         then
+         if (( $? == 0 )); then
             System.out.println "$result"
          else
-            if command -v basename >/dev/null 2>&1
-            then
-               if command -v dirname >/dev/null 2>&1
-               then
-                  if command -v pwd >/dev/null 2>&1
-                  then
+            if command -v basename >/dev/null 2>&1; then
+               if command -v dirname >/dev/null 2>&1; then
+                  if command -v pwd >/dev/null 2>&1; then
                      cd -P -- "$(dirname -- "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(basename -- "${file}")"
-                     if (( $? != 0 ))
-                     then
+                     if (( $? != 0 )); then
                         readlink -m -- "$file"
                      fi
                   else
@@ -662,12 +597,10 @@ __getCanonicalPath() {
 }
 
 __getAbsolutePath() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ ${file:0:1} == "." ]]
-      then
+      if [[ ${file:0:1} == "." ]]; then
          System.out.println "$(PWD)"/"$file"
       else
          System.out.println "$file"
@@ -682,8 +615,7 @@ __getAbsolutePath() {
 }
 
 __getPath() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
       System.out.println "$file" 
@@ -697,12 +629,10 @@ __getPath() {
 }
 
 __isAbsolute() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ ${file:0:1} == "/" ]]
-      then
+      if [[ ${file:0:1} == "/" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -717,19 +647,14 @@ __isAbsolute() {
 }
 
 __delete() {
-   if (( $# == 2 ))
-   then
-      if command -v rm >/dev/null 2>&1
-      then
-         if command -v rmdir >/dev/null 2>&1
-         then
+   if (( $# == 2 )); then
+      if command -v rm >/dev/null 2>&1; then
+         if command -v rmdir >/dev/null 2>&1; then
             local this="$1"
             local file="$("$this".toString)"
-            if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]
-            then
+            if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
                rm -f -- "$file" 2>/dev/null || rmdir -- "$file" 2>/dev/null
-               if (( $? == 0 ))
-               then
+               if (( $? == 0 )); then
                   Boolean.TRUE
                else
                   Boolean.FALSE
@@ -755,17 +680,13 @@ __delete() {
 }
 
 __createNewFile() {
-   if (( $# == 2 ))
-   then
-      if command -v touch >/dev/null 2>&1
-      then
+   if (( $# == 2 )); then
+      if command -v touch >/dev/null 2>&1; then
          local this="$1"
          local file="$("$this".toString)"
-         if [[ $("$this".exists) == $(Boolean.FALSE) ]]
-         then 
+         if [[ $("$this".exists) == $(Boolean.FALSE) ]]; then 
             touch -- "$file" 2>/dev/null
-            if (( $? == 0 ))
-            then
+            if (( $? == 0 )); then
                Boolean.TRUE
             else
                Boolean.FALSE
@@ -787,27 +708,21 @@ __createNewFile() {
 }
 
 __lastModified() {
-   if (( $# == 2 ))
-   then
-      if command -v stat >/dev/null 2>&1
-      then
+   if (( $# == 2 )); then
+      if command -v stat >/dev/null 2>&1; then
          local this="$1"
          local file="$("$this".toString)"
          local result
          result=$(stat -L -c  "+%Y" -- "$file" 2>/dev/null)
-         if (( $? == 0 ))
-         then
-            if [[ ${result:0:1} == "+" ]]
-            then
-               if (( ${result} != 0 ))
-               then
+         if (( $? == 0 )); then
+            if [[ ${result:0:1} == "+" ]]; then
+               if (( ${result} != 0 )); then
                   System.out.println "${result:1}000"
                else
                   System.out.println "0"
                fi
             else
-               if (( ${result} != 0 ))
-               then               
+               if (( ${result} != 0 )); then               
                   System.out.println "${result}000"
                else
                   System.out.println "0"
@@ -830,23 +745,18 @@ __lastModified() {
 }
 
 __setLastModified() {
-   if (( $# == 3 ))
-   then
-      if command -v touch >/dev/null 2>&1
-      then
-         if __gnudateCheck
-         then
+   if (( $# == 3 )); then
+      if command -v touch >/dev/null 2>&1; then
+         if __gnudateCheck; then
             local this="$1"
             local file="$("$this".toString)"
             (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
-            if (( $? != 0 ))
-            then
+            if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Wrong argument: $3"
                return 1         
             fi            
             declare -i milliSeconds="$3"
-            if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 ))
-            then 
+            if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then 
                declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
                declare -i epochSeconds=${milliSeconds:0:secondsLength}
             else
@@ -854,8 +764,7 @@ __setLastModified() {
             fi
             local timestamp=$(date +"%y%m%d%H%M.%S" -d @$epochSeconds)
             touch -m -t ${timestamp} -- ${file} 2>/dev/null
-            if (( $? == 0 ))
-            then
+            if (( $? == 0 )); then
                Boolean.TRUE
             else
                Boolean.FALSE
@@ -878,16 +787,13 @@ __setLastModified() {
 }
 
 __setReadOnly() {
-   if (( $# == 2 ))
-   then
-      if command -v chmod >/dev/null 2>&1
-      then
+   if (( $# == 2 )); then
+      if command -v chmod >/dev/null 2>&1; then
          local this="$1"
          local file="$("$this".toString)"
          local result
          result=$(chmod 444 -- "$file" 2>/dev/null)
-         if (( $? == 0 ))
-         then
+         if (( $? == 0 )); then
             Boolean.TRUE
          else
             Boolean.FALSE
@@ -915,26 +821,20 @@ __setReadOnly() {
 ##################
 
 File.createTemporaryFile() {
-   if (( $# == 2 )) || (( $# == 3 ))
-   then
-      if command -v mktemp >/dev/null 2>&1
-      then
-         if command -v chmod >/dev/null 2>&1
-         then
+   if (( $# == 2 )) || (( $# == 3 )); then
+      if command -v mktemp >/dev/null 2>&1; then
+         if command -v chmod >/dev/null 2>&1; then
             local tempdir=${TMPDIR:-/tmp};
             local prefix="$1"
-            if (( ${#prefix} < 3 ))
-            then
+            if (( ${#prefix} < 3 )); then
                __throw "IllegalArgumentException" ": prefix must be at least three characters long"
                return 1
             fi
             local suffix="$2"
-            if (( $# == 3 ))
-            then
+            if (( $# == 3 )); then
                local permissions=''
                permissions=$(__posixFilePermissionsConverter "$3")
-               if (( $? != 0 ))
-               then
+               if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": argument "$3" is no posixFilePermission"
                   return 1
                fi
@@ -942,13 +842,11 @@ File.createTemporaryFile() {
             local temporaryFile
             temporaryFile=$(mktemp --tmpdir="$tempdir" --suffix="$suffix" "$prefix"XXXXXXXXXXXXXXXXXX 2>/dev/null)
             declare -i returnValue=$?
-            if (( $returnValue != 0 ))
-            then
+            if (( $returnValue != 0 )); then
                __throw "IOException" ": file could not be created"
                return $returnValue
             fi
-            if [[ -n $permissions ]]
-            then
+            if [[ -n $permissions ]]; then
                chmod $permissions -- $temporaryFile
             fi
             System.out.println $temporaryFile
@@ -970,8 +868,7 @@ File.createTemporaryFile() {
 __registerFunction File.createTemporaryFile
 
 File.createTempFile() {
-   if (( $# == 1 )) || (( $# == 2 ))
-   then
+   if (( $# == 1 )) || (( $# == 2 )); then
       local prefix="$1"
       local suffix=${2:-.tmp}
       File.createTemporaryFile "$prefix" "$suffix"
@@ -994,8 +891,7 @@ complete -W  "$(echo ${__File__[@]}) all File createTempFile createTemporaryFile
 
 File.help() {  
    local printStream=${printStream:-out}
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.${printStream}.println "
       Usage: File.help all|methodname|constructor
       Available methods:
@@ -1835,8 +1731,7 @@ File.help() {
                   a.getName
                   >>>abc
                ";;&
-         *)   if [[ $match == $(Boolean.FALSE) ]]
-              then
+         *)   if [[ $match == $(Boolean.FALSE) ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
                     "   

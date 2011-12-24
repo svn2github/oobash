@@ -24,8 +24,7 @@ export TEXTDOMAIN=oobash
 export TEXTDOMAINDIR="${0%${0##*/}}"locale
 
 # you should source not execute
-if [[ ${0##*/} == ${__FILENAME__} ]]
-then
+if [[ ${0##*/} == ${__FILENAME__} ]]; then
    echo $"Sorry, you should: source ${__FILENAME__} and not execute it..."
    unset __FILENAME__
    unset __VERSION__
@@ -39,8 +38,7 @@ export __OODIR__=$(cd -P "${BASH_ARGV[0]%/*}" 2>/dev/null; echo "${PWD}")
 export TEXTDOMAINDIR="${__OODIR__}/locale"
 
 # you need a bash 4 
-if [ $BASH_VERSINFO -lt 4 ]
-then
+if [ $BASH_VERSINFO -lt 4 ]; then
    echo $"Sorry, you need a bash version 4..."
    unset __FILENAME__
    unset __VERSION__
@@ -55,8 +53,7 @@ fi
 # ----------------------------------------------------
 
 # i18n function library from the gnu textutils
-if command -v gettext.sh >/dev/null 2>&1
-then
+if command -v gettext.sh >/dev/null 2>&1 ;then
    source gettext.sh
 fi
 
@@ -93,7 +90,6 @@ __import() {
 __import oobash.util.Registry
 __import oobash.util.Generator
 __import oobash.util.Decorator
-__import oobash.util.Stacktrace
 
 # import private functions
 __import oobash.private.Private
@@ -128,16 +124,18 @@ __registerFunction __import
 ###################
 
 # hope to find a gnu date on macos systems (can't test this)
-if [ -x "/opt/local/bin/date" ]
-then
-   alias date="/opt/local/bin/date"
-   __registerAlias date
+if [[ -x "/opt/local/bin/date" ]]; then
+   date() {
+      /opt/local/bin/date "$@"
+   }
+   __registerFunction date
 fi
 
-if [ -x "/opt/local/bin/gdate" ]
-then
-   alias date="/opt/local/bin/gdate"
-   __registerAlias date
+if [[ -x "/opt/local/bin/gdate" ]]; then
+   date() {
+      /opt/local/bin/gdate "$@"
+   }
+   __registerFunction date
 fi
 
 ###################
@@ -172,14 +170,12 @@ command_not_found_handle() {
    # is extglob set ?
    shopt -q extglob
    # if extglob not set already --> set it now and change boolean 
-   if (( $? == 1 ))
-   then
+   if (( $? == 1 )); then
       shopt -s extglob
       unsetAtEnd=$(Boolean.TRUE)
    fi 
    local method="${str/"$this"./}"
-   if [[ $(Boolean.parseBoolean "$unsetAtEnd") == $(Boolean.TRUE) ]]
-   then
+   if [[ $(Boolean.parseBoolean "$unsetAtEnd") == $(Boolean.TRUE) ]]; then
       shopt -u extglob
    fi
    shift
@@ -190,21 +186,18 @@ command_not_found_handle() {
    local key
    for key in "${!__OBJECTPOOL__[@]}"
    do 
-      if [[ "$this" == "$key" ]]
-      then
+      if [[ "$this" == "$key" ]]; then
          objectExists=$(Boolean.TRUE)
          break
       fi
    done
 
-   if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.TRUE) ]]
-   then 
+   if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.TRUE) ]]; then 
       local string="${__OBJECTPOOL__["$this"]}"
       for ((i=0; i < ${#string}; i++))
       do
          local char="${string:i:1}"
-         if [[ $char == "@" ]]
-         then
+         if [[ $char == "@" ]]; then
             local class="${string:0:i}"
          fi
       done 
@@ -212,16 +205,14 @@ command_not_found_handle() {
       local meth
       for meth in $(eval echo \${!__${class}__[@]})
       do 
-         if [[ "$method" == "$(eval echo \${__${class}__[$meth]})" ]]
-         then
+         if [[ "$method" == "$(eval echo \${__${class}__[$meth]})" ]]; then
             methodExists=$(Boolean.TRUE)  
             break
          fi
       done
    fi
 
-   if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.FALSE) || $(Boolean.parseBoolean "$methodExists") == $(Boolean.FALSE) ]]
-   then
+   if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.FALSE) || $(Boolean.parseBoolean "$methodExists") == $(Boolean.FALSE) ]]; then
       I18n.err.message "bash: \$str: command not found."
       return 127
    fi
@@ -239,8 +230,7 @@ __registerFunction command_not_found_handle
 ###########################
 
 # If QUIET ist not true and stdout is an open tty and you don't source this file in a script, then... 
-if [[ $(Boolean.parseBoolean "$QUIET") != $(Boolean.TRUE) ]] && [[ -t 1 ]] && [[ ${0##*/} == "bash" ]]
-then
+if [[ $(Boolean.parseBoolean "$QUIET") != $(Boolean.TRUE) ]] && [[ -t 1 ]] && [[ ${0##*/} == "bash" ]]; then
    System.out.println 
    I18n.out.message " oo-style framework for bash 4"
    I18n.out.message " Version:      ${__VERSION__}"
@@ -294,8 +284,7 @@ then
    # Check for external commands --> NotInPathException if command not found
    I18n.out.message " Doing dependency check..."
    System.out.println
-   if __dependencyCheck
-   then
+   if __dependencyCheck; then
       I18n.out.message " Everything ok!"
    else
       System.out.println
@@ -304,8 +293,7 @@ then
 fi
 
 # Add oobash man pages
-if command -v dirname >/dev/null 2>&1
-then
+if command -v dirname >/dev/null 2>&1; then
    export MANPATH=$MANPATH:"$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && System.out.println ${PWD} )"/man
 else
    __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
@@ -323,8 +311,7 @@ fi
 # Do we have logging propeties to use ?
 __lookForLoggingPropertiesFile "$(caller)"
 
-if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]
-then
+if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]; then
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
    __registerVar __LayoutMethods__
 

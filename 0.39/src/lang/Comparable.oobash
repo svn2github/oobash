@@ -22,32 +22,26 @@
 
 __compareTo() {
    local class="$2"
-   if (( $# == 3 ))
-   then
+   if (( $# == 3 )); then
       local this="$1"
       local class="$2"
       local argobject="$3"
       local argclass
       local str
       argclass="$("$argobject".getClass 2>/dev/null)" 
-      if (( $? == 0 )) || [[ "$class" == "String" ]]
-      then
-         if [[ "$("$this".getClass)" == "$argclass" || "$class" == "String" ]]
-         then
+      if (( $? == 0 )) || [[ "$class" == "String" ]]; then
+         if [[ "$("$this".getClass)" == "$argclass" || "$class" == "String" ]]; then
             case $class in
                String)  str="$3"
                         ;;
-               Boolean) if [[ "$("$this".toString)" == $(Boolean.TRUE) ]]
-                        then
-                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]
-                           then
+               Boolean) if [[ "$("$this".toString)" == $(Boolean.TRUE) ]]; then
+                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]; then
                               System.out.println 0
                            else
                               System.out.println 1
                            fi
                         else
-                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]
-                           then
+                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]; then
                               System.out.println -1
                            else
                               System.out.println 0
@@ -69,20 +63,16 @@ __compareTo() {
          return 1
       fi                    
       declare -i length=-1
-      if (( $("$this".length) == ${#str} ))
-      then
+      if (( $("$this".length) == ${#str} )); then
          length=${#str}
-         if [[ "$("$this".toString)" == "$str" ]]
-         then
+         if [[ "$("$this".toString)" == "$str" ]]; then
             System.out.println 0
             return 0
          fi
       fi
-      if (( $length == -1 ))
-      then
+      if (( $length == -1 )); then
          declare -i result=$(($("$this".length)-${#str}))
-         if (( $("$this".length) < ${#str} ))
-         then
+         if (( $("$this".length) < ${#str} )); then
             length=$("$this".length)
          else
             length=${#str}
@@ -95,8 +85,7 @@ __compareTo() {
          declare -i valueArg=$(printf '%d\n' "'$charArg")
          local charStr="$("$this".charAt $i)"
          declare -i valueStr=$(printf '%d\n' "'$charStr")
-         if (( $valueStr != $valueArg ))
-         then
+         if (( $valueStr != $valueArg )); then
             System.out.println $(( $valueStr - $valueArg ))
             return 0
          fi	

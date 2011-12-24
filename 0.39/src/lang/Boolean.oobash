@@ -21,31 +21,26 @@
 #########################
 
 Boolean() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local this="$1"
 
-      if ! __visible "$this"
-      then
+      if ! __visible "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is not valid"
          return 1
       fi       
 
-      if ! __checkForKeywords "$this"
-      then
+      if ! __checkForKeywords "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is a keyword"
          return 1
       fi 
 
-      if ! __periodCheck "$this"
-      then
+      if ! __periodCheck "$this"; then
          I18n.err.message "Sorry, no full stop character allowed in objectname"
          return 1
       fi
 
       local pointer
-      if ! pointer=$(System.currentTimeNanos)
-      then
+      if ! pointer=$(System.currentTimeNanos); then
          I18n.err.message "Sorry, could not create object '\$this'"
          return 1
       fi
@@ -84,8 +79,7 @@ __registerClass Boolean
 ##################
 
 Boolean.TRUE() {
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.out.println 'true'
       return 0
    fi
@@ -97,8 +91,7 @@ Boolean.TRUE() {
 __registerFunction Boolean.TRUE
 
 Boolean.FALSE() {
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.out.println 'false'
       return 0
    fi
@@ -110,11 +103,9 @@ Boolean.FALSE() {
 __registerFunction Boolean.FALSE
 
 Boolean.parseBoolean() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       declare -l bool="$1"
-      if [[ "$bool" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$bool" == $(Boolean.TRUE) ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -138,8 +129,7 @@ complete -W  "$(echo ${__String__[@]}) all Boolean parseBoolean TRUE FALSE" Bool
 
 Boolean.help() {  
    local printStream=${printStream:-out};
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.${printStream}.println "
       Usage: Boolean.help all|methodname|constructor|constant
       Available methods:
@@ -321,8 +311,7 @@ Boolean.help() {
                   b.compareTo a
                   >>>-1
             ";;&
-         *)   if [[ $match == $(Boolean.FALSE) ]]
-              then
+         *)   if [[ $match == $(Boolean.FALSE) ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
                     "   

@@ -22,8 +22,7 @@
 __lookForLoggingPropertiesFile() {
    local call="$1"
    local directory=$(dirname ${call/[0-9]* /})
-   if [[ -r $directory/${__LOGGINGPROPERTIESFILE__} ]]
-   then
+   if [[ -r $directory/${__LOGGINGPROPERTIESFILE__} ]]; then
       __LOGGERPROPS__=$(Boolean.TRUE)
    else
       __LOGGERPROPS__=$(Boolean.FALSE)
@@ -43,8 +42,7 @@ __checkForKeywords() {
    local keyword
    for keyword in ${__Keywords__[@]}
    do 
-      if [[ "$word" == "$keyword" ]]
-      then
+      if [[ "$word" == "$keyword" ]]; then
          return 1
       fi
    done
@@ -104,14 +102,12 @@ __registerFunction __attribute
 __destructor() {
    local this="$1"
    local string="${__OBJECTPOOL__["${this}"]}"
-   if [[ ! -z "${string}" ]]
-   then
+   if [[ ! -z "${string}" ]]; then
       declare -i i=0
       for ((i=0; i < ${#string}; i++))
       do
          local char="${string:i:1}"
-         if [[ $char == "@" ]]
-         then
+         if [[ $char == "@" ]]; then
             local i=$(($i+1))
             local pointer="${string:i}"
             local lastClass="${string:0:(i-1)}"
@@ -123,8 +119,7 @@ __destructor() {
       local key
       for key in "${!__ATTRIBUTEPOOL__[@]}"
       do
-         if [[ "$key" == "${pointer}"* ]];
-         then
+         if [[ "$key" == "${pointer}"* ]]; then
             unset __ATTRIBUTEPOOL__["${key}"]
          fi      
       done
@@ -184,24 +179,19 @@ __visible() {
    # is extglob set ?
    shopt -q extglob
    # if extglob not set already --> set it now and change boolean 
-   if (( $? == 1 ))
-   then
+   if (( $? == 1 )); then
       shopt -s extglob
       unsetAtEnd="$(Boolean.TRUE)"
    fi 
-   if [[ "$str" != "" ]]
-   then
-      if [[ "${str##+([[:graph:]])}" == "" ]]
-      then
+   if [[ "$str" != "" ]]; then
+      if [[ "${str##+([[:graph:]])}" == "" ]]; then
          bool="$(Boolean.TRUE)"
       fi      
    fi       
-   if [[ "$unsetAtEnd" == "$(Boolean.TRUE)" ]]
-   then
+   if [[ "$unsetAtEnd" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
-   if [[  "$bool" == "$(Boolean.TRUE)" ]]
-   then
+   if [[  "$bool" == "$(Boolean.TRUE)" ]]; then
       return 0
    else
       return 1
@@ -295,168 +285,135 @@ __registerFunction __strLower
 # -Math.hypot
 __mathConverter() {
    local input="$1"
-   if [[ $input == "NaN" ]]
-   then
+   if [[ $input == "NaN" ]]; then
       System.out.println "NaN"
       return 0
-   elif [[ $input == "Infinity" ]]
-   then
+   elif [[ $input == "Infinity" ]]; then
       System.out.println "Infinity"
       return 0    
-   elif [[ $input == "-Infinity" ]]
-   then
+   elif [[ $input == "-Infinity" ]]; then
       System.out.println "-Infinity"
       return 0  
    fi 
    local unsetAtEnd=$(Boolean.FALSE) 
    # is extglob set ?
    shopt -q extglob
-   # if extglob not set already --> set it now and change boolean 
-   if (( $? == 1 ))
-   then
+   # if extglob not set already --> set it now and change boolean
+   if (( $? == 1 )); then
       shopt -s extglob
       unsetAtEnd=$(Boolean.TRUE)
    fi 
-   if [[ "$input" =~ ^[-]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]
-   then
+   if [[ "$input" =~ ^[-]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -f
       System.out.println "${input/[eE]/ * 10 ^ }"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[+]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]
-   then
+   elif [[ "$input" =~ ^[+]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -f
       output="${input/[eE]/ * 10 ^ }"
       System.out.println "${output:1}"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[-]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]
-   then
+   elif [[ "$input" =~ ^[-]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -f
       output="${input/[eE]/ * 10 ^ }"
       System.out.println "${output/,/.}"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[+]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]
-   then
+   elif [[ "$input" =~ ^[+]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -f
       output="${input/[eE]/ * 10 ^ }"
       output="${output:1}"
       System.out.println "${output/,/.}"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[-]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]
-   then
+   elif [[ "$input" =~ ^[-]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -f
       System.out.println "${input/[eE]+/ * 10 ^ }"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[+]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]
-   then
+   elif [[ "$input" =~ ^[+]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -f
       output="${input/[eE]+/ * 10 ^ }"
       System.out.println "${output:1}"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[-]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]
-   then
+   elif [[ "$input" =~ ^[-]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -f
       output="${input/[eE]+/ * 10 ^ }"
       System.out.println "${output/,/.}"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[+]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]
-   then
+   elif [[ "$input" =~ ^[+]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -f
       output="${input/[eE]+/ * 10 ^ }"
       output="${output:1}"
       System.out.println "${output/,/.}"
       set +f 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[-]?([0-9]*\.[0-9]+|[0-9]+)$ ]]
-   then
+   elif [[ "$input" =~ ^[-]?([0-9]*\.[0-9]+|[0-9]+)$ ]]; then
       System.out.println $input
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[+]?([0-9]*\.[0-9]+|[0-9]+)$ ]]
-   then
+   elif [[ "$input" =~ ^[+]?([0-9]*\.[0-9]+|[0-9]+)$ ]]; then
       System.out.println "${input:1}"
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[-]?([0-9]*\,[0-9]+|[0-9]+)$ ]]
-   then
+   elif [[ "$input" =~ ^[-]?([0-9]*\,[0-9]+|[0-9]+)$ ]]; then
       System.out.println "${input/,/.}"
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[+]?([0-9]*\,[0-9]+|[0-9]+)$ ]]
-   then
+   elif [[ "$input" =~ ^[+]?([0-9]*\,[0-9]+|[0-9]+)$ ]]; then
       output="${input:1}"
       System.out.println "${output/,/.}" 
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi     
       return 0
-   elif [[ "$input" =~ ^[-]?[0-9]+$ ]]
-   then
+   elif [[ "$input" =~ ^[-]?[0-9]+$ ]]; then
       System.out.println "$input"
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi  
       return 0
-   elif [[ "$input" =~ ^[+]?[0-9]+$ ]]
-   then
+   elif [[ "$input" =~ ^[+]?[0-9]+$ ]]; then
       System.out.println "${input:1}"
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi  
       return 0
    fi
-   if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-   then
+   if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
       shopt -u extglob
    fi  
    # Cannot recognize...
@@ -474,16 +431,14 @@ __posixFilePermissionsConverter() {
       # is extglob set ?
       shopt -q extglob
       # if extglob not set already --> set it now and change boolean 
-      if (( $? == 1 ))
-      then
+      if (( $? == 1 )); then
          shopt -s extglob
          unsetAtEnd=$(Boolean.TRUE)
       fi 
       local permissions="$1"
       local octal=''
       declare -i octalPerm=0
-      if [[ "$permissions" =~ ^([r-][w-][x-]){3}$ ]]
-      then
+      if [[ "$permissions" =~ ^([r-][w-][x-]){3}$ ]]; then
          # convert to octal format
          declare -i i=0
          for ((i=0; i < 9; i++))
@@ -495,21 +450,18 @@ __posixFilePermissionsConverter() {
                   x)octalPerm=$(($octalPerm+1));;
                esac
             # starting with 0
-            if (( $i == 2 || $i == 5 || $i== 8 ))
-            then
+            if (( $i == 2 || $i == 5 || $i== 8 )); then
                octal=$octal${octalPerm}
                octalPerm=0  
             fi        
          done
       else
-         if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-         then
+         if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
             shopt -u extglob
          fi
          return 1
       fi
-      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-      then
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi
       System.out.println $octal   
@@ -524,13 +476,11 @@ __registerFunction __posixFilePermissionsConverter
 __i18nMessage() {
       local message="$1"
       # msgid "" can be mapped to meta informations 
-      if [[ "$message" == "" ]]
-      then
+      if [[ "$message" == "" ]]; then
           System.${printStream}.println ""
           return 0
       fi
-      if command -v eval_gettext >/dev/null 2>&1
-      then
+      if command -v eval_gettext >/dev/null 2>&1; then
          System.${printStream}.println "$(eval_gettext "$message")"
          return 0
       else
@@ -564,8 +514,7 @@ __cleanUpFunctions() {
    local value
    for value in ${!__Registry__[@]}
    do 
-      if [[ "${__Registry__[$value]}" == "function" ]]
-      then
+      if [[ "${__Registry__[$value]}" == "function" ]]; then
          unset -f ${value} 
       fi
    done
@@ -581,8 +530,7 @@ __cleanUpClasses() {
    local value
    for value in ${!__Registry__[@]}
    do 
-      if [[ "${__Registry__[$value]}" == "class" ]]
-      then
+      if [[ "${__Registry__[$value]}" == "class" ]]; then
          local meth
          for meth in $(eval echo \${__${value}__[@]})
          do 
@@ -604,8 +552,7 @@ __cleanUpVars() {
    local value
    for value in ${!__Registry__[@]}
    do 
-      if [[ "${__Registry__[$value]}" == "var" ]]
-      then
+      if [[ "${__Registry__[$value]}" == "var" ]]; then
          unset ${value}
       fi
    done   
@@ -621,8 +568,7 @@ __cleanUpAliases() {
    local value
    for value in ${!__Registry__[@]}
    do 
-      if [[ "${__Registry__[$value]}" == "alias" ]]
-      then
+      if [[ "${__Registry__[$value]}" == "alias" ]]; then
          unalias ${value}
       fi
    done   
@@ -640,23 +586,19 @@ __dependencyCheck() {
    declare -i i
    for ((i=0; i < ${#__Dependencies__[@]}; i++))
    do
-      if ! command -v ${__Dependencies__[$i]} >/dev/null 2>&1
-      then
+      if ! command -v ${__Dependencies__[$i]} >/dev/null 2>&1; then
          bool="$(Boolean.FALSE)"
          __throw "NotInPathException" " ${__Dependencies__[$i]} is not in path"
       else 
-         if [[ "${__Dependencies__[$i]}" == "date" ]]
-         then
-            if ! __gnudateCheck
-            then 
+         if [[ "${__Dependencies__[$i]}" == "date" ]]; then
+            if ! __gnudateCheck; then 
                bool="$(Boolean.FALSE)"
                __throw "NotInPathException" " GNU date is not in path"
             fi
          fi         
       fi
    done
-   if [[ "$bool" == "$(Boolean.TRUE)" ]]
-   then
+   if [[ "$bool" == "$(Boolean.TRUE)" ]]; then
       return 0
    else
       return 1
@@ -673,10 +615,8 @@ __gnudateCheck() {
    # can't test but hope it works...
    local testtimestamp
    testtimestamp=$(date +%N)
-   if command -v date >/dev/null 2>&1
-   then
-      if [[ "${testtimestamp:$((${#testtimestamp}-1))}" == "N" ]]
-      then
+   if command -v date >/dev/null 2>&1; then
+      if [[ "${testtimestamp:$((${#testtimestamp}-1))}" == "N" ]]; then
          return 1
       fi
    else

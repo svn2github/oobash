@@ -21,10 +21,8 @@
 ##################
 
 System.currentTimeMillis() {
-   if (( $# == 0 ))
-   then
-      if __gnudateCheck
-      then
+   if (( $# == 0 )); then
+      if __gnudateCheck; then
          local date=$(date +%s%N)
          System.out.println ${date:0:13}
          return 0
@@ -41,10 +39,8 @@ System.currentTimeMillis() {
 __registerFunction System.currentTimeMillis
 
 System.currentTimeNanos() {
-   if (( $# == 0 ))
-   then
-      if __gnudateCheck
-      then
+   if (( $# == 0 )); then
+      if __gnudateCheck; then
          date +%s%N
          return 0
       else
@@ -60,19 +56,16 @@ System.currentTimeNanos() {
 __registerFunction System.currentTimeNanos
 
 System.exit() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       (declare -i status=$1) 2>/dev/null ||  (return 1)
-      if (( $? != 0 ))
-      then
+      if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Wrong argument: $1"
          local printStream=err
          System.help $FUNCNAME
          return 1         
       fi
       declare -i status="$1"
-      if (( $status >= 0 && $status <= 255 ))
-      then
+      if (( $status >= 0 && $status <= 255 )); then
          exit $status
       else
          __throw "IllegalArgumentException" ": Wrong argument $status -- must be between 0 and 255"
@@ -89,8 +82,7 @@ System.exit() {
 __registerFunction System.exit
 
 System.err.println() {
-   if (( $# <= 1  ))
-   then
+   if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "$message" >&2
       return 0
@@ -103,8 +95,7 @@ System.err.println() {
 __registerFunction System.err.println
 
 System.out.println() {
-   if (( $# <= 1  ))
-   then
+   if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "$message"
       return 0
@@ -126,8 +117,7 @@ complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println al
 
 System.help() {  
    local printStream=${printStream:-out}
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.${printStream}.println "
       Usage: System.help all|methodname
       Available methods:
@@ -222,8 +212,7 @@ System.help() {
                System.currentTimeMillis
                >>>1292145813665
             ";;&
-         *)   if [[ $match == $(Boolean.FALSE) ]]
-              then
+         *)   if [[ $match == $(Boolean.FALSE) ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
                     "   

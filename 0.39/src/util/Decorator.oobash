@@ -10,8 +10,7 @@
 #####################
 
 @calling() {
-   if (($# != 0))
-   then
+   if (($# != 0)); then
       System.err.println "Calling: $* "
    fi
    return 0
@@ -19,8 +18,7 @@
 __registerFunction @calling
 
 @timestamp() {
-   if (($# != 0))
-   then
+   if (($# != 0)); then
       System.err.println "Time is $(date "+%s.%N")"
    fi
    return 0
@@ -29,8 +27,7 @@ __registerFunction @timestamp
 
 
 @deprecated() {
-   if (($# != 0))
-   then
+   if (($# != 0)); then
       System.err.println "DeprecatedWarning for $1"
    fi
    return 0
@@ -43,8 +40,7 @@ __registerFunction @deprecated
 
 __decoratorCheck() {
    # we will not fill the array with /bin/bash...
-   if [[ "${0##*/}" == "bash" ]]
-   then
+   if [[ "${0##*/}" == "bash" ]]; then
       return 0
    fi
    mapfile Arr < $0

@@ -3,7 +3,7 @@
 #     
 # License: The MIT License
 #
-# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+# Copyright (c) <2011> <andreas.gregor.frank@googlemail.com>
 
 #################
 #################
@@ -15,8 +15,7 @@
 
 
 I18n.out.message() {
-   if (( $# <= 1  ))
-   then
+   if (( $# <= 1  )); then
       local printStream=out
       local message="$1"
       __i18nMessage "$message"
@@ -31,8 +30,7 @@ __registerFunction i18n.out.message
 
 I18n.err.message() {
    local printStream=err
-   if (( $# <= 1  ))
-   then
+   if (( $# <= 1  )); then
       local message="$1"
       __i18nMessage "$message"
       return 0
@@ -53,8 +51,7 @@ complete -W  "err.message out.message all" I18n.help
 
 I18n.help() {  
    local printStream=${printStream:-out}
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.${printStream}.println "
       Usage: I18n.help all|methodname
       Available methods:
@@ -91,8 +88,7 @@ I18n.help() {
             Throws:
                IllegalArgumentException - if number of arguments > 1
             ";;&   
-         *)   if [[ $match == $(Boolean.FALSE) ]]
-              then
+         *)   if [[ $match == $(Boolean.FALSE) ]]; then
                  I18n.${printStream}.println "                                  
                        No help found for $1
                     "   

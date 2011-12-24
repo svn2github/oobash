@@ -21,27 +21,21 @@
 ##################
 
 Math.sin() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
             fi 
             output="$(System.out.println "s($val)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -51,7 +45,7 @@ Math.sin() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -63,27 +57,21 @@ Math.sin() {
 __registerFunction Math.sin
 
 Math.cos() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
             fi 
             output="$(System.out.println "c($val)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -93,7 +81,7 @@ Math.cos() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -105,40 +93,32 @@ Math.cos() {
 __registerFunction Math.cos
 
 Math.tan() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
             fi
             local cos=$(Math.cos "$val")
             zerodivtest=$(System.out.println "$cos==0" | bc -l)
-            if (( $zerodivtest == 1 ))
-            then
+            if (( $zerodivtest == 1 )); then
                # FIXME ? NaN/Not defined/cos=10^-20
                System.out.println "NaN"
                return 0
             fi
-            if [[ $cos == "NaN" || $cos == "Infinity" || $cos == "-Infinity" ]]
-            then
+            if [[ $cos == "NaN" || $cos == "Infinity" || $cos == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
             fi
             output="$(System.out.println "$(Math.sin "$val")/$cos" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -148,7 +128,7 @@ Math.tan() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -160,35 +140,27 @@ Math.tan() {
 __registerFunction Math.tan
 
 Math.atan() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then 
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" ]]
-            then
+      if (( $? == 0 )); then 
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ $val == "Infinity" ]]
-            then
+            elif [[ $val == "Infinity" ]]; then
                System.out.println $(Math.multiplier $(Math.PI) 0.5)
                return 0            
-            elif [[ $val == "-Infinity" ]]
-            then
+            elif [[ $val == "-Infinity" ]]; then
                System.out.println $(Math.multiplier $(Math.PI) -0.5)
                return 0                    
             fi
             output="$(System.out.println "a($val)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -198,7 +170,7 @@ Math.atan() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -210,46 +182,37 @@ Math.atan() {
 __registerFunction Math.atan
 
 Math.asin() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
             fi 
             rangecheck=$(System.out.println "$val>1||$val<-1" | bc -l)
-            if (( rangecheck == 1 ))
-            then
+            if (( rangecheck == 1 )); then
                System.out.println "NaN"
                return 0 
             fi 
             zerodivtest=$(System.out.println "$val==1" | bc -l)
-            if (( $zerodivtest == 1 ))
-            then
+            if (( $zerodivtest == 1 )); then
                System.out.println "$(Math.PI)/2" | bc -l
                return 0 
             fi
             zerodivtest=$(System.out.println "$val==-1" | bc -l)
-            if (( $zerodivtest == 1 ))
-            then
+            if (( $zerodivtest == 1 )); then
                System.out.println "-$(Math.PI)/2" | bc -l
                return 0 
             fi
             # arcsin(x) = arctan(x / sqrt(1 \96 x^2))
             output="$(System.out.println "a($val/sqrt(1-($val*$val)))" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -259,7 +222,7 @@ Math.asin() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -271,40 +234,32 @@ Math.asin() {
 __registerFunction Math.asin
 
 Math.acos() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
             fi 
             rangecheck=$(System.out.println "$val>1||$val<-1" | bc -l)
-            if (( rangecheck == 1 ))
-            then
+            if (( rangecheck == 1 )); then
                System.out.println "NaN"
                return 0 
             fi 
             zerodivtest=$(System.out.println "$val==0" | bc -l)
-            if (( $zerodivtest == 1 ))
-            then
+            if (( $zerodivtest == 1 )); then
                System.out.println "$(Math.PI)/2" | bc -l
                return 0 
             fi  
             # arccos(x) = arctan(sqrt(1 \96 x^2 )/ x)
             output="$(System.out.println "a(sqrt(1-($val*$val))/$val)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -314,7 +269,7 @@ Math.acos() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
          return 1
       fi        
    fi
@@ -326,37 +281,28 @@ Math.acos() {
 __registerFunction Math.acos
 
 Math.max() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local val1
       local val2
       val1=$(__mathConverter "$1")
-      if (( $? == 0 ))
-      then
+      if (( $? == 0 )); then
          val2=$(__mathConverter "$2")
-         if (( $? == 0 ))
-         then
-            if command -v bc >/dev/null 2>&1
-            then
-               if [[ $val1 == "NaN" || $val2 == "NaN" ]]
-               then
+         if (( $? == 0 )); then
+            if command -v bc >/dev/null 2>&1; then
+               if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
                   System.out.println "NaN"
                   return 0
-               elif [[ $val1 == "Infinity" || $val2 == "Infinity" ]]
-               then
+               elif [[ $val1 == "Infinity" || $val2 == "Infinity" ]]; then
                   System.out.println "Infinity"
                   return 0   
-               elif [[ $val1 == "-Infinity" ]]
-               then
+               elif [[ $val1 == "-Infinity" ]]; then
                   System.out.println $2
                   return 0         
-               elif [[ $val2 == "-Infinity" ]]
-               then
+               elif [[ $val2 == "-Infinity" ]]; then
                   System.out.println $1
                   return 0     
                fi                 
-               if (( $(System.out.println "$val1>$val2" | bc -l) == 1 ))
-               then
+               if (( $(System.out.println "$val1>$val2" | bc -l) == 1 )); then
                   System.out.println $1
                else
                   System.out.println $2
@@ -366,7 +312,7 @@ Math.max() {
             __throw "NotInPathException" ": bc not in path"
             return 1
          else
-            __throw "MathIllegalArgumentException" ": illegal argument is \"$2\""
+            __throw "IllegalArgumentException" ": illegal argument is \"$2\""
             return 1
          fi
       else
@@ -382,37 +328,28 @@ Math.max() {
 __registerFunction Math.max
 
 Math.min() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local val1
       local val2
       val1=$(__mathConverter "$1")
-      if (( $? == 0 ))
-      then
+      if (( $? == 0 )); then
          val2=$(__mathConverter "$2")
-         if (( $? == 0 ))
-         then
-            if command -v bc >/dev/null 2>&1
-            then            
-               if [[ $val1 == "NaN" || $val2 == "NaN" ]]
-               then
+         if (( $? == 0 )); then
+            if command -v bc >/dev/null 2>&1; then            
+               if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
                   System.out.println "NaN"
                   return 0
-               elif [[ $val1 == "-Infinity" || $val2 == "-Infinity" ]]
-               then
+               elif [[ $val1 == "-Infinity" || $val2 == "-Infinity" ]]; then
                   System.out.println "-Infinity"
                   return 0   
-               elif [[ $val1 == "Infinity" ]]
-               then
+               elif [[ $val1 == "Infinity" ]]; then
                   System.out.println $2
                   return 0         
-               elif [[ $val2 == "Infinity" ]]
-               then
+               elif [[ $val2 == "Infinity" ]]; then
                   System.out.println $1
                   return 0     
                fi               
-               if (( $(System.out.println "$val1<$val2" | bc -l) == 1 ))
-               then
+               if (( $(System.out.println "$val1<$val2" | bc -l) == 1 )); then
                   System.out.println $1
                else
                   System.out.println $2
@@ -432,25 +369,19 @@ Math.min() {
 __registerFunction Math.min
 
 Math.abs() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val1
       val1=$(__mathConverter "$1")
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then      
-            if [[ $val == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then      
+            if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ $val == "Infinity" || $val == "-Infinity" ]]
-            then
+            elif [[ $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "Infinity"
                return 0            
             fi      
-            if (( $(System.out.println "$val1>0" | bc -l) == 1 ))
-            then
+            if (( $(System.out.println "$val1>0" | bc -l) == 1 )); then
                System.out.println $1
             else
                System.out.println ${1:1}
@@ -469,37 +400,29 @@ Math.abs() {
 __registerFunction Math.abs
 
 Math.sqrt() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then 
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" || $val == "-Infinity" ]]
-            then
+      if (( $? == 0 )); then 
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ $val == "Infinity" ]]
-            then
+            elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0            
             fi
             rangecheck=$(System.out.println "$val<0" | bc -l)
-            if (( rangecheck == 1 ))
-            then
+            if (( rangecheck == 1 )); then
                System.out.println "NaN"
                return 0 
             fi 
             output="$(System.out.println "sqrt($val)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -518,35 +441,27 @@ Math.sqrt() {
 __registerFunction Math.sqrt
 
 Math.exp() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ $val == "Infinity" ]]
-            then
+            elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ $val == "-Infinity" ]]
-            then
+            elif [[ $val == "-Infinity" ]]; then
                System.out.println 0
                return 0
             fi 
             output="$(System.out.println "e($val)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -565,35 +480,27 @@ Math.exp() {
 __registerFunction Math.exp
 
 Math.expm1() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ $val == "Infinity" ]]
-            then
+            elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ $val == "-Infinity" ]]
-            then
+            elif [[ $val == "-Infinity" ]]; then
                System.out.println -1
                return 0
             fi 
             output="$(System.out.println "e($val)-1" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -612,36 +519,28 @@ Math.expm1() {
 __registerFunction  Math.expm1
 
 Math.sinh() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ "$val" == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ "$val" == "Infinity" ]]
-            then
+            elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ "$val" == "-Infinity" ]]
-            then
+            elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return 0
             fi 
             # (e^x - e^-x)/2
             output="$(System.out.println "(e($val)-e(-1*$val))/2" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -660,36 +559,28 @@ Math.sinh() {
 __registerFunction Math.sinh
      
 Math.cosh() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ "$val" == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ "$val" == "Infinity" || "$val" == "-Infinity" ]]
-            then
+            elif [[ "$val" == "Infinity" || "$val" == "-Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif (( $(System.out.println "$val==0" | bc -l) == 1 ))
-            then
+            elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
                System.out.println 1
                return 0               
             fi 
             # (e^x + e^-x)/2
             output="$(System.out.println "(e($val)+e(-1*$val))/2" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -708,36 +599,28 @@ Math.cosh() {
 __registerFunction Math.cosh
         
 Math.tanh() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ "$val" == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ "$val" == "Infinity" ]]
-            then
+            elif [[ "$val" == "Infinity" ]]; then
                System.out.println 1
                return 0
-            elif [[ "$val" == "-Infinity" ]]
-            then
+            elif [[ "$val" == "-Infinity" ]]; then
                System.out.println -1
                return 0
             fi 
             # (e^x - e^-x)/(e^x + e^-x)
             output="$(System.out.println "(e($val)-e(-1*$val))/(e($val)+e(-1*$val))" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -756,8 +639,7 @@ Math.tanh() {
 __registerFunction Math.tanh
         
 Math.E() {
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.out.println 2.71828182845904523536
       return 0
    fi
@@ -769,8 +651,7 @@ Math.E() {
 __registerFunction Math.E
 
 Math.PI() {
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.out.println 3.14159265358979323846
       return 0
    fi
@@ -782,24 +663,20 @@ Math.PI() {
 __registerFunction Math.PI
 
 Math.random() {
-   if (( $# == 0 ))
-   then
-      if command -v bc >/dev/null 2>&1
-      then 
+   if (( $# == 0 )); then
+      if command -v bc >/dev/null 2>&1; then 
          local unsetAtEnd=$(Boolean.FALSE) 
          # is extglob set ?
          shopt -q extglob
          # if extglob not set already --> set it now and change boolean 
-         if (( $? == 1 ))
-         then
+         if (( $? == 1 )); then
             shopt -s extglob
             unsetAtEnd=$(Boolean.TRUE)
          fi    
          res=$(System.out.println "scale=15; $RANDOM/32768" | bc -l)
          result="${res%%+([0])}"
          System.out.println 0$result  
-         if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]
-         then
+         if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
             shopt -u extglob
          fi  
          return 0
@@ -815,42 +692,32 @@ Math.random() {
 __registerFunction Math.random
 
 Math.adder() {
-   if (( $# >= 2 ))
-   then
-      if command -v bc >/dev/null 2>&1
-      then
+   if (( $# >= 2 )); then
+      if command -v bc >/dev/null 2>&1; then
          local str=''
          local first=$(Boolean.TRUE)
          while (( $# ))
          do
             local value=$(__mathConverter "$1")
-            if (( $? == 0 ))
-            then
-               if [[ $first == $(Boolean.TRUE) ]]
-               then
-                  if [[ "$value" == "NaN" ]]
-                  then
+            if (( $? == 0 )); then
+               if [[ $first == $(Boolean.TRUE) ]]; then
+                  if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
                      return 0
-                  elif [[ "$value" == "Infinity" ]]
-                  then
+                  elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
-                  elif [[ "$value" == "-Infinity" ]]
-                  then
+                  elif [[ "$value" == "-Infinity" ]]; then
                      neginf="yes"
                   fi
                   str="($value)"
                   first=$(Boolean.FALSE)
                else
-                  if [[ "$value" == "NaN" ]]
-                  then
+                  if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
                      return 0
-                  elif [[ "$value" == "Infinity" ]]
-                  then
+                  elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
-                  elif [[ "$value" == "-Infinity" ]]
-                  then
+                  elif [[ "$value" == "-Infinity" ]]; then
                      neginf="yes"
                   fi
                   str="$str+($value)"
@@ -861,27 +728,22 @@ Math.adder() {
             fi 
             shift
          done
-         if [[ $neginf == "yes" && $posinf == "yes" ]]
-         then
+         if [[ $neginf == "yes" && $posinf == "yes" ]]; then
             System.out.println "NaN"
             return 0
-         elif  [[ $neginf == "yes" ]]
-         then
+         elif  [[ $neginf == "yes" ]]; then
             System.out.println "-Infinity"
             return 0
-         elif  [[ $posinf == "yes" ]]
-         then
+         elif  [[ $posinf == "yes" ]]; then
             System.out.println "Infinity"
             return 0     
          fi 
          output=$(System.out.println "$str" | bc -l)
-         if [[ "${output:0:2}" == '-.' ]]
-         then
+         if [[ "${output:0:2}" == '-.' ]]; then
             System.out.println  -0."${output:2}"
             return 0
          fi
-         if [[ "${output:0:1}" == "." ]]
-         then
+         if [[ "${output:0:1}" == "." ]]; then
             System.out.println 0"$output"
             return 0 
          fi
@@ -899,10 +761,8 @@ Math.adder() {
 __registerFunction Math.adder
 
 Math.multiplier() {
-   if (( $# >= 2 ))
-   then
-      if command -v bc >/dev/null 2>&1
-      then
+   if (( $# >= 2 )); then
+      if command -v bc >/dev/null 2>&1; then
          local str=''
          local first=$(Boolean.TRUE)
          local neginf=''
@@ -910,33 +770,25 @@ Math.multiplier() {
          while (( "$#" ))
          do
             local value=$(__mathConverter "$1")
-            if (( $? == 0 ))
-            then
-               if [[ $first == $(Boolean.TRUE) ]]
-               then
-                  if [[ "$value" == "NaN" ]]
-                  then
+            if (( $? == 0 )); then
+               if [[ $first == $(Boolean.TRUE) ]]; then
+                  if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
                      return 0
-                  elif [[ "$value" == "Infinity" ]]
-                  then
+                  elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
-                  elif [[ "$value" == "-Infinity" ]]
-                  then
+                  elif [[ "$value" == "-Infinity" ]]; then
                      neginf="yes"
                   fi
                   str="($value)"
                   first=$(Boolean.FALSE)
                else
-                  if [[ "$value" == "NaN" ]]
-                  then
+                  if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
                      return 0
-                  elif [[ "$value" == "Infinity" ]]
-                  then
+                  elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
-                  elif [[ "$value" == "-Infinity" ]]
-                  then
+                  elif [[ "$value" == "-Infinity" ]]; then
                      neginf="yes"
                   fi                    
                   str="$str*($value)"
@@ -947,27 +799,22 @@ Math.multiplier() {
             fi 
             shift
          done
-         if [[ $neginf == "yes" && $posinf == "yes" ]]
-         then
+         if [[ $neginf == "yes" && $posinf == "yes" ]]; then
             System.out.println "NaN"
             return 0
-         elif  [[ $neginf == "yes" ]]
-         then
+         elif  [[ $neginf == "yes" ]]; then
             System.out.println "-Infinity"
             return 0
-         elif  [[ $posinf == "yes" ]]
-         then
+         elif  [[ $posinf == "yes" ]]; then
             System.out.println "Infinity"
             return 0     
          fi    
          output=$(System.out.println "$str" | bc -l)
-         if [[ "${output:0:2}" == '-.' ]]
-         then
+         if [[ "${output:0:2}" == '-.' ]]; then
             System.out.println  -0."${output:2}"
             return 0
          fi
-         if [[ "${output:0:1}" == "." ]]
-         then
+         if [[ "${output:0:1}" == "." ]]; then
             System.out.println 0"$output"
             return 0 
          fi
@@ -985,39 +832,30 @@ Math.multiplier() {
 __registerFunction Math.multiplier
 
 Math.log() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN"  || $val == "-Infinity" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN"  || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ $val == "Infinity" ]]
-            then
+            elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif (( $(System.out.println "$val==0" | bc -l) == 1 ))
-            then
+            elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
                System.out.println "-Infinity"
                return 0   
-            elif (( $(System.out.println "$val<0" | bc -l) == 1 ))
-            then
+            elif (( $(System.out.println "$val<0" | bc -l) == 1 )); then
                System.out.println "NaN"
                return 0               
             fi 
             output="$(System.out.println "l($val)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -1036,39 +874,30 @@ Math.log() {
 __registerFunction Math.log
 
 Math.log10() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ $val == "Infinity" ]]
-            then
+            elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ $val == "-Infinity" ]]
-            then
+            elif [[ $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0            
-            elif (( $(System.out.println "$val==0" | bc -l) == 1 ))
-            then
+            elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
                System.out.println "-Infinity"
                return 0    
             fi 
             output="$(System.out.println "l($val)/l(10)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -1087,39 +916,30 @@ Math.log10() {
 __registerFunction Math.log10
 
 Math.log1p() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ $val == "Infinity" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ $val == "NaN" || $val == "-Infinity" ]]
-            then
+            elif [[ $val == "NaN" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
                return 0
-            elif (( $(System.out.println "$val<-1" | bc -l) == 1 ))
-            then
+            elif (( $(System.out.println "$val<-1" | bc -l) == 1 )); then
                System.out.println "NaN"
                return 0      
-            elif (( $(System.out.println "$val==-1" | bc -l) == 1 ))
-            then
+            elif (( $(System.out.println "$val==-1" | bc -l) == 1 )); then
                System.out.println "-Infinity"
                return 0      
             fi                            
             output="$(System.out.println "l($val+1)" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -1138,35 +958,27 @@ Math.log1p() {
 __registerFunction Math.log1p
 
 Math.toDegrees() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ "$val" == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ "$val" == "Infinity" ]]
-            then
+            elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ "$val" == "-Infinity" ]]
-            then
+            elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return 0
             fi 
             output="$(System.out.println "(180/$(Math.PI))*$val" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -1185,35 +997,27 @@ Math.toDegrees() {
 __registerFunction Math.toDegrees
      
 Math.toRadians() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ "$val" == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ "$val" == "Infinity" ]]
-            then
+            elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ "$val" == "-Infinity" ]]
-            then
+            elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return 0
             fi 
             output="$(System.out.println "($(Math.PI)/180)*$val" | bc -l)"
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -1232,36 +1036,28 @@ Math.toRadians() {
 __registerFunction Math.toRadians
 
 Math.ceil() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ "$val" == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ "$val" == "Infinity" ]]
-            then
+            elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ "$val" == "-Infinity" ]]
-            then
+            elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return 0
             fi 
             local CEIL_FUNCTION="define ceil(x) {if (x<0) {return x/1} else {if (scale(x)==0) {return x} else {return x/1 + 1 }}}"
             output=$(System.out.println "$CEIL_FUNCTION;ceil($val)" | bc)
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -1280,37 +1076,29 @@ Math.ceil() {
 __registerFunction Math.ceil
 
 Math.floor() {
-   if (( $# == 1 ))
-   then
+   if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
-      if (( $? == 0 ))
-      then
-         if command -v bc >/dev/null 2>&1
-         then 
-            if [[ "$val" == "NaN" ]]
-            then
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
                return 0
-            elif [[ "$val" == "Infinity" ]]
-            then
+            elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
                return 0
-            elif [[ "$val" == "-Infinity" ]]
-            then
+            elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return 0
             fi 
             # http://phodd.net/gnu-bc/code/funcs.bc
             local FLOOR_FUNCTION="define floor(x) {auto os,xx;os=scale;scale=0; xx=x/1; if(xx>x)xx-=1;scale=os;return(xx)}"
             output=$(System.out.println "$FLOOR_FUNCTION;floor($val)" | bc)
-            if [[ "${output:0:2}" == '-.' ]]
-            then
+            if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return 0
             fi
-            if [[ "${output:0:1}" == "." ]]
-            then
+            if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
                return 0 
             fi
@@ -1329,40 +1117,31 @@ Math.floor() {
 __registerFunction Math.floor
 
 Math.hypot() {
-   if (( $# == 2 ))
-   then
+   if (( $# == 2 )); then
       local val1
       local val2
       val1=$(__mathConverter "$1")
-      if (( $? == 0 ))
-      then
+      if (( $? == 0 )); then
          val2=$(__mathConverter "$2")
-         if (( $? == 0 ))
-         then
-            if command -v bc >/dev/null 2>&1
-            then 
-               if [[ "$val1" == "Infinity" || "$val1" == "-Infinity" ]]
-               then
+         if (( $? == 0 )); then
+            if command -v bc >/dev/null 2>&1; then 
+               if [[ "$val1" == "Infinity" || "$val1" == "-Infinity" ]]; then
                   System.out.println "Infinity"
                   return 0
-               elif [[ "$val2" == "Infinity" || "$val2" == "-Infinity" ]]
-               then
+               elif [[ "$val2" == "Infinity" || "$val2" == "-Infinity" ]]; then
                   System.out.println "Infinity"
                   return 0                              
-               elif [[ "$val1" == "NaN" || "$val2" == "NaN" ]]
-               then 
+               elif [[ "$val1" == "NaN" || "$val2" == "NaN" ]]; then 
                   System.out.println "NaN"
                   return 0            
                fi 
                # sqrt(x^2 + y^2)
                output="$(System.out.println "sqrt((($val1)*($val1))+(($val2)*($val2)))" | bc -l)"
-               if [[ "${output:0:2}" == '-.' ]]
-               then
+               if [[ "${output:0:2}" == '-.' ]]; then
                   System.out.println  -0."${output:2}"
                   return 0
                fi
-               if [[ "${output:0:1}" == "." ]]
-               then
+               if [[ "${output:0:1}" == "." ]]; then
                   System.out.println 0"$output"
                   return 0 
                fi
@@ -1398,8 +1177,7 @@ complete -W  "random cos sin tan sqrt exp abs acos asin atan min max multiplier 
 
 Math.help() {  
    local printStream=${printStream:-out}
-   if (( $# == 0 ))
-   then
+   if (( $# == 0 )); then
       System.${printStream}.println "
       Usage: Math.help all|methodname|constant
       Available methods:
@@ -2164,8 +1942,7 @@ Math.help() {
                   Math.atan NaN
                   >>>NaN
             ";;&
-         *)   if [[ $match == $(Boolean.FALSE) ]]
-              then
+         *)   if [[ $match == $(Boolean.FALSE) ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
                     "   
