@@ -8,6 +8,7 @@
 # $Class.getAll(array) functions
 # I18n.xy.messages only if tty open ?
 # Different Exceptions --> different return values ?
+# stacktrace -->remove help output when exception
 
 # 0.40
 # Logging

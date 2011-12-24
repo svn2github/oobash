@@ -209,7 +209,6 @@
 
 TODO: add IllegalArgumentException to help 
 TODO: recreate man pages
-TODO: stacktrace -->remove help output when exception
 
 #################################################################
 # Features:
