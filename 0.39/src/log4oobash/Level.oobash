@@ -193,10 +193,14 @@ Level.help() {
                   Constructor for the Level objects.
                Parameters:
                   objectname 
-                  string
+                  level
+                  levelStr
+                  syslogEquivalent
                   No "." character is allowed in the objectname string.
                Returns:
                   None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 4
                Example:
                   Level a <level> <levelStr> <syslogEquivalent> 
             ";;& 
@@ -209,6 +213,8 @@ Level.help() {
                   anObject - The object to be compared with
                Returns:
                   true if and only if the objects have the same level field; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   Level a 1000 "FATAL" 0
                   Level b 1000 "MYLEVEL" 0
@@ -224,6 +230,8 @@ Level.help() {
                   None
                Returns:
                   The value of level.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Level b 2 3 4
                   b.getLevel 
@@ -238,6 +246,8 @@ Level.help() {
                   None
                Returns:
                   The value of levelStr.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Level b 2 3 4
                   b.getLevelStr 
@@ -252,6 +262,8 @@ Level.help() {
                   None
                Returns:
                   The value of syslogEquivalent.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Level b 2 3 4
                   b.getSyslogEquivalent  
@@ -266,6 +278,8 @@ Level.help() {
                Returns:
                   Returns true if this level has a higher or equal level 
                   than the level passed as argument, false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Level a 1000 "FATAL" 0
                   Level b 1000 "MYLEVEL" 0
@@ -281,6 +295,8 @@ Level.help() {
                   None
                Returns:
                   The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Level b 2 3 4
                   b.getClass

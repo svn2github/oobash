@@ -7,8 +7,10 @@
 # -quote String function
 # $Class.getAll(array) functions
 # I18n.xy.messages only if tty open ?
-# Different Exceptions --> different return values ?
 # stacktrace -->remove help output when exception
+# check where xargs should be used
+# http://tldp.org/LDP/abs/html/exitcodes.html --> define own exit codes
+# Different Exceptions --> different return values ?
 
 # 0.40
 # Logging

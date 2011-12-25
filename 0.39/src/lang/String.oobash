@@ -930,21 +930,21 @@ __replaceFirst() {
 }
 
 __replaceAll() {
-   case $# in
-      3) local replacement="";;
-      4) local replacement="$4";;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
-   esac
-   local this="$1" 
-   local substring="$3"
-   shopt -s extglob
-   local str="$($this.toString)"
-   System.out.println "${str//$substring/$replacement}"
-   return 0
+   if (( $# == 4 )); then
+      local this="$1"
+      local substring="$3"
+      local replacement="$4"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      System.out.println "${str//$substring/$replacement}"
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   local class="$2"
+   local printStream=err
+   ${class}.help ${FUNCNAME:2}
+   return 1
+
 }
 
 __substring() {
@@ -1169,6 +1169,7 @@ String.help() {
                Throws:
                   NotInPathException - if base64 not in path
                   DecoderException - if problem with decoding
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a YWJjCg==
                   a.base64Decode
@@ -1184,6 +1185,7 @@ String.help() {
                   base64 encoded data
                Throws:
                   NotInPathException - if base64 not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc
                   a.base64Encode
@@ -1199,6 +1201,8 @@ String.help() {
                   None  
                Returns:
                   It returns a copy of the string with only its first character capitalized   
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String abC
                   a.capitalize
@@ -1217,6 +1221,7 @@ String.help() {
                   centered string
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
                Example:
                   String a abc
                   a.center 5
@@ -1238,6 +1243,7 @@ String.help() {
                   value is at index 0.
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
                   IndexOutOfBoundsException - if the index argument is negative or not less than the length of this string.
                Example:
                   String a abc
@@ -1270,6 +1276,8 @@ String.help() {
                   the value 0 if the argument String is equal to this String; a value less than 0 
                   if this String is lexicographically less than the string argument;
                   and a value greater than 0 if this String is lexicographically greater than the String argument.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a abcd
                   a.compareTo abcd
@@ -1299,6 +1307,8 @@ String.help() {
                   a negative integer, zero, or a positive integer as the specified String 
                   is greater than, equal to, or less than this String, 
                   ignoring case considerations.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a abc
                   x.compareToIgnoreCase abc
@@ -1323,6 +1333,8 @@ String.help() {
                Returns:
                   a string that represents the concatenation of this object's characters followed 
                   by the string argument's characters
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a fff
                   a.concat abc
@@ -1337,6 +1349,8 @@ String.help() {
                   s - the primitive string to search for
                Returns:
                   true if this String contains s, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a \"abc cd\"
                   a.contains \" c\"
@@ -1354,6 +1368,7 @@ String.help() {
                   the number of non-overlapping occurrences of parameter in string.  
                Throws:
                   NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a acdccde
                   a.count c
@@ -1373,6 +1388,8 @@ String.help() {
                   character sequence represented by this object; false otherwise. 
                   Note that the result will be true if the argument is the empty string or is equal 
                   to this String object as determined by the equals Object method.  
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a xyz
                   a.endsWith z
@@ -1393,6 +1410,8 @@ String.help() {
                Returns:
                   true if the given object represents a String equivalent 
                   to this string, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a abc
                   String b abc
@@ -1423,6 +1442,7 @@ String.help() {
                   false otherwise
                Throws:
                   WrongClassException - if argument has the wrong class  
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a abc
                   String b AbC
@@ -1446,6 +1466,8 @@ String.help() {
                   No \".\" character is allowed in the objectname string.
                Returns:
                   None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
                Example:
                   String a teststring
             ";;& 
@@ -1458,6 +1480,8 @@ String.help() {
                  None
                Returns:
                   The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String b xxx
                   b.getClass
@@ -1477,6 +1501,7 @@ String.help() {
                   (The hash value of the empty string is zero.)  
                Throws:
                   NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abcdef
                   a.hashCode
@@ -1498,6 +1523,7 @@ String.help() {
                   the index within this string of the first occurrence of the specified substring.
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1 AND != 2
                Examples:
                   String a abc
                   a.indexOf a 
@@ -1513,6 +1539,8 @@ String.help() {
                Returns:
                   true if all characters in the String are alphanumeric and there is at least one character, 
                   false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a a1
                   a.isAlnum
@@ -1528,6 +1556,8 @@ String.help() {
                Returns:
                   true if all characters in the String are alphabetic and there is at least one character, 
                   false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc
                   a.isAlpha
@@ -1543,6 +1573,8 @@ String.help() {
                Returns:
                   true if all characters in the String are ascii and there is at least one character, 
                   false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a \E4\F6\FC
                   a.isAscii
@@ -1557,7 +1589,9 @@ String.help() {
                   None
                Returns:
                   true if all characters in the String are digits and there is at least one character, 
-                  false otherwise.     
+                  false otherwise.    
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0 
                Example:
                   String a 23424
                   a.isDigit
@@ -1571,7 +1605,9 @@ String.help() {
                Parameters:
                   None
                Returns:
-                  true if length is 0, otherwise false     
+                  true if length is 0, otherwise false
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a ""
                   a.isEmpty
@@ -1586,7 +1622,9 @@ String.help() {
                   None
                Returns:
                   true if all characters in the String are hexdigits and there is at least one character, 
-                  false otherwise.     
+                  false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a "a01"
                   a.isHexDigit
@@ -1603,6 +1641,8 @@ String.help() {
                Returns:
                   true if all cased characters in the String are lowercase and there is at least one cased character, 
                   false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a aBc
                   a.isLowerCase
@@ -1618,6 +1658,8 @@ String.help() {
                Returns:
                   true if all characters in the String are printable and there is at least one character, 
                   false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc
                   a.isPrintable
@@ -1633,6 +1675,8 @@ String.help() {
                Returns:
                   true if there are only whitespace characters in the String and there is at least one character, 
                   false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a \"   \"
                   a.isSpace
@@ -1650,6 +1694,8 @@ String.help() {
                   It returns true if the String is a titlecased string and there is at least one character, 
                   for example uppercase characters may only follow uncased characters and lowercase characters 
                   only cased ones. Returns false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a 'This Is String Example...Wow!!!'
                   a.isTitle
@@ -1666,6 +1712,8 @@ String.help() {
                Returns:
                   true if all cased characters in the String are uppercase and there is at least one cased character,
                   false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a ABC
                   a.isUpperCase
@@ -1681,6 +1729,8 @@ String.help() {
                Returns:
                   true if all characters in the String are visible and there is at least one character, 
                   false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a \"a c\"
                   a.isVisible
@@ -1700,6 +1750,7 @@ String.help() {
                   the index within this String of the last occurrence of the specified substring.
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments !=1 AND !=2
                Examples:
                   String a \"eacc eadee\"
                   a.lastIndexOf \" e\" 2
@@ -1718,6 +1769,8 @@ String.help() {
                   None  
                Returns:
                   the length of the sequence of characters.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc
                   a.length
@@ -1732,6 +1785,8 @@ String.help() {
                Returns:
                   It returns a copy of the String in which all chars have been stripped 
                   from the beginning of the string (whitespace characters).     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a \"   abc    \"
                   echo \"'\$(a.lstrip)'\"
@@ -1747,6 +1802,8 @@ String.help() {
                Returns:
                   true if, and only if, this String matches the given regular expression,
                   false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   String a abc
                   a.matches ^[[:alnum:]]*$
@@ -1762,6 +1819,8 @@ String.help() {
                Returns:
                   Returns a new string resulting from replacing all occurrences
                   of oldSub in this string with newSub.  
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
                Example:
                   String a abca
                   a.replaceAll a X
@@ -1777,6 +1836,8 @@ String.help() {
                Returns:
                   Returns a new string resulting from replacing the first occurrence 
                   of oldSub in this string with newSub.  
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
                Example:
                   String a abca
                   a.replaceFirst a X
@@ -1790,6 +1851,8 @@ String.help() {
                   None
                Returns:
                   a reversed version of the string 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a AbC
                   a.reverse
@@ -1804,6 +1867,8 @@ String.help() {
                Returns:
                   It returns a copy of the string in which all chars have been stripped 
                   from the end of the string (whitespace characters).
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a \"   abc    \"
                   echo \"'\$(a.rstrip)'\"
@@ -1820,6 +1885,7 @@ String.help() {
                   true if string starts with parameter string, false otherwise.
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
                Example:
                   String a abcdef
                   a.startsWith ab
@@ -1841,6 +1907,7 @@ String.help() {
                   Thus the length of the substring is endIndex-beginIndex.
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1 AND != 2
                   IndexOutOfBoundsException - if the beginIndex is negative, or endIndex is larger than the length of this String object, 
                                               or beginIndex is larger than endIndex.   
                Example:
@@ -1856,6 +1923,8 @@ String.help() {
                   None
                Returns:
                   a copy of s, but with lower case letters converted to upper case and vice versa. 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a AbC
                   a.swapCase
@@ -1870,6 +1939,8 @@ String.help() {
                Returns:
                   Return a titlecased version of the string: words start with uppercase characters, 
                   all remaining cased characters are lowercase.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a \"AbC...y aber\"
                   a.title
@@ -1885,6 +1956,8 @@ String.help() {
                   None
                Returns:
                   A copy of the string with all cased characters in lower case.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a AbC
                   a.toLowerCase
@@ -1901,7 +1974,8 @@ String.help() {
                   the string itself.
                Throws:
                   NotInPathException - if sort not in path
-                  NotInPathException - if tr not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc
                   a.toString
@@ -1917,6 +1991,8 @@ String.help() {
                   None
                Returns:
                   A copy of the string with all cased characters in upper case.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc
                   a.toUpperCase
@@ -1931,6 +2007,8 @@ String.help() {
                Returns:
                   A copy of this string with leading and trailing white space removed, or this 
                   string if it has no leading or trailing white space.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String a \"   abc\"
                   a.toString
@@ -1948,6 +2026,7 @@ String.help() {
                   Pad a numeric string on the left with zero digits until the given width is reached. 
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
                Example:
                   String a abc
                   a.zfill 5
@@ -1961,6 +2040,8 @@ String.help() {
                   None
                Returns:
                   The string '0123456789'
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example
                   String.digits
                   >>>0123456789
@@ -1975,6 +2056,8 @@ String.help() {
                   The concatenation of the String.asciiLettersLowerCase and 
                   String.asciiLettersUpperCase. 
                   This value is not locale-dependent.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String.asciiLetters
                   >>>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ  
@@ -1988,6 +2071,8 @@ String.help() {
                Returns:
                   The lowercase letters 'abcdefghijklmnopqrstuvwxyz'. 
                   This value is not locale-dependent and will not change.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String.asciiLettersLowerCase
                   >>>abcdefghijklmnopqrstuvwxyz    
@@ -2001,6 +2086,8 @@ String.help() {
                Returns:
                   The uppercase letters 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'. 
                   This value is not locale-dependent and will not change.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String.asciiLettersUpperCase
                   >>>ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -2013,6 +2100,8 @@ String.help() {
                   None
                Returns:
                   The string '0123456789abcdefABCDEF' 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String.hexDigits
                   >>>0123456789abcdefABCDEF 
@@ -2025,6 +2114,8 @@ String.help() {
                   None
                Returns:
                   The string '01234567'
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   String.octDigits
                   >>>01234567

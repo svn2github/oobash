@@ -205,9 +205,10 @@
 #    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
 #    -many fixes
 #    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
-#    -style corection
+#    -style corections
 
 TODO: add IllegalArgumentException to help 
+TODO: Math add Exceptions where necessary
 TODO: recreate man pages
 
 #################################################################

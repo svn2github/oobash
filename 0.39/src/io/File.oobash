@@ -927,6 +927,8 @@ File.help() {
                   No \".\" character is allowed in the objectname string.
                Returns
                   None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
                Example:
                   File a testfile 
             ";;&
