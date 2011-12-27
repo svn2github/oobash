@@ -18,6 +18,8 @@
 # check where xargs should be used
 #
 # set TMPDIR ?
+#
+# set aliases only if tty open
 
 # 0.40
 # Assert 
