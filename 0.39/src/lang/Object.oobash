@@ -118,7 +118,7 @@ __equals() {
          Boolean.FALSE
          return 0
       else
-         __throw "IllegalArgumentException" ": \"$3\" is no object"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          return 1
       fi
    fi

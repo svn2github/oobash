@@ -413,11 +413,11 @@ __renameTo() {
                return 0
             fi
          else
-            __throw "WrongClassException" " argument $argobject: $("$argobject".getClass)"
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
             return 1   
          fi
       else
-         __throw "IllegalArgumentException" ": Wrong argument: $3"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          return 1
       fi
    fi
@@ -752,7 +752,7 @@ __setLastModified() {
             local file="$("$this".toString)"
             (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
             if (( $? != 0 )); then
-               __throw "IllegalArgumentException" ": Wrong argument: $3"
+               __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
                return 1         
             fi            
             declare -i milliSeconds="$3"
@@ -771,7 +771,7 @@ __setLastModified() {
             fi
             return 0
          else
-            __throw "NotInPathException" " GNU date is not in path"
+            __throw "NotInPathException" ": GNU date not in path"
             return 1  
          fi
       else
@@ -827,7 +827,7 @@ File.createTemporaryFile() {
             local tempdir=${TMPDIR:-/tmp};
             local prefix="$1"
             if (( ${#prefix} < 3 )); then
-               __throw "IllegalArgumentException" ": prefix must be at least three characters long"
+               __throw "IllegalArgumentException" ": Illegal argument: "\${prefix}\" - Prefix must be at least three characters long"
                return 1
             fi
             local suffix="$2"
@@ -835,7 +835,7 @@ File.createTemporaryFile() {
                local permissions=''
                permissions=$(__posixFilePermissionsConverter "$3")
                if (( $? != 0 )); then
-                  __throw "IllegalArgumentException" ": argument "$3" is no posixFilePermission"
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                   return 1
                fi
             fi
@@ -843,7 +843,7 @@ File.createTemporaryFile() {
             temporaryFile=$(mktemp --tmpdir="$tempdir" --suffix="$suffix" "$prefix"XXXXXXXXXXXXXXXXXX 2>/dev/null)
             declare -i returnValue=$?
             if (( $returnValue != 0 )); then
-               __throw "IOException" ": file could not be created"
+               __throw "IOException" ": File could not be created"
                return $returnValue
             fi
             if [[ -n $permissions ]]; then

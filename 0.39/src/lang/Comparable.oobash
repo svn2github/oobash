@@ -55,11 +55,11 @@ __compareTo() {
                         ;;
             esac
          else
-            __throw "WrongClassException" "argument $argobject: $("$argobject".getClass)" 
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)" 
             return 1   
          fi
       else
-         __throw "IllegalArgumentException" ": \"$3\" is no object"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          return 1
       fi                    
       declare -i length=-1

@@ -27,7 +27,7 @@ System.currentTimeMillis() {
          System.out.println ${date:0:13}
          return 0
       else
-         __throw "NotInPathException" " GNU date is not in path"
+         __throw "NotInPathException" ": GNU date not in path"
          return 1
       fi
    fi
@@ -59,7 +59,7 @@ System.exit() {
    if (( $# == 1 )); then
       (declare -i status=$1) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Wrong argument: $1"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          local printStream=err
          System.help $FUNCNAME
          return 1         
@@ -68,7 +68,7 @@ System.exit() {
       if (( $status >= 0 && $status <= 255 )); then
          exit $status
       else
-         __throw "IllegalArgumentException" ": Wrong argument $status -- must be between 0 and 255"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
          local printStream=err
          System.help $FUNCNAME
          return 1

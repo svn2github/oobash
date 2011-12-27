@@ -45,7 +45,7 @@ Math.sin() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi        
    fi
@@ -81,7 +81,7 @@ Math.cos() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi        
    fi
@@ -128,7 +128,7 @@ Math.tan() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi        
    fi
@@ -170,7 +170,7 @@ Math.atan() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi        
    fi
@@ -222,7 +222,7 @@ Math.asin() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi        
    fi
@@ -269,7 +269,7 @@ Math.acos() {
          __throw "NotInPathException" ": bc not in path"
          return 1
       else
-         __throw "IllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi        
    fi
@@ -312,11 +312,11 @@ Math.max() {
             __throw "NotInPathException" ": bc not in path"
             return 1
          else
-            __throw "IllegalArgumentException" ": illegal argument is \"$2\""
+            __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
             return 1
          fi
       else
-         __throw "MathIllegalArgumentException" ": illegal argument is \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi  
    fi
@@ -723,7 +723,7 @@ Math.adder() {
                   str="$str+($value)"
                fi
             else
-               __throw "IllegalArgumentException" ": Wrong argument: $1"
+               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                return 1
             fi 
             shift
@@ -794,7 +794,7 @@ Math.multiplier() {
                   str="$str*($value)"
                fi
             else
-               __throw "IllegalArgumentException" ": Wrong argument: $1"
+               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                return 1
             fi 
             shift
@@ -1152,11 +1152,11 @@ Math.hypot() {
                return 1  
             fi
          else 
-            __throw "IllegalArgumentException" ": Wrong argument: $2"
+            __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
             return 1
          fi   
       else
-         __throw "IllegalArgumentException" ": Wrong argument: $1"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          return 1
       fi
    fi

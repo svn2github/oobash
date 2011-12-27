@@ -588,12 +588,12 @@ __dependencyCheck() {
    do
       if ! command -v ${__Dependencies__[i]} >/dev/null 2>&1; then
          bool="$(Boolean.FALSE)"
-         __throw "NotInPathException" " ${__Dependencies__[i]} is not in path"
+         __throw "NotInPathException" ": ${__Dependencies__[i]} not in path"
       else 
          if [[ "${__Dependencies__[i]}" == "date" ]]; then
             if ! __gnudateCheck; then 
                bool="$(Boolean.FALSE)"
-               __throw "NotInPathException" " GNU date is not in path"
+               __throw "NotInPathException" ": GNU date not in path"
             fi
          fi         
       fi

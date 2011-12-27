@@ -496,7 +496,7 @@ __zfill() {
       local this="$1"
       (declare -i width=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Wrong argument: $3"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          return 1         
       fi
       declare -i width=$3
@@ -552,7 +552,7 @@ __center() {
       local this="$1"
       (declare -i width=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Wrong argument: $3"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          return 1         
       fi
       declare -i width=$3
@@ -603,10 +603,10 @@ __equalsIgnoreCase() {
                return 0
             fi
          fi
-         __throw "WrongClassException" "argument $argobject: $("$argobject".getClass)"
+         __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
          return 1
       else
-         __throw "IllegalArgumentException" ": $3 is no object"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          return 1
       fi
    fi
@@ -756,7 +756,7 @@ __startsWith() {
       3) declare -i toffset=0;;
       4) (declare -i tooffset=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
-            __throw "IllegalArgumentException" ": Wrong argument: $4"
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
          return 1         
          fi
          declare -i toffset=$4;;
@@ -784,7 +784,7 @@ __lastIndexOf() {
       4) local pattern="$3"
          (declare -i to=$4 ) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
-            __throw "IllegalArgumentException" ": Wrong argument: $4"
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             return 1         
          fi
          declare -i to=$(($4+1))
@@ -827,7 +827,7 @@ __indexOf() {
       4) local pattern="$3"
          (declare -i from=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
-            __throw "IllegalArgumentException" ": Wrong argument: $4"
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             return 1         
          fi
          declare -i from=$4
@@ -872,7 +872,7 @@ __charAt() {
       this="$1"
       (declare -i pos=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Wrong argument: $3"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          return 1         
       fi
       declare -i pos="$3"
@@ -882,7 +882,7 @@ __charAt() {
          System.out.println $char
          return 0
       fi
-      __throw "IndexOutOfBoundsException" " for $pos !"
+      __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
       return 1
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -954,7 +954,7 @@ __substring() {
       3) declare -i endIndex=$count;;
       4) (declare -i endIndex=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
-            __throw "IllegalArgumentException" ": Wrong argument: $4"
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             return 1         
          fi
          declare -i endIndex=$4;;
@@ -966,7 +966,7 @@ __substring() {
    esac
    (declare -i beginIndex=$3) 2>/dev/null ||  (return 1)
    if (( $? != 0 )); then
-      __throw "IllegalArgumentException" ": Wrong argument: $3"
+      __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
       return 1         
    fi
    declare -i beginIndex=$3
@@ -1443,6 +1443,7 @@ String.help() {
                Throws:
                   WrongClassException - if argument has the wrong class  
                   IllegalArgumentException - if number of arguments != 1
+                                           - if argument is no object
                Example:
                   String a abc
                   String b AbC

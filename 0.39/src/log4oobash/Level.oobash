@@ -137,12 +137,18 @@ __isGreaterOrEqual() {
    if (( $# == 3 )); then
       this=$1
       class=$2
-      that=$3
-      if [[ $($that.getClass) != $($this.getClass) ]]; then
-         __throw "IllegalArgumentException:" " Argument $that is no Level object"
+      argobject=$3
+      argclass="$("$argobject".getClass 2>/dev/null)"
+      if (( $? == 0 )); then 
+         if [[ "$($this.getClass)" != "$argclass" ]]; then
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+            return 1
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          return 1
-      fi
-      if (( $($this.toInt) == $(Math.max $($that.toInt) $($this.toInt)) )); then
+      fi      
+      if (( $($this.toInt) == $(Math.max $($argobject.toInt) $($this.toInt)) )); then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -269,17 +275,19 @@ Level.help() {
                   b.getSyslogEquivalent  
                   >>>4
             ";;& 
-      isGreaterOrEquals|all)
+      isGreaterOrEqual|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               isGreaterOrEquals       
+               isGreaterOrEqual       
                Parameters:
                   anObject - The object to be compared with
                Returns:
                   Returns true if this level has a higher or equal level 
                   than the level passed as argument, false otherwise.
                Throws:
-                  IllegalArgumentException - if number of arguments != 0
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if argument is no object                         
+                  WrongClassException - if argument has the wrong class
                Example:
                   Level a 1000 "FATAL" 0
                   Level b 1000 "MYLEVEL" 0
