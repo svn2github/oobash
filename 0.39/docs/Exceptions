@@ -1,8 +1,0 @@
-DecoderException Value: 140
-IllegalArgumentException Value: 150
-IndexOutOfBoundsException Value: 160
-IOException Value: 170
-NotInPathException Value: 180
-WrongClassException Value: 190
-
-Unknown Exception Value: 250
