@@ -13,13 +13,11 @@
 #
 # I18n.xy.messages only if tty open ?
 #
-# stacktrace -->remove help output when exception
+# stacktrace 
 #
 # check where xargs should be used
 #
-# Different Exceptions --> different return values ? If yes then define in array
-# and use this in __throw and the function does a return $?
-# --> use free range of exit codes: http://tldp.org/LDP/abs/html/exitcodes.html
+# set TMPDIR ?
 
 # 0.40
 # Assert 

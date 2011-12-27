@@ -63,9 +63,7 @@ Level() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Level.help $FUNCNAME
-   return 1	
+   return $?
 }
 __registerClass Level
 
@@ -98,10 +96,7 @@ __toInt() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __getSyslogEquivalent() {
@@ -127,10 +122,7 @@ __getSyslogEquivalent() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isGreaterOrEqual() {
@@ -142,11 +134,11 @@ __isGreaterOrEqual() {
       if (( $? == 0 )); then 
          if [[ "$($this.getClass)" != "$argclass" ]]; then
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-            return 1
+            return $?
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return 1
+         return $?
       fi      
       if (( $($this.toInt) == $(Math.max $($argobject.toInt) $($this.toInt)) )); then
          Boolean.TRUE
@@ -156,10 +148,7 @@ __isGreaterOrEqual() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 #################

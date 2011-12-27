@@ -105,9 +105,8 @@ $userClass() {
       System.out.println "
       return 0
    fi
-   local printStream=err
-   $userClass.help \$FUNCNAME
-   return 1	
+   __throw "IllegalArgumentException" ": Wrong number of arguments \$#"
+   return $?
 }
 __registerClass $userClass
 "
@@ -147,10 +146,7 @@ do
       return 0
    fi
    __throw \"IllegalArgumentException\" \": Wrong number of arguments \$((\$#-2))\"
-   local class=\$2 
-   local printStream=err
-   \${class}.help \${FUNCNAME:2}
-   return 1
+   return \$?
 }
 "
 done
@@ -240,6 +236,8 @@ ${userClass}.help() {
                   None
                Returns:
                   The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.getClass
@@ -252,6 +250,10 @@ ${userClass}.help() {
                   Returns a String object representing this ${userClass} object in sorted order. 
                Parameters:
                   None
+               Throws:
+                  NotInPathException - if sort not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.toString"
@@ -260,11 +262,11 @@ ${userClass}.help() {
             declare -a special=($(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " ))
          else
             __throw "NotInPathException" ": sort not in path"
-            return 1
+            return $?
          fi
       else
          __throw "NotInPathException" ": tr not in path"
-         return 1
+         return $?
       fi
       echo -ne "                  >>>"
       for (( i=0; i < ${#special[@]}; i++))
@@ -288,6 +290,7 @@ ${userClass}.help() {
                   a hash code for this ${userClass}.
                Throws:
                   NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.hashCode
@@ -302,6 +305,8 @@ ${userClass}.help() {
                   anObject - The object to compare this ${userClass} against
                Returns:
                   true if the ${userClass} objects represent the same value; false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   ${userClass} c $(eval echo {1..${#attributes[@]}})

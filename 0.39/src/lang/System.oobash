@@ -28,13 +28,11 @@ System.currentTimeMillis() {
          return 0
       else
          __throw "NotInPathException" ": GNU date not in path"
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   System.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction System.currentTimeMillis
 
@@ -45,13 +43,11 @@ System.currentTimeNanos() {
          return 0
       else
          __throw "NotInPathException" ": GNU date not in path"
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   System.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction System.currentTimeNanos
 
@@ -60,24 +56,18 @@ System.exit() {
       (declare -i status=$1) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         local printStream=err
-         System.help $FUNCNAME
-         return 1         
+         return $?
       fi
       declare -i status="$1"
       if (( $status >= 0 && $status <= 255 )); then
          exit $status
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
-         local printStream=err
-         System.help $FUNCNAME
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   System.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction System.exit
 
@@ -88,9 +78,7 @@ System.err.println() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   System.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction System.err.println
 
@@ -101,9 +89,7 @@ System.out.println() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   System.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction System.out.println
 

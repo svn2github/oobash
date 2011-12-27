@@ -31,10 +31,7 @@ __getContentType() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 __registerFunction __getContentType
 
@@ -71,10 +68,7 @@ Log session start time '"$(date)"'<br>
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 __registerFunction __getHeader
    

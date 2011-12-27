@@ -58,9 +58,7 @@ Boolean() {
       return 0      
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   local printStream=err
-   ${FUNCNAME}.help $FUNCNAME
-   return 1	
+   return $?
 }
 __registerClass Boolean
 
@@ -84,9 +82,7 @@ Boolean.TRUE() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   local printStream=err
-   Boolean.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Boolean.TRUE
 
@@ -96,9 +92,7 @@ Boolean.FALSE() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   local printStream=err
-   Boolean.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Boolean.FALSE
 
@@ -113,9 +107,7 @@ Boolean.parseBoolean() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   local printStream=err
-   Boolean.help $FUNCNAME
-   return 1	
+   return $?
 }
 __registerFunction Boolean.parseBoolean
 

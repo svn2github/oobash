@@ -57,9 +57,7 @@ File() {
       return 0      
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   ${FUNCNAME}.help $FUNCNAME
-   return 1	
+   return $? 	
 }
 __registerClass File
 
@@ -81,10 +79,7 @@ __canRead() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __canWrite() {
@@ -99,10 +94,7 @@ __canWrite() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __canExecute() {
@@ -117,10 +109,7 @@ __canExecute() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __getName() {
@@ -131,10 +120,7 @@ __getName() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isDirectory() {
@@ -149,10 +135,7 @@ __isDirectory() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __exists() {
@@ -167,10 +150,7 @@ __exists() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isFile() {
@@ -185,10 +165,7 @@ __isFile() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isHidden() {
@@ -204,10 +181,7 @@ __isHidden() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __mkdir() {
@@ -225,14 +199,11 @@ __mkdir() {
          return $result 
       else
          __throw "NotInPathException" ": mkdir not in path"
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __mkdirs() {
@@ -250,14 +221,11 @@ __mkdirs() {
          return $result
       else
          __throw "NotInPathException" ": mkdir not in path"
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __getParent() {
@@ -269,14 +237,11 @@ __getParent() {
          return $?
       else
          __throw "NotInPathException" ": dirname not in path"
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isSymbolicLink() {
@@ -291,10 +256,7 @@ __isSymbolicLink() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isNamedPipe() {
@@ -309,10 +271,7 @@ __isNamedPipe() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __hasStickyBit() {
@@ -327,10 +286,7 @@ __hasStickyBit() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isSocket() {
@@ -345,10 +301,7 @@ __isSocket() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isCharacterSpecial() {
@@ -363,10 +316,7 @@ __isCharacterSpecial() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isBlockSpecial() {
@@ -381,10 +331,7 @@ __isBlockSpecial() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __renameTo() {
@@ -406,7 +353,7 @@ __renameTo() {
                   fi
                else
                   __throw "NotInPathException" ": mv not in path"
-                  return 1   
+                  return $?
                fi            
             else
                Boolean.FALSE
@@ -414,18 +361,15 @@ __renameTo() {
             fi
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-            return 1   
+            return $?
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __setReadable() {   
@@ -437,10 +381,7 @@ __setReadable() {
          local ownerOnly=$(Boolean.parseBoolean "$4")
          ;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
+         return $?;;
    esac
    if command -v chmod >/dev/null 2>&1; then
       local this="$1"
@@ -466,7 +407,7 @@ __setReadable() {
       return 0
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-      return 1  
+      return $?
    fi 
 }
 
@@ -479,10 +420,7 @@ __setWritable() {
          local ownerOnly=$(Boolean.parseBoolean "$4")
          ;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
+         return $?;;
    esac
    if command -v chmod >/dev/null 2>&1; then
       local this="$1"
@@ -508,7 +446,7 @@ __setWritable() {
       return 0
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-      return 1  
+      return $?
    fi 
 }
 
@@ -521,10 +459,7 @@ __setExecutable() {
          local ownerOnly=$(Boolean.parseBoolean "$4")
          ;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
+         return $?;;
    esac
    if command -v chmod >/dev/null 2>&1; then
       local this="$1"
@@ -550,7 +485,7 @@ __setExecutable() {
       return 0
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-      return 1  
+      return $?
    fi      
 }
 
@@ -573,27 +508,24 @@ __getCanonicalPath() {
                      fi
                   else
                      __throw "NotInPathException" ": pwd not in path"
-                     return 1
+                     return $?
                   fi
                else
                   __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
-                  return 1
+                  return $?
                fi               
             else
                __throw "NotInPathException" ": basename not in path (install the GNU sh-utils ?)"
-               return 1
+               return $?
             fi            
          fi
          return 0   
       fi
       __throw "NotInPathException" ": readlink not in path (install the GNU coreutils ?)"
-      return 1
+      return $?
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __getAbsolutePath() {
@@ -608,10 +540,7 @@ __getAbsolutePath() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __getPath() {
@@ -622,10 +551,7 @@ __getPath() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isAbsolute() {
@@ -640,10 +566,7 @@ __isAbsolute() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __delete() {
@@ -665,18 +588,15 @@ __delete() {
             return 0
          else
             __throw "NotInPathException" ": rmdir not in path"
-            return 1         
+            return $?
          fi
       else
          __throw "NotInPathException" ": rm not in path"
-         return 1  
+         return $?
       fi      
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __createNewFile() {
@@ -697,14 +617,11 @@ __createNewFile() {
          return 0  
       else
          __throw "NotInPathException" ": touch not in path"
-         return 1  
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __lastModified() {
@@ -734,14 +651,11 @@ __lastModified() {
          return 0
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
-         return 1  
+         return $?
       fi    
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __setLastModified() {
@@ -753,7 +667,7 @@ __setLastModified() {
             (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-               return 1         
+               return $?
             fi            
             declare -i milliSeconds="$3"
             if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then 
@@ -772,18 +686,15 @@ __setLastModified() {
             return 0
          else
             __throw "NotInPathException" ": GNU date not in path"
-            return 1  
+            return $?
          fi
       else
          __throw "NotInPathException" ": touch not in path"
-         return 1  
+         return $?
       fi    
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1   
+   return $?
 }
 
 __setReadOnly() {
@@ -801,14 +712,11 @@ __setReadOnly() {
          return 0
       else
          __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-         return 1  
+         return $?
       fi    
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 # length
@@ -827,8 +735,8 @@ File.createTemporaryFile() {
             local tempdir=${TMPDIR:-/tmp};
             local prefix="$1"
             if (( ${#prefix} < 3 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: "\${prefix}\" - Prefix has to be at least three characters long"
-               return 1
+               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
+               return $?
             fi
             local suffix="$2"
             if (( $# == 3 )); then
@@ -836,15 +744,14 @@ File.createTemporaryFile() {
                permissions=$(__posixFilePermissionsConverter "$3")
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
-                  return 1
+                  return $?
                fi
             fi
             local temporaryFile
             temporaryFile=$(mktemp --tmpdir="$tempdir" --suffix="$suffix" "$prefix"XXXXXXXXXXXXXXXXXX 2>/dev/null)
-            declare -i returnValue=$?
-            if (( $returnValue != 0 )); then
+            if (( $? != 0 )); then
                __throw "IOException" ": File could not be created"
-               return $returnValue
+               return $?
             fi
             if [[ -n $permissions ]]; then
                chmod $permissions -- $temporaryFile
@@ -853,17 +760,15 @@ File.createTemporaryFile() {
             return 0
          else
             __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-            return 1
+            return $?
          fi      
       else
          __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
-         return 1
+         return $?
       fi
    fi 
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   File.help ${FUNCNAME}
-   return 1      
+   return $?
 }
 __registerFunction File.createTemporaryFile
 
@@ -875,9 +780,7 @@ File.createTempFile() {
       return 0
    fi 
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   File.help ${FUNCNAME}
-   return 1
+   return $?
 }
 __registerFunction File.createTempFile
 

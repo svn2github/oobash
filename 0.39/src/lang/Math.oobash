@@ -43,16 +43,14 @@ Math.sin() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.sin
 
@@ -79,16 +77,14 @@ Math.cos() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.cos
 
@@ -126,16 +122,14 @@ Math.tan() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.tan
 
@@ -168,16 +162,14 @@ Math.atan() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.atan
 
@@ -220,16 +212,14 @@ Math.asin() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.asin
 
@@ -267,16 +257,14 @@ Math.acos() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.acos
 
@@ -310,20 +298,18 @@ Math.max() {
             return 0 
             fi
             __throw "NotInPathException" ": bc not in path"
-            return 1
+            return $?
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
-            return 1
+            return $?
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi  
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.max
 
@@ -357,14 +343,12 @@ Math.min() {
             return 0 
             fi
             __throw "NotInPathException" ": bc not in path"
-            return 1
+            return $?
          fi
       fi  
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.min
 
@@ -389,13 +373,11 @@ Math.abs() {
             return 0 
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi  
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.abs
 
@@ -430,13 +412,11 @@ Math.sqrt() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.sqrt
 
@@ -469,13 +449,11 @@ Math.exp() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.exp
 
@@ -508,13 +486,11 @@ Math.expm1() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction  Math.expm1
 
@@ -548,13 +524,11 @@ Math.sinh() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.sinh
      
@@ -588,13 +562,11 @@ Math.cosh() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.cosh
         
@@ -628,13 +600,11 @@ Math.tanh() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.tanh
         
@@ -644,9 +614,7 @@ Math.E() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.E
 
@@ -656,9 +624,7 @@ Math.PI() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.PI
 
@@ -682,12 +648,10 @@ Math.random() {
          return 0
       fi
       __throw "NotInPathException" ": bc not in path"
-      return 1  
+      return $?
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.random
 
@@ -724,7 +688,7 @@ Math.adder() {
                fi
             else
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-               return 1
+               return $?
             fi 
             shift
          done
@@ -751,12 +715,10 @@ Math.adder() {
          return 0 
       fi
       __throw "NotInPathException" ": bc not in path"
-      return 1
+      return $?
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.adder
 
@@ -795,7 +757,7 @@ Math.multiplier() {
                fi
             else
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-               return 1
+               return $?
             fi 
             shift
          done
@@ -822,12 +784,10 @@ Math.multiplier() {
          return 0
       fi
       __throw "NotInPathException" ": bc not in path"
-      return 1
+      return $?
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.multiplier
 
@@ -863,13 +823,11 @@ Math.log() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.log
 
@@ -905,13 +863,11 @@ Math.log10() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.log10
 
@@ -947,13 +903,11 @@ Math.log1p() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.log1p
 
@@ -986,13 +940,11 @@ Math.toDegrees() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.toDegrees
      
@@ -1025,13 +977,11 @@ Math.toRadians() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.toRadians
 
@@ -1065,13 +1015,11 @@ Math.ceil() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.ceil
 
@@ -1106,13 +1054,11 @@ Math.floor() {
             return 0
          fi
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.floor
 
@@ -1149,21 +1095,19 @@ Math.hypot() {
                return 0
             else
                __throw "NotInPathException" ": bc not in path"
-               return 1  
+               return $?
             fi
          else 
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
-            return 1
+            return $?
          fi   
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   Math.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction Math.hypot
 

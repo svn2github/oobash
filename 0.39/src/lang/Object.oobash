@@ -27,9 +27,7 @@ __getClass() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __toString() {
@@ -65,11 +63,11 @@ __toString() {
             local keys=$(echo "${!__ATTRIBUTEPOOL__[@]}"  | tr " " "\n" | sort | tr "\n" " " )
          else
             __throw "NotInPathException" ": sort not in path"
-            return 1
+            return $?
          fi
       else
          __throw "NotInPathException" ": tr not in path"
-         return 1
+         return $?
       fi         
       for key in $keys
       do
@@ -86,10 +84,7 @@ __toString() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 
@@ -119,14 +114,11 @@ __equals() {
          return 0
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __hashCode() {
@@ -168,11 +160,9 @@ __hashCode() {
          return 0
       else
          __throw "NotInPathException" ": bc not in path"
-         return 1
+         return $?
       fi   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }

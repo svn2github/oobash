@@ -56,11 +56,11 @@ __compareTo() {
             esac
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)" 
-            return 1   
+            return $?
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return 1
+         return $?
       fi                    
       declare -i length=-1
       if (( $("$this".length) == ${#str} )); then
@@ -94,7 +94,5 @@ __compareTo() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1   
+   return $?
 }

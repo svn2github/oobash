@@ -57,9 +57,7 @@ String() {
       return 0      
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   ${FUNCNAME}.help $FUNCNAME
-   return 1	
+   return $?
 }
 __registerClass String
 
@@ -106,10 +104,7 @@ __compareToIgnoreCase() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1   
+   return $?
 }
 
 __base64Encode() {
@@ -120,13 +115,10 @@ __base64Encode() {
          return $?
       fi
       __throw "NotInPathException" ": base64 not in path (install the GNU coreutils ?)"
-      return 1
+      return $?
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __base64Decode() {
@@ -136,22 +128,19 @@ __base64Decode() {
          declare -i returnValue
          local output
          output="$(System.out.println "$("$this".toString)" | base64 -d 2>/dev/null)"
-         returnValue=$?
-         if (( $returnValue != 0 )); then
+         if (( $? != 0 )); then
             __throw "DecoderException" ": Decoding problem with: $("$this".toString) "
+            return $?
          else
             System.out.println "$output"
          fi
-         return $returnValue
+         return 0
       fi
       __throw "NotInPathException" ": base64 not in path (install the GNU coreutils ?)"
-      return 1
+      return $?
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2} 
-   return 1
+   return $?
 }
 
 __rstrip() {
@@ -165,10 +154,7 @@ __rstrip() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __lstrip() {
@@ -182,10 +168,7 @@ __lstrip() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __title() {
@@ -196,10 +179,7 @@ __title() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isTitle() {
@@ -217,10 +197,7 @@ __isTitle() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isAscii() {
@@ -240,10 +217,7 @@ __isAscii() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isHexDigit() {
@@ -263,10 +237,7 @@ __isHexDigit() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isPrintable() {
@@ -286,10 +257,7 @@ __isPrintable() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isVisible() {
@@ -305,10 +273,7 @@ __isVisible() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __count() {
@@ -327,16 +292,13 @@ __count() {
             System.out.println $count            
          else
             __throw "NotInPathException" ": bc not in path"
-            return 1
+            return $?
          fi
       fi
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isLowerCase() {
@@ -363,10 +325,7 @@ __isLowerCase() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isUpperCase() {
@@ -393,10 +352,7 @@ __isUpperCase() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isAlnum() {
@@ -416,10 +372,7 @@ __isAlnum() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isAlpha() {
@@ -439,10 +392,7 @@ __isAlpha() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isDigit() {
@@ -462,10 +412,7 @@ __isDigit() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isSpace() {
@@ -485,10 +432,7 @@ __isSpace() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __zfill() {
@@ -497,7 +441,7 @@ __zfill() {
       (declare -i width=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         return 1         
+         return $?
       fi
       declare -i width=$3
       length=$("$this".length)
@@ -511,10 +455,7 @@ __zfill() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __swapCase() {
@@ -541,10 +482,7 @@ __swapCase() {
       return 0   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __center() {
@@ -553,7 +491,7 @@ __center() {
       (declare -i width=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         return 1         
+         return $?
       fi
       declare -i width=$3
       if (( $("$this".length) < $width )); then
@@ -581,10 +519,7 @@ __center() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __equalsIgnoreCase() {
@@ -604,17 +539,14 @@ __equalsIgnoreCase() {
             fi
          fi
          __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-         return 1
+         return $?
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return 1
+         return $?
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __toUpperCase() {
@@ -626,10 +558,7 @@ __toUpperCase() {
       return 0   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __toLowerCase() {
@@ -641,10 +570,7 @@ __toLowerCase() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __capitalize() {
@@ -657,10 +583,7 @@ __capitalize() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __concat() {
@@ -671,10 +594,7 @@ __concat() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 } 
 
 __trim() { 
@@ -689,10 +609,7 @@ __trim() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __contains() {
@@ -708,10 +625,7 @@ __contains() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __matches() {
@@ -727,10 +641,7 @@ __matches() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __isEmpty() {
@@ -745,10 +656,7 @@ __isEmpty() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __startsWith() {
@@ -757,14 +665,11 @@ __startsWith() {
       4) (declare -i tooffset=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-         return 1         
+            return $?
          fi
          declare -i toffset=$4;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
+         return $?;;
    esac
    local this="$1"
    declare -i length=$("$this".length)
@@ -785,7 +690,7 @@ __lastIndexOf() {
          (declare -i to=$4 ) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            return 1         
+            return $?
          fi
          declare -i to=$(($4+1))
          # negative index ?
@@ -794,10 +699,7 @@ __lastIndexOf() {
             return 0
          fi;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
+         return $?;;
    esac
    local str="$("$this".toString)"
    str="${str:0:$to}"
@@ -828,7 +730,7 @@ __indexOf() {
          (declare -i from=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            return 1         
+            return $?
          fi
          declare -i from=$4
          # negative index ?
@@ -836,10 +738,7 @@ __indexOf() {
             from=0
          fi;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
+         return $?;;
    esac
    local this="$1" 
    declare -i pattern_length=${#pattern}
@@ -873,7 +772,7 @@ __charAt() {
       (declare -i pos=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         return 1         
+         return $?
       fi
       declare -i pos="$3"
       if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
@@ -883,13 +782,10 @@ __charAt() {
          return 0
       fi
       __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
-      return 1
+      return $?
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __endsWith() {
@@ -906,10 +802,7 @@ __endsWith() {
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __replaceFirst() {
@@ -923,10 +816,7 @@ __replaceFirst() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 __replaceAll() {
@@ -940,10 +830,7 @@ __replaceAll() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 
 }
 
@@ -955,32 +842,29 @@ __substring() {
       4) (declare -i endIndex=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            return 1         
+            return $?
          fi
          declare -i endIndex=$4;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         local class="$2"
-         local printStream=err
-         ${class}.help ${FUNCNAME:2}
-         return 1;;
+         return $?;;
    esac
    (declare -i beginIndex=$3) 2>/dev/null ||  (return 1)
    if (( $? != 0 )); then
       __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-      return 1         
+      return $?
    fi
    declare -i beginIndex=$3
    if (( $beginIndex < 0 )); then
       __throw "IndexOutOfBoundsException" ": String index out of range: $beginIndex"
-      return 1
+      return $?
    fi
    if (( $endIndex > $count )); then
       __throw "IndexOutOfBoundsException" ": String index out of range: $endIndex"
-      return 1
+      return $?
    fi       
    if (( $beginIndex > $endIndex )); then
       __throw "IndexOutOfBoundsException" ": String index out of range: $(($endIndex-$beginIndex))"
-      return 1
+      return $?
    fi  
    local str="$("$this".toString)"
    declare -i length=$(($endIndex-beginIndex))
@@ -1004,10 +888,7 @@ __reverse() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class="$2"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1 
+   return $?
 }
 
 __length() {  
@@ -1025,7 +906,7 @@ __length() {
                fi
             else
                __throw "NotInPathException" ": wc not in path"
-               return 1
+               return $?
             fi
             ;;
          String)
@@ -1037,9 +918,7 @@ __length() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   return $?
 }
 
 ##################
@@ -1054,9 +933,7 @@ String.digits() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   String.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction String.digits
 
@@ -1066,9 +943,7 @@ String.asciiLetters() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   String.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction String.asciiLetters
 
@@ -1078,9 +953,7 @@ String.asciiLettersLowerCase() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   String.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction String.asciiLettersLowerCase
 
@@ -1090,9 +963,7 @@ String.asciiLettersUpperCase() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   String.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction String.asciiLettersUpperCase
 
@@ -1102,9 +973,7 @@ String.hexDigits() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   String.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction String.hexDigits
 
@@ -1114,9 +983,7 @@ String.octDigits() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   local printStream=err
-   String.help $FUNCNAME
-   return 1
+   return $?
 }
 __registerFunction String.octDigits
 
