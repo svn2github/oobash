@@ -78,15 +78,11 @@ __throw() {
    local exception="$1"
    local message="$2"
    System.err.println "${exception}${message}"
-   case $exception in
-      DecoderException) returnValue=140;;
-      IllegalArgumentException) returnValue=150;;
-      IndexOutOfBoundsException) returnValue=160;;
-      IOException) returnValue=170;;
-      NotInPathException) returnValue=180;;
-      WrongClassException) returnValue=190;;
-      *) returnValue=250;;
-   esac
+   if [[ ! -z ${__ExceptionValues__[$exception]} ]]; then
+      returnValue=${__ExceptionValues__[$exception]}
+   else   
+      returnValue=${__ExceptionValues__[Unknown]}
+   fi
    return $returnValue
 }
 __registerFunction __throw

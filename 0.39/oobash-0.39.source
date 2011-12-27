@@ -62,6 +62,19 @@ fi
 
 declare -A __Registry__
 
+# Return values for exceptions
+declare -A __ExceptionValues__
+__ExceptionValues__=( 
+[DecoderException]=140
+[IllegalArgumentException]=150
+[IndexOutOfBoundsException]=160
+[IOException]=170
+[NotInPathException]=180
+[WrongClassException]=190
+[Unknown]=250
+)
+
+
 # all external commands used in this framework:
 declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd) 
 
