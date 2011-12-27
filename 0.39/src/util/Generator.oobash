@@ -199,6 +199,8 @@ ${userClass}.help() {
    System.out.println "                  No \".\" character is allowed in the objectname string.
                Returns:
                   None
+               Throws:
+                  IllegalArgumentException - if number of arguments != $((${#attributes[@]}+1))
                Example:"
    echo -ne "                  ${userClass} a "
    for (( i=0; i < ${#attributes[@]}; i++))
@@ -220,6 +222,8 @@ ${userClass}.help() {
                   None
                Returns:
                   The value of ${attributes[$i]}.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.get$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
@@ -307,6 +311,7 @@ ${userClass}.help() {
                   true if the ${userClass} objects represent the same value; false otherwise.
                Throws:
                   IllegalArgumentException - if number of arguments != 1
+                                           - if arguent is no object
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   ${userClass} c $(eval echo {1..${#attributes[@]}})
