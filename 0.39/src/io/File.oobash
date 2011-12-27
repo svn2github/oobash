@@ -827,7 +827,7 @@ File.createTemporaryFile() {
             local tempdir=${TMPDIR:-/tmp};
             local prefix="$1"
             if (( ${#prefix} < 3 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: "\${prefix}\" - Prefix must be at least three characters long"
+               __throw "IllegalArgumentException" ": Illegal argument: "\${prefix}\" - Prefix has to be at least three characters long"
                return 1
             fi
             local suffix="$2"
