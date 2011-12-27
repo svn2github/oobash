@@ -105,8 +105,8 @@ $userClass() {
       System.out.println "
       return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments \$#"
-   return $?
+   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+   return \$?
 }
 __registerClass $userClass
 "
