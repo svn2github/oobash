@@ -202,13 +202,11 @@
 #    -__gnudateCheck instead of command -v date
 #    -Dependencies.txt file (all used external commands in this framework) and Version.txt
 #    -oobash path is exported with the name __OODIR__
-#    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
 #    -many fixes
 #    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
 #    -style corections
 #    -more consistent exceptions -> special return values for different exceptions
-
-TODO: Math add Exceptions where necessary
+TODO: Math help --> documentation of new exceptions
 TODO: recreate man pages
 
 #################################################################
