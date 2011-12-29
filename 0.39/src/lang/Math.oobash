@@ -1317,6 +1317,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 2
+                                           - if an argument cannot be handled by Math.min
                Example:
                   Math.min 2 3e-5
                   >>>3e-5
@@ -1343,6 +1344,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 2
+                                           - if an argument cannot be handled by Math.max
                Example:
                   Math.max 2 3e-5
                   >>>2
@@ -1367,6 +1369,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.abs
                Example:
                   Math.abs 3,6
                   >>>3,6
@@ -1392,6 +1395,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.sin
                Example:
                   Math.sin 3
                   >>>0.14112000805986722210
@@ -1419,6 +1423,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.sqrt
                Example:
                   Math.sqrt 1e-2
                   >>>0.10000000000000000000
@@ -1446,6 +1451,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.cos
                Example:
                   Math.cos 3
                   >>>-0.98999249660044545727
@@ -1473,6 +1479,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.tan
                Example:
                   Math.tan 3
                   >>>-0.14254654307427780529
@@ -1500,6 +1507,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.exp
                Example:
                   Math.exp 1
                   >>>2.71828182845904523536
@@ -1525,6 +1533,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.asin
                Example:
                   Math.asin 3
                   >>>NaN
@@ -1552,6 +1561,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.acos
                Example:
                   Math.acos 3
                   >>>NaN
@@ -1578,6 +1588,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.log10
                Example:
                   Math.log10 3.4
                   >>>0.53147891704225512375
@@ -1610,6 +1621,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.log1p
                Example:
                   Math.log1p NaN
                   >>>NaN
@@ -1637,6 +1649,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.log
                Example:
                   Math.log 4,22
                   >>>1.43983512804792043712
@@ -1664,6 +1677,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.expm1
                Example:
                   Math.expm1 2,44
                   >>>10.47304074279483338936
@@ -1693,6 +1707,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.cosh
                Example:             
                   Math.cosh NaN
                   >>>NaN
@@ -1722,6 +1737,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.sinh
                Example:
                   Math.sinh NaN
                   >>>NaN
@@ -1755,6 +1771,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.tanh
               Example:
                  Math.tanh 0
                  >>>0
@@ -1782,6 +1799,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.toDegrees
                Example:
                   Math.toDegrees -Infinity
                   >>>-Infinity
@@ -1808,6 +1826,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.toRadians
                Example:
                   Math.toRadians NaN
                   >>>NaN
@@ -1837,6 +1856,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.hypot
                Example:
                   Math.hypot NaN Infinity
                   >>>Infinity
@@ -1870,6 +1890,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.ceil
                Example:
                   Math.ceil 3
                   >>>3
@@ -1904,6 +1925,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.floor
                Example:
                   Math.floor 3
                   >>>3
@@ -1932,6 +1954,7 @@ Math.help() {
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.atan
                Example:
                   Math.atan 3
                   >>>1.24904577239825442582

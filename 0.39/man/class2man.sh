@@ -14,12 +14,12 @@ pathToFile="$2"
 
 mypath=$(dirname ${0})
 source ${mypath}/../oobash-*.source
-source ${pathToFile}/${class}.oobash
+#source ${pathToFile}/${class}.oobash
 destination="${mypath}/man1/$class.1"
-destination=/tmp/$class.1
+#destination=/tmp/$class.1
 
 echo "
-.\\\" Copyright (c) <$(date +%Y)> <$USER>
+.\\\" Copyright (c) <$(date +%Y)> <andreas.gregor.frank@googlemail.com>
 .\\\"
 .\\\" Permission is hereby granted, free of charge, to any person obtaining a copy
 .\\\" of this software and associated documentation files (the \"Software\"), to deal
@@ -55,6 +55,6 @@ echo The ${class}.oobash file is part of the oobash framework. >>${destination}
 echo ".SH EXAMPLES">>${destination}
 echo "$(${class}.help all)" >>${destination}
 echo ".SH AUTHOR">>${destination}
-echo $USER >>${destination}
+echo Andreas Frank >>${destination}
 
 gzip ${destination}

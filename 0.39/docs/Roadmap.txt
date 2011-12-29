@@ -3,23 +3,25 @@
 # 0.39.X
 # -Man.generator
 #
-# -Generate class file directly into myClasses package structure
+# -Generate class file directly into myClasses package structure ?
 #
 # -Analyze log4oobash.properties
 #
 # -quote String function ?
 #
-# $Class.getAll(array) functions
+# $Class.getAll(array) functions ?
 #
 # I18n.xy.messages only if tty open ?
 #
 # stacktrace 
 #
-# check where xargs should be used
+# check where xargs should be used ?
 #
 # set TMPDIR ?
 #
-# set aliases only if tty open
+# set aliases only if tty open ?
+#
+# not chained Exceptions, but chained return values ?
 
 # 0.40
 # Assert 
