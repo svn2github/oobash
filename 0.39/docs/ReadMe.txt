@@ -60,9 +60,6 @@ echo ${!__ATTRIBUTEPOOL__[@]}
 echo ${__ATTRIBUTEPOOL__[@]}
 abc (value of attribute)
 
-If there are more than one attributes describing the "object", then following code is used for the toString "method":
-echo "${!__ATTRIBUTEPOOL__[@]}"  | tr " " "\n" | sort | tr "\n" " "
-
 D) Conventions
 ##############
 
