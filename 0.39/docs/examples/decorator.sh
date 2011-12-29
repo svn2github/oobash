@@ -15,7 +15,7 @@ fi
 # END -- My own addon decorator
 
 @deprecated
-function printer1() {
+printer1() {
    __decoratorCheck "$FUNCNAME" "$@"
    echo "i print printer1"
    echo "---------------------------"
@@ -24,7 +24,7 @@ function printer1() {
 }
 
 @calling
-function printer2() {
+printer2() {
    __decoratorCheck "$FUNCNAME" "$@"
    echo "i print printer2"
    echo "---------------------------"
@@ -34,7 +34,7 @@ function printer2() {
 
 @calling
 @timestamp
-function printer3() {
+printer3() {
    __decoratorCheck "$FUNCNAME" "$@"
    echo "i print printer3"
    echo "---------------------------"
@@ -42,7 +42,7 @@ function printer3() {
    return 0
 }
 
-function printer4() {
+printer4() {
    __decoratorCheck "$FUNCNAME" "$@"
    echo "i print printer4"
    echo "---------------------------"
@@ -55,7 +55,7 @@ function printer4() {
 @timestamp
 @false
 @deprecated
-function printer5() {
+printer5() {
    __decoratorCheck "$FUNCNAME" "$@"
    echo My return value is $?, because of @false, but i could be a validator too!
    echo "i print printer5"
