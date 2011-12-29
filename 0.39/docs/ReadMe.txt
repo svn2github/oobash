@@ -150,6 +150,7 @@ J) "Decorators"
 ################
 You can see an example script in the docs/examples directory. (At the moment) You can only decorate functions in your own script, that are not sourced into your script, but defined there.
 __decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
+Available "decorators" at the moment: @calling @timestamp @deprecated
 
 K) "Exceptions"
 ################
