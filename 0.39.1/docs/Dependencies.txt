@@ -1,0 +1,20 @@
+base64
+basename
+bc
+chmod
+date (gnu!)
+dirname
+mkdir
+mktemp
+mv
+readlink
+rm
+rmdir
+stat
+touch
+gettext
+wc
+sort
+tr
+pwd
+

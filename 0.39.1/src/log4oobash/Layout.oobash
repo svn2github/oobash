@@ -1,0 +1,91 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+##############################
+##############################
+##                          ##
+##     ABSTRACT LAYOUT      ## 
+##                          ##
+##############################
+##############################
+
+
+#####################
+#                   #
+#      METHODS      # 
+#                   #
+#####################
+
+__getContentType() {
+   if (( $# == 2 )); then
+      local this="$1"
+      local class="$2"
+      case $class in
+         HTMLLayout) System.out.println "text/html";;
+         *) System.out.println "text/plain";;
+      esac
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   return $?
+}
+__registerFunction __getContentType
+
+__getHeader() {
+   if (( $# == 4 )); then
+      local class="$2"
+      case $class in
+         HTMLLayout)
+            System.out.println '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> Log4Oobash Log Messages </title>
+<style type="text/css">
+<!--
+body, table {font-family: arial,sans-serif; font-size: x-small;}
+th {background: #336699; color: #FFFFFF; text-align: left;}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" topmargin="6" leftmargin="6">
+<hr size="1" noshade>
+Log session start time '"$(date)"'<br>
+<br>
+<table cellspacing="0" cellpadding="4" border="1" bordercolor="#224466" width="100%">
+<tr>
+<th>Time</th>
+<th>Thread</th>
+<th>Level</th>
+<th>Category</th>
+<th>Message</th>
+</tr>'
+;;
+      esac
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   return $?
+}
+__registerFunction __getHeader
+   
+__getFooter() {
+   if (( $# == 2 )); then
+   local class="$2"
+   case $class in
+      HTMLLayout) System.out.println '</table>
+<br>
+</body></html>';;
+   esac
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   local class=$2 
+   local printStream=err
+   ${class}.help ${FUNCNAME:2}
+   return 1
+}
+__registerFunction __getFooter

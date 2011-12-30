@@ -1,0 +1,35 @@
+# MAYBE ROADMAP (very unstable ;-) ):
+
+# 0.39.X
+# -Man.generator
+#
+# -Generate class file directly into myClasses package structure ?
+#
+# -Analyze log4oobash.properties
+#
+# -quote String function ?
+#
+# $Class.getAll(array) functions ?
+#
+# I18n.xy.messages only if tty open ?
+#
+# stacktrace 
+#
+# check where xargs should be used ?
+#
+# set TMPDIR ?
+#
+# set aliases only if tty open ?
+#
+# not chained Exceptions, but chained return values ?
+
+# 0.40
+# Assert 
+# + Tests (execute modules to test --- python style)
+
+# 0.50
+# Logging
+
+# 0.60
+# Use of /dev/tcp and /dev/udp
+# for network sockets

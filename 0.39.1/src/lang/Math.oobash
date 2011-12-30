@@ -1,0 +1,1982 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+#################
+#################
+##             ##
+##     MATH    ## 
+##             ##
+#################
+#################
+
+
+##################
+#                #
+#     STATICS    # 
+#                #
+##################
+
+Math.sin() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            fi 
+            output="$(System.out.println "s($val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.sin
+
+Math.cos() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            fi 
+            output="$(System.out.println "c($val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.cos
+
+Math.tan() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            fi
+            local cos=$(Math.cos "$val")
+            zerodivtest=$(System.out.println "$cos==0" | bc -l)
+            if (( $zerodivtest == 1 )); then
+               # FIXME ? NaN/Not defined/cos=10^-20
+               System.out.println "NaN"
+               return 0
+            fi
+            if [[ $cos == "NaN" || $cos == "Infinity" || $cos == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            fi
+            output="$(System.out.println "$(Math.sin "$val")/$cos" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.tan
+
+Math.atan() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then 
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ $val == "Infinity" ]]; then
+               System.out.println $(Math.multiplier $(Math.PI) 0.5)
+               return 0            
+            elif [[ $val == "-Infinity" ]]; then
+               System.out.println $(Math.multiplier $(Math.PI) -0.5)
+               return 0                    
+            fi
+            output="$(System.out.println "a($val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.atan
+
+Math.asin() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            fi 
+            rangecheck=$(System.out.println "$val>1||$val<-1" | bc -l)
+            if (( rangecheck == 1 )); then
+               System.out.println "NaN"
+               return 0 
+            fi 
+            zerodivtest=$(System.out.println "$val==1" | bc -l)
+            if (( $zerodivtest == 1 )); then
+               System.out.println "$(Math.PI)/2" | bc -l
+               return 0 
+            fi
+            zerodivtest=$(System.out.println "$val==-1" | bc -l)
+            if (( $zerodivtest == 1 )); then
+               System.out.println "-$(Math.PI)/2" | bc -l
+               return 0 
+            fi
+            # arcsin(x) = arctan(x / sqrt(1 \96 x^2))
+            output="$(System.out.println "a($val/sqrt(1-($val*$val)))" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.asin
+
+Math.acos() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then
+            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            fi 
+            rangecheck=$(System.out.println "$val>1||$val<-1" | bc -l)
+            if (( rangecheck == 1 )); then
+               System.out.println "NaN"
+               return 0 
+            fi 
+            zerodivtest=$(System.out.println "$val==0" | bc -l)
+            if (( $zerodivtest == 1 )); then
+               System.out.println "$(Math.PI)/2" | bc -l
+               return 0 
+            fi  
+            # arccos(x) = arctan(sqrt(1 \96 x^2 )/ x)
+            output="$(System.out.println "a(sqrt(1-($val*$val))/$val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.acos
+
+Math.max() {
+   if (( $# == 2 )); then
+      local val1
+      local val2
+      val1=$(__mathConverter "$1")
+      if (( $? == 0 )); then
+         val2=$(__mathConverter "$2")
+         if (( $? == 0 )); then
+            if command -v bc >/dev/null 2>&1; then
+               if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
+                  System.out.println "NaN"
+                  return 0
+               elif [[ $val1 == "Infinity" || $val2 == "Infinity" ]]; then
+                  System.out.println "Infinity"
+                  return 0   
+               elif [[ $val1 == "-Infinity" ]]; then
+                  System.out.println $2
+                  return 0         
+               elif [[ $val2 == "-Infinity" ]]; then
+                  System.out.println $1
+                  return 0     
+               fi                 
+               if (( $(System.out.println "$val1>$val2" | bc -l) == 1 )); then
+                  System.out.println $1
+               else
+                  System.out.println $2
+               fi
+            return 0 
+            fi
+            __throw "NotInPathException" ": bc not in path"
+            return $?
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
+            return $?
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi  
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.max
+
+Math.min() {
+   if (( $# == 2 )); then
+      local val1
+      local val2
+      val1=$(__mathConverter "$1")
+      if (( $? == 0 )); then
+         val2=$(__mathConverter "$2")
+         if (( $? == 0 )); then
+            if command -v bc >/dev/null 2>&1; then            
+               if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
+                  System.out.println "NaN"
+                  return 0
+               elif [[ $val1 == "-Infinity" || $val2 == "-Infinity" ]]; then
+                  System.out.println "-Infinity"
+                  return 0   
+               elif [[ $val1 == "Infinity" ]]; then
+                  System.out.println $2
+                  return 0         
+               elif [[ $val2 == "Infinity" ]]; then
+                  System.out.println $1
+                  return 0     
+               fi               
+               if (( $(System.out.println "$val1<$val2" | bc -l) == 1 )); then
+                  System.out.println $1
+               else
+                  System.out.println $2
+               fi
+            return 0 
+            fi
+            __throw "NotInPathException" ": bc not in path"
+            return $?
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
+            return $?
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi  
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.min
+
+Math.abs() {
+   if (( $# == 1 )); then
+      local val1
+      val1=$(__mathConverter "$1")
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then      
+            if [[ $val == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ $val == "Infinity" || $val == "-Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0            
+            fi      
+            if (( $(System.out.println "$val1>0" | bc -l) == 1 )); then
+               System.out.println $1
+            else
+               System.out.println ${1:1}
+            fi
+            return 0 
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi  
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.abs
+
+Math.sqrt() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then 
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ $val == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0            
+            fi
+            rangecheck=$(System.out.println "$val<0" | bc -l)
+            if (( rangecheck == 1 )); then
+               System.out.println "NaN"
+               return 0 
+            fi 
+            output="$(System.out.println "sqrt($val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.sqrt
+
+Math.exp() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ $val == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ $val == "-Infinity" ]]; then
+               System.out.println 0
+               return 0
+            fi 
+            output="$(System.out.println "e($val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.exp
+
+Math.expm1() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ $val == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ $val == "-Infinity" ]]; then
+               System.out.println -1
+               return 0
+            fi 
+            output="$(System.out.println "e($val)-1" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction  Math.expm1
+
+Math.sinh() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ "$val" == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ "$val" == "-Infinity" ]]; then
+               System.out.println "-Infinity"
+               return 0
+            fi 
+            # (e^x - e^-x)/2
+            output="$(System.out.println "(e($val)-e(-1*$val))/2" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.sinh
+     
+Math.cosh() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ "$val" == "Infinity" || "$val" == "-Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
+               System.out.println 1
+               return 0               
+            fi 
+            # (e^x + e^-x)/2
+            output="$(System.out.println "(e($val)+e(-1*$val))/2" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.cosh
+        
+Math.tanh() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ "$val" == "Infinity" ]]; then
+               System.out.println 1
+               return 0
+            elif [[ "$val" == "-Infinity" ]]; then
+               System.out.println -1
+               return 0
+            fi 
+            # (e^x - e^-x)/(e^x + e^-x)
+            output="$(System.out.println "(e($val)-e(-1*$val))/(e($val)+e(-1*$val))" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.tanh
+        
+Math.E() {
+   if (( $# == 0 )); then
+      System.out.println 2.71828182845904523536
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.E
+
+Math.PI() {
+   if (( $# == 0 )); then
+      System.out.println 3.14159265358979323846
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.PI
+
+Math.random() {
+   if (( $# == 0 )); then
+      if command -v bc >/dev/null 2>&1; then 
+         local unsetAtEnd=$(Boolean.FALSE) 
+         # is extglob set ?
+         shopt -q extglob
+         # if extglob not set already --> set it now and change boolean 
+         if (( $? == 1 )); then
+            shopt -s extglob
+            unsetAtEnd=$(Boolean.TRUE)
+         fi    
+         res=$(System.out.println "scale=15; $RANDOM/32768" | bc -l)
+         result="${res%%+([0])}"
+         System.out.println 0$result  
+         if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+            shopt -u extglob
+         fi  
+         return 0
+      fi
+      __throw "NotInPathException" ": bc not in path"
+      return $?
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.random
+
+Math.adder() {
+   if (( $# >= 2 )); then
+      if command -v bc >/dev/null 2>&1; then
+         local str=''
+         declare -i returnValue=0
+         local first=$(Boolean.TRUE)
+         while (( $# ))
+         do
+            local value
+            value=$(__mathConverter "$1")
+            if (( $? == 0 )); then
+               if [[ $first == $(Boolean.TRUE) ]]; then
+                  if [[ "$value" == "NaN" ]]; then
+                     System.out.println "NaN"
+                     return 0
+                  elif [[ "$value" == "Infinity" ]]; then
+                     posinf="yes"
+                  elif [[ "$value" == "-Infinity" ]]; then
+                     neginf="yes"
+                  fi
+                  str="($value)"
+                  first=$(Boolean.FALSE)
+               else
+                  if [[ "$value" == "NaN" ]]; then
+                     System.out.println "NaN"
+                     return 0
+                  elif [[ "$value" == "Infinity" ]]; then
+                     posinf="yes"
+                  elif [[ "$value" == "-Infinity" ]]; then
+                     neginf="yes"
+                  fi
+                  str="$str+($value)"
+               fi
+            else
+               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+               returnValue=$?
+               break
+            fi 
+            shift
+         done
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         if [[ $neginf == "yes" && $posinf == "yes" ]]; then
+            System.out.println "NaN"
+            return 0
+         elif  [[ $neginf == "yes" ]]; then
+            System.out.println "-Infinity"
+            return 0
+         elif  [[ $posinf == "yes" ]]; then
+            System.out.println "Infinity"
+            return 0     
+         fi 
+         output=$(System.out.println "$str" | bc -l)
+         if [[ "${output:0:2}" == '-.' ]]; then
+            System.out.println  -0."${output:2}"
+            return 0
+         fi
+         if [[ "${output:0:1}" == "." ]]; then
+            System.out.println 0"$output"
+            return 0 
+         fi
+         System.out.println "$output"
+         return 0 
+      fi
+      __throw "NotInPathException" ": bc not in path"
+      return $?
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.adder
+
+Math.multiplier() {
+   if (( $# >= 2 )); then
+      if command -v bc >/dev/null 2>&1; then
+         local str=''
+         declare -i returnValue=0
+         local first=$(Boolean.TRUE)
+         local neginf=''
+         local posinf=''
+         while (( "$#" ))
+         do
+            local value
+            value=$(__mathConverter "$1")
+            if (( $? == 0 )); then
+               if [[ $first == $(Boolean.TRUE) ]]; then
+                  if [[ "$value" == "NaN" ]]; then
+                     System.out.println "NaN"
+                     return 0
+                  elif [[ "$value" == "Infinity" ]]; then
+                     posinf="yes"
+                  elif [[ "$value" == "-Infinity" ]]; then
+                     neginf="yes"
+                  fi
+                  str="($value)"
+                  first=$(Boolean.FALSE)
+               else
+                  if [[ "$value" == "NaN" ]]; then
+                     System.out.println "NaN"
+                     return 0
+                  elif [[ "$value" == "Infinity" ]]; then
+                     posinf="yes"
+                  elif [[ "$value" == "-Infinity" ]]; then
+                     neginf="yes"
+                  fi                    
+                  str="$str*($value)"
+               fi
+            else
+               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+               returnValue=$?
+               break
+            fi 
+            shift
+         done
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         if [[ $neginf == "yes" && $posinf == "yes" ]]; then
+            System.out.println "NaN"
+            return 0
+         elif  [[ $neginf == "yes" ]]; then
+            System.out.println "-Infinity"
+            return 0
+         elif  [[ $posinf == "yes" ]]; then
+            System.out.println "Infinity"
+            return 0     
+         fi    
+         output=$(System.out.println "$str" | bc -l)
+         if [[ "${output:0:2}" == '-.' ]]; then
+            System.out.println  -0."${output:2}"
+            return 0
+         fi
+         if [[ "${output:0:1}" == "." ]]; then
+            System.out.println 0"$output"
+            return 0 
+         fi
+         System.out.println "$output"
+         return 0
+      fi
+      __throw "NotInPathException" ": bc not in path"
+      return $?
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.multiplier
+
+Math.log() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN"  || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ $val == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
+               System.out.println "-Infinity"
+               return 0   
+            elif (( $(System.out.println "$val<0" | bc -l) == 1 )); then
+               System.out.println "NaN"
+               return 0               
+            fi 
+            output="$(System.out.println "l($val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.log
+
+Math.log10() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ $val == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0            
+            elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
+               System.out.println "-Infinity"
+               return 0    
+            fi 
+            output="$(System.out.println "l($val)/l(10)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.log10
+
+Math.log1p() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ $val == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ $val == "NaN" || $val == "-Infinity" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif (( $(System.out.println "$val<-1" | bc -l) == 1 )); then
+               System.out.println "NaN"
+               return 0      
+            elif (( $(System.out.println "$val==-1" | bc -l) == 1 )); then
+               System.out.println "-Infinity"
+               return 0      
+            fi                            
+            output="$(System.out.println "l($val+1)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.log1p
+
+Math.toDegrees() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ "$val" == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ "$val" == "-Infinity" ]]; then
+               System.out.println "-Infinity"
+               return 0
+            fi 
+            output="$(System.out.println "(180/$(Math.PI))*$val" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.toDegrees
+     
+Math.toRadians() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ "$val" == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ "$val" == "-Infinity" ]]; then
+               System.out.println "-Infinity"
+               return 0
+            fi 
+            output="$(System.out.println "($(Math.PI)/180)*$val" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.toRadians
+
+Math.ceil() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ "$val" == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ "$val" == "-Infinity" ]]; then
+               System.out.println "-Infinity"
+               return 0
+            fi 
+            local CEIL_FUNCTION="define ceil(x) {if (x<0) {return x/1} else {if (scale(x)==0) {return x} else {return x/1 + 1 }}}"
+            output=$(System.out.println "$CEIL_FUNCTION;ceil($val)" | bc)
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.ceil
+
+Math.floor() {
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1") 
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then 
+            if [[ "$val" == "NaN" ]]; then
+               System.out.println "NaN"
+               return 0
+            elif [[ "$val" == "Infinity" ]]; then
+               System.out.println "Infinity"
+               return 0
+            elif [[ "$val" == "-Infinity" ]]; then
+               System.out.println "-Infinity"
+               return 0
+            fi 
+            # http://phodd.net/gnu-bc/code/funcs.bc
+            local FLOOR_FUNCTION="define floor(x) {auto os,xx;os=scale;scale=0; xx=x/1; if(xx>x)xx-=1;scale=os;return(xx)}"
+            output=$(System.out.println "$FLOOR_FUNCTION;floor($val)" | bc)
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return 0
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"$output"
+               return 0 
+            fi
+            System.out.println "$output"
+            return 0
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         return $?
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi        
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.floor
+
+Math.hypot() {
+   if (( $# == 2 )); then
+      local val1
+      local val2
+      val1=$(__mathConverter "$1")
+      if (( $? == 0 )); then
+         val2=$(__mathConverter "$2")
+         if (( $? == 0 )); then
+            if command -v bc >/dev/null 2>&1; then 
+               if [[ "$val1" == "Infinity" || "$val1" == "-Infinity" ]]; then
+                  System.out.println "Infinity"
+                  return 0
+               elif [[ "$val2" == "Infinity" || "$val2" == "-Infinity" ]]; then
+                  System.out.println "Infinity"
+                  return 0                              
+               elif [[ "$val1" == "NaN" || "$val2" == "NaN" ]]; then 
+                  System.out.println "NaN"
+                  return 0            
+               fi 
+               # sqrt(x^2 + y^2)
+               output="$(System.out.println "sqrt((($val1)*($val1))+(($val2)*($val2)))" | bc -l)"
+               if [[ "${output:0:2}" == '-.' ]]; then
+                  System.out.println  -0."${output:2}"
+                  return 0
+               fi
+               if [[ "${output:0:1}" == "." ]]; then
+                  System.out.println 0"$output"
+                  return 0 
+               fi
+               System.out.println "$output"
+               return 0
+            else
+               __throw "NotInPathException" ": bc not in path"
+               return $?
+            fi
+         else 
+            __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
+            return $?
+         fi   
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         return $?
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   return $?
+}
+__registerFunction Math.hypot
+
+#################
+#               #
+#     HELP      # 
+#               #
+#################
+
+complete -W  "random cos sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
+
+Math.help() {  
+   local printStream=${printStream:-out}
+   if (( $# == 0 )); then
+      System.${printStream}.println "
+      Usage: Math.help all|methodname|constant
+      Available methods:
+      -Math.random -Math.cos -Math.sin -Math.tan -Math.atan
+      -Math.asin -Math.acos -Math.min -Math.max -Math.abs
+      -Math.sqrt -Math.exp -Math.adder -Math.multiplier
+      -Math.log -Math.log10 -Math.log1p
+      Constructor: 
+      None
+      Constants:
+      -Math.E -Math.PI  
+               "
+      return 0
+   fi
+   while (($#))
+   do
+      local match=$(Boolean.FALSE)  
+      case $1 in 
+         Math.PI|PI|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.PI
+                  The value that is closer than any other to
+                  pi, the ratio of the circumference of a circle to its
+                  diameter.
+               Parameters:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Returns:
+                  3.14159265358979323846
+               Example:
+                  Math.PI
+                  >>>3.14159265358979323846
+            ";;&
+         Math.E|E|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.E
+                  The value that is closer than any other toathname string of 
+                  this abstract pathname. This is just the string returned by 
+                  the getPath() method. 
+                  e, the base of the natural logarithms.
+               Parameters:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Returns:
+                  2.71828182845904523536
+               Example:
+                  Math.E
+                  >>>2.71828182845904523536
+               ";;&
+         Math.random|random|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.random
+                  Returns a value with a positive sign, greater 
+                  than or equal to 0.0 and less than 1.0.
+               Parameters:
+                  None
+               Returns:
+                  a pseudorandom greater than or equal to 0.0 and less than 1.0.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Math.random
+                  >>>0.327545166015625
+            ";;&
+         Math.adder|adder|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.adder
+               Parameters:
+                  2 or more summands
+               Returns:
+                  Sum of all given summands
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if argument cannot be handled by math.adder
+                                             if number of arguments < 2
+               Example:
+                  Math.adder 2 3.3 4
+                  >>>9.3
+                  Math.adder -Infinity 4 
+                  >>>-Infinity
+                  Math.adder -Infinity Infinity 
+                  >>>NaN
+                  Math.adder 4.5 NaN
+                  >>>NaN
+                  Math.adder 3 Infinity 
+                  >>>Infinity
+            ";;&
+         Math.multiplier|multiplier|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.multiplier
+               Parameters:
+                  2 or more factors
+               Returns:
+                  Product of all given factors
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if argument cannot be handled by math.multiplier
+                                             if number of arguments < 2
+               Example:
+                  Math.multiplier 4 5.5 3
+                  >>>66
+                  Math.multiplier -Infinity 4 
+                  >>>-Infinity
+                  Math.multiplier -Infinity Infinity 
+                  >>>NaN
+                  Math.multiplier 4.5 NaN
+                  >>>NaN
+                  Math.multiplier 3 Infinity 
+                  >>>Infinity
+            ";;&
+         Math.min|min|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.min
+                  Returns the smaller of two values. That is, 
+                  the result is the value closer to negative infinity. 
+                  If the arguments have the same value, the result is 
+                  that same value. If either value is NaN, then the 
+                  result is NaN.
+               Parameters:
+                  a - an argument.
+                  b - another argument.
+               Returns:
+                  the smaller of a and b.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 2
+                                           - if an argument cannot be handled by Math.min
+               Example:
+                  Math.min 2 3e-5
+                  >>>3e-5
+                  Math.min 2 1,999
+                  >>>1,999
+                  Math.min 2 1.999
+                  >>>1.999
+                  Mathh.min 2 3e+5
+                  >>>2
+            ";;&
+         Math.max|max|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.max
+                  Returns the greater of two values. That is, the 
+                  result is the argument closer to positive infinity. 
+                  If the arguments have the same value, the result is that 
+                  same value. If either value is NaN, then the result is NaN. 
+               Parameters:
+                  a - an argument.
+                  b - another argument.
+               Returns:
+                  the larger of a and b.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 2
+                                           - if an argument cannot be handled by Math.max
+               Example:
+                  Math.max 2 3e-5
+                  >>>2
+                  Math.max 2 1,999
+                  >>>2
+                  Math.max 2 1.999
+                  >>>2
+                  Math.max 2 3e+5
+                  >>>3e+5
+            ";;&
+         Math.abs|abs|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.abs
+                  Returns the absolute value of a value. If the argument is 
+                  not negative, the argument is returned. If the argument is negative, 
+                  the negation of the argument is returned.
+               Parameters:
+                  a - the argument whose absolute value is to be determined
+               Returns:
+                  the absolute value of the argument.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.abs
+               Example:
+                  Math.abs 3,6
+                  >>>3,6
+                  Math.abs -3,6
+                  >>>3,6
+                  Math.abs -3.6
+                  >>>3.6
+                  Math.abs -3e-2
+                  >>>3e-2
+                  Math.abs 3e-2
+                  >>>3e-2
+            ";;&
+         Math.sin|sin|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.sin
+                  Returns the trigonometric sine of an angle. Special cases:
+                  * If the argument is NaN, then the result is NaN.
+               Parameters:
+                  a - an angle, in radians.
+               Returns:
+                  the sine of the argument.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.sin
+               Example:
+                  Math.sin 3
+                  >>>0.14112000805986722210
+                  Math.sin +3
+                  >>>0.14112000805986722210
+                  Math.sin -3,3
+                  >>>0.15774569414324838201
+                  Math.sin -3e3
+                  >>>-0.21918997428281807125
+                  Math.sin 3.3E3
+                  >>>0.97060061981194775668
+                  Math.sin NaN
+                  >>>NaN
+            ";;&
+         Math.sqrt|sqrt|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.sqrt
+                  Returns the correctly rounded positive square root of a value.
+                  * If the argument is NaN or less than zero, then the result is NaN.  
+               Parameters:
+                  a - a value.
+               Returns:
+                  the positive square root of a.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.sqrt
+               Example:
+                  Math.sqrt 1e-2
+                  >>>0.10000000000000000000
+                  Math.sqrt -4
+                  NaN
+                  Math.sqrt 4
+                  >>>2.00000000000000000000
+                  Math.sqrt 1e2
+                  >>>10.00000000000000000000
+                  Math.sqrt 1,232
+                  >>>1.10995495404092863573
+                  Math.sqrt 1.232
+                  >>>1.10995495404092863573
+            ";;&
+         Math.cos|cos|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.cos
+                  Returns the trigonometric cosine of an angle. Special cases:
+                  * If the argument is NaN, then the result is NaN.
+               Parameters:
+                  a - an angle, in radians.
+               Returns:
+                  the cosine of the argument.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.cos
+               Example:
+                  Math.cos 3
+                  >>>-0.98999249660044545727
+                  Math.cos +3
+                  >>>-0.98999249660044545727
+                  Math.cos -3,3
+                  >>>-0.98747976990886488393
+                  Math.cos -3e3
+                  >>>-0.97568219988575047927
+                  Math.cos -3.3E3
+                  >>>0.24069573494489437645
+                  Math.cos NaN
+                  >>>NaN
+            ";;&
+         Math.tan|tan|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.tan
+                  Returns the trigonometric tangent of an angle. Special cases:
+                  * If the argument is NaN, then the result is NaN.
+               Parameters:
+                  a - an angle, in radians.
+               Returns:
+                  the tangent of the argument.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.tan
+               Example:
+                  Math.tan 3
+                  >>>-0.14254654307427780529
+                  Math.tan +3
+                  >>>-0.14254654307427780529
+                  Math.tan -3,3
+                  >>>-0.15974574766003239667
+                  Math.tan -3e3
+                  >>>0.22465304205455892670
+                  Math.tan -3.3E3
+                  >>>-4.03247951208674326799
+                  Math.tan NaN
+                  >>>NaN
+            ";;&
+         Math.exp|exp|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.exp
+                  Returns Euler's number e raised to the power of a value. Special cases:
+                  * If the argument is NaN, the result is NaN.
+               Parameters:
+                  a - the exponent to raise e to.
+               Returns:
+                  the value e^a, where e is the base of the natural logarithms.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.exp
+               Example:
+                  Math.exp 1
+                  >>>2.71828182845904523536
+                  Math.exp 1.1
+                  >>>3.00416602394643311205
+                  Math.exp 1,1
+                  >>>3.00416602394643311205
+                  Math.exp 10e-1
+                  >>>2.71828182845904523536
+            ";;&
+         Math.asin|asin|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.asin
+                  Returns the arc sine of a value; the returned angle is 
+                  in the range -pi/2 through pi/2. Special cases:
+                  * If the argument is NaN or its absolute value is greater than 1, 
+                    then the result is NaN. 
+               Parameters:
+                  a - the value whose arc sine is to be returned.
+               Returns:
+                  the arc sine of the argument.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.asin
+               Example:
+                  Math.asin 3
+                  >>>NaN
+                  Math.asin 0.3
+                  >>>0.30469265401539750797
+                  Math.asin 3,2e-3
+                  >>>0.00320000546135849930
+                  Math.asin -1
+                  >>>1.5707963267948966
+                  Math.asin +1
+                  >>>1.5707963267948966
+            ";;&
+         Math.acos|acos|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.acos
+                  Returns the arc cosine of a value; the returned angle is in 
+                  the range 0.0 through pi. Special case:
+                  * If the argument is NaN or its absolute value is greater 
+                    than 1, then the result is NaN. 
+               Parameters:
+                  a - the value whose arc cosine is to be returned.
+               Returns:
+                  the arc cosine of the argument.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.acos
+               Example:
+                  Math.acos 3
+                  >>>NaN
+                  Math.acos .9
+                  >>>0.45102681179626243254
+                  Math.acos 3e-3
+                  >>>0.00033333182098444678
+                  Math.acos +3,2E-3
+                  >>>0.00031249838982353477
+            ";;&
+         Math.log10|log10|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               Math.log10
+                  Returns the base 10 logarithm of a double value. Special cases:
+                  * If the argument is NaN or less than zero, then the result is NaN.
+                  * If the argument is positive infinity, then the result is positive infinity.
+                  * If the argument is positive zero or negative zero, then the result is negative infinity.
+                  * If the argument is equal to 10^n for integer n, then the result is n. 
+               Parameters:
+                  a - a value.
+               Returns:
+                  the base 10 logarithm of a.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.log10
+               Example:
+                  Math.log10 3.4
+                  >>>0.53147891704225512375
+                  Math.log10 -3.4
+                  >>>-43429448190325182764.82932559271819087686
+                  Math.log10 NaN
+                  >>>NaN
+                  Math.log10 Infinity
+                  >>>Infinity
+                  Math.log10 -Infinity
+                  >>>NaN
+                  Math.log10 0
+                  >>>-Infinity
+            ";;&
+         Math.log1p|log1p|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "           
+               Math.log1p
+                  Returns the natural logarithm of the sum of the argument and 1. 
+                  Note that for small values x, the result of log1p(x) is much 
+                  closer to the true result of ln(1 + x) than the floating-point 
+                  evaluation of log(1.0+x). Special cases:
+                  * If the argument is NaN or less than -1, then the result is NaN.
+                  * If the argument is positive infinity, then the result is positive infinity.
+                  * If the argument is negative one, then the result is negative infinity. 
+               Parameters:
+                  x - a value
+               Returns:
+                  the value ln(x + 1), the natural log of x + 1.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.log1p
+               Example:
+                  Math.log1p NaN
+                  >>>NaN
+                  Math.log1p -1.1
+                  >>>NaN
+                  Math.log1p Infinity
+                  >>>Infinity
+                  Math.log1p -Infinity
+                  >>>NaN
+                  Math.log1p 3E-4
+                  >>>0.00029995500899797548
+            ";;&
+         Math.log|log|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "      
+               Math.log
+                  Returns the natural logarithm (base e) of a double value. Special cases:
+                  * If the argument is NaN or less than zero, then the result is NaN.
+                  * If the argument is positive infinity, then the result is positive infinity.
+                  * If the argument is positive zero or negative zero, then the result is negative infinity.    
+               Parameters:
+                  a - a value.
+               Returns:
+                  the value ln a, the natural logarithm of a.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.log
+               Example:
+                  Math.log 4,22
+                  >>>1.43983512804792043712
+                  Math.log -1
+                  >>>NaN
+                  Math.log NaN
+                  >>>NaN
+                  Math.log 0
+                  >>>-Infinity
+            ";;&
+         Math.expm1|expm1|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.expm1
+                  Returns e^x -1. Note that for values of x near 0, the exact sum of expm1(x) + 1 
+                  is much closer to the true result of e^x than exp(x).
+                  Special cases:
+                  * If the argument is NaN, the result is NaN.
+                  * If the argument is positive infinity, then the result is positive infinity.
+                  * If the argument is negative infinity, then the result is -1.0. 
+               Parameters:
+                  x - the exponent to raise e to in the computation of e^x -1.
+               Returns:
+                  the value e^x - 1.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.expm1
+               Example:
+                  Math.expm1 2,44
+                  >>>10.47304074279483338936
+                  Math.expm1 NaN
+                  >>>NaN
+                  Math.expm1 Infinity
+                  >>>Infinity
+                  Math.expm1 -Infinity
+                  >>>-1
+                  Math.expm1 0
+                  >>>0
+            ";;&
+         Math.cosh|cosh|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.cosh
+                  Returns the hyperbolic cosine of a double value. The hyperbolic cosine 
+                  of x is defined to be (e^x + e^-x)/2 where e is Euler's number.
+                  Special cases:
+                     * If the argument is NaN, then the result is NaN.
+                     * If the argument is infinite, then the result is positive infinity.
+                     * If the argument is zero, then the result is 1.0. 
+               Parameters:
+                  x - The number whose hyperbolic cosine is to be returned.
+               Returns:
+                  The hyperbolic cosine of x.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.cosh
+               Example:             
+                  Math.cosh NaN
+                  >>>NaN
+                  Math.cosh Infinity
+                  >>>Infinity
+                  Math.cosh -Infinity
+                  >>>Infinity
+                  Math.cosh 0
+                  >>>1
+                  Math.cosh 33e-6
+                  >>>1.00000000054450000004                    
+            ";;&
+         Math.sinh|sinh|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.sinh
+                  Returns the hyperbolic sine of a double value. The hyperbolic sine 
+                  of x is defined to be (e^x - e^-x)/2 where e is Euler's number.
+               Special cases:
+                  * If the argument is NaN, then the result is NaN.
+                  * If the argument is infinite, then the result is an infinity with 
+                  the same sign as the argument.
+               Parameters:
+                  x - The number whose hyperbolic sine is to be returned.
+               Returns:
+                  The hyperbolic sine of x.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.sinh
+               Example:
+                  Math.sinh NaN
+                  >>>NaN
+                  Math.sinh Infinity
+                  >>>Infinity
+                  Math.sinh -Infinity
+                  -Infinity
+                  Math.sinh -23
+                  >>>-4872401723.12445129996600694425
+                  Math.sinh 2.233
+                  >>>4.61030062038019454226
+            ";;&
+         Math.tanh|tanh|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "          
+               Math.tanh
+                 Returns the hyperbolic tangent of a double value. The hyperbolic 
+                 tangent of x is defined to be (e^x - e^-x)/(e^x + e^-x), in other words, 
+                 sinh(x)/cosh(x). Note that the absolute value of the exact tanh is always 
+                 less than 1.
+                 Special cases:
+                 * If the argument is NaN, then the result is NaN.
+                 * If the argument is positive infinity, then the result is +1.0.
+                 * If the argument is negative infinity, then the result is -1.0. 
+                 The result of tanh for any finite input must have an absolute value less 
+                 than or equal to 1.
+              Parameters:
+                 x - The number whose hyperbolic tangent is to be returned.
+              Returns:
+                 The hyperbolic tangent of x.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.tanh
+              Example:
+                 Math.tanh 0
+                 >>>0
+                 Math.tanh NaN
+                 >>>NaN
+                 Math.tanh Infinity
+                 >>>1
+                 Math.tanh -Infinity
+                 >>>-1
+                 Math.tanh 3.21
+                 >>>0.99674798394664436803
+            ";;&
+         Math.toDegrees|toDegrees|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.toDegrees
+                  Converts an angle measured in radians to an approximately equivalent 
+                  angle measured in degrees. The conversion from radians to degrees is 
+                  generally inexact; users should not expect cos(toRadians(90.0)) 
+                  to exactly equal 0.0.
+               Parameters:
+                  angrad - an angle, in radians
+               Returns:
+                  the measurement of the angle angrad in degrees.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.toDegrees
+               Example:
+                  Math.toDegrees -Infinity
+                  >>>-Infinity
+                  Math.toDegrees Infinity
+                  >>>Infinity
+                  Math.toDegrees NaN
+                  >>>NaN
+                  Math.toDegrees 34
+                  >>>1948.05650344479890981256
+                  Math.toDegrees 1.32
+                  >>>75.63042895726866355742
+            ";;&
+         Math.toRadians|toRadians|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.toRadians(double angdeg)
+                  Converts an angle measured in degrees to an approximately equivalent 
+                  angle measured in radians. The conversion from degrees to radians is 
+                  generally inexact.
+               Parameters:
+                  angdeg - an angle, in degrees
+               Returns:
+                  the measurement of the angle angdeg in radians.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.toRadians
+               Example:
+                  Math.toRadians NaN
+                  >>>NaN
+                  Math.toRadians Infinity
+                  >>>Infinity
+                  Math.toRadians -Infinity
+                  >>>-Infinity
+                  Math.toRadians 32
+                  >>>0.55850536063818546432
+                  Math.toRadians -42
+                  >>>-0.73303828583761842192
+            ";;&
+         Math.hypot|hypot|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.hypot
+                  Returns sqrt(x^2 + y^2) without intermediate overflow or underflow.
+                  Special cases:
+                  * If either argument is infinite, then the result is positive infinity.
+                  * If either argument is NaN and neither argument is infinite, 
+                  then the result is NaN. 
+               Parameters:
+                  x - a value
+                  y - a value
+               Returns:
+                  sqrt(x^2 + y^2)
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.hypot
+               Example:
+                  Math.hypot NaN Infinity
+                  >>>Infinity
+                  Math.hypot NaN -Infinity
+                  >>>Infinity
+                  Math.hypot  -Infinity 4
+                  >>>Infinity
+                  Math.hypot  2.432 4
+                  >>>4.68130580073551700034
+                  Math.hypot  2.432 NaN
+                  >>>NaN
+            ";;&
+         Math.ceil|ceil|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.ceil
+                  Returns the smallest (closest to negative infinity) double value that 
+                  is greater than or equal to the argument and is equal to a mathematical 
+                  integer. Special cases:
+                  * If the argument value is already equal to a mathematical integer, then the 
+                  result is the same as the argument.
+                  * If the argument is NaN or an infinity or positive zero or negative zero, 
+                  then the result is the same as the argument.
+                  * If the argument value is less than zero but greater than -1.0, then the 
+                  result is zero.
+               Parameters:
+                  a - a value.
+               Returns:
+                  the smallest (closest to negative infinity) floating-point value that is 
+                  greater than or equal to the argument and is equal to a mathematical integer.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.ceil
+               Example:
+                  Math.ceil 3
+                  >>>3
+                  Math.ceil NaN
+                  >>>NaN
+                  Math.ceil Infinity
+                  >>>Infinity
+                  Math.ceil -Infinity
+                  >>>-Infinity
+                  Math.ceil 0.33
+                  >>>1
+                  Math.ceil -0.33
+                  >>>0
+                  Math.ceil 2,23
+                  >>>3
+            ";;&
+         Math.floor|floor|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               Math.floor
+                  Returns the largest (closest to positive infinity) double value that is less 
+                  than or equal to the argument and is equal to a mathematical integer. Special cases:
+                  * If the argument value is already equal to a mathematical integer, then the 
+                  result is the same as the argument.
+                  * If the argument is NaN or an infinity or zero, 
+                  then the result is the same as the argument.
+               Parameters:
+                  a - a value.
+               Returns:
+                  the largest (closest to positive infinity) floating-point value that less 
+                  than or equal to the argument and is equal to a mathematical integer.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.floor
+               Example:
+                  Math.floor 3
+                  >>>3
+                  Math.floor NaN
+                  >>>NaN
+                  Math.floor Infinity
+                  >>>Infinity
+                  Math.floor -Infinity
+                  >>>-Infinity
+                  Math.floor -1.22
+                  >>>-2
+                  Math.floor 1.22
+                  >>>1
+            ";;&
+         Math.atan|atan|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.atan
+                  Returns the arc tangent of a value; the returned angle is in the range 
+                  -pi/2 through pi/2. Special cases: 
+                  * If the argument is NaN, then the result is NaN.
+               Parameters:
+                  a - the value whose arc tangent is to be returned.
+               Returns:
+                  the arc tangent of the argument.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.atan
+               Example:
+                  Math.atan 3
+                  >>>1.24904577239825442582
+                  Math.atan +3
+                  >>>1.24904577239825442582
+                  Math.atan -3,3
+                  >>>-1.27656176168370884247
+                  Math.atan -3e3
+                  >>>-1.57046299347390896408
+                  Math.atan -3.3E3
+                  >>>-1.57049329650114180705
+                  Math.atan NaN
+                  >>>NaN
+            ";;&
+         *)   if [[ $match == $(Boolean.FALSE) ]]; then
+                 System.${printStream}.println "                                  
+                       No help found for $1
+                    "   
+              fi
+              ;;& 
+      esac       
+      shift
+   done         
+}
+__registerFunction Math.help

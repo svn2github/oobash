@@ -1,0 +1,80 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+#######################
+#######################
+##                   ##
+##     REGISTRY      ##
+##                   ##
+#######################
+#######################
+
+
+# public 
+# registers a given function in the registry
+# called by:
+# by bash during source process
+__registerFunction() {
+   local value="$1"
+   __Registry__["$value"]=function
+   return 0
+}
+__registerFunction __registerFunction
+
+# public  
+# registers a given class in the registry
+# called by:
+# by bash during source process
+__registerClass() {
+   local value="$1"
+   __Registry__["$value"]=class
+   return 0
+}
+__registerFunction __registerClass
+
+# public  
+# registers a given variable in the registry
+# called by:
+# by bash during source process
+__registerVar() {
+   local value="$1"
+   __Registry__["$value"]=var
+   return 0
+}
+__registerFunction __registerVar
+
+# public
+# registers a given alias in the registry
+# called by:
+# by bash during source process
+__registerAlias() {
+   local value="$1"
+   __Registry__["$value"]=alias
+   return 0
+}
+__registerFunction __registerAlias
+
+# public  
+# cleans the environment
+__cleanUp() {
+   __cleanUpObjectsPool
+   __cleanUpClasses
+   __cleanUpFunctions
+   __cleanUpVars
+   __cleanUpAliases   
+   unset __Registry__
+   unset -f __cleanUpObjectsPool
+   unset -f __cleanUpClasses
+   unset -f __cleanUpFunctions
+   unset -f __cleanUpVars
+   unset -f __cleanUpAliases
+   unset -f __cleanUp
+   # i have to access BASH_ALIASES to see the changes with the "set" command (i don't know why...)
+   echo ${BASH_ALIASES[@]} >/dev/null 2>&1
+   return 0
+}
+

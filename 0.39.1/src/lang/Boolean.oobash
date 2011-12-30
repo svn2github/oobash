@@ -1,0 +1,315 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+####################
+####################
+##                ##
+##     BOOLEAN    ## 
+##                ##
+####################
+####################
+
+
+#########################
+#                       #
+#      CONSTRUCTOR      # 
+#                       #
+#########################
+
+Boolean() {
+   if (( $# == 2 )); then
+      local this="$1"
+
+      if ! __visible "$this"; then
+         I18n.err.message "Sorry, objectname '\$this' is not valid"
+         return 1
+      fi       
+
+      if ! __checkForKeywords "$this"; then
+         I18n.err.message "Sorry, objectname '\$this' is a keyword"
+         return 1
+      fi 
+
+      if ! __periodCheck "$this"; then
+         I18n.err.message "Sorry, no full stop character allowed in objectname"
+         return 1
+      fi
+
+      local pointer
+      if ! pointer=$(System.currentTimeNanos); then
+         I18n.err.message "Sorry, could not create object '\$this'"
+         return 1
+      fi
+
+      local bool="$2"
+      bool=$(Boolean.parseBoolean "$bool")
+      local class=$FUNCNAME
+
+      __destructor "$this"
+
+      __alias "$this" $FUNCNAME
+
+      __attribute bool "$bool"        
+
+      return 0      
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+   return $?
+}
+__registerClass Boolean
+
+
+#####################
+#                   #
+#      METHODS      # 
+#                   #
+#####################
+
+
+##################
+#                #
+#     STATICS    # 
+#                #
+##################
+
+Boolean.TRUE() {
+   if (( $# == 0 )); then
+      System.out.println 'true'
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+   return $?
+}
+__registerFunction Boolean.TRUE
+
+Boolean.FALSE() {
+   if (( $# == 0 )); then
+      System.out.println 'false'
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+   return $?
+}
+__registerFunction Boolean.FALSE
+
+Boolean.parseBoolean() {
+   if (( $# == 1 )); then
+      declare -l bool="$1"
+      if [[ "$bool" == $(Boolean.TRUE) ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+      return 0
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+   return $?
+}
+__registerFunction Boolean.parseBoolean
+
+#################
+#               #
+#     HELP      # 
+#               #
+#################
+
+complete -W  "$(echo ${__String__[@]}) all Boolean parseBoolean TRUE FALSE" Boolean.help
+
+Boolean.help() {  
+   local printStream=${printStream:-out};
+   if (( $# == 0 )); then
+      System.${printStream}.println "
+      Usage: Boolean.help all|methodname|constructor|constant
+      Available methods:
+      -Boolean.parseBoolean -equals -hashCode
+      -getClass -compareTo -toString
+      Constructor: 
+      -Boolean
+      Constants:
+      -Boolean.TRUE -Boolean.FALSE  
+                 "
+      return 0
+   fi
+   while (($#))
+   do  
+      local match=$(Boolean.FALSE)
+      case $1 in
+         Boolean|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Boolean
+                  Constructor for the Boolean objects.
+                  Allocates a Boolean object representing the value true 
+                  if the string argument is equal, ignoring case, to the 
+                  string "true". Otherwise, allocate a Boolean object 
+                  representing the value false. 
+               Parameters:
+                  objectname string
+                  s - the string to be converted to a Boolean.
+                  No "." character is allowed in the objectname string.
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+               Example:
+                  Boolean a \"True\" produces a Boolean object that represents true.
+                  Boolean a \"yes\"  produces a Boolean object that represents false.
+            ";;& 
+         Boolean.TRUE|TRUE|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Boolean.TRUE
+                  The Boolean object corresponding to the primitive value true. 
+               Parameters:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Boolean.TRUE
+                  >>>true   
+               ";;&
+         Boolean.FALSE|FALSE|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Boolean.FALSE
+                  The Boolean object corresponding to the primitive value false. 
+               Parameters:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Boolean.FALSE
+                  >>>false  
+            ";;&
+         Boolean.parseBoolean|parseBoolean|all)  
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Boolean.parseBoolean
+                  Parses the string argument as a boolean. The boolean 
+                  returned represents the value true if the string argument 
+                  is not null and is equal, ignoring case, to the string "true".
+               Parameters:
+                  s - the String containing the boolean representation to be parsed
+               Returns:
+                  the boolean represented by the string argument
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example: 
+                  Boolean.parseBoolean \"True\"
+                  >>>true
+                  Boolean.parseBoolean \"yes\"
+                  >>>false
+            ";;& 
+         equals|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               equals
+                  Returns true if and only if the argument is a Boolean object that 
+                  represents the same boolean value as this object. 
+               Parameters:
+                  anObject - The object to compare this Boolean against
+               Returns:
+                  true if the Boolean objects represent the same value; false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  Boolean a abc
+                  Boolean b true
+                  a.equals a
+                  >>>true
+                  a.equals b
+                  >>>false
+            ";;&
+         getClass|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getClass
+                  Returns the runtime class of this Object.
+               Parameters:
+                  None
+               Returns:
+                  The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Boolean b xxx
+                  b.getClass
+                  >>>class Boolean
+            ";;&
+         toString|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toString
+                  Returns a String object representing this Boolean's value. 
+                  If this object represents the value true, a string equal to \"true\" 
+                  is returned. Otherwise, a string equal to \"false\" is returned. 
+               Parameters:
+                  None
+               Throws:
+                  NotInPathException - if sort not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Boolean b xxx
+                  b.toString
+                  >>>false            
+            ";;&
+         hashCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hashCode
+                  Returns a hash code for this Boolean object.
+               Parameters:
+                  None
+               Returns:
+                  the integer 1231 if this object represents true; returns the integer 
+                  1237 if this object represents false.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Boolean b xxx
+                  b.hashCode
+                  >>>1237          
+            ";;&
+         compareTo|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               compareTo
+                  Compares this Boolean instance with another Boolean instance. 
+               Parameters:
+                  bool - a Boolean object.
+               Returns:
+                  zero if this object represents the same boolean value as the argument; 
+                  a positive value if this object represents \"true\" and the argument 
+                  represents \"false\"; and a negative value if this object represents \"false\"
+                  and the argument represents \"true\"
+               Throws:
+                  WrongClassException  - if argument has the wrong class  
+                  IllegalArgumentException - if argument is no object
+                                             if number of arguments != 1
+               Example:
+                  Boolean a true
+                  Boolean b xxx
+                  a.compareTo a
+                  >>>0
+                  a.compareTo b
+                  >>>1
+                  b.compareTo b
+                  >>>0
+                  b.compareTo a
+                  >>>-1
+            ";;&
+         *)   if [[ $match == $(Boolean.FALSE) ]]; then
+                 System.${printStream}.println "                                  
+                       No help found for $1
+                    "   
+              fi
+              ;;& 
+      esac          
+      shift
+   done      
+}
