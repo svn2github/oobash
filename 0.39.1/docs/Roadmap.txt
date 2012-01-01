@@ -22,6 +22,8 @@
 # set aliases only if tty open ?
 #
 # not chained Exceptions, but chained return values ?
+#
+# File getText, setText, append
 
 # 0.40
 # Assert 
