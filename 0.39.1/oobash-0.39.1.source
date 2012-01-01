@@ -16,6 +16,7 @@
 __VERSION__="0.39.1"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
+__STACKTRACE__="true"
 
 # ----------------------------------------------------
 # Some start up tests:
@@ -83,12 +84,15 @@ declare -a __ObjectMethods__=(getClass toString hashCode equals)
 declare -a __ComparableMethods__=(compareTo)
 
 declare -a __BooleanMethods__=()
+
 declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
 declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUpperCase isAlnum isAlpha isAscii isDigit isHexDigit isPrintable isSpace isVisible zfill capitalize center swapCase title   toUpperCase toLowerCase length concat trim contains isEmpty startsWith lastIndexOf indexOf charAt endsWith replaceFirst replaceAll reverse substring equalsIgnoreCase matches rstrip lstrip isTitle  compareToIgnoreCase) 
+
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
 
 declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile)
+
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
 # source code:
@@ -114,6 +118,7 @@ __import oobash.lang.Math
 __import oobash.lang.System
 __import oobash.lang.String
 __import oobash.lang.Boolean
+__import oobash.lang.Stacktrace
 
 # import io classes
 __import oobash.io.File
@@ -242,8 +247,7 @@ __registerFunction command_not_found_handle
 ###########################
 ###########################
 
-# If QUIET ist not true and stdout is an open tty and you don't source this file in a script, then... 
-if [[ $(Boolean.parseBoolean "$QUIET") != $(Boolean.TRUE) ]] && [[ -t 1 ]] && [[ ${0##*/} == "bash" ]]; then
+if [[ $(Boolean.parseBoolean "$QUIET") != $(Boolean.TRUE) ]] && [[ ! -z $PS1 ]]; then
    System.out.println 
    I18n.out.message " oo-style framework for bash 4"
    I18n.out.message " Version:      ${__VERSION__}"

@@ -78,6 +78,9 @@ __throw() {
    local exception="$1"
    local message="$2"
    System.err.println "${exception}${message}"
+   if [[ "$(Boolean.parseBoolean "${__STACKTRACE__}")" == "$(Boolean.TRUE)" ]]; then
+      __stacktrace
+   fi
    if [[ ! -z ${__ExceptionValues__[$exception]} ]]; then
       returnValue=${__ExceptionValues__[$exception]}
    else   

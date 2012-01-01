@@ -1,4 +1,4 @@
-source ../../oobash-0.39.source 1>/dev/null 2>&1
+source ../../oobash*.source 1>/dev/null 2>&1
 if (( $? != 0 )); then
    echo "Sorry, but could not find oobash"
    exit 0

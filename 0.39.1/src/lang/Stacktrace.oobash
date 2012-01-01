@@ -1,0 +1,44 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
+
+##########################
+##########################
+##                      ##
+##      STACKTRACE      ## 
+##                      ##
+##########################
+##########################
+
+__stacktrace()
+{
+   # no stacktrace in interactive shell 
+   if [ -z $PS1 ]; then
+      # no __throw and no __stacktrace -> i=2
+      declare -i i=2
+      until [[ "${FUNCNAME[$i]}" = "main" ]]
+      do
+         System.err.println "function ${FUNCNAME[$i]} called from ${BASH_SOURCE[$i+1]##*/} at line ${BASH_LINENO[$i]}"
+         ((i++))
+      done
+
+      declare -i pid=${BASHPID}
+      shopt -s extglob
+      while (( $pid >= 1 ))
+      do
+         mapfile status </proc/$pid/status
+         until [[ ${status[$index]:0:4} == "PPid" ]]
+         do
+            ((index++))
+         done
+         command=$(</proc/$pid/cmdline)
+         System.err.println "process $command with pid $pid"
+         pid=${status[$index]/PPid:/}
+      done
+      shopt -u extglob
+   fi
+   return 0
+}
