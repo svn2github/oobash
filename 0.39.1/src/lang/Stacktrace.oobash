@@ -42,3 +42,4 @@ __stacktrace()
    fi
    return 0
 }
+__registerFunction __stacktrace
