@@ -13,7 +13,7 @@
 #
 # I18n.xy.messages only if tty open ?
 #
-# stacktrace 
+# stacktrace DONE
 #
 # check where xargs should be used ?
 #

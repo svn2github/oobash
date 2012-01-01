@@ -16,7 +16,7 @@
 __stacktrace()
 {
    # no stacktrace in interactive shell 
-   if [ -z $PS1 ]; then
+   if [[ -z "$PS1" ]]; then
       # no __throw and no __stacktrace -> i=2
       declare -i i=2
       until [[ "${FUNCNAME[$i]}" = "main" ]]
