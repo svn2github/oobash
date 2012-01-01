@@ -4,6 +4,7 @@ if (( $? != 0 )); then
    exit 0
 fi
 
+# overwrites setting in ../../oobash*.source (but there default is 'true', too)
 __STACKTRACE__="true"
 
 f3() {
