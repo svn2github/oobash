@@ -206,6 +206,8 @@
 #    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
 #    -style corections
 #    -more consistent exceptions -> special return values for different exceptions
+# Version:      0.39.1
+#    -added stacktrace
 
 #################################################################
 # Features:
