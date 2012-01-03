@@ -1,11 +1,11 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.X
-# -Man.generator
+# -Man.generator ?
 #
 # -Generate class file directly into myClasses package structure ?
 #
-# -Analyze log4oobash.properties
+# -Analyze log4oobash.properties ?
 #
 # -quote String function ?
 #
@@ -15,15 +15,15 @@
 #
 # stacktrace DONE
 #
-# check where xargs should be used ?
-#
 # set TMPDIR ?
 #
 # set aliases only if tty open ?
 #
 # not chained Exceptions, but chained return values ?
 #
-# File getText, setText, append
+# File: getText, setText, append (Groovy) listFiles(array [pattern]) ?
+#
+# System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formatting ?
 
 # 0.40
 # Assert 

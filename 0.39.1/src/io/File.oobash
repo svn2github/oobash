@@ -719,6 +719,47 @@ __setReadOnly() {
    return $?
 }
 
+__getText() { 
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         local text
+         local file="$("$this".toString)"
+         text="$(<"$file")"
+         System.out.println "$text"
+         return 0
+      else
+         __throw "IOException" ": could not read file \"$1\""
+         return $?
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
+   return $?
+}
+
+__setText() {
+   if (( $# == 1 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         local text
+         text=$(<"$1")
+         System.out.println "$text"
+         return 0
+      else
+         __throw "IOException" ": could not read file \"$1\""
+         return $?
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   return $?
+}
+
+__append() {
+   # copy of setText with >>
+   return 0
+}
+
+
 # length
 # Masterfunction in the String.oobash file
 
