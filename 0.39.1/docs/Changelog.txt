@@ -208,6 +208,7 @@
 #    -more consistent exceptions -> special return values for different exceptions
 # Version:      0.39.1
 #    -added stacktrace
+#    -added File: append getText setText
 
 #################################################################
 # Features:

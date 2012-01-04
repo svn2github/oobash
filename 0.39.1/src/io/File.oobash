@@ -723,11 +723,16 @@ __getText() {
    if (( $# == 2 )); then
       local this="$1"
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         local text
-         local file="$("$this".toString)"
-         text="$(<"$file")"
-         System.out.println "$text"
+         if [[ "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+            local text
+            local file="$("$this".toString)"
+            text="$(<"$file")"
+            System.out.println "$text"
          return 0
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is a directory"
+            return $?
+         fi
       else
          __throw "IOException" ": could not x read file \"$("$this".toString)\""
          return $?
@@ -804,6 +809,28 @@ __append() {
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    return $?
 }
+
+__clear() {
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+         if [[ "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+            local file="$("$this".toString)"
+            > "$file"
+            return 0
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is a directory"
+            return $?
+         fi  
+      else
+         __throw "IOException" ": could not write file \"$("$this".toString)\""
+         return $?
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   return $?
+}
+
 
 # length
 # Masterfunction in the String.oobash file

@@ -91,7 +91,7 @@ declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUppe
 
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
 
-declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append)
+declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 

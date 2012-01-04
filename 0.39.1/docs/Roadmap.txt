@@ -21,9 +21,11 @@
 #
 # not chained Exceptions, but chained return values ?
 #
-# File: getText, setText, append (Groovy) listFiles(array [pattern]) ?
+# File: getText, setText, append (from Groovy) Done
 #
-# System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formatting ?
+# listFiles(array [pattern]) ?
+#
+# System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
 
 # 0.40
 # Assert 
