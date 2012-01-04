@@ -729,7 +729,7 @@ __getText() {
          System.out.println "$text"
          return 0
       else
-         __throw "IOException" ": could not read file \"$1\""
+         __throw "IOException" ": could not x read file \"$("$this".toString)\""
          return $?
       fi
    fi
@@ -738,15 +738,32 @@ __getText() {
 }
 
 __setText() {
-   if (( $# == 1 )); then
+   if (( $# == 3 )); then
       local this="$1"
-      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         local text
-         text=$(<"$1")
-         System.out.println "$text"
-         return 0
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class String" == "$argclass" ]]; then
+            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+               if [[ "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+                  local text="$("$argobject".toString)"
+                  System.out.println "$text" > "$("$this".toString)"
+                  return 0
+               else
+                  __throw "IOException" ":\"$("$this".toString)\" is a directory"
+                  return $?
+               fi
+            else
+               __throw "IOException" ": could not write file \"$("$this".toString)\""
+               return $?
+            fi
+         else 
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+            return $?
+         fi
       else
-         __throw "IOException" ": could not read file \"$1\""
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          return $?
       fi
    fi
@@ -755,10 +772,38 @@ __setText() {
 }
 
 __append() {
-   # copy of setText with >>
-   return 0
+   if (( $# == 3 )); then
+      local this="$1"
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class String" == "$argclass" ]]; then
+            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+               if [[ "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+                  local text="$("$argobject".toString)"
+                  System.out.println "$text" >> "$("$this".toString)"
+                  return 0
+               else
+                  __throw "IOException" ":\"$("$this".toString)\" is a directory"
+                  return $?
+               fi
+            else
+               __throw "IOException" ": could not write file \"$("$this".toString)\""
+               return $?
+            fi
+         else
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+            return $?
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         return $?
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   return $?
 }
-
 
 # length
 # Masterfunction in the String.oobash file
