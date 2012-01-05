@@ -838,14 +838,22 @@ __clear() {
    if (( $# == 2 )); then
       local this="$1"
       if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-         if [[ "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
-            local file="$("$this".toString)"
-            > "$file"
-            return 0
-         else
+         # try to avoid at least some problems...
+         if [[ "$("$this".isDirectory)" == "$(Boolean.TRUE)" ]]; then
             __throw "IOException" ":\"$("$this".toString)\" is a directory"
             return $?
-         fi  
+         fi
+         if [[ "$("$this".isBlockSpecial)" == "$(Boolean.TRUE)" ]]; then
+            __throw "IOException" ":\"$("$this".toString)\" is block special"
+            return $?
+         fi
+         if [[ "$("$this".isCharacterSpecial)" == "$(Boolean.TRUE)" ]]; then
+            __throw "IOException" ":\"$("$this".toString)\" is character special"
+            return $?
+         fi
+         local file="$("$this".toString)"
+         > "$file"
+         return 0
       else
          __throw "IOException" ": could not write file \"$("$this".toString)\""
          return $?
