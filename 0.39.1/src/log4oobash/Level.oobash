@@ -21,6 +21,7 @@
 #########################
 
 Level() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 4 )); then
       local this="$1"
       local level="$2"
@@ -74,6 +75,7 @@ __registerClass Level
 #####################
 
 __toInt() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local key
@@ -100,6 +102,7 @@ __toInt() {
 }
 
 __getSyslogEquivalent() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local key
@@ -126,6 +129,7 @@ __getSyslogEquivalent() {
 }
 
 __isGreaterOrEqual() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       this=$1
       class=$2

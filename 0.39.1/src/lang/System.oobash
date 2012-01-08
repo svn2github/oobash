@@ -21,6 +21,7 @@
 ##################
 
 System.currentTimeMillis() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       if __gnudateCheck; then
          local date=$(date +%s%N)
@@ -37,6 +38,7 @@ System.currentTimeMillis() {
 __registerFunction System.currentTimeMillis
 
 System.currentTimeNanos() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       if __gnudateCheck; then
          date +%s%N
@@ -52,6 +54,7 @@ System.currentTimeNanos() {
 __registerFunction System.currentTimeNanos
 
 System.exit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       (declare -i status=$1) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
@@ -72,6 +75,7 @@ System.exit() {
 __registerFunction System.exit
 
 System.err.println() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "$message" >&2
@@ -83,6 +87,7 @@ System.err.println() {
 __registerFunction System.err.println
 
 System.out.println() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "$message"

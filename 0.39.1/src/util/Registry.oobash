@@ -13,23 +13,12 @@
 #######################
 #######################
 
-
-# public 
-# registers a given function in the registry
-# called by:
-# by bash during source process
-__registerFunction() {
-   local value="$1"
-   __Registry__["$value"]=function
-   return 0
-}
-__registerFunction __registerFunction
-
 # public  
 # registers a given class in the registry
 # called by:
 # by bash during source process
 __registerClass() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value="$1"
    __Registry__["$value"]=class
    return 0
@@ -41,6 +30,7 @@ __registerFunction __registerClass
 # called by:
 # by bash during source process
 __registerVar() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value="$1"
    __Registry__["$value"]=var
    return 0
@@ -52,6 +42,7 @@ __registerFunction __registerVar
 # called by:
 # by bash during source process
 __registerAlias() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value="$1"
    __Registry__["$value"]=alias
    return 0
@@ -61,6 +52,7 @@ __registerFunction __registerAlias
 # public  
 # cleans the environment
 __cleanUp() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    __cleanUpObjectsPool
    __cleanUpClasses
    __cleanUpFunctions

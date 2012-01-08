@@ -20,6 +20,7 @@
 # called by:
 # every time you source this framework
 __lookForLoggingPropertiesFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local call="$1"
    local directory=$(dirname ${call/[0-9]* /})
    if [[ -r $directory/${__LOGGINGPROPERTIESFILE__} ]]; then
@@ -38,6 +39,7 @@ __registerVar __LOGGERPROPS__
 # called by:
 # -every constructor
 __checkForKeywords() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local word="$1"
    local keyword
    for keyword in ${__Keywords__[@]}
@@ -56,16 +58,17 @@ __registerVar __Keywords__
 # called by:
 # -every constructor
 __periodCheck() {
-      str="$1"
-      declare -i i
-      for ((i=0; i < ${#str}; i++))
-      do
-         local char="${this:i:1}"
-         case "$char" in
-            .) return 1;;
-         esac
-      done
-      return 0
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   str="$1"
+   declare -i i
+   for ((i=0; i < ${#str}; i++))
+   do
+      local char="${this:i:1}"
+      case "$char" in
+         .) return 1;;
+      esac
+   done
+   return 0
 }
 __registerFunction __periodCheck
 
@@ -75,6 +78,7 @@ __registerFunction __periodCheck
 # every public method
 # and __dependencyCheck
 __throw() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local exception="$1"
    local message="$2"
    System.err.println "${exception}${message}"
@@ -95,6 +99,7 @@ __registerFunction __throw
 # called by:
 # -every constructor
 __attribute() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local key="$1"
    local value="$2"
    __OBJECTPOOL__["${this}"]=$class@$pointer
@@ -108,6 +113,7 @@ __registerFunction __attribute
 # called by:
 # -every constructor
 __destructor() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local this="$1"
    local string="${__OBJECTPOOL__["${this}"]}"
    if [[ ! -z "${string}" ]]; then
@@ -144,6 +150,7 @@ __registerFunction __destructor
 # called by:
 # -__destructor
 __unalias() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local this="$1"
    local lastClass="$2"
    local method
@@ -163,16 +170,25 @@ __registerFunction __unalias
 # in the interactive bash. 
 # called by:
 # -every constructor
-__alias() {
-   local this="$1"
-   local class="$2"
-   local method
-   for method in $(eval echo \${__${class}__[@]})
-   do
-      BASH_ALIASES["${this}"."${method}"]=""${this}"."${method}""
-   done
+if [[ ! -z $PS1 ]]; then
+   __alias() {
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      local this="$1"
+      local class="$2"
+      local method
+      for method in $(eval echo \${__${class}__[@]})
+      do
+         BASH_ALIASES["${this}"."${method}"]=""${this}"."${method}""
+      done
+      return 0
+   }   
+else
+   __alias() {
+   :
    return 0
-}   
+   }
+fi
+   
 __registerFunction __alias
 
 # private
@@ -181,6 +197,7 @@ __registerFunction __alias
 # -every constructor
 # -isVisible (String method)
 __visible() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local str="$1"
    local unsetAtEnd="$(Boolean.FALSE)" 
    local bool="$(Boolean.FALSE)" 
@@ -214,6 +231,7 @@ __registerFunction __visible
 # -__toUpperCase
 # -__capitalize
 __strUpper() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -u str="$1"
    local upper=''
    declare -i i=0
@@ -241,6 +259,7 @@ __registerFunction __strUpper
 # called by:
 # -__toLowerCase
 __strLower() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -l str="$1"
    local lower=''
    declare -i i=0
@@ -292,6 +311,7 @@ __registerFunction __strLower
 # -Math.floor
 # -Math.hypot
 __mathConverter() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local input="$1"
    if [[ $input == "NaN" ]]; then
       System.out.println "NaN"
@@ -435,45 +455,46 @@ __registerFunction __mathConverter
 # called by:
 # -File.createTemporaryFile
 __posixFilePermissionsConverter() {
-      local unsetAtEnd=$(Boolean.FALSE) 
-      # is extglob set ?
-      shopt -q extglob
-      # if extglob not set already --> set it now and change boolean 
-      if (( $? == 1 )); then
-         shopt -s extglob
-         unsetAtEnd=$(Boolean.TRUE)
-      fi 
-      local permissions="$1"
-      local octal=''
-      declare -i octalPerm=0
-      if [[ "$permissions" =~ ^([r-][w-][x-]){3}$ ]]; then
-         # convert to octal format
-         declare -i i=0
-         for ((i=0; i < 9; i++))
-         do
-            local perm="${permissions:i:1}"
-               case $perm in
-                  r)octalPerm=$(($octalPerm+4));;
-                  w)octalPerm=$(($octalPerm+2));;
-                  x)octalPerm=$(($octalPerm+1));;
-               esac
-            # starting with 0
-            if (( $i == 2 || $i == 5 || $i== 8 )); then
-               octal=$octal${octalPerm}
-               octalPerm=0  
-            fi        
-         done
-      else
-         if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
-            shopt -u extglob
-         fi
-         return 1
-      fi
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local unsetAtEnd=$(Boolean.FALSE) 
+   # is extglob set ?
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean 
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd=$(Boolean.TRUE)
+   fi 
+   local permissions="$1"
+   local octal=''
+   declare -i octalPerm=0
+   if [[ "$permissions" =~ ^([r-][w-][x-]){3}$ ]]; then
+      # convert to octal format
+      declare -i i=0
+      for ((i=0; i < 9; i++))
+      do
+         local perm="${permissions:i:1}"
+            case $perm in
+               r)octalPerm=$(($octalPerm+4));;
+               w)octalPerm=$(($octalPerm+2));;
+               x)octalPerm=$(($octalPerm+1));;
+            esac
+         # starting with 0
+         if (( $i == 2 || $i == 5 || $i== 8 )); then
+            octal=$octal${octalPerm}
+            octalPerm=0  
+         fi        
+      done
+   else
       if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
          shopt -u extglob
       fi
-      System.out.println $octal   
-      return 0
+      return 1
+   fi
+   if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+      shopt -u extglob
+   fi
+   System.out.println $octal   
+   return 0
 }
 __registerFunction __posixFilePermissionsConverter
 
@@ -482,20 +503,22 @@ __registerFunction __posixFilePermissionsConverter
 # called by:
 # -I18n.err.message -I18n.out.message
 __i18nMessage() {
-      local message="$1"
-      # msgid "" can be mapped to meta informations 
-      if [[ "$message" == "" ]]; then
-          System.${printStream}.println ""
-          return 0
-      fi
-      if command -v eval_gettext >/dev/null 2>&1; then
-         System.${printStream}.println "$(eval_gettext "$message")"
-         return 0
-      else
-         # fall back to old school bash i18n
-         System.${printStream}.println "$(eval System.out.println $\"$message\")"
-         return 0
-      fi
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local message="$1"
+   # msgid "" can be mapped to meta informations 
+   if [[ "$message" == "" ]]; then
+       System.${printStream}.println ""
+       return 0
+   fi
+   if command -v eval_gettext >/dev/null 2>&1; then
+      System.${printStream}.println "$(eval_gettext "$message")"
+      return 0
+   else
+      # fall back to old school bash i18n
+      System.${printStream}.println "$(eval System.out.println $\"$message\")"
+      return 0
+   fi
+   return 0
 }
 __registerFunction __i18nMessage
 
@@ -505,6 +528,7 @@ __registerFunction __i18nMessage
 # called by:
 # __cleanUp
 __cleanUpObjectsPool() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local obj
    for obj in ${!__OBJECTPOOL__[@]} 
    do 
@@ -519,6 +543,7 @@ __cleanUpObjectsPool() {
 # called by:
 # __cleanUp
 __cleanUpFunctions() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -535,6 +560,7 @@ __cleanUpFunctions() {
 # called by:
 # __cleanUp
 __cleanUpClasses() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -557,6 +583,7 @@ __cleanUpClasses() {
 # called by:
 # __cleanUp
 __cleanUpVars() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -573,6 +600,7 @@ __cleanUpVars() {
 # called by:
 # __cleanUp
 __cleanUpAliases() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
    for value in ${!__Registry__[@]}
    do 
@@ -590,6 +618,7 @@ __cleanUpAliases() {
 # called by:
 # every time you source this framework
 __dependencyCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local bool="$(Boolean.TRUE)"
    declare -i i
    for ((i=0; i < ${#__Dependencies__[@]}; i++))
@@ -618,6 +647,7 @@ __dependencyCheck() {
 # called by:
 # __dependencyCheck
 __gnudateCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    # For this framework it is important to work with a gnu date, so:
    # special check for gnu date with nanoseconds gnu feature:
    # can't test but hope it works...

@@ -11,7 +11,7 @@
 
 @calling() {
    if (($# != 0)); then
-      System.err.println "Calling: $* "
+      printf "%s\n" "Calling: $* " >&2
    fi
    return 0
 }
@@ -19,20 +19,32 @@ __registerFunction @calling
 
 @timestamp() {
    if (($# != 0)); then
-      System.err.println "Time is $(date "+%s.%N")"
+      printf "%s\n" "Time is $(date "+%s.%N")" >&2
    fi
    return 0
 }
 __registerFunction @timestamp
 
-
 @deprecated() {
    if (($# != 0)); then
-      System.err.println "DeprecatedWarning for $1"
+      printf "%s\n" "DeprecatedWarning for $1" >&2
    fi
    return 0
 }
 __registerFunction @deprecated
+
+@debug() {
+   if (($# != 0)); then
+      if [[ "$(Boolean.parseBoolean "${__DEBUG__}")" == "$(Boolean.TRUE)" ]]; then
+         local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
+         if [[ "${time:0:1}" == "." ]]; then
+            time=0"$time"
+         fi
+         printf "%s\n" "Runtime: $time [seconds.nanosecons], Calling: $*" >&2
+      fi
+   fi
+}
+__registerFunction @debug
 
 ####################################################
 # function to handle decorators, if there are some #
@@ -43,23 +55,28 @@ __decoratorCheck() {
    if [[ "${0##*/}" == "bash" ]]; then
       return 0
    fi
-   mapfile Arr < $0
-   declare -i returnValue=0
-   local decorated="$1"
-   shift
 
+   local decorated="$1"
+   local file="$2"
+   shift; shift
+
+   declare -i returnValue=0
    declare -i offset=0
+   declare -i line="$BASH_LINENO"
+
+   mapfile Arr < "$file"
+
    # bottom-up search for function start by looking for "()"
-   while [[ ${Arr[BASH_LINENO-offset]} == ${Arr[BASH_LINENO-offset]/"()"/} ]]
-   do
+   while [[ "${Arr[line-offset]}" == "${Arr[line-offset]/"()"/}" ]]
+   do 
       ((offset++))
-   done
-   
+   done   
    ((offset++))
 
    # bottom-up search for decorators
    declare -a lineOffset
-   while [[ ${Arr[BASH_LINENO-offset]:0:1} == "@" ]]
+
+   while [[ "${Arr[line-offset]:0:1}" == "@" ]]
    do
       lineOffset[$[${#lineOffset[@]}]]=$offset
       ((offset++))
@@ -69,7 +86,7 @@ __decoratorCheck() {
    declare -i i=0
    for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
    do
-      eval ${Arr[BASH_LINENO-lineOffset[i]]} "${decorated}" "$@"
+      eval ${Arr[line-lineOffset[i]]} "${decorated}" "$@"
       returnValue=$(($returnValue+$?))
    done
    return $returnValue

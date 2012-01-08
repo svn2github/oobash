@@ -34,8 +34,8 @@ msgid " Author:       andreas.gregor.frank@googlemail.com"
 msgstr " Autore:       andreas.gregor.frank@googlemail.com"
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:218
-msgid " Stop showing this message by setting QUIET=true"
-msgstr " Imposta QUIET=true per non visualizzare questo messaggio."
+msgid " Stop showing this message by setting __QUIET__=true"
+msgstr " Imposta __QUIET__=true per non visualizzare questo messaggio."
 
 #: /home/franka/Bash/oobash/oobash-0.38.5.source:220
 msgid " Try the developer tool: Class.generator"

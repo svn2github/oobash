@@ -21,6 +21,7 @@
 #####################
 
 __getClass() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local class="$2"
    if (( $# == 2 )); then
       System.out.println "class $class"
@@ -31,6 +32,7 @@ __getClass() {
 }
 
 __toString() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local class="$2"
@@ -87,9 +89,8 @@ __toString() {
    return $?
 }
 
-
-
 __equals() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       local argobject="$3"
@@ -122,6 +123,7 @@ __equals() {
 }
 
 __hashCode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    # for being compatible with java:
    # simulating 32-bit modular arithmetic ignoring overflow  ==>
    # MAX_VALUE 	= 	2147483647

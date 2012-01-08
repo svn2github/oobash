@@ -17,8 +17,6 @@
 #
 # set TMPDIR ?
 #
-# set aliases only if tty open ?
-#
 # not chained Exceptions, but chained return values ?
 #
 # File: getText, setText, append (from Groovy) Done
@@ -26,6 +24,26 @@
 # listFiles(array [pattern]) ?
 #
 # System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
+#
+# Possibility to decorate every function DONE
+#
+# new man page for File
+#
+# Process.setPriority ?
+# http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads
+#
+# seek for Syste.out.println $(Boolean.FALSE)
+#
+# delete registerAlias ?
+#
+# overwrite alias function to : if tty not open ? DONE
+#
+# use OODIR for manpath
+#
+# Decorator.help + man page
+#
+# isFile fr the new Filefunctions DONE
+
 
 # 0.40
 # Assert 

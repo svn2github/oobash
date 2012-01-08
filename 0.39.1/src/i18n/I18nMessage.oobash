@@ -15,6 +15,7 @@
 
 
 I18n.out.message() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# <= 1  )); then
       local printStream=out
       local message="$1"
@@ -27,6 +28,7 @@ I18n.out.message() {
 __registerFunction i18n.out.message
 
 I18n.err.message() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local printStream=err
    if (( $# <= 1  )); then
       local message="$1"

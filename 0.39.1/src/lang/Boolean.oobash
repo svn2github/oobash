@@ -21,6 +21,7 @@
 #########################
 
 Boolean() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
 
@@ -77,6 +78,7 @@ __registerClass Boolean
 ##################
 
 Boolean.TRUE() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println 'true'
       return 0
@@ -87,6 +89,7 @@ Boolean.TRUE() {
 __registerFunction Boolean.TRUE
 
 Boolean.FALSE() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println 'false'
       return 0
@@ -97,6 +100,7 @@ Boolean.FALSE() {
 __registerFunction Boolean.FALSE
 
 Boolean.parseBoolean() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       declare -l bool="$1"
       if [[ "$bool" == $(Boolean.TRUE) ]]; then

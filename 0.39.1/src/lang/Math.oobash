@@ -21,6 +21,7 @@
 ##################
 
 Math.sin() {
+   __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -55,6 +56,7 @@ Math.sin() {
 __registerFunction Math.sin
 
 Math.cos() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -89,6 +91,7 @@ Math.cos() {
 __registerFunction Math.cos
 
 Math.tan() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -134,6 +137,7 @@ Math.tan() {
 __registerFunction Math.tan
 
 Math.atan() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -174,6 +178,7 @@ Math.atan() {
 __registerFunction Math.atan
 
 Math.asin() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -224,6 +229,7 @@ Math.asin() {
 __registerFunction Math.asin
 
 Math.acos() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -269,6 +275,7 @@ Math.acos() {
 __registerFunction Math.acos
 
 Math.max() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local val1
       local val2
@@ -314,6 +321,7 @@ Math.max() {
 __registerFunction Math.max
 
 Math.min() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local val1
       local val2
@@ -359,6 +367,7 @@ Math.min() {
 __registerFunction Math.min
 
 Math.abs() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val1
       val1=$(__mathConverter "$1")
@@ -391,6 +400,7 @@ Math.abs() {
 __registerFunction Math.abs
 
 Math.sqrt() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -433,6 +443,7 @@ Math.sqrt() {
 __registerFunction Math.sqrt
 
 Math.exp() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -473,6 +484,7 @@ Math.exp() {
 __registerFunction Math.exp
 
 Math.expm1() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -513,6 +525,7 @@ Math.expm1() {
 __registerFunction  Math.expm1
 
 Math.sinh() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -554,6 +567,7 @@ Math.sinh() {
 __registerFunction Math.sinh
      
 Math.cosh() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -595,6 +609,7 @@ Math.cosh() {
 __registerFunction Math.cosh
         
 Math.tanh() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -636,6 +651,7 @@ Math.tanh() {
 __registerFunction Math.tanh
         
 Math.E() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println 2.71828182845904523536
       return 0
@@ -646,6 +662,7 @@ Math.E() {
 __registerFunction Math.E
 
 Math.PI() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println 3.14159265358979323846
       return 0
@@ -656,6 +673,7 @@ Math.PI() {
 __registerFunction Math.PI
 
 Math.random() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       if command -v bc >/dev/null 2>&1; then 
          local unsetAtEnd=$(Boolean.FALSE) 
@@ -683,6 +701,7 @@ Math.random() {
 __registerFunction Math.random
 
 Math.adder() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# >= 2 )); then
       if command -v bc >/dev/null 2>&1; then
          local str=''
@@ -756,6 +775,7 @@ Math.adder() {
 __registerFunction Math.adder
 
 Math.multiplier() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# >= 2 )); then
       if command -v bc >/dev/null 2>&1; then
          local str=''
@@ -831,6 +851,7 @@ Math.multiplier() {
 __registerFunction Math.multiplier
 
 Math.log() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -874,6 +895,7 @@ Math.log() {
 __registerFunction Math.log
 
 Math.log10() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -917,6 +939,7 @@ Math.log10() {
 __registerFunction Math.log10
 
 Math.log1p() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -960,6 +983,7 @@ Math.log1p() {
 __registerFunction Math.log1p
 
 Math.toDegrees() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -1000,6 +1024,7 @@ Math.toDegrees() {
 __registerFunction Math.toDegrees
      
 Math.toRadians() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -1040,6 +1065,7 @@ Math.toRadians() {
 __registerFunction Math.toRadians
 
 Math.ceil() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -1081,6 +1107,7 @@ Math.ceil() {
 __registerFunction Math.ceil
 
 Math.floor() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 1 )); then
       local val
       val=$(__mathConverter "$1") 
@@ -1123,6 +1150,7 @@ Math.floor() {
 __registerFunction Math.floor
 
 Math.hypot() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local val1
       local val2

@@ -21,6 +21,7 @@
 #########################
 
 String() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
 
@@ -68,6 +69,7 @@ __registerClass String
 #####################
 
 __compareToIgnoreCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       local str1="$("$this".toUpperCase)"
@@ -108,6 +110,7 @@ __compareToIgnoreCase() {
 }
 
 __base64Encode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       if command -v base64 >/dev/null 2>&1; then 
@@ -122,6 +125,7 @@ __base64Encode() {
 }
 
 __base64Decode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       if command -v base64 >/dev/null 2>&1; then       
@@ -144,6 +148,7 @@ __base64Decode() {
 }
 
 __rstrip() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -158,6 +163,7 @@ __rstrip() {
 }
 
 __lstrip() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -172,6 +178,7 @@ __lstrip() {
 }
 
 __title() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toLowerCase)"
@@ -183,6 +190,7 @@ __title() {
 }
 
 __isTitle() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"   
       if [[ "$("$this".toLowerCase)" == "$("$this".toUpperCase)" ]]; then
@@ -201,6 +209,7 @@ __isTitle() {
 }
 
 __isAscii() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       shopt -s extglob
@@ -221,6 +230,7 @@ __isAscii() {
 }
 
 __isHexDigit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -241,6 +251,7 @@ __isHexDigit() {
 }
 
 __isPrintable() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -261,6 +272,7 @@ __isPrintable() {
 }
 
 __isVisible() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -277,6 +289,7 @@ __isVisible() {
 }
 
 __count() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       local pattern="$3"
@@ -302,6 +315,7 @@ __count() {
 }
 
 __isLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)" 
@@ -329,6 +343,7 @@ __isLowerCase() {
 }
 
 __isUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)" 
@@ -356,6 +371,7 @@ __isUpperCase() {
 }
 
 __isAlnum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -376,6 +392,7 @@ __isAlnum() {
 }
 
 __isAlpha() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       shopt -s extglob
@@ -396,6 +413,7 @@ __isAlpha() {
 }
 
 __isDigit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -416,6 +434,7 @@ __isDigit() {
 }
 
 __isSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -436,6 +455,7 @@ __isSpace() {
 }
 
 __zfill() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       (declare -i width=$3) 2>/dev/null ||  (return 1)
@@ -459,6 +479,7 @@ __zfill() {
 }
 
 __swapCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -486,6 +507,7 @@ __swapCase() {
 }
 
 __center() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       (declare -i width=$3) 2>/dev/null ||  (return 1)
@@ -523,6 +545,7 @@ __center() {
 }
 
 __equalsIgnoreCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       local argobject="$3"
@@ -550,6 +573,7 @@ __equalsIgnoreCase() {
 }
 
 __toUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -562,6 +586,7 @@ __toUpperCase() {
 }
 
 __toLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -574,6 +599,7 @@ __toLowerCase() {
 }
 
 __capitalize() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toLowerCase)"
@@ -587,6 +613,7 @@ __capitalize() {
 }
 
 __concat() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -597,7 +624,8 @@ __concat() {
    return $?
 } 
 
-__trim() { 
+__trim() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -613,6 +641,7 @@ __trim() {
 }
 
 __contains() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       local var="$3"
@@ -629,6 +658,7 @@ __contains() {
 }
 
 __matches() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"   
       local regex="$3"
@@ -645,6 +675,7 @@ __matches() {
 }
 
 __isEmpty() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       declare -i length=$("$this".length)
@@ -660,6 +691,7 @@ __isEmpty() {
 }
 
 __startsWith() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    case $# in 
       3) declare -i toffset=0;;
       4) (declare -i tooffset=$4) 2>/dev/null ||  (return 1)
@@ -682,6 +714,7 @@ __startsWith() {
 }
 
 __lastIndexOf() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local this="$1"
    case $# in
       3) local pattern="$3"
@@ -723,6 +756,7 @@ __lastIndexOf() {
 }
 
 __indexOf() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    case $# in
       3) local pattern="$3"
          declare -i from=0;;
@@ -767,6 +801,7 @@ __indexOf() {
 }
 
 __charAt() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       this="$1"
       (declare -i pos=$3) 2>/dev/null ||  (return 1)
@@ -789,6 +824,7 @@ __charAt() {
 }
 
 __endsWith() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 3 )); then
       local this="$1"
       local endstring="$3"
@@ -806,6 +842,7 @@ __endsWith() {
 }
 
 __replaceFirst() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 4 )); then
       local this="$1"
       local substring="$3"
@@ -820,6 +857,7 @@ __replaceFirst() {
 }
 
 __replaceAll() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 4 )); then
       local this="$1"
       local substring="$3"
@@ -835,6 +873,7 @@ __replaceAll() {
 }
 
 __substring() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local this="$1" 
    declare -i count=$("$this".length)
    case $# in
@@ -873,6 +912,7 @@ __substring() {
 }
 
 __reverse() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
@@ -891,7 +931,8 @@ __reverse() {
    return $?
 }
 
-__length() {  
+__length() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local class="$2"
    if (( $# == 2 )); then
       local this="$1"
@@ -928,6 +969,7 @@ __length() {
 ##################
 
 String.digits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println '0123456789'
       return 0
@@ -938,6 +980,7 @@ String.digits() {
 __registerFunction String.digits
 
 String.asciiLetters() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
       return 0
@@ -948,6 +991,7 @@ String.asciiLetters() {
 __registerFunction String.asciiLetters
 
 String.asciiLettersLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println 'abcdefghijklmnopqrstuvwxyz'
       return 0
@@ -958,6 +1002,7 @@ String.asciiLettersLowerCase() {
 __registerFunction String.asciiLettersLowerCase
 
 String.asciiLettersUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
       return 0
@@ -968,6 +1013,7 @@ String.asciiLettersUpperCase() {
 __registerFunction String.asciiLettersUpperCase
 
 String.hexDigits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println '0123456789abcdefABCDEF'
       return 0
@@ -978,6 +1024,7 @@ String.hexDigits() {
 __registerFunction String.hexDigits
 
 String.octDigits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( $# == 0 )); then
       System.out.println '01234567'
       return 0

@@ -99,11 +99,11 @@ String a abc
 String a $(a.toLowerCase)
 String a $(a.toUpperCase)
 
-Only the constructors do not follow this main principle (looks to ugly ;-) ).
+Only the constructors do not follow this main principle (a __String looks to ugly ;-) ).
  
 G) "Inheritance" 
 ################
-Inheritance is done by array nesting.
+Inheritance is done by array concatenation.
 Every class has a __$ClassMethods__ array. The elements of this array are the methods that are defined in this $Class file.
 The __XYZMethods__ array are only used for inheritance action.
 Every (not abstract) class has another array named: __$Class__. The elements of this array are the elements of one or more __XYZMethods__ arrays.

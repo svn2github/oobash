@@ -17,6 +17,9 @@ __VERSION__="0.39.1"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
+__DEBUG__="false"
+__QUIET__="false"
+__STARTTIME__="$(date +%s.%N 2>/dev/null)"
 
 # ----------------------------------------------------
 # Some start up tests:
@@ -30,6 +33,10 @@ if [[ ${0##*/} == ${__FILENAME__} ]]; then
    unset __FILENAME__
    unset __VERSION__
    unset __LOGGINGPROPERTIESFILE__
+   unset __STACKTRACE__
+   unset __DEBUG__
+   unset __STARTTIME__
+   unset __QUIET__
    unset TEXTDOMAINDIR
    unset TEXTDOMAIN
    exit 0
@@ -45,6 +52,10 @@ if [ $BASH_VERSINFO -lt 4 ]; then
    unset __VERSION__
    unset __LOGGINGPROPERTIESFILE__
    unset __OODIR__
+   unset __STACKTRACE__
+   unset __DEBUG__
+   unset __STARTTIME__
+   unset __QUIET__
    unset TEXTDOMAINDIR
    unset TEXTDOMAIN
    return 0
@@ -63,22 +74,23 @@ fi
 
 declare -A __Registry__
 
-# Return values for exceptions
+# Return values for exceptions:
 declare -A __ExceptionValues__
 __ExceptionValues__=( 
-[DecoderException]=140
-[IllegalArgumentException]=150
-[IndexOutOfBoundsException]=160
-[IOException]=170
-[NotInPathException]=180
-[WrongClassException]=190
-[Unknown]=250
+ [DecoderException]=140
+ [IllegalArgumentException]=150
+ [IndexOutOfBoundsException]=160
+ [IOException]=170
+ [NotInPathException]=180
+ [WrongClassException]=190
+ [Unknown]=250
 )
 
 
 # all external commands used in this framework:
 declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd) 
 
+# Arrays for framework methods:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
 
 declare -a __ComparableMethods__=(compareTo)
@@ -95,18 +107,29 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
-# source code:
-###############
+# register function:
+####################
 
+__registerFunction() {
+   local value="$1"
+   __Registry__["$value"]=function
+   return 0
+}
+__registerFunction __registerFunction
+
+# import function:
+# ################
 __import() {
    local packageOrClass="${1/"oobash."/}"
    source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
+   return 0
 }
+__registerFunction __import
 
 # import util functions
+__import oobash.util.Decorator
 __import oobash.util.Registry
 __import oobash.util.Generator
-__import oobash.util.Decorator
 
 # import private functions
 __import oobash.private.Private
@@ -134,9 +157,12 @@ __registerVar __VERSION__
 __registerVar __FILENAME__
 __registerVar __LOGGINGPROPERTIESFILE__
 __registerVar __OODIR__
+__registerVar __STACKTRACE__
+__registerVar __DEBUG__
+__registerVar __STARTTIME__
+__registerVar __QUIET__
 __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
-__registerFunction __import
 
 # gnu date search:
 ###################
@@ -247,13 +273,13 @@ __registerFunction command_not_found_handle
 ###########################
 ###########################
 
-if [[ $(Boolean.parseBoolean "$QUIET") != $(Boolean.TRUE) ]] && [[ ! -z $PS1 ]]; then
+if [[ $(Boolean.parseBoolean "$__QUIET__") != $(Boolean.TRUE) ]] && [[ ! -z $PS1 ]]; then
    System.out.println 
    I18n.out.message " oo-style framework for bash 4"
    I18n.out.message " Version:      ${__VERSION__}"
    I18n.out.message " Author:       andreas.gregor.frank@googlemail.com"
    System.out.println 
-   I18n.out.message " Stop showing this message by setting QUIET=true"
+   I18n.out.message " Stop showing this message by setting __QUIET__=true"
    System.out.println 
    I18n.out.message " Try the developer tool: Class.generator"
    System.out.println 
@@ -314,13 +340,13 @@ if command -v dirname >/dev/null 2>&1; then
    export MANPATH=$MANPATH:"$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && System.out.println ${PWD} )"/man
 else
    __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
-   I18n.out.message " Could not change MANPATH !"
+   I18n.out.message " Could not change MANPATH!"
 fi
 
 ##################################################
 ##################################################
 ##                                              ##
-##     LOGGING (coming in version 0.4)          ## 
+##     LOGGING (coming in version 0.5)          ## 
 ##                                              ##
 ##################################################
 ##################################################
@@ -339,7 +365,7 @@ if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]; then
    __import oobash.log4oobash.Layout
    __import oobash.log4oobash.Level
    
-   # Create logging objects 
+   # Create loglevel objects 
    Level OFF Infinity "OFF" 0          2>/dev/null
    Level FATAL 50000 "FATAL" 0         2>/dev/null
    Level ERROR 40000 "ERROR" 3         2>/dev/null
