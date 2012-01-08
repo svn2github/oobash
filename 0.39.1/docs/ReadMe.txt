@@ -11,7 +11,7 @@ Fast start
 To start simply source oobash-<version>.source file:
 1) source oobash-<version>.source
 
-To finally clean up your environment again:
+To finally clean up your environment:
 1) __cleanUp
 
 How it works
@@ -149,6 +149,7 @@ You can see an example script in the docs/examples directory.
 __decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
 Available "decorators" at the moment: @calling @timestamp @deprecated
 The decorators call is realized with eval, so if you want to build your own "decorators", be careful.
+Decorators use stderr for echos, because the framework communication is on stdout.
 
 K) "Exceptions"
 ################
