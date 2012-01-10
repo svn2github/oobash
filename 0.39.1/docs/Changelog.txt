@@ -195,8 +195,8 @@
 #    -new functions for registry: __registerAlias, __cleanUpAliases
 #    -new function for arg test: __periodCheck (checks if given string contains "." character) called by every constructor
 #    -new i18n package with I18nMessage file, content:I18n.out.message I18n.err.message I18n.help. New private function:__i18nMessage
-#    -generated getters: get$Class$Attribute (Class.generator) to avoid name clashes
 #     http://tldp.org/LDP/abs/html/localization.html: $"..." syntax is deprecated --> use of gettext now
+#    -generated getters: get$Class$Attribute (Class.generator) to avoid name clashes
 #    -better readme file
 #    -__dependencyCheck,__gnudateCheck are new private functions to check the external commands that are used in this framework
 #    -__gnudateCheck instead of command -v date
