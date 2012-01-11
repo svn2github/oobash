@@ -211,6 +211,7 @@
 #    -added File: append getText setText clear
 #    -added optimized __decoratorCheck + almost every framework function now checks for decorator
 #    -overwrite __alias function if shell is not interactive
+#    -deleted __registerAlias __cleanUpAliases
 
 #################################################################
 # Features:

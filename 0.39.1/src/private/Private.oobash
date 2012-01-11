@@ -595,23 +595,6 @@ __cleanUpVars() {
 }
 
 # private
-# unsets the used aliases
-# does not need registration. unset action in __cleanUp function
-# called by:
-# __cleanUp
-__cleanUpAliases() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local value
-   for value in ${!__Registry__[@]}
-   do 
-      if [[ "${__Registry__[$value]}" == "alias" ]]; then
-         unalias ${value}
-      fi
-   done   
-   return 0
-}
-
-# private
 # check for external commands that are used in this framework
 # Throws:
 #    NotInPathException - if element of __Dependencies__ array is not in path

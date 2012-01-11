@@ -34,7 +34,7 @@
 #
 # seek for Syste.out.println $(Boolean.FALSE)
 #
-# delete registerAlias ?
+# delete registerAlias ? DONE
 #
 # overwrite alias function to : if tty not open ? DONE
 #
