@@ -40,18 +40,23 @@ __registerFunction __registerVar
 # public  
 # cleans the environment
 __cleanUp() {
+   echo now
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   echo done
    __cleanUpObjectsPool
    __cleanUpClasses
    __cleanUpFunctions
    __cleanUpVars
-   __cleanUpAliases   
    unset __Registry__
    unset -f __cleanUpObjectsPool
    unset -f __cleanUpClasses
    unset -f __cleanUpFunctions
    unset -f __cleanUpVars
-   unset -f __cleanUpAliases
+   unset -f __decoratorCheck
+   unset -f @debug
+   unset -f @deprecated
+   unset -f @calling
+   unset -f @timestamp
    unset -f __cleanUp
    # i have to access BASH_ALIASES to see the changes with the "set" command (i don't know why...)
    echo ${BASH_ALIASES[@]} >/dev/null 2>&1

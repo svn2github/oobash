@@ -15,7 +15,6 @@
    fi
    return 0
 }
-__registerFunction @calling
 
 @timestamp() {
    if (($# != 0)); then
@@ -23,7 +22,6 @@ __registerFunction @calling
    fi
    return 0
 }
-__registerFunction @timestamp
 
 @deprecated() {
    if (($# != 0)); then
@@ -31,7 +29,6 @@ __registerFunction @timestamp
    fi
    return 0
 }
-__registerFunction @deprecated
 
 @debug() {
    if (($# != 0)); then
@@ -44,7 +41,6 @@ __registerFunction @deprecated
       fi
    fi
 }
-__registerFunction @debug
 
 ####################################################
 # function to handle decorators, if there are some #
@@ -91,4 +87,3 @@ __decoratorCheck() {
    done
    return $returnValue
 }
-__registerFunction __decoratorCheck

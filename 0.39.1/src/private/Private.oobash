@@ -149,16 +149,23 @@ __registerFunction __destructor
 # of a given object
 # called by:
 # -__destructor
-__unalias() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local this="$1"
-   local lastClass="$2"
-   local method
-   for method in $(eval echo \${__${lastClass}__[@]})
-   do
-      unalias "${this}"."${method}"
-   done 
-}
+if [[ ! -z $PS1 ]]; then
+   __unalias() {
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      local this="$1"
+      local lastClass="$2"
+      local method
+      for method in $(eval echo \${__${lastClass}__[@]})
+      do
+         unalias "${this}"."${method}"
+      done 
+   }
+else
+   __unalias() {
+   :
+   return 0
+   }
+fi
 __registerFunction __unalias
 
 # private
@@ -188,7 +195,6 @@ else
    return 0
    }
 fi
-   
 __registerFunction __alias
 
 # private

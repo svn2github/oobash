@@ -18,7 +18,6 @@ __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
 __DEBUG__="false"
-__QUIET__="false"
 __STARTTIME__="$(date +%s.%N 2>/dev/null)"
 
 # ----------------------------------------------------
@@ -36,7 +35,6 @@ if [[ ${0##*/} == ${__FILENAME__} ]]; then
    unset __STACKTRACE__
    unset __DEBUG__
    unset __STARTTIME__
-   unset __QUIET__
    unset TEXTDOMAINDIR
    unset TEXTDOMAIN
    exit 0
@@ -55,7 +53,6 @@ if [ $BASH_VERSINFO -lt 4 ]; then
    unset __STACKTRACE__
    unset __DEBUG__
    unset __STARTTIME__
-   unset __QUIET__
    unset TEXTDOMAINDIR
    unset TEXTDOMAIN
    return 0
@@ -160,9 +157,11 @@ __registerVar __OODIR__
 __registerVar __STACKTRACE__
 __registerVar __DEBUG__
 __registerVar __STARTTIME__
-__registerVar __QUIET__
 __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
+if [[ ! -z "$__QUIET__" ]]; then
+   __registerVar __QUIET__
+fi
 
 # gnu date search:
 ###################
@@ -300,7 +299,7 @@ if [[ $(Boolean.parseBoolean "$__QUIET__") != $(Boolean.TRUE) ]] && [[ ! -z $PS1
    System.out.println "  -isNamedPipe -hasStickyBit -isSocket -isCharacterSpecial -isBlockSpecial -compareTo"
    System.out.println "  -setExecutable -setReadable -setWritable -getAbsolutePath -getCanonicalPath -getPath"
    System.out.println "  -isAbsolute -delete -setReadOnly -createNewFile -lastModified -setLastModified"  
-   System.out.println "  -File.createTemporaryFile -File.createTempFile"
+   System.out.println "  -File.createTemporaryFile -File.createTempFile -append -clear -getText -setText" 
    System.out.println " Boolean:"
    System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"
    I18n.out.message " Usage: a.toString"

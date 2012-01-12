@@ -27,7 +27,7 @@
 #
 # Possibility to decorate every function DONE
 #
-# new man page for File
+# new man page for File DONE
 #
 # Process.setPriority ?
 # http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads
