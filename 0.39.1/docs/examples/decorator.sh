@@ -6,11 +6,11 @@ fi
 
 # if you want to use the @debug function,
 # configured normally in the oobash*.source file with foolowing output:
-# Runtime + function call ands
+# Runtime + function call
 __DEBUG__=true
 
 # START -- My own addon decorator
-# don't use framwork commands in decorators -->danger of loop!
+# Do not use framework commands in a decorator to avoid loops !
 @false() {
    if (($# != 0)); then
       echo  "I am false and will return 1" >&2

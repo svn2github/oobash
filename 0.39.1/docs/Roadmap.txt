@@ -1,6 +1,6 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.X
+# 0.39.1 Ideas:
 # -Man.generator ?
 #
 # -Generate class file directly into myClasses package structure ?
@@ -32,8 +32,6 @@
 # Process.setPriority ?
 # http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads
 #
-# seek for Syste.out.println $(Boolean.FALSE)
-#
 # delete registerAlias ? DONE
 #
 # overwrite alias function to : if tty not open ? DONE
@@ -43,6 +41,16 @@
 # Decorator.help + man page
 #
 # isFile fr the new Filefunctions DONE
+#
+# If interactive help instead of stacktrace
+#
+# man oobash -->ReadMe.txt content
+#
+# check if argument is of type array
+#
+# alternative in constructor if there is no gnudate ?
+#
+# File.copy File.createSymLink ?
 
 
 # 0.40
