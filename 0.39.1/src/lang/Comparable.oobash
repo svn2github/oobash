@@ -22,6 +22,7 @@
 
 __compareTo() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
    local class="$2"
    if (( $# == 3 )); then
       local this="$1"

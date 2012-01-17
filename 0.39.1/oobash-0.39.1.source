@@ -17,6 +17,7 @@ __VERSION__="0.39.1"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
+__HELP__="true"
 __DEBUG__="false"
 __STARTTIME__="$(date +%s.%N 2>/dev/null)"
 
@@ -33,6 +34,7 @@ if [[ ${0##*/} == ${__FILENAME__} ]]; then
    unset __VERSION__
    unset __LOGGINGPROPERTIESFILE__
    unset __STACKTRACE__
+   unset __HELP__
    unset __DEBUG__
    unset __STARTTIME__
    unset TEXTDOMAINDIR
@@ -51,6 +53,7 @@ if [ $BASH_VERSINFO -lt 4 ]; then
    unset __LOGGINGPROPERTIESFILE__
    unset __OODIR__
    unset __STACKTRACE__
+   unset __HELP__
    unset __DEBUG__
    unset __STARTTIME__
    unset TEXTDOMAINDIR
@@ -155,6 +158,7 @@ __registerVar __FILENAME__
 __registerVar __LOGGINGPROPERTIESFILE__
 __registerVar __OODIR__
 __registerVar __STACKTRACE__
+__registerVar __HELP__
 __registerVar __DEBUG__
 __registerVar __STARTTIME__
 __registerVar TEXTDOMAINDIR

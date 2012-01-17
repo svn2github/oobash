@@ -210,8 +210,9 @@
 #    -added stacktrace
 #    -added File: append getText setText clear
 #    -added optimized __decoratorCheck + almost every framework function now checks for decorator
-#    -overwrite __alias function if shell is not interactive
+#    -overwrite __alias, __unalias function if shell is not interactive
 #    -deleted __registerAlias __cleanUpAliases
+#    -added private function: __stackOrHelp __tracebackHeader
 
 #################################################################
 # Features:

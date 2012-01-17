@@ -1,57 +1,39 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.1 Ideas:
-# -Man.generator ?
-#
-# -Generate class file directly into myClasses package structure ?
-#
-# -Analyze log4oobash.properties ?
-#
-# -quote String function ?
-#
-# $Class.getAll(array) functions ?
-#
-# I18n.xy.messages only if tty open ?
-#
+# I18n.xy.messages only if tty open ? NO DONE
 # stacktrace DONE
-#
-# set TMPDIR ?
-#
-# not chained Exceptions, but chained return values ?
-#
-# File: getText, setText, append (from Groovy) Done
-#
-# listFiles(array [pattern]) ?
-#
-# System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
-#
-# Possibility to decorate every function DONE
-#
-# new man page for File DONE
-#
-# Process.setPriority ?
-# http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads
-#
-# delete registerAlias ? DONE
-#
+# File: getText, setText, append  DONE
 # overwrite alias function to : if tty not open ? DONE
-#
-# use OODIR for manpath
-#
-# Decorator.help + man page
-#
-# isFile fr the new Filefunctions DONE
-#
-# If interactive help instead of stacktrace
-#
-# man oobash -->ReadMe.txt content
-#
-# check if argument is of type array
-#
-# alternative in constructor if there is no gnudate ?
-#
-# File.copy File.createSymLink ?
+# isFile for the new Filefunctions DONE
+# central point of decision help--stacktrace ? ->__stackOrHelp DONE
+# delete registerAlias ? DONE
+# new man page for File DONE
+# Possibility to decorate every function DONE
+# better/nicer stacktrace DONE
+# not chained Exceptions, but chained return values ?
+# If interactive help instead of stacktrace IN_PROCESS
+# File getLine, setLine, deleteLine, getLines, setLines, deleteteLines ?
+# give peace a chance... if no gnudate -> alternative in condtructors
 
+# 0.39.2
+# -Analyze log4oobash.properties ?
+# -Man.generator (use OODIR for manpath) ?
+# -$Class.getAll(array) functions + check if argument is of type array ?
+# -File.copy File.createSymLink File.copy File.createSymLink ?
+# -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
+# -set TMPDIR ?
+# -quote String function ?
+# -Generate class file directly into myClasses package structure ?
+# -Decorator.help + man page ?
+# -http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads Process.setPriority ?
+# -man oobash -->ReadMe.txt content ?
+
+# 0.39.3
+# -ssh/host functions ?
+
+# 0.39.4
+# url decode/encode ?
 
 # 0.40
 # Assert 
@@ -63,3 +45,6 @@
 # 0.60
 # Use of /dev/tcp and /dev/udp
 # for network sockets
+
+# 0.70 
+# Wrapper for some GUI libs

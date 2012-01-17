@@ -14,31 +14,34 @@
 ##########################
 
 __stacktrace() {
-   # no stacktrace in interactive shell 
-   if [[ -z "$PS1" ]]; then
-      # no __throw and no __stacktrace -> i=2
-      declare -i i=2
-      until [[ "${FUNCNAME[$i]}" = "main" ]]
-      do
-         System.err.println "function ${FUNCNAME[$i]} called from ${BASH_SOURCE[$i+1]##*/} at line ${BASH_LINENO[$i]}"
-         ((i++))
-      done
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   # no __throw and no __stacktrace -> i=2
+   declare -i i=2
+   until [[ "${FUNCNAME[$i]}" = "main" ]]
+   do
+      #System.err.println "function ${FUNCNAME[$i]} called from ${BASH_SOURCE[$i+1]##*/} at line ${BASH_LINENO[$i]}"
+      System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line ${BASH_LINENO[$i]}, in ${FUNCNAME[$i]}"
+      ((i++))
+   done
 
-      declare -i pid=${BASHPID}
-      shopt -s extglob
-      while (( $pid >= 1 ))
+   declare -i pid=${BASHPID}
+   declare -i index=0
+   declare -a status
+   shopt -s extglob
+   while (( $pid >= 1 ))
+   do
+      mapfile status </proc/$pid/status
+      until [[ ${status[$index]:0:4} == "PPid" ]]
       do
-         mapfile status </proc/$pid/status
-         until [[ ${status[$index]:0:4} == "PPid" ]]
-         do
-            ((index++))
-         done
-         command=$(</proc/$pid/cmdline)
-         System.err.println "process $command with pid $pid"
-         pid=${status[$index]/PPid:/}
+         ((index++))
       done
-      shopt -u extglob
-   fi
+      command=$(</proc/$pid/cmdline)
+      #System.err.println "process ${command} with pid ${pid}"
+      System.err.println "   Process ${command}, pid ${pid}"
+      pid=${status[$index]/PPid:/}
+   done
+   shopt -u extglob
    return 0
 }
 __registerFunction __stacktrace
