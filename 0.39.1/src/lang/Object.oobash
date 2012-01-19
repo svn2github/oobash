@@ -29,7 +29,10 @@ __getClass() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+
 }
 
 __toString() {
@@ -57,7 +60,7 @@ __toString() {
       case $class in
          Level) 
          System.out.println "${__ATTRIBUTEPOOL__[${pointer}@levelStr]}"
-         return 0
+         return $returnValue
          ;;
       esac
       local str=''
@@ -67,11 +70,15 @@ __toString() {
             local keys=$(echo "${!__ATTRIBUTEPOOL__[@]}"  | tr " " "\n" | sort | tr "\n" " " )
          else
             __throw "NotInPathException" ": sort not in path"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "NotInPathException" ": tr not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi         
       for key in $keys
       do
@@ -85,10 +92,12 @@ __toString() {
          fi      
       done
       System.out.println "${str}"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __equals() {
@@ -105,24 +114,28 @@ __equals() {
             Level)
                if [[ "$("$argobject".toInt)" == "$("$this".toInt)" ]]; then
                   Boolean.TRUE
-                  return 0
+                  return $returnValue
                fi;;            
             *)
                if [[ "$("$argobject".toString)" == "$("$this".toString)" ]]; then
                   Boolean.TRUE
-                  return 0
+                  return $returnValue
                fi;;
             esac
          fi
          Boolean.FALSE
-         return 0
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __hashCode() {
@@ -163,12 +176,16 @@ __hashCode() {
             *)
                System.out.println $hash;;   
          esac  
-         return 0
+         return $returnValue
       else
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }

@@ -598,7 +598,6 @@ __setExecutable() {
    fi      
 }
 
-#########################################################################################################################
 __getCanonicalPath() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -620,24 +619,34 @@ __getCanonicalPath() {
                      fi
                   else
                      __throw "NotInPathException" ": pwd not in path"
-                     return $?
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     return $returnValue
                   fi
                else
                   __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
-                  return $?
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
                fi               
             else
                __throw "NotInPathException" ": basename not in path (install the GNU sh-utils ?)"
-               return $?
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
             fi            
          fi
          return $returnValue
       fi
       __throw "NotInPathException" ": readlink not in path (install the GNU coreutils ?)"
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __getAbsolutePath() {
@@ -651,10 +660,12 @@ __getAbsolutePath() {
       else
          System.out.println "$file"
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __getPath() {
@@ -664,10 +675,12 @@ __getPath() {
       local this="$1"
       local file="$("$this".toString)"
       System.out.println "$file" 
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __isAbsolute() {
@@ -681,10 +694,12 @@ __isAbsolute() {
       else
          Boolean.FALSE
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __delete() {
@@ -705,18 +720,24 @@ __delete() {
             else
                Boolean.FALSE
             fi
-            return 0
+            return $returnValue
          else
             __throw "NotInPathException" ": rmdir not in path"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "NotInPathException" ": rm not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi      
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __createNewFile() {
@@ -736,14 +757,18 @@ __createNewFile() {
          else
             Boolean.FALSE
          fi
-         return 0  
+         return $returnValue
       else
          __throw "NotInPathException" ": touch not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __lastModified() {
@@ -772,14 +797,18 @@ __lastModified() {
          else
             System.out.println "0"
          fi         
-         return 0
+         return $returnValue
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi    
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __setLastModified() {
@@ -793,7 +822,9 @@ __setLastModified() {
             (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-               return $?
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
             fi            
             declare -i milliSeconds="$3"
             if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then 
@@ -809,18 +840,24 @@ __setLastModified() {
             else
                Boolean.FALSE
             fi
-            return 0
+            return $returnValue
          else
             __throw "NotInPathException" ": GNU date not in path"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "NotInPathException" ": touch not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi    
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __setReadOnly() {
@@ -836,14 +873,18 @@ __setReadOnly() {
          else
             Boolean.FALSE
          fi
-         return 0
+         return $returnValue
       else
          __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi    
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __getText() {
@@ -858,18 +899,24 @@ __getText() {
             local file="$("$this".toString)"
             text="$(<"$file")"
             System.out.println "$text"
-            return 0
+            return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __setText() {
@@ -891,26 +938,36 @@ __setText() {
                   else
                      Boolean.FALSE
                   fi
-                  return 0
+                  return $returnValue
                else
                   __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-                  return $?
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
                fi
             else
                __throw "IOException" ": Cannot write file \"$("$this".toString)\""
-               return $?
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
             fi
          else 
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __append() {
@@ -932,26 +989,36 @@ __append() {
                   else
                      Boolean.FALSE
                   fi
-                  return 0
+                  return $returnValue
                else
                   __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-                  return $?
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
                fi
             else
                __throw "IOException" ": Cannot write file \"$("$this".toString)\""
-               return $?
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
             fi
          else 
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 __clear() {
@@ -967,18 +1034,24 @@ __clear() {
             else
                Boolean.FALSE
             fi
-            return 0
+            return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "IOException" ": Cannot write file \"$("$this".toString)\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 
 # length
@@ -1000,7 +1073,9 @@ File.createTemporaryFile() {
             local prefix="$1"
             if (( ${#prefix} < 3 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
-               return $?
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
             fi
             local suffix="$2"
             if (( $# == 3 )); then
@@ -1008,31 +1083,41 @@ File.createTemporaryFile() {
                permissions=$(__posixFilePermissionsConverter "$3")
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
-                  return $?
+                  returnValue=$?
+                  __stackOrHelp "File" "${FUNCNAME}"
+                  return $returnValue
                fi
             fi
             local temporaryFile
             temporaryFile=$(mktemp --tmpdir="$tempdir" --suffix="$suffix" "$prefix"XXXXXXXXXXXXXXXXXX 2>/dev/null)
             if (( $? != 0 )); then
                __throw "IOException" ": File could not be created"
-               return $?
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
             fi
             if [[ -n $permissions ]]; then
                chmod $permissions -- $temporaryFile
             fi
             System.out.println $temporaryFile
-            return 0
+            return $returnValue
          else
             __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-            return $?
+            returnValue=$?
+            __stackOrHelp "File" "${FUNCNAME}"
+            return $returnValue
          fi      
       else
          __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
-         return $?
+         returnValue=$?
+         __stackOrHelp "File" "${FUNCNAME}"
+         return $returnValue
       fi
    fi 
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "File" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction File.createTemporaryFile
 
@@ -1046,7 +1131,9 @@ File.createTempFile() {
       return 0
    fi 
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "File" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction File.createTempFile
 
@@ -1916,11 +2003,7 @@ File.help() {
                Returns:
                   An abstract pathname denoting a newly-created empty file
                Throws:
-                  IllegalArgumentException - If the prefix argument contains fewer than three characters
-                                             if number of arguments !=1 AND !=2
-                  IOException - if file could not be created 
-                  NotInPathException - if mktemp is not in path
-                                     - if chmod is not in path
+                  IllegalArgumentException - if number of arguments !=1 AND !=2
                Example:
                   File.createTempFile fff
                   >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp

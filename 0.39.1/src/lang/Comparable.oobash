@@ -49,7 +49,7 @@ __compareTo() {
                               System.out.println 0
                            fi
                         fi
-                        return 0
+                        return $returnValue
                         ;;
                *)       String "$argobject" "$("$argobject".toString)"
                         String "$this" "$("$this".toString)"
@@ -58,18 +58,22 @@ __compareTo() {
             esac
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)" 
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
       fi                    
       declare -i length=-1
       if (( $("$this".length) == ${#str} )); then
          length=${#str}
          if [[ "$("$this".toString)" == "$str" ]]; then
             System.out.println 0
-            return 0
+            return $returnValue
          fi
       fi
       if (( $length == -1 )); then
@@ -89,12 +93,14 @@ __compareTo() {
          declare -i valueStr=$(printf '%d\n' "'$charStr")
          if (( $valueStr != $valueArg )); then
             System.out.println $(( $valueStr - $valueArg ))
-            return 0
+            return $returnValue
          fi	
       done
       System.out.println $result
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }

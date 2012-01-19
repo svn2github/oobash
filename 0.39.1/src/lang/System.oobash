@@ -27,14 +27,18 @@ System.currentTimeMillis() {
       if __gnudateCheck; then
          local date=$(date +%s%N)
          System.out.println ${date:0:13}
-         return 0
+         return $returnValue
       else
          __throw "NotInPathException" ": GNU date not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "System" "${FUNCNAME}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction System.currentTimeMillis
 
@@ -44,14 +48,18 @@ System.currentTimeNanos() {
    if (( $# == 0 )); then
       if __gnudateCheck; then
          date +%s%N
-         return 0
+         return $returnValue
       else
          __throw "NotInPathException" ": GNU date not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "System" "${FUNCNAME}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction System.currentTimeNanos
 
@@ -62,18 +70,24 @@ System.exit() {
       (declare -i status=$1) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "System" "${FUNCNAME}"
+         return $returnValue
       fi
       declare -i status="$1"
       if (( $status >= 0 && $status <= 255 )); then
          exit $status
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
-         return $?
+         returnValue=$?
+         __stackOrHelp "System" "${FUNCNAME}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction System.exit
 
@@ -83,10 +97,12 @@ System.err.println() {
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "$message" >&2
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction System.err.println
 
@@ -96,10 +112,12 @@ System.out.println() {
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "$message"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction System.out.println
 

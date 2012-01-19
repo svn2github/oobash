@@ -42,6 +42,6 @@ __stacktrace() {
       pid=${status[$index]/PPid:/}
    done
    shopt -u extglob
-   return 0
+   return $returnValue
 }
 __registerFunction __stacktrace

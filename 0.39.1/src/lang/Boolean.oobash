@@ -57,10 +57,12 @@ Boolean() {
 
       __attribute bool "$bool"        
 
-      return 0      
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   return $?
+   returnValue=$?                                                                 
+   __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"                                             
+   return $returnValue
 }
 __registerClass Boolean
 
@@ -83,10 +85,12 @@ Boolean.TRUE() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 'true'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   return $?
+   returnValue=$?
+   __stackOrHelp "${Boolean}" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Boolean.TRUE
 
@@ -95,10 +99,12 @@ Boolean.FALSE() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 'false'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   return $?
+   returnValue=$?
+   __stackOrHelp "${Boolean}" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Boolean.FALSE
 
@@ -112,10 +118,12 @@ Boolean.parseBoolean() {
       else
          Boolean.FALSE
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   return $?
+   returnValue=$?
+   __stackOrHelp "${Boolean}" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Boolean.parseBoolean
 

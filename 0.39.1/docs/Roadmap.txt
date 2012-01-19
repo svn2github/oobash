@@ -13,8 +13,9 @@
 # better/nicer stacktrace DONE
 # not chained Exceptions, but chained return values ?
 # If interactive help instead of stacktrace IN_PROCESS
-# File getLine, setLine, deleteLine, getLines, setLines, deleteteLines ?
-# give peace a chance... if no gnudate -> alternative in condtructors
+# new File manpage again
+# give peace a chance... if no gnudate -> alternative in constructors
+# check where gnudate is really neccessary ?
 
 # 0.39.2
 # -Analyze log4oobash.properties ?
@@ -24,6 +25,7 @@
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
 # -set TMPDIR ?
 # -quote String function ?
+# -File getLine, setLine, deleteLine, getLines, setLines, deleteteLines ?
 # -Generate class file directly into myClasses package structure ?
 # -Decorator.help + man page ?
 # -http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads Process.setPriority ?
