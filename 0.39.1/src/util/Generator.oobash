@@ -44,9 +44,9 @@ Class.generator() {
 
 System.out.println "#############################################################
 # Author:  $USER
-# Date:    $(date +%Y-%m-%d)
+# Date:    $(date +%Y-%m-%d 2>/dev/null)
 # License: The MIT License
-# Copyright (c) <$(date +%Y)> <$USER>
+# Copyright (c) <$(date +%Y 2>/dev/null)> <$USER>
 #############################################################
 
  
@@ -89,10 +89,7 @@ $userClass() {
          return 1
       fi
 
-      local pointer
-      if ! pointer=\$(System.currentTimeNanos); then                                   
-         return 1                            
-      fi 
+      local pointer=\"\$(__getPointer)\"
 
       local class=\$FUNCNAME
 

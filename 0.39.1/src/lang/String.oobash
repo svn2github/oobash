@@ -41,11 +41,7 @@ String() {
          return 1
       fi
 
-      local pointer
-      if ! pointer=$(System.currentTimeNanos); then
-         I18n.err.message "Sorry, could not create object '\$this'"
-         return 1
-      fi
+      local pointer="$(__getPointer)"
 
       local string="$2"
       local class=$FUNCNAME
@@ -56,10 +52,12 @@ String() {
 
       __attribute string "$string"        
 
-      return 0      
+      return $returnValue      
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+   return $returnValue
 }
 __registerClass String
 
@@ -81,7 +79,7 @@ __compareToIgnoreCase() {
          length=${#str2}
          if [[ "$str1" == "$str2" ]]; then
             System.out.println 0
-            return 0
+            return $returnValue
          fi
       fi
       if (( $length == -1 )); then
@@ -101,14 +99,16 @@ __compareToIgnoreCase() {
          declare -i valueStr1=$(printf '%d\n' "'$charStr1")
          if (( $valueStr1 != $valueStr2 )); then
             System.out.println $(($valueStr1-$valueStr2))
-            return 0
+            return $returnValue
          fi		
       done
       System.out.println $result
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+      returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __base64Encode() {
@@ -121,10 +121,14 @@ __base64Encode() {
          return $?
       fi
       __throw "NotInPathException" ": base64 not in path (install the GNU coreutils ?)"
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __base64Decode() {
@@ -138,17 +142,23 @@ __base64Decode() {
          output="$(System.out.println "$("$this".toString)" | base64 -d 2>/dev/null)"
          if (( $? != 0 )); then
             __throw "DecoderException" ": Decoding problem with: $("$this".toString) "
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
          else
             System.out.println "$output"
          fi
-         return 0
+         return $returnValue
       fi
       __throw "NotInPathException" ": base64 not in path (install the GNU coreutils ?)"
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __rstrip() {
@@ -161,10 +171,12 @@ __rstrip() {
       # trimming...
       result="${str%%+([[:space:]])}"
       System.out.println "$result"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __lstrip() {
@@ -177,10 +189,12 @@ __lstrip() {
       # trimming...
       local result="${str##+([[:space:]])}"    
       System.out.println "$result"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __title() {
@@ -190,10 +204,12 @@ __title() {
       local this="$1"
       local str="$("$this".toLowerCase)"
       System.out.println "${str~}"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isTitle() {
@@ -210,10 +226,12 @@ __isTitle() {
             Boolean.FALSE
          fi
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isAscii() {
@@ -232,10 +250,12 @@ __isAscii() {
       else
          Boolean.FALSE
       fi   
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isHexDigit() {
@@ -254,10 +274,12 @@ __isHexDigit() {
       else
          Boolean.FALSE
       fi       
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isPrintable() {
@@ -276,10 +298,12 @@ __isPrintable() {
       else
          Boolean.FALSE
       fi       
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isVisible() {
@@ -294,10 +318,12 @@ __isVisible() {
          else
             Boolean.FALSE
       fi        
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __count() {
@@ -318,13 +344,17 @@ __count() {
             System.out.println $count            
          else
             __throw "NotInPathException" ": bc not in path"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
          fi
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isLowerCase() {
@@ -343,17 +373,19 @@ __isLowerCase() {
             # upper case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
             65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|196|214|220|140|192|194|198|199|200|201|202|203|206|207|212|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|350|354|536|538|381|352|344|340|327|313|268|221|366|282|270|356|216|197|336|368|204|210|208|222 )
                Boolean.FALSE
-               return 0;;
+               return $returnValue;;
             # lower case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + nowegian + scottish gaelic + catalan + hungarian + icelandic special characters 
             97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|223|228|246|252|156|224|226|230|231|232|233|234|235|238|239|244|249|251|261|281|243|263|322|324|347|378|380|225|237|241|250|259|351|355|537|539|382|353|345|341|328|314|269|253|367|283|271|357|248|229|337|369|236|242|240|254 )    
                cased=$(Boolean.TRUE);;
          esac
       done
       System.out.println "$cased"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isUpperCase() {
@@ -375,14 +407,16 @@ __isUpperCase() {
             # lower case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
             97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|223|228|246|252|156|224|226|230|231|232|233|234|235|238|239|244|249|251|261|281|243|263|322|324|347|378|380|225|237|241|250|259|351|355|537|539|382|353|345|341|328|314|269|253|367|283|271|357|248|229|337|369|236|242|240|254 )    
                Boolean.FALSE
-               return 0;;
+               return $returnValue;;
          esac
       done
       System.out.println "$cased"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isAlnum() {
@@ -401,10 +435,12 @@ __isAlnum() {
       else
          Boolean.FALSE
       fi      
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isAlpha() {
@@ -423,10 +459,12 @@ __isAlpha() {
       else
          Boolean.FALSE
       fi   
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isDigit() {
@@ -445,10 +483,12 @@ __isDigit() {
       else
          Boolean.FALSE
       fi       
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isSpace() {
@@ -467,10 +507,12 @@ __isSpace() {
       else
          Boolean.FALSE
       fi       
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __zfill() {
@@ -481,7 +523,9 @@ __zfill() {
       (declare -i width=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
       fi
       declare -i width=$3
       length=$("$this".length)
@@ -492,10 +536,12 @@ __zfill() {
       else
          System.out.println "$("$this".toString)"
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __swapCase() {
@@ -521,10 +567,12 @@ __swapCase() {
          esac
       done
       System.out.println "$swaped"
-      return 0   
+      return $returnValue   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __center() {
@@ -535,7 +583,9 @@ __center() {
       (declare -i width=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
       fi
       declare -i width=$3
       if (( $("$this".length) < $width )); then
@@ -560,10 +610,12 @@ __center() {
       else
          System.out.println "$("$this".toString)"
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __equalsIgnoreCase() {
@@ -578,21 +630,27 @@ __equalsIgnoreCase() {
          if [[ "$("$this".getClass)" == "$argclass" ]]; then
             if [[ "$("$argobject".toUpperCase)" == "$("$this".toUpperCase)" ]]; then
                Boolean.TRUE
-               return 0
+               return $returnValue
             else
                Boolean.FALSE
-               return 0
+               return $returnValue
             fi
          fi
          __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __toUpperCase() {
@@ -603,10 +661,12 @@ __toUpperCase() {
       local str="$("$this".toString)"
       local upper="$(__strUpper "$str")" 
       System.out.println "$upper"
-      return 0   
+      return $returnValue   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __toLowerCase() {
@@ -617,10 +677,12 @@ __toLowerCase() {
       local str="$("$this".toString)"
       local lower="$(__strLower "$str")"
       System.out.println "$lower"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __capitalize() {
@@ -632,10 +694,12 @@ __capitalize() {
       local firstchar="${str:0:1}"
       firstchar="$(__strUpper "$firstchar")"
       System.out.println "$firstchar""${str:1}"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __concat() {
@@ -645,10 +709,12 @@ __concat() {
       local this="$1"
       local str="$("$this".toString)"
       System.out.println "$str""$3"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 } 
 
 __trim() {
@@ -662,10 +728,12 @@ __trim() {
       local result="${str##+([[:space:]])}"    
       result="${result%%+([[:space:]])}"
       System.out.println "$result"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __contains() {
@@ -680,10 +748,12 @@ __contains() {
       else
          Boolean.FALSE
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __matches() {
@@ -698,10 +768,12 @@ __matches() {
       else
          Boolean.FALSE
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isEmpty() {
@@ -715,10 +787,12 @@ __isEmpty() {
       else
          Boolean.FALSE
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __startsWith() {
@@ -729,11 +803,15 @@ __startsWith() {
       4) (declare -i tooffset=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
          fi
          declare -i toffset=$4;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         return $?;;
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue;;
    esac
    local this="$1"
    declare -i length=$("$this".length)
@@ -742,7 +820,7 @@ __startsWith() {
    else
       Boolean.FALSE
    fi
-   return 0
+   return $returnValue
 }
 
 __lastIndexOf() {
@@ -756,16 +834,20 @@ __lastIndexOf() {
          (declare -i to=$4 ) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
          fi
          declare -i to=$(($4+1))
          # negative index ?
          if (( 0 > $4 )); then
             System.out.println -1
-            return 0
+            return $returnValue
          fi;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         return $?;;
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue;;
    esac
    local str="$("$this".toString)"
    str="${str:0:$to}"
@@ -778,14 +860,14 @@ __lastIndexOf() {
    # nothing modified --> no match --> no index
    if (( $replaced_length == $string_length )); then
       System.out.println -1
-      return 0
+      return $returnValue
    fi   
    if (( $pattern_length == 0 )) && (( $string_length < $("$this".length) )); then
       pattern_length=$pattern_length+1
    fi 
    # ok if match is existing and if no substring neccessary
    System.out.println $(($lastindex-$pattern_length))
-   return 0
+   return $returnValue
 }
 
 __indexOf() {
@@ -798,7 +880,9 @@ __indexOf() {
          (declare -i from=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
          fi
          declare -i from=$4
          # negative index ?
@@ -806,7 +890,9 @@ __indexOf() {
             from=0
          fi;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         return $?;;
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue;;
    esac
    local this="$1" 
    declare -i pattern_length=${#pattern}
@@ -824,14 +910,14 @@ __indexOf() {
       else
          System.out.println $("$this".length)
       fi  
-      return 0 
+      return $returnValue 
    fi 
    if (( $strlength == $newstrlength )); then
       System.out.println -1
    else
       System.out.println $(($newstrlength+$from))
    fi
-   return 0
+   return $returnValue
 }
 
 __charAt() {
@@ -842,20 +928,26 @@ __charAt() {
       (declare -i pos=$3) 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
       fi
       declare -i pos="$3"
       if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
          local str="$("$this".toString)"
          local char=${str:$pos:1}
          System.out.println $char
-         return 0
+         return $returnValue
       fi
       __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __endsWith() {
@@ -867,14 +959,16 @@ __endsWith() {
       local str="$("$this".toString)"
       if [[ "$str" == *"$endstring" ]]; then
          Boolean.TRUE
-         return 0
+         return $returnValue
       else
          Boolean.FALSE
-         return 0
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __replaceFirst() {
@@ -887,10 +981,12 @@ __replaceFirst() {
       local str="$("$this".toString)"
       shopt -s extglob
       System.out.println "${str/$substring/$replacement}"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __replaceAll() {
@@ -903,10 +999,12 @@ __replaceAll() {
       local str="$("$this".toString)"
       shopt -s extglob
       System.out.println "${str//$substring/$replacement}"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 
 }
 
@@ -920,34 +1018,46 @@ __substring() {
       4) (declare -i endIndex=$4) 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
          fi
          declare -i endIndex=$4;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         return $?;;
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue;;
    esac
    (declare -i beginIndex=$3) 2>/dev/null ||  (return 1)
    if (( $? != 0 )); then
       __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
    fi
    declare -i beginIndex=$3
    if (( $beginIndex < 0 )); then
       __throw "IndexOutOfBoundsException" ": String index out of range: $beginIndex"
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
    fi
    if (( $endIndex > $count )); then
       __throw "IndexOutOfBoundsException" ": String index out of range: $endIndex"
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
    fi       
    if (( $beginIndex > $endIndex )); then
       __throw "IndexOutOfBoundsException" ": String index out of range: $(($endIndex-$beginIndex))"
-      return $?
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
    fi  
    local str="$("$this".toString)"
    declare -i length=$(($endIndex-beginIndex))
    System.out.println "${str:$beginIndex:$length}"
-   return 0
+   return $returnValue
 }
 
 __reverse() {
@@ -965,10 +1075,12 @@ __reverse() {
          result="$result""$char"
       done
       System.out.println "$result"
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __length() {
@@ -988,7 +1100,9 @@ __length() {
                fi
             else
                __throw "NotInPathException" ": wc not in path"
-               return $?
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}" 
+               return $returnValue
             fi
             ;;
          String)
@@ -997,10 +1111,12 @@ __length() {
          *)
             System.out.println ${#str};;
       esac
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 ##################
@@ -1014,10 +1130,12 @@ String.digits() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println '0123456789'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "String" "${FUNCNAME}" 
+   return $returnValue
 }
 __registerFunction String.digits
 
@@ -1026,10 +1144,12 @@ String.asciiLetters() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "String" "${FUNCNAME}" 
+   return $returnValue
 }
 __registerFunction String.asciiLetters
 
@@ -1038,10 +1158,12 @@ String.asciiLettersLowerCase() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 'abcdefghijklmnopqrstuvwxyz'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "String" "${FUNCNAME}" 
+   return $returnValue
 }
 __registerFunction String.asciiLettersLowerCase
 
@@ -1050,10 +1172,12 @@ String.asciiLettersUpperCase() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "String" "${FUNCNAME}" 
+   return $returnValue
 }
 __registerFunction String.asciiLettersUpperCase
 
@@ -1062,10 +1186,12 @@ String.hexDigits() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println '0123456789abcdefABCDEF'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "String" "${FUNCNAME}" 
+   return $returnValue
 }
 __registerFunction String.hexDigits
 
@@ -1074,10 +1200,12 @@ String.octDigits() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println '01234567'
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "String" "${FUNCNAME}" 
+   return $returnValue
 }
 __registerFunction String.octDigits
 

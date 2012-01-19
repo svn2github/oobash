@@ -44,11 +44,7 @@ Level() {
          return 1
       fi
      
-      local pointer
-      if ! pointer=$(System.currentTimeNanos); then
-         I18n.err.message "Sorry, could not create object '\$this'"
-         return 1
-      fi
+      local pointer="$(__getPointer)"
 
       local class=$FUNCNAME
 
@@ -65,7 +61,9 @@ Level() {
       return 0
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+   return $returnValue
 }
 __registerClass Level
 
@@ -97,10 +95,12 @@ __toInt() {
          fi
       done
       System.out.println "${__ATTRIBUTEPOOL__[${pointer}@level]}" 
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __getSyslogEquivalent() {
@@ -125,10 +125,12 @@ __getSyslogEquivalent() {
          fi
       done
       System.out.println "${__ATTRIBUTEPOOL__[${pointer}@syslogEquivalent]}" 
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 __isGreaterOrEqual() {
@@ -142,21 +144,27 @@ __isGreaterOrEqual() {
       if (( $? == 0 )); then 
          if [[ "$($this.getClass)" != "$argclass" ]]; then
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-            return $?
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         return $?
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
       fi      
       if (( $($this.toInt) == $(Math.max $($argobject.toInt) $($this.toInt)) )); then
          Boolean.TRUE
       else
          Boolean.FALSE
       fi
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
 }
 
 #################

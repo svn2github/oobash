@@ -11,11 +11,16 @@
 # new man page for File DONE
 # Possibility to decorate every function DONE
 # better/nicer stacktrace DONE
-# not chained Exceptions, but chained return values ?
+# __compareTo fix if object uses keyword -> Level is not compareable --> DONE
+# give peace a chance... if no gnudate -> alternative in constructors DONE
+# System.runtime (nanoseconds or $SECONDS) DONE
+# Dont forget to update Class.generator DONE
 # If interactive help instead of stacktrace IN_PROCESS
-# new File manpage again
-# give peace a chance... if no gnudate -> alternative in constructors
+# not chained Exceptions, but chained return values ?
+# new File manpage again, + System manpage
 # check where gnudate is really neccessary ?
+# rm/replace @debug
+
 
 # 0.39.2
 # -Analyze log4oobash.properties ?

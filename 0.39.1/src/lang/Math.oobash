@@ -30,29 +30,35 @@ Math.sin() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             fi 
             output="$(System.out.println "s($val)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.sin
 
@@ -66,29 +72,35 @@ Math.cos() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             fi 
             output="$(System.out.println "c($val)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.cos
 
@@ -102,40 +114,46 @@ Math.tan() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             fi
             local cos=$(Math.cos "$val")
             zerodivtest=$(System.out.println "$cos==0" | bc -l)
             if (( $zerodivtest == 1 )); then
                # FIXME ? NaN/Not defined/cos=10^-20
                System.out.println "NaN"
-               return 0
+               return $returnValue
             fi
             if [[ $cos == "NaN" || $cos == "Infinity" || $cos == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             fi
             output="$(System.out.println "$(Math.sin "$val")/$cos" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.tan
 
@@ -149,35 +167,41 @@ Math.atan() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ $val == "Infinity" ]]; then
                System.out.println $(Math.multiplier $(Math.PI) 0.5)
-               return 0            
+               return $returnValue            
             elif [[ $val == "-Infinity" ]]; then
                System.out.println $(Math.multiplier $(Math.PI) -0.5)
-               return 0                    
+               return $returnValue                    
             fi
             output="$(System.out.println "a($val)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.atan
 
@@ -191,45 +215,51 @@ Math.asin() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             fi 
             rangecheck=$(System.out.println "$val>1||$val<-1" | bc -l)
             if (( rangecheck == 1 )); then
                System.out.println "NaN"
-               return 0 
+               return $returnValue 
             fi 
             zerodivtest=$(System.out.println "$val==1" | bc -l)
             if (( $zerodivtest == 1 )); then
                System.out.println "$(Math.PI)/2" | bc -l
-               return 0 
+               return $returnValue 
             fi
             zerodivtest=$(System.out.println "$val==-1" | bc -l)
             if (( $zerodivtest == 1 )); then
                System.out.println "-$(Math.PI)/2" | bc -l
-               return 0 
+               return $returnValue 
             fi
             # arcsin(x) = arctan(x / sqrt(1 \96 x^2))
             output="$(System.out.println "a($val/sqrt(1-($val*$val)))" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.asin
 
@@ -243,40 +273,46 @@ Math.acos() {
          if command -v bc >/dev/null 2>&1; then
             if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             fi 
             rangecheck=$(System.out.println "$val>1||$val<-1" | bc -l)
             if (( rangecheck == 1 )); then
                System.out.println "NaN"
-               return 0 
+               return $returnValue 
             fi 
             zerodivtest=$(System.out.println "$val==0" | bc -l)
             if (( $zerodivtest == 1 )); then
                System.out.println "$(Math.PI)/2" | bc -l
-               return 0 
+               return $returnValue 
             fi  
             # arccos(x) = arctan(sqrt(1 \96 x^2 )/ x)
             output="$(System.out.println "a(sqrt(1-($val*$val))/$val)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.acos
 
@@ -293,37 +329,45 @@ Math.max() {
             if command -v bc >/dev/null 2>&1; then
                if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
                   System.out.println "NaN"
-                  return 0
+                  return $returnValue
                elif [[ $val1 == "Infinity" || $val2 == "Infinity" ]]; then
                   System.out.println "Infinity"
-                  return 0   
+                  return $returnValue   
                elif [[ $val1 == "-Infinity" ]]; then
                   System.out.println $2
-                  return 0         
+                  return $returnValue         
                elif [[ $val2 == "-Infinity" ]]; then
                   System.out.println $1
-                  return 0     
+                  return $returnValue     
                fi                 
                if (( $(System.out.println "$val1>$val2" | bc -l) == 1 )); then
                   System.out.println $1
                else
                   System.out.println $2
                fi
-            return 0 
+            return $returnValue 
             fi
             __throw "NotInPathException" ": bc not in path"
-            return $?
+            returnValue=$?
+            __stackOrHelp "Math" "${FUNCNAME}"
+            return $returnValue
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
-            return $?
+            returnValue=$?
+            __stackOrHelp "Math" "${FUNCNAME}"
+            return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi  
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi 
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.max
 
@@ -340,37 +384,45 @@ Math.min() {
             if command -v bc >/dev/null 2>&1; then            
                if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
                   System.out.println "NaN"
-                  return 0
+                  return $returnValue
                elif [[ $val1 == "-Infinity" || $val2 == "-Infinity" ]]; then
                   System.out.println "-Infinity"
-                  return 0   
+                  return $returnValue   
                elif [[ $val1 == "Infinity" ]]; then
                   System.out.println $2
-                  return 0         
+                  return $returnValue         
                elif [[ $val2 == "Infinity" ]]; then
                   System.out.println $1
-                  return 0     
+                  return $returnValue     
                fi               
                if (( $(System.out.println "$val1<$val2" | bc -l) == 1 )); then
                   System.out.println $1
                else
                   System.out.println $2
                fi
-            return 0 
+            return $returnValue 
             fi
             __throw "NotInPathException" ": bc not in path"
-            return $?
+            returnValue=$?
+            __stackOrHelp "Math" "${FUNCNAME}"
+            return $returnValue
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
-            return $?
+            returnValue=$?
+            __stackOrHelp "Math" "${FUNCNAME}"
+            return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi  
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.min
 
@@ -384,27 +436,33 @@ Math.abs() {
          if command -v bc >/dev/null 2>&1; then      
             if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ $val == "Infinity" || $val == "-Infinity" ]]; then
                System.out.println "Infinity"
-               return 0            
+               return $returnValue            
             fi      
             if (( $(System.out.println "$val1>0" | bc -l) == 1 )); then
                System.out.println $1
             else
                System.out.println ${1:1}
             fi
-            return 0 
+            return $returnValue 
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi  
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi 
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.abs
 
@@ -418,37 +476,43 @@ Math.sqrt() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0            
+               return $returnValue            
             fi
             rangecheck=$(System.out.println "$val<0" | bc -l)
             if (( rangecheck == 1 )); then
                System.out.println "NaN"
-               return 0 
+               return $returnValue 
             fi 
             output="$(System.out.println "sqrt($val)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi        
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi       
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.sqrt
 
@@ -462,35 +526,41 @@ Math.exp() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ $val == "-Infinity" ]]; then
                System.out.println 0
-               return 0
+               return $returnValue
             fi 
             output="$(System.out.println "e($val)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.exp
 
@@ -504,35 +574,41 @@ Math.expm1() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ $val == "-Infinity" ]]; then
                System.out.println -1
-               return 0
+               return $returnValue
             fi 
             output="$(System.out.println "e($val)-1" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction  Math.expm1
 
@@ -546,36 +622,42 @@ Math.sinh() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
-               return 0
+               return $returnValue
             fi 
             # (e^x - e^-x)/2
             output="$(System.out.println "(e($val)-e(-1*$val))/2" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.sinh
      
@@ -589,36 +671,42 @@ Math.cosh() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ "$val" == "Infinity" || "$val" == "-Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
                System.out.println 1
-               return 0               
+               return $returnValue               
             fi 
             # (e^x + e^-x)/2
             output="$(System.out.println "(e($val)+e(-1*$val))/2" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.cosh
         
@@ -632,36 +720,42 @@ Math.tanh() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ "$val" == "Infinity" ]]; then
                System.out.println 1
-               return 0
+               return $returnValue
             elif [[ "$val" == "-Infinity" ]]; then
                System.out.println -1
-               return 0
+               return $returnValue
             fi 
             # (e^x - e^-x)/(e^x + e^-x)
             output="$(System.out.println "(e($val)-e(-1*$val))/(e($val)+e(-1*$val))" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi        
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi       
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.tanh
         
@@ -670,10 +764,12 @@ Math.E() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 2.71828182845904523536
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.E
 
@@ -682,10 +778,12 @@ Math.PI() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 3.14159265358979323846
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.PI
 
@@ -708,13 +806,17 @@ Math.random() {
          if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
             shopt -u extglob
          fi  
-         return 0
+         return $returnValue
       fi
       __throw "NotInPathException" ": bc not in path"
-      return $?
+      returnValue=$?
+      __stackOrHelp "Math" "${FUNCNAME}"
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.random
 
@@ -734,7 +836,7 @@ Math.adder() {
                if [[ $first == $(Boolean.TRUE) ]]; then
                   if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
-                     return 0
+                     return $returnValue
                   elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
                   elif [[ "$value" == "-Infinity" ]]; then
@@ -745,7 +847,7 @@ Math.adder() {
                else
                   if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
-                     return 0
+                     return $returnValue
                   elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
                   elif [[ "$value" == "-Infinity" ]]; then
@@ -756,6 +858,7 @@ Math.adder() {
             else
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                returnValue=$?
+               __stackOrHelp "Math" "${FUNCNAME}"
                break
             fi 
             shift
@@ -765,31 +868,35 @@ Math.adder() {
          fi
          if [[ $neginf == "yes" && $posinf == "yes" ]]; then
             System.out.println "NaN"
-            return 0
+            return $returnValue
          elif  [[ $neginf == "yes" ]]; then
             System.out.println "-Infinity"
-            return 0
+            return $returnValue
          elif  [[ $posinf == "yes" ]]; then
             System.out.println "Infinity"
-            return 0     
+            return $returnValue     
          fi 
          output=$(System.out.println "$str" | bc -l)
          if [[ "${output:0:2}" == '-.' ]]; then
             System.out.println  -0."${output:2}"
-            return 0
+            return $returnValue
          fi
          if [[ "${output:0:1}" == "." ]]; then
             System.out.println 0"$output"
-            return 0 
+            return $returnValue 
          fi
          System.out.println "$output"
-         return 0 
+         return $returnValue 
       fi
       __throw "NotInPathException" ": bc not in path"
-      return $?
+      returnValue=$?
+      __stackOrHelp "Math" "${FUNCNAME}"
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.adder
 
@@ -811,7 +918,7 @@ Math.multiplier() {
                if [[ $first == $(Boolean.TRUE) ]]; then
                   if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
-                     return 0
+                     return $returnValue
                   elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
                   elif [[ "$value" == "-Infinity" ]]; then
@@ -822,7 +929,7 @@ Math.multiplier() {
                else
                   if [[ "$value" == "NaN" ]]; then
                      System.out.println "NaN"
-                     return 0
+                     return $returnValue
                   elif [[ "$value" == "Infinity" ]]; then
                      posinf="yes"
                   elif [[ "$value" == "-Infinity" ]]; then
@@ -833,6 +940,7 @@ Math.multiplier() {
             else
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                returnValue=$?
+               __stackOrHelp "Math" "${FUNCNAME}"
                break
             fi 
             shift
@@ -842,31 +950,35 @@ Math.multiplier() {
          fi
          if [[ $neginf == "yes" && $posinf == "yes" ]]; then
             System.out.println "NaN"
-            return 0
+            return $returnValue
          elif  [[ $neginf == "yes" ]]; then
             System.out.println "-Infinity"
-            return 0
+            return $returnValue
          elif  [[ $posinf == "yes" ]]; then
             System.out.println "Infinity"
-            return 0     
+            return $returnValue     
          fi    
          output=$(System.out.println "$str" | bc -l)
          if [[ "${output:0:2}" == '-.' ]]; then
             System.out.println  -0."${output:2}"
-            return 0
+            return $returnValue
          fi
          if [[ "${output:0:1}" == "." ]]; then
             System.out.println 0"$output"
-            return 0 
+            return $returnValue 
          fi
          System.out.println "$output"
-         return 0
+         return $returnValue
       fi
       __throw "NotInPathException" ": bc not in path"
-      return $?
+      returnValue=$?
+      __stackOrHelp "Math" "${FUNCNAME}"
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.multiplier
 
@@ -880,38 +992,44 @@ Math.log() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN"  || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
                System.out.println "-Infinity"
-               return 0   
+               return $returnValue   
             elif (( $(System.out.println "$val<0" | bc -l) == 1 )); then
                System.out.println "NaN"
-               return 0               
+               return $returnValue               
             fi 
             output="$(System.out.println "l($val)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.log
 
@@ -925,38 +1043,44 @@ Math.log10() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0            
+               return $returnValue            
             elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
                System.out.println "-Infinity"
-               return 0    
+               return $returnValue    
             fi 
             output="$(System.out.println "l($val)/l(10)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi        
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi       
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.log10
 
@@ -970,38 +1094,44 @@ Math.log1p() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ $val == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ $val == "NaN" || $val == "-Infinity" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif (( $(System.out.println "$val<-1" | bc -l) == 1 )); then
                System.out.println "NaN"
-               return 0      
+               return $returnValue      
             elif (( $(System.out.println "$val==-1" | bc -l) == 1 )); then
                System.out.println "-Infinity"
-               return 0      
+               return $returnValue      
             fi                            
             output="$(System.out.println "l($val+1)" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi        
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.log1p
 
@@ -1015,35 +1145,41 @@ Math.toDegrees() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
-               return 0
+               return $returnValue
             fi 
             output="$(System.out.println "(180/$(Math.PI))*$val" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi        
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi       
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.toDegrees
      
@@ -1057,35 +1193,41 @@ Math.toRadians() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
-               return 0
+               return $returnValue
             fi 
             output="$(System.out.println "($(Math.PI)/180)*$val" | bc -l)"
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi        
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi       
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.toRadians
 
@@ -1099,36 +1241,42 @@ Math.ceil() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
-               return 0
+               return $returnValue
             fi 
             local CEIL_FUNCTION="define ceil(x) {if (x<0) {return x/1} else {if (scale(x)==0) {return x} else {return x/1 + 1 }}}"
             output=$(System.out.println "$CEIL_FUNCTION;ceil($val)" | bc)
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi        
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi       
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.ceil
 
@@ -1142,37 +1290,43 @@ Math.floor() {
          if command -v bc >/dev/null 2>&1; then 
             if [[ "$val" == "NaN" ]]; then
                System.out.println "NaN"
-               return 0
+               return $returnValue
             elif [[ "$val" == "Infinity" ]]; then
                System.out.println "Infinity"
-               return 0
+               return $returnValue
             elif [[ "$val" == "-Infinity" ]]; then
                System.out.println "-Infinity"
-               return 0
+               return $returnValue
             fi 
             # http://phodd.net/gnu-bc/code/funcs.bc
             local FLOOR_FUNCTION="define floor(x) {auto os,xx;os=scale;scale=0; xx=x/1; if(xx>x)xx-=1;scale=os;return(xx)}"
             output=$(System.out.println "$FLOOR_FUNCTION;floor($val)" | bc)
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
-               return 0
+               return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
                System.out.println 0"$output"
-               return 0 
+               return $returnValue 
             fi
             System.out.println "$output"
-            return 0
+            return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
-      fi        
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi       
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.floor
 
@@ -1189,41 +1343,49 @@ Math.hypot() {
             if command -v bc >/dev/null 2>&1; then 
                if [[ "$val1" == "Infinity" || "$val1" == "-Infinity" ]]; then
                   System.out.println "Infinity"
-                  return 0
+                  return $returnValue
                elif [[ "$val2" == "Infinity" || "$val2" == "-Infinity" ]]; then
                   System.out.println "Infinity"
-                  return 0                              
+                  return $returnValue                              
                elif [[ "$val1" == "NaN" || "$val2" == "NaN" ]]; then 
                   System.out.println "NaN"
-                  return 0            
+                  return $returnValue            
                fi 
                # sqrt(x^2 + y^2)
                output="$(System.out.println "sqrt((($val1)*($val1))+(($val2)*($val2)))" | bc -l)"
                if [[ "${output:0:2}" == '-.' ]]; then
                   System.out.println  -0."${output:2}"
-                  return 0
+                  return $returnValue
                fi
                if [[ "${output:0:1}" == "." ]]; then
                   System.out.println 0"$output"
-                  return 0 
+                  return $returnValue 
                fi
                System.out.println "$output"
-               return 0
+               return $returnValue
             else
                __throw "NotInPathException" ": bc not in path"
-               return $?
+               returnValue=$?
+               __stackOrHelp "Math" "${FUNCNAME}"
+               return $returnValue
             fi
          else 
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
-            return $?
-         fi   
+            returnValue=$?
+            __stackOrHelp "Math" "${FUNCNAME}"
+            return $returnValue
+         fi  
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         return $?
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
       fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   return $?
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
 }
 __registerFunction Math.hypot
 

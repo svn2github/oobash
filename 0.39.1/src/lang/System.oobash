@@ -121,13 +121,35 @@ System.out.println() {
 }
 __registerFunction System.out.println
 
+System.runtime() { 
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      if __gnudateCheck && command -v bc >/dev/null 2>&1; then
+         local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
+         if [[ "${time:0:1}" == "." ]]; then
+            time=0"$time"
+         fi
+         System.out.println "Runtime: $time [seconds.nanosecons]"
+     else
+        System.out.println "Runtime: $SECONDS [seconds]"
+     fi
+     return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction System.runtime
+
 #################
 #               #
 #     HELP      # 
 #               #
 #################
 
-complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println all" System.help
+complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println runtime all" System.help
 
 System.help() {  
    local printStream=${printStream:-out}
@@ -137,6 +159,7 @@ System.help() {
       Available methods:
       -System.exit -System.currentTimeMillis
       -System.err.println -System.out.println
+      -System.runtime
       Constructor: 
       None
                  "
@@ -179,6 +202,22 @@ System.help() {
             Example:
                System.currentTimeNanos
                >>>1295883747179966215
+            ";;&
+         System.runtime|runtime|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.runtime
+               Returns the current runtime in nanoseconds, if GNU date and bc exists.
+               If bc or GNU date is missing the current runtime is returned in secons.
+            Parameters:
+               None
+            Throws:
+               IllegalArgumentException - if number of arguments != 0
+            Returns:
+               Runtime
+            Example:
+               System.runtime
+               >>>Runtime: 1.536150153 [seconds.nanosecons]
             ";;&
          System.out.println|out.println|all)
             match=$(Boolean.TRUE)

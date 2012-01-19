@@ -685,3 +685,23 @@ __tracebackHeader() {
    fi
    return 0
 }
+
+# private
+# creates an object pointer
+# called by:
+# all constructors
+__getPointer() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   if __gnudateCheck; then
+      System.currentTimeNanos
+   else
+      if command -v date 2>&1 1>/dev/null; then    
+         # can't test but i think this should work with a bsd date
+         System.out.println $(date -r)${RANDOM}${RANDOM}${RANDOM}
+      else    
+         # not my problem...
+         System.out.println ${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM} 
+      fi
+   fi
+   return 0
+}

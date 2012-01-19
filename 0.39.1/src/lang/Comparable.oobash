@@ -37,13 +37,13 @@ __compareTo() {
                String)  str="$3"
                         ;;
                Boolean) if [[ "$("$this".toString)" == $(Boolean.TRUE) ]]; then
-                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]; then
+                           if [[ "$("$argobject".toString)" == "$(Boolean.TRUE)" ]]; then
                               System.out.println 0
                            else
                               System.out.println 1
                            fi
                         else
-                           if [[ $("$argobject".toString) == $(Boolean.TRUE) ]]; then
+                           if [[ "$("$argobject".toString)" == "$(Boolean.TRUE)" ]]; then
                               System.out.println -1
                            else
                               System.out.println 0

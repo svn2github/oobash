@@ -207,12 +207,14 @@
 #    -style corections
 #    -more consistent exceptions -> special return values for different exceptions
 # Version:      0.39.1
-#    -added stacktrace
+#    -added stacktrace (if shell not interactive)
+#    -added help again (if shell is interactive)
 #    -added File: append getText setText clear
-#    -added optimized __decoratorCheck + almost every framework function now checks for decorator
+#    -added System.runtime
+#    -optimized __decoratorCheck + almost every framework function now checks for decorator
 #    -"overwrite" __alias, __unalias function if shell is not interactive
 #    -deleted __registerAlias __cleanUpAliases
-#    -added private function: __stackOrHelp __tracebackHeader
+#    -added private functions: __stackOrHelp __tracebackHeader __getPointer
 
 #################################################################
 # Features:

@@ -41,11 +41,7 @@ File() {
          return 1
       fi
 
-      local pointer
-      if ! pointer=$(System.currentTimeNanos); then
-         I18n.err.message "Sorry, could not create object '\$this'"
-         return 1
-      fi
+      local pointer="$(__getPointer)"
 
       local pathname="$2"
       local class=$FUNCNAME
@@ -1128,7 +1124,7 @@ File.createTempFile() {
       local prefix="$1"
       local suffix=${2:-.tmp}
       File.createTemporaryFile "$prefix" "$suffix"
-      return 0
+      return $returnValue
    fi 
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    returnValue=$?
