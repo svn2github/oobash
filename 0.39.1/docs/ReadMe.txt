@@ -28,7 +28,7 @@ This function is part of this framework and is used to handle the object.method 
  d) if all checks are fine call the function $method 
     with the arguments object class and the other arguments if there are some:
     __$method "$this" "$class" "$@"
-All this action makes the framework a relative slow thing, but everything has its price...
+All this action makes the framework a relative slow thing, but everything comes at a price...
 Because the shell executes the command_not_found_handle function in a separate execution environment, no "setters" are available.
 You could echo some setter functionality into the environment, but at the moment, this does not happen to avoid environemnt pollution.
 

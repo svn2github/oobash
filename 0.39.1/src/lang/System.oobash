@@ -130,7 +130,7 @@ System.runtime() {
          if [[ "${time:0:1}" == "." ]]; then
             time=0"$time"
          fi
-         System.out.println "Runtime: $time [seconds.nanosecons]"
+         System.out.println "Runtime: $time [seconds.nanoseconds]"
      else
         System.out.println "Runtime: $SECONDS [seconds]"
      fi
@@ -217,7 +217,7 @@ System.help() {
                Runtime
             Example:
                System.runtime
-               >>>Runtime: 1.536150153 [seconds.nanosecons]
+               >>>Runtime: 1.536150153 [seconds.nanoseconds]
             ";;&
          System.out.println|out.println|all)
             match=$(Boolean.TRUE)
