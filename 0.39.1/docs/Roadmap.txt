@@ -26,7 +26,8 @@
 # 0.39.2
 # -Analyze log4oobash.properties ?
 # -Man.generator (use OODIR for manpath) ?
-# -$Class.getAll(array) functions + check if argument is of type array ?
+# -$Class.getAll(array) functions if bash4.2 ?
+# -possibility to check if argument is of type array ?
 # -File.copy File.createSymLink File.copy File.createSymLink ?
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
 # -set TMPDIR ?

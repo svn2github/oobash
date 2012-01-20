@@ -145,6 +145,7 @@ I18n.err.message
 
 J) "Decorators"
 ################
+Will only work if shell is not interactive (script).
 You can see an example script in the docs/examples directory.
 __decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
 Available "decorators" at the moment: @calling @timestamp @deprecated
