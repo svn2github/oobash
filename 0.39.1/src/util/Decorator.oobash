@@ -30,18 +30,6 @@
    return 0
 }
 
-@debug() {
-   if (($# != 0)); then
-      if [[ "$(Boolean.parseBoolean "${__DEBUG__}")" == "$(Boolean.TRUE)" ]]; then
-         local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
-         if [[ "${time:0:1}" == "." ]]; then
-            time=0"$time"
-         fi
-         printf "%s\n" "Runtime: $time [seconds.nanosecons], Calling: $*" >&2
-      fi
-   fi
-}
-
 ####################################################
 # function to handle decorators, if there are some #
 ####################################################

@@ -150,6 +150,7 @@ __decoratorCheck calls the "decorators" and returns the sum of all decorator ret
 Available "decorators" at the moment: @calling @timestamp @deprecated
 The decorators call is realized with eval, so if you want to build your own "decorators", be careful.
 Decorators use stderr for echos, because the framework communication is on stdout.
+If you want to create an own decorator function: Do NOT use a framework command in this function or you wil run in a loop!
 
 K) "Exceptions"
 ################

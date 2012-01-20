@@ -53,7 +53,6 @@ __cleanUp() {
    unset -f __cleanUpFunctions
    unset -f __cleanUpVars
    unset -f __decoratorCheck
-   unset -f @debug
    unset -f @deprecated
    unset -f @calling
    unset -f @timestamp

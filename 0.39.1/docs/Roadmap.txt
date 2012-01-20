@@ -15,11 +15,12 @@
 # give peace a chance... if no gnudate -> alternative in constructors DONE
 # System.runtime (nanoseconds or $SECONDS) DONE
 # Dont forget to update Class.generator DONE
+# rm/replace @debug DONE
 # If interactive help instead of stacktrace IN_PROCESS
 # not chained Exceptions, but chained return values ?
 # new File manpage again, + System manpage
 # check where gnudate is really neccessary ?
-# rm/replace @debug
+
 
 
 # 0.39.2
