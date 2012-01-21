@@ -30,6 +30,15 @@
    return 0
 }
 
+@countcalls() {
+   if (($# != 0)); then
+      printf "%s\n" "Before: $1 called $(echo ${__COUNTCALLS__["$1"]}) times" >&2
+      ((__COUNTCALLS__["$1"]++))
+      printf "%s\n" "After: $1 called $(echo ${__COUNTCALLS__["$1"]}) times" >&2
+   fi
+   return 0
+}
+
 ####################################################
 # function to handle decorators, if there are some #
 ####################################################

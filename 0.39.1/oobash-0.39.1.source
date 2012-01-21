@@ -84,7 +84,6 @@ __ExceptionValues__=(
  [Unknown]=250
 )
 
-
 # all external commands used in this framework:
 declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd) 
 
