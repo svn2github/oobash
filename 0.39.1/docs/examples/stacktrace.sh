@@ -8,11 +8,10 @@ fi
 __STACKTRACE__="true"
 
 f3() {
-#System.out.println "Calling Math.adder 3 5 7 z and 'z' will cause an exception:"
-#System.out.println
-#Math.adder 3 5 7 z
-#System.out.println
-I18n.err.message aaa bbb
+System.out.println "Calling Math.adder 3 5 7 z and 'z' will cause an exception:"
+System.out.println
+Math.adder 3 5 7 z
+System.out.println
 }
 
 f2() {
