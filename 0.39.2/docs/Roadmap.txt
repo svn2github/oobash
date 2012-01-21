@@ -1,0 +1,39 @@
+# MAYBE ROADMAP (very unstable ;-) ):
+
+# 0.39.2
+# -Analyze log4oobash.properties ?
+# -Man.generator (use OODIR for manpath) ?
+# -$Class.getAll functions if bash4.2 (declare global arrays) ?
+# -possibility to check if argument is of type array ?
+# -File.copy File.createSymLink File.copy File.createSymLink ?
+# -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
+# -set own TMPDIR ?
+# -quote String function ?
+# -File getLine, setLine, deleteLine, getLines, setLines, deleteteLines ?
+# -Generate class file directly into myClasses package structure ?
+# -Decorator.help + man page ?
+# -http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads Process.setPriority ?
+# -man oobash -->ReadMe.txt content ?
+# -check where gnu date is really neccessary/alternatives ?
+# -not chained Exceptions, but chained return values ?
+
+
+# 0.39.3
+# -ssh/host functions ?
+
+# 0.39.4
+# url decode/encode ?
+
+# 0.40
+# Assert 
+# + Tests (execute modules to test --- python style)
+
+# 0.50
+# Logging
+
+# 0.60
+# Use of /dev/tcp and /dev/udp
+# for network sockets
+
+# 0.70 
+# Wrapper for some GUI libs

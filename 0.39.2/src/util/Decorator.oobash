@@ -1,0 +1,77 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com
+#
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+#####################
+# pseudo decorators #
+#####################
+
+@calling() {
+   if (($# != 0)); then
+      printf "%s\n" "Calling: $* " >&2
+   fi
+   return 0
+}
+
+@timestamp() {
+   if (($# != 0)); then
+      printf "%s\n" "Time is $(date "+%s.%N")" >&2
+   fi
+   return 0
+}
+
+@deprecated() {
+   if (($# != 0)); then
+      printf "%s\n" "DeprecatedWarning for $1" >&2
+   fi
+   return 0
+}
+
+####################################################
+# function to handle decorators, if there are some #
+####################################################
+
+__decoratorCheck() {
+   # we will not fill the array with /bin/bash...
+   if [[ "${0##*/}" == "bash" ]]; then
+      return 0
+   fi
+
+   local decorated="$1"
+   local file="$2"
+   shift; shift
+
+   declare -i returnValue=0
+   declare -i offset=0
+   declare -i line="$BASH_LINENO"
+
+   mapfile Arr < "$file"
+
+   # bottom-up search for function start by looking for "()"
+   while [[ "${Arr[line-offset]}" == "${Arr[line-offset]/"()"/}" ]]
+   do 
+      ((offset++))
+   done   
+   ((offset++))
+
+   # bottom-up search for decorators
+   declare -a lineOffset
+
+   while [[ "${Arr[line-offset]:0:1}" == "@" ]]
+   do
+      lineOffset[$[${#lineOffset[@]}]]=$offset
+      ((offset++))
+   done
+
+   # call all the decorators from top to bottom
+   declare -i i=0
+   for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
+   do
+      eval ${Arr[line-lineOffset[i]]} "${decorated}" "$@"
+      returnValue=$(($returnValue+$?))
+   done
+   return $returnValue
+}

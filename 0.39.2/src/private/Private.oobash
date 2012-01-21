@@ -1,0 +1,707 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+#######################
+#######################
+##                   ##
+##      PRIVATE      ## 
+##                   ##
+#######################
+#######################
+
+
+# private
+# check for log4oobash.properties file in the same directory
+# from where this file gets sourced
+# called by:
+# every time you source this framework
+__lookForLoggingPropertiesFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local call="$1"
+   local directory=$(dirname ${call/[0-9]* /})
+   if [[ -r $directory/${__LOGGINGPROPERTIESFILE__} ]]; then
+      __LOGGERPROPS__=$(Boolean.TRUE)
+   else
+      __LOGGERPROPS__=$(Boolean.FALSE)
+   fi
+   return 0
+}
+__registerFunction __lookForLoggingPropertiesFile
+__registerVar __LOGGERPROPS__
+
+# private
+# checks if objectname argument 
+# for a constructor is a keyword
+# called by:
+# -every constructor
+__checkForKeywords() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local word="$1"
+   local keyword
+   for keyword in ${__Keywords__[@]}
+   do 
+      if [[ "$word" == "$keyword" ]]; then
+         return 1
+      fi
+   done
+   return 0
+}
+__registerFunction __checkForKeywords
+__registerVar __Keywords__
+
+# private
+# check if given string contains "." character 
+# called by:
+# -every constructor
+__periodCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   str="$1"
+   declare -i i
+   for ((i=0; i < ${#str}; i++))
+   do
+      local char="${this:i:1}"
+      case "$char" in
+         .) return 1;;
+      esac
+   done
+   return 0
+}
+__registerFunction __periodCheck
+
+# private
+# throws an exception with name of exception and message
+# called by:
+# every public method
+# and __dependencyCheck
+__throw() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local exception="$1"
+   local message="$2"
+   __tracebackHeader
+   System.err.println "${exception}${message}"
+   if [[ ! -z ${__ExceptionValues__[$exception]} ]]; then
+      returnValue=${__ExceptionValues__[$exception]}
+   else   
+      returnValue=${__ExceptionValues__[Unknown]}
+   fi
+   return $returnValue
+}
+__registerFunction __throw
+
+# private  
+# stores an attribute of an object
+# called by:
+# -every constructor
+__attribute() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local key="$1"
+   local value="$2"
+   __OBJECTPOOL__["${this}"]=$class@$pointer
+   __ATTRIBUTEPOOL__["${pointer}"@"${key}"]="$value"
+   return 0
+}
+__registerFunction __attribute
+
+# private  
+# destroys a given object
+# called by:
+# -every constructor
+__destructor() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local this="$1"
+   local string="${__OBJECTPOOL__["${this}"]}"
+   if [[ ! -z "${string}" ]]; then
+      declare -i i=0
+      for ((i=0; i < ${#string}; i++))
+      do
+         local char="${string:i:1}"
+         if [[ $char == "@" ]]; then
+            local i=$(($i+1))
+            local pointer="${string:i}"
+            local lastClass="${string:0:(i-1)}"
+            break
+         fi
+      done
+      unset __OBJECTPOOL__["${this}"]
+      
+      local key
+      for key in "${!__ATTRIBUTEPOOL__[@]}"
+      do
+         if [[ "$key" == "${pointer}"* ]]; then
+            unset __ATTRIBUTEPOOL__["${key}"]
+         fi      
+      done
+      
+      __unalias "$this" "$lastClass"
+   fi
+   return 0
+}
+__registerFunction __destructor
+
+# private
+# destroys the object.method aliases
+# of a given object
+# called by:
+# -__destructor
+if [[ ! -z $PS1 ]]; then
+   __unalias() {
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      local this="$1"
+      local lastClass="$2"
+      local method
+      for method in $(eval echo \${__${lastClass}__[@]})
+      do
+         unalias "${this}"."${method}"
+      done 
+   }
+else
+   __unalias() {
+   :
+   return 0
+   }
+fi
+__registerFunction __unalias
+
+# private
+# creates a bash alias like
+# object.method=object.method.
+# The alias does not avoid the 
+# "command not found"-situation,
+# but you can enjoy autocompletion
+# in the interactive bash. 
+# called by:
+# -every constructor
+if [[ ! -z $PS1 ]]; then
+   __alias() {
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      local this="$1"
+      local class="$2"
+      local method
+      for method in $(eval echo \${__${class}__[@]})
+      do
+         BASH_ALIASES["${this}"."${method}"]=""${this}"."${method}""
+      done
+      return 0
+   }   
+else
+   __alias() {
+   :
+   return 0
+   }
+fi
+__registerFunction __alias
+
+# private
+# check if given string is visible 
+# called by:
+# -every constructor
+# -isVisible (String method)
+__visible() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local str="$1"
+   local unsetAtEnd="$(Boolean.FALSE)" 
+   local bool="$(Boolean.FALSE)" 
+   # is extglob set ?
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean 
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd="$(Boolean.TRUE)"
+   fi 
+   if [[ "$str" != "" ]]; then
+      if [[ "${str##+([[:graph:]])}" == "" ]]; then
+         bool="$(Boolean.TRUE)"
+      fi      
+   fi       
+   if [[ "$unsetAtEnd" == "$(Boolean.TRUE)" ]]; then
+      shopt -u extglob
+   fi
+   if [[  "$bool" == "$(Boolean.TRUE)" ]]; then
+      return 0
+   else
+      return 1
+   fi
+}
+__registerFunction __visible
+
+# private  
+# returns given string uppercase
+# called by:
+# -__compareToIgnoreCase
+# -__toUpperCase
+# -__capitalize
+__strUpper() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -u str="$1"
+   local upper=''
+   declare -i i=0
+   for ((i=0; i < ${#str}; i++))
+   do
+      local char="${str:i:1}"
+      local valueOf=$(printf '%d\n' "'$char")
+      case $valueOf in
+         # small sharp s 
+         223 )                  
+         upper="$upper""SS";;
+         228|246|252|224|226|230|231|232|233|234|235|238|239|244|156|249|251|261|281|243|263|322|324|347|378|380|225|237|241|250|259|537|351|539|355|283|367|253|269|314|328|341|345|353|382|271|357|248|229|337|369|236|242|240|254)
+         upper="$upper""${char~}";;       
+         * ) 
+         upper="$upper""$char" ;;
+      esac
+   done
+   System.out.println "$upper"
+   return 0   
+}
+__registerFunction __strUpper
+
+# private
+# returns given string lowercase
+# called by:
+# -__toLowerCase
+__strLower() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -l str="$1"
+   local lower=''
+   declare -i i=0
+   for ((i=0; i < ${#str}; i++))
+   do
+      local char="${str:i:1}"
+      local valueOf=$(printf '%d\n' "'$char")
+      case $valueOf in
+         220|196|214|192|194|198|199|200|201|202|203|206|207|212|140|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|536|350|538|354|282|366|221|268|313|327|340|344|352|381|270|356|216|197|336|368|204|210|208|222)
+         lower="$lower""${char~}";; 
+         * ) 
+         lower="$lower""$char" ;;
+      esac
+   done
+   System.out.println "$lower"
+   return 0
+}
+__registerFunction __strLower
+
+# private
+# validates and converts input 
+# to valid input for the math methods. 
+# bc is used in the math methods
+# to do the calculations.
+# called by:
+# -Math.sin
+# -Math.cos
+# -Math.tan
+# -Math.atan
+# -Math.asin
+# -Math.acos
+# -Math.max
+# -Math.min
+# -Math.abs
+# -Math.sqrt
+# -Math.exp
+# -Math.expm1
+# -Math.sinh
+# -Math.cosh
+# -Math.tanh
+# -Math.adder
+# -Math.multiplier
+# -Math.log
+# -Math.log10
+# -Math.log1p
+# -Math.toDegrees
+# -Math.toRadians
+# -Math.ceil
+# -Math.floor
+# -Math.hypot
+__mathConverter() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local input="$1"
+   if [[ $input == "NaN" ]]; then
+      System.out.println "NaN"
+      return 0
+   elif [[ $input == "Infinity" ]]; then
+      System.out.println "Infinity"
+      return 0    
+   elif [[ $input == "-Infinity" ]]; then
+      System.out.println "-Infinity"
+      return 0  
+   fi 
+   local unsetAtEnd=$(Boolean.FALSE) 
+   # is extglob set ?
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd=$(Boolean.TRUE)
+   fi 
+   if [[ "$input" =~ ^[-]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
+      set -f
+      System.out.println "${input/[eE]/ * 10 ^ }"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[+]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
+      set -f
+      output="${input/[eE]/ * 10 ^ }"
+      System.out.println "${output:1}"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[-]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
+      set -f
+      output="${input/[eE]/ * 10 ^ }"
+      System.out.println "${output/,/.}"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[+]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
+      set -f
+      output="${input/[eE]/ * 10 ^ }"
+      output="${output:1}"
+      System.out.println "${output/,/.}"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[-]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
+      set -f
+      System.out.println "${input/[eE]+/ * 10 ^ }"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[+]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
+      set -f
+      output="${input/[eE]+/ * 10 ^ }"
+      System.out.println "${output:1}"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[-]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
+      set -f
+      output="${input/[eE]+/ * 10 ^ }"
+      System.out.println "${output/,/.}"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[+]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
+      set -f
+      output="${input/[eE]+/ * 10 ^ }"
+      output="${output:1}"
+      System.out.println "${output/,/.}"
+      set +f 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[-]?([0-9]*\.[0-9]+|[0-9]+)$ ]]; then
+      System.out.println $input
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[+]?([0-9]*\.[0-9]+|[0-9]+)$ ]]; then
+      System.out.println "${input:1}"
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[-]?([0-9]*\,[0-9]+|[0-9]+)$ ]]; then
+      System.out.println "${input/,/.}"
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[+]?([0-9]*\,[0-9]+|[0-9]+)$ ]]; then
+      output="${input:1}"
+      System.out.println "${output/,/.}" 
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi     
+      return 0
+   elif [[ "$input" =~ ^[-]?[0-9]+$ ]]; then
+      System.out.println "$input"
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi  
+      return 0
+   elif [[ "$input" =~ ^[+]?[0-9]+$ ]]; then
+      System.out.println "${input:1}"
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi  
+      return 0
+   fi
+   if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+      shopt -u extglob
+   fi  
+   # Cannot recognize...
+   return 1
+}
+__registerFunction __mathConverter
+
+# private
+# converts a "rwxrwxrwx" file permission
+# string to octal (eg 777)
+# called by:
+# -File.createTemporaryFile
+__posixFilePermissionsConverter() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local unsetAtEnd=$(Boolean.FALSE) 
+   # is extglob set ?
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean 
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd=$(Boolean.TRUE)
+   fi 
+   local permissions="$1"
+   local octal=''
+   declare -i octalPerm=0
+   if [[ "$permissions" =~ ^([r-][w-][x-]){3}$ ]]; then
+      # convert to octal format
+      declare -i i=0
+      for ((i=0; i < 9; i++))
+      do
+         local perm="${permissions:i:1}"
+            case $perm in
+               r)octalPerm=$(($octalPerm+4));;
+               w)octalPerm=$(($octalPerm+2));;
+               x)octalPerm=$(($octalPerm+1));;
+            esac
+         # starting with 0
+         if (( $i == 2 || $i == 5 || $i== 8 )); then
+            octal=$octal${octalPerm}
+            octalPerm=0  
+         fi        
+      done
+   else
+      if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         shopt -u extglob
+      fi
+      return 1
+   fi
+   if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+      shopt -u extglob
+   fi
+   System.out.println $octal   
+   return 0
+}
+__registerFunction __posixFilePermissionsConverter
+
+# private
+# translates and prints message to given channel
+# called by:
+# -I18n.err.message -I18n.out.message
+__i18nMessage() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local message="$1"
+   # msgid "" can be mapped to meta informations 
+   if [[ "$message" == "" ]]; then
+       System.${printStream}.println ""
+       return 0
+   fi
+   if command -v eval_gettext >/dev/null 2>&1; then
+      System.${printStream}.println "$(eval_gettext "$message")"
+      return 0
+   else
+      # fall back to old school bash i18n
+      System.${printStream}.println "$(eval System.out.println $\"$message\")"
+      return 0
+   fi
+   return 0
+}
+__registerFunction __i18nMessage
+
+# private  
+# destroys all objects
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpObjectsPool() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local obj
+   for obj in ${!__OBJECTPOOL__[@]} 
+   do 
+      __destructor ${obj}
+   done
+   return 0
+}
+
+# private  
+# unsets all functions
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpFunctions() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "function" ]]; then
+         unset -f ${value} 
+      fi
+   done
+   return 0
+}
+
+# private  
+# unsets all class constructors, class arrays, class help functions, class methods
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpClasses() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "class" ]]; then
+         local meth
+         for meth in $(eval echo \${__${value}__[@]})
+         do 
+            unset -f __${meth}
+         done
+         unset $(eval echo __${value}__  __${value}Methods__)
+         unset -f $(eval echo $value ${value}.help)
+      fi
+   done
+   return 0
+}
+
+# private  
+# unsets the used variables
+# does not need registration. unset action in __cleanUp function
+# called by:
+# __cleanUp
+__cleanUpVars() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local value
+   for value in ${!__Registry__[@]}
+   do 
+      if [[ "${__Registry__[$value]}" == "var" ]]; then
+         unset ${value}
+      fi
+   done   
+   return 0
+}
+
+# private
+# check for external commands that are used in this framework
+# Throws:
+#    NotInPathException - if element of __Dependencies__ array is not in path
+# called by:
+# every time you source this framework
+__dependencyCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local bool="$(Boolean.TRUE)"
+   declare -i i
+   for ((i=0; i < ${#__Dependencies__[@]}; i++))
+   do
+      if ! command -v ${__Dependencies__[i]} >/dev/null 2>&1; then
+         bool="$(Boolean.FALSE)"
+         __throw "NotInPathException" ": ${__Dependencies__[i]} not in path"
+      else 
+         if [[ "${__Dependencies__[i]}" == "date" ]]; then
+            if ! __gnudateCheck; then 
+               bool="$(Boolean.FALSE)"
+               __throw "NotInPathException" ": GNU date not in path"
+            fi
+         fi         
+      fi
+   done
+   if [[ "$bool" == "$(Boolean.TRUE)" ]]; then
+      return 0
+   else
+      return 1
+   fi
+}
+
+# private
+# check for gnu date
+# called by:
+# __dependencyCheck
+__gnudateCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   # For this framework it is important to work with a gnu date, so:
+   # special check for gnu date with nanoseconds gnu feature:
+   # can't test but hope it works...
+   local testtimestamp
+   testtimestamp=$(date +%N)
+   if command -v date >/dev/null 2>&1; then
+      if [[ "${testtimestamp:$((${#testtimestamp}-1))}" == "N" ]]; then
+         return 1
+      fi
+   else
+      return 1
+   fi
+   return 0
+}
+
+# private
+# decision: call stacktrace or help
+# called by:
+# every funtion that throws an exception
+__stackOrHelp() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   # interactive --> help
+   if [[ ! -z "$PS1" ]]; then
+      if [[ $(Boolean.parseBoolean "$__HELP__") == "$(Boolean.TRUE)" ]]; then
+         local printStream=err
+         local class="$1"
+         local func="$2"
+         ${class}.help ${func}
+      fi
+   # not interactive --> stacktrace
+   else
+      if [[ "$(Boolean.parseBoolean ${__STACKTRACE__})" == "$(Boolean.TRUE)" ]]; then
+         __stacktrace
+      fi
+   fi
+   return 0
+}
+
+# private
+# prints or prints not the traceback header to stderr
+# called by:
+# __throw
+__tracebackHeader() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   if [[ $(Boolean.parseBoolean "$__STACKTRACE__") == "$(Boolean.TRUE)" ]] && [[ -z "$PS1" ]];  then
+      System.err.println "Traceback (most recent call first):"
+   fi
+   return 0
+}
+
+# private
+# creates an object pointer
+# called by:
+# all constructors
+__getPointer() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   if __gnudateCheck; then
+      System.currentTimeNanos
+   else
+      if command -v date 2>&1 1>/dev/null; then    
+         # can't test but i think this should work with a bsd date
+         System.out.println $(date -r)${RANDOM}${RANDOM}${RANDOM}
+      else    
+         # not my problem...
+         System.out.println ${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM} 
+      fi
+   fi
+   return 0
+}
