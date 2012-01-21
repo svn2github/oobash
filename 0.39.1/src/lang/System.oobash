@@ -159,7 +159,7 @@ System.help() {
       Available methods:
       -System.exit -System.currentTimeMillis
       -System.err.println -System.out.println
-      -System.runtime
+      -System.runtime -System.currentTimeNanos
       Constructor: 
       None
                  "

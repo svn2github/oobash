@@ -1,42 +1,22 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.1 Ideas:
-# I18n.xy.messages only if tty open ? NO DONE
-# stacktrace DONE
-# File: getText, setText, append  DONE
-# overwrite alias function to : if tty not open ? DONE
-# isFile for the new Filefunctions DONE
-# central point of decision help--stacktrace ? ->__stackOrHelp DONE
-# delete registerAlias ? DONE
-# new man page for File DONE
-# Possibility to decorate every function DONE
-# better/nicer stacktrace DONE
-# __compareTo fix if object uses keyword -> Level is not compareable --> DONE
-# give peace a chance... if no gnudate -> alternative in constructors DONE
-# System.runtime (nanoseconds or $SECONDS) DONE
-# Dont forget to update Class.generator DONE
-# rm/replace @debug DONE
-# If interactive help instead of stacktrace IN_PROCESS
-# not chained Exceptions, but chained return values ?
-# new File manpage again, + System manpage
-# check where gnudate is really neccessary ?
-
-
-
 # 0.39.2
 # -Analyze log4oobash.properties ?
 # -Man.generator (use OODIR for manpath) ?
-# -$Class.getAll(array) functions if bash4.2 ?
+# -$Class.getAll functions if bash4.2 (declare global arrays) ?
 # -possibility to check if argument is of type array ?
 # -File.copy File.createSymLink File.copy File.createSymLink ?
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
-# -set TMPDIR ?
+# -set own TMPDIR ?
 # -quote String function ?
 # -File getLine, setLine, deleteLine, getLines, setLines, deleteteLines ?
 # -Generate class file directly into myClasses package structure ?
 # -Decorator.help + man page ?
 # -http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads Process.setPriority ?
 # -man oobash -->ReadMe.txt content ?
+# -check where gnu date is really neccessary/alternatives ?
+# -not chained Exceptions, but chained return values ?
+
 
 # 0.39.3
 # -ssh/host functions ?

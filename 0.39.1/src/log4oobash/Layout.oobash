@@ -30,10 +30,12 @@ __getContentType() {
          HTMLLayout) System.out.println "text/html";;
          *) System.out.println "text/plain";;
       esac
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 __registerFunction __getContentType
 
@@ -69,10 +71,12 @@ Log session start time '"$(date)"'<br>
 </tr>'
 ;;
       esac
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   return $?
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 __registerFunction __getHeader
    
@@ -86,12 +90,11 @@ __getFooter() {
 <br>
 </body></html>';;
    esac
-      return 0
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   local class=$2 
-   local printStream=err
-   ${class}.help ${FUNCNAME:2}
-   return 1
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
 }
 __registerFunction __getFooter

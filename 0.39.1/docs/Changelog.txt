@@ -215,6 +215,7 @@
 #    -"overwrite" __alias, __unalias function if shell is not interactive (aliases for autocompletion are not needed then)
 #    -deleted __registerAlias __cleanUpAliases
 #    -added private functions: __stackOrHelp __tracebackHeader __getPointer
+#    -added man pages for System
 
 #################################################################
 # Features:

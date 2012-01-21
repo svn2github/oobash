@@ -153,7 +153,13 @@ The decorators call is realized with eval, so if you want to build your own "dec
 Decorators use stderr for echos, because the framework communication is on stdout.
 If you want to create an own decorator function: Do NOT use a framework command in this function or you wil run in a loop!
 
-K) "Exceptions"
+K) Stacktrace
+##############
+Will only work if shell is not interactive (script).
+If there is an exception a stacktrace is shown.
+If the shell is interactive and an exception happens, then a "command help" is shown.
+
+L) "Exceptions"
 ################
 Exception                             ReturnValue
 DecoderException                      140
