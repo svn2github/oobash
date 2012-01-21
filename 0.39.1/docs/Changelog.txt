@@ -207,8 +207,8 @@
 #    -style corections
 #    -more consistent exceptions -> special return values for different exceptions
 # Version:      0.39.1
-#    -added stacktrace (if shell not interactive)
-#    -added help again (if shell is interactive)
+#    -added stacktrace (if shell not interactive and an exception occured)
+#    -added help again (if shell is interactive and an exception occurred)
 #    -added File methods: append getText setText clear
 #    -added System.runtime
 #    -optimized __decoratorCheck: almost every framework function now checks for decorator

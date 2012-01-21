@@ -17,4 +17,3 @@ wc
 sort
 tr
 pwd
-
