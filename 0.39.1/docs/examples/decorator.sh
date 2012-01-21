@@ -70,7 +70,7 @@ printer5() {
 printer6() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    echo "My return value is $?, because of 2 times @false (sum)."
-   echo "i print printer5"
+   echo "i print printer6"
    echo "---------------------------"
    echo
    return 0
