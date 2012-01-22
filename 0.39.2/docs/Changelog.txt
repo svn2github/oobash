@@ -218,6 +218,7 @@
 #    -added man pages for System
 # Version:      0.39.2
 #    -added System.out.print, System.err.print
+#    -added File: getLine
 
 
 #################################################################

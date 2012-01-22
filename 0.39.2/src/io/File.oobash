@@ -1056,14 +1056,20 @@ __getLine() {
    if (( $# == 3 )); then
       local this="$1"
       declare -i line="$3"
-      ((line+1))
+      declare -i index=$((line-1))
+      echo index is $index
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
          # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            local text
             local file="$("$this".toString)"
             mapfile FILE < "$file"
-            System.out.print "${FILE[line]}"
+            if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+               __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue               
+            fi
+            System.out.print "${FILE[index]}"
             return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
