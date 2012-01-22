@@ -8,18 +8,23 @@ fi
 __STACKTRACE__="true"
 
 f3() {
-System.out.println "Calling Math.adder 3 5 7 z and 'z' will cause an exception:"
-System.out.println
-Math.adder 3 5 7 z
-System.out.println
+   System.out.println "Calling Math.adder 3 5 7 z and 'z' will cause an exception:"
+   System.out.println
+   Math.adder 3 5 7 z
+   System.out.println
+   return 0
 }
 
 f2() {
-f3
+   f3
+   return 0
 }
 
 f1() {
-f2
+   f2
+   return 0
 }
 
 f1
+
+return 0

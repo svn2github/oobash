@@ -19,18 +19,18 @@ fi
 @timestamp
 printer1() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   echo "i print printer1"
-   echo "---------------------------"
-   echo
+   System.out.println "i print printer1"
+   System.out.println "---------------------------"
+   System.out.println
    return 0
 }
 
 @calling
 printer2() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   echo "i print printer2"
-   echo "---------------------------"
-   echo
+   System.out.println "i print printer2"
+   System.out.println "---------------------------"
+   System.out.println
    return 0
 }
 
@@ -39,17 +39,17 @@ printer2() {
 @timestamp
 printer3() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   echo "i print printer3"
-   echo "---------------------------"
-   echo
+   System.out.println "i print printer3"
+   System.out.println "---------------------------"
+   System.out.println
    return 0
 }
 
 printer4() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   echo "i print printer4"
-   echo "---------------------------"
-   echo
+   System.out.println "i print printer4"
+   System.out.println "---------------------------"
+   System.out.println
    return 0
 }
 
@@ -58,10 +58,10 @@ printer4() {
 @calling
 printer5() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   echo My return value is $?, because of @false, but i could be a validator too!
-   echo "i print printer5"
-   echo "---------------------------"
-   echo
+   System.out.println "My return value is $?, because of @false, but i could be a validator too!"
+   System.out.println "i print printer5"
+   System.out.println "---------------------------"
+   System.out.println
    return 0
 }
 
@@ -69,10 +69,10 @@ printer5() {
 @false
 printer6() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   echo "My return value is $?, because of 2 times @false (sum)."
-   echo "i print printer6"
-   echo "---------------------------"
-   echo
+   System.out.println "My return value is $?, because of 2 times @false (sum)."
+   System.out.println "i print printer6"
+   System.out.println "---------------------------"
+   System.out.println
    return 0
 }
 
@@ -86,3 +86,5 @@ printer3 Arg1 Arg2
 printer4
 printer5
 printer6
+
+exit 0
