@@ -1050,6 +1050,40 @@ __clear() {
    return $returnValue
 }
 
+__getLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      declare -i line="$3"
+      ((line+1))
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local text
+            local file="$("$this".toString)"
+            mapfile FILE < "$file"
+            System.out.print "${FILE[line]}"
+            return $returnValue
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
 # length
 # Masterfunction in the String.oobash file
 

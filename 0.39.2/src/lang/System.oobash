@@ -121,6 +121,35 @@ System.out.println() {
 }
 __registerFunction System.out.println
 
+System.err.print() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# <= 1  )); then
+      local message="$1"
+      printf "%s" "$message" >&2
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction System.err.print
+
+System.out.print() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# <= 1  )); then
+      local message="$1"
+      printf "%s" "$message"
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "System" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction System.out.print
 System.runtime() { 
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -149,7 +178,7 @@ __registerFunction System.runtime
 #               #
 #################
 
-complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println runtime all" System.help
+complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println out.print err.print runtime all" System.help
 
 System.help() {  
    local printStream=${printStream:-out}
@@ -159,6 +188,7 @@ System.help() {
       Available methods:
       -System.exit -System.currentTimeMillis
       -System.err.println -System.out.println
+      -System.err.print -System.out.print
       -System.runtime -System.currentTimeNanos
       Constructor: 
       None
@@ -244,7 +274,33 @@ System.help() {
             Example:
                System.out.println "hello"
                >>>hello
-            ";;&         
+            ";;&      
+         System.out.print|out.print|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.out.println
+               Prints a String and then terminate the line to \"standard\" output 
+            Parameters:
+               x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.println "hello"
+               >>>hello>>>
+            ";;&
+         System.err.print|err.print|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.err.println
+               Prints a String to \"standard\" error output
+            Parameters:
+               x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.println "hello"
+               >>>hello>>>
+            ";;&
          System.currentTimeMillis|currentTimeMillis|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "

@@ -216,6 +216,9 @@
 #    -deleted __registerAlias __cleanUpAliases
 #    -added private functions: __stackOrHelp __tracebackHeader __getPointer
 #    -added man pages for System
+# Version:      0.39.2
+#    -added System.out.print, System.err.print
+
 
 #################################################################
 # Features:
