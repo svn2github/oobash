@@ -20,7 +20,6 @@ __stacktrace() {
    declare -i i=2
    until [[ "${FUNCNAME[$i]}" = "main" ]]
    do
-      #System.err.println "function ${FUNCNAME[$i]} called from ${BASH_SOURCE[$i+1]##*/} at line ${BASH_LINENO[$i]}"
       System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line ${BASH_LINENO[$i]}, in ${FUNCNAME[$i]}"
       ((i++))
    done
@@ -37,7 +36,6 @@ __stacktrace() {
          ((index++))
       done
       command=$(</proc/$pid/cmdline)
-      #System.err.println "process ${command} with pid ${pid}"
       System.err.println "   Process ${command}, pid ${pid}"
       pid=${status[$index]/PPid:/}
    done
