@@ -1,19 +1,27 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.2
+# Man page for System !
+# Stacktrace --> private !
+# -Man.generator (use OODIR for manpath) !
+# -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating !
+# -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines !
+# -man oobash -->ReadMe.txt content !
+#
+# ssh:
+# remote2localCopy, local2remoteCopy remote2remoteCopy
+# remote2lcalDiff, local2remoteDiff, remote2remoteDiff
+#
+# -Process Class ?
 # -Analyze log4oobash.properties ?
-# -Man.generator (use OODIR for manpath) ?
 # -$Class.getAll functions if bash4.2 (declare global arrays) ?
 # -possibility to check if argument is of type array ?
-# -File.copy File.createSymLink File.copy File.createSymLink ?
-# -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating ?
+# -File.copy File.createSymLink ?
 # -set own TMPDIR ?
 # -quote String function ?
-# -File getLine, setLine, deleteLine, getLines, setLines, deleteteLines ?
 # -Generate class file directly into myClasses package structure ?
 # -Decorator.help + man page ?
 # -http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads Process.setPriority ?
-# -man oobash -->ReadMe.txt content ?
 # -check where gnu date is really neccessary/alternatives ?
 # -not chained Exceptions, but chained return values ?
 
