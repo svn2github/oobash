@@ -27,4 +27,4 @@ f1() {
 
 f1
 
-return 0
+exit 0
