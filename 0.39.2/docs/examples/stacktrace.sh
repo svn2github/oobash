@@ -27,4 +27,4 @@ f1() {
 
 f1
 
-exit 0
+System.exit 0

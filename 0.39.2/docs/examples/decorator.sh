@@ -87,4 +87,4 @@ printer4
 printer5
 printer6
 
-exit 0
+System.exit 0
