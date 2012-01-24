@@ -1,16 +1,18 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.2
-# Man page for System !
+# Man page for System, File !
 # Stacktrace --> private !
 # -Man.generator (use OODIR for manpath) !
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating !
 # -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines !
 # -man oobash -->ReadMe.txt content !
+# -use of System.out.print in generator
 #
-# ssh:
+# ssh/host ideas:
 # remote2localCopy, local2remoteCopy remote2remoteCopy
 # remote2lcalDiff, local2remoteDiff, remote2remoteDiff
+# remoteCmd
 #
 # -Process Class ?
 # -Analyze log4oobash.properties ?
@@ -45,3 +47,6 @@
 
 # 0.70 
 # Wrapper for some GUI libs
+
+# 0.80
+# Wrapper for some version control systems
