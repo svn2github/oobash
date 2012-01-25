@@ -7,7 +7,7 @@
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating !
 # -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines !
 # -man oobash -->ReadMe.txt content !
-# -use of System.out.print in generator
+# -use of System.out.print in generator DONE
 #
 # ssh/host ideas:
 # remote2localCopy, local2remoteCopy remote2remoteCopy
