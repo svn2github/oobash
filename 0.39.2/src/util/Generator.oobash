@@ -208,10 +208,10 @@ ${userClass}.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != $((${#attributes[@]}+1))
                Example:"
-   echo -ne "                  ${userClass} a "
+   System.out.print "                  ${userClass} a "
    for (( i=0; i < ${#attributes[@]}; i++))
    do
-      echo -ne  "<${attributes[$i]}> "
+      System.out.print  "<${attributes[$i]}> "
    done
    System.out.println "
             \";;& "
@@ -278,13 +278,13 @@ ${userClass}.help() {
          __throw "NotInPathException" ": tr not in path"
          return $?
       fi
-      echo -ne "                  >>>"
+      System.out.print "                  >>>"
       for (( i=0; i < ${#special[@]}; i++))
       do
          if (( $i != 0 )); then
-            echo -ne                 \|\<"${special[$i]}"\>
+            System.out.print                 \|\<"${special[$i]}"\>
          else
-            echo -ne                 \<"${special[$i]}"\>
+            System.out.print                 \<"${special[$i]}"\>
          fi
       done
    System.out.println "
