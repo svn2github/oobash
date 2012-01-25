@@ -138,7 +138,6 @@ __import oobash.lang.Math
 __import oobash.lang.System
 __import oobash.lang.String
 __import oobash.lang.Boolean
-__import oobash.lang.Stacktrace
 
 # import io classes
 __import oobash.io.File

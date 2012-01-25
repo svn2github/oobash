@@ -705,7 +705,12 @@ __getPointer() {
    fi
    return 0
 }
+__registerFunction __getPointer
 
+# private 
+# generates stacktrace
+# called by:
+# __stackOrHelp
 __stacktrace() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
