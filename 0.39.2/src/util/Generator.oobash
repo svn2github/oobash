@@ -103,7 +103,7 @@ $userClass() {
          System.out.println "      __attribute ${attributes[$i]} \"\$${attributes[$i]}\""
       done
       System.out.println "
-      return 0
+      return \$returnValue
    fi
    __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
    returnValue=\$?
@@ -147,7 +147,7 @@ do
          fi
       done
       System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${attributes[$j]}]}\" 
-      return 0
+      return \$returnValue
    fi
    __throw \"IllegalArgumentException\" \": Wrong number of arguments \$((\$#-2))\"
    returnValue=\$?
