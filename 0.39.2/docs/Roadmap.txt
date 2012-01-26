@@ -12,7 +12,9 @@
 # ssh/host ideas:
 # remote2localCopy, local2remoteCopy remote2remoteCopy
 # remote2lcalDiff, local2remoteDiff, remote2remoteDiff
-# remoteCmd
+# remoteCmd isAlive
+# ssh -p 22 -q -t -o "BatchMode yes" $user@$machine whoami
+# (-t only in interacive bash ?)
 #
 # -Process Class ?
 # -Analyze log4oobash.properties ?
@@ -29,7 +31,7 @@
 
 
 # 0.39.3
-# -ssh/host functions ?
+# -some addon methods for host, file, string ?
 
 # 0.39.4
 # url decode/encode ?
