@@ -184,15 +184,43 @@ __isAlive() {
 
 if [[ -n "$PS1" ]]; then
    __vimEdit() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local machine="$("$this".getHostName)"
-      local user="$("$this".getHostUser)"
-      local port="$("$this".getHostPort)"
-      vim scp://$user@$machine:$port//etc/passwd
-   fi
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      declare -i returnValue=0
+      if (( $# == 3 )); then
+         local this="$1"
+         local machine="$("$this".getHostName)"
+         local user="$("$this".getHostUser)"
+         local port="$("$this".getHostPort)"
+         local argobject="$3"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class File" == "$argclass" ]]; then
+               # Test for "easy login"
+               ssh -p "$port" -q -t -o "BatchMode yes" "$user@$machine" :
+               returnValue=$?
+               if (( $returnValue == 0)); then
+                  vim scp://$user@$machine:$port/"$("$argobject".toString)"
+                  return $?
+               fi
+               return $returnValue
+            else
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      fi
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+      return $returnValue
    }
 fi
 
