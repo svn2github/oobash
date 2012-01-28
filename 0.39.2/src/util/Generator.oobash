@@ -322,7 +322,7 @@ ${userClass}.help() {
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   ${userClass} c $(eval echo {1..${#attributes[@]}})
-                  a.equals b
+                  b.equals c
                   >>>true
             \";;&
          *)   if [[ \$match == \$(Boolean.FALSE) ]]; then
