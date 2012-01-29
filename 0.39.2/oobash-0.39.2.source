@@ -104,6 +104,18 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
+# Definition of SshHost method array for inheritance actions
+# vimEdit method only if bash is interactive
+if [[ -n "$PS1" ]]; then
+   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive vimEdit connect)
+else
+   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive)
+fi
+
+# Definition of SshHost method array:
+declare -a __SshHost__=(${__SshHostMethods__[@]} ${__ObjectMethods__[@]})
+
+
 # register function:
 ####################
 
@@ -144,6 +156,9 @@ __import oobash.io.File
 
 # import i18n functions 
 __import oobash.i18n.I18nMessage
+
+# import admin functions 
+__import oobash.admin.SshHost
 
 # Register already defined vars and functions
 __registerVar __ObjectMethods__

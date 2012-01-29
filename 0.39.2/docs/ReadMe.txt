@@ -30,7 +30,8 @@ This function is part of this framework and is used to handle the object.method 
     __$method "$this" "$class" "$@"
 All this action makes the framework a relative slow thing, but everything comes at a price...
 Because the shell executes the command_not_found_handle function in a separate execution environment, no "setters" are available.
-You could echo some setter functionality into the environment, but at the moment, this does not happen to avoid environemnt pollution.
+You could echo some setter functionality into the environment, but at the moment, this does not happen to avoid environemnt pollution and
+you will not be able to use a setter function in a __function (separate execution environment!).
 
 B) Registry
 ###########
@@ -105,8 +106,8 @@ G) "Inheritance"
 ################
 Inheritance is done by array concatenation.
 Every class has a __$ClassMethods__ array. The elements of this array are the methods that are defined in this $Class file.
-The __XYZMethods__ array are only used for inheritance action.
-Every (not abstract) class has another array named: __$Class__. The elements of this array are the elements of one or more __XYZMethods__ arrays.
+The __$ClassMethods__ array are only used for inheritance action.
+Every (not abstract) class has another array named: __$Class__. The elements of this array are the elements of one or more __$ClassMethods__ arrays.
 e.g.
 declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
  

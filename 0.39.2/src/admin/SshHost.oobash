@@ -1,27 +1,14 @@
 #############################################################
-# Author:  franka
+# Author:  andreas.gregor.frank@googlemail.com
 # Date:    2012-01-26
 # License: The MIT License
-# Copyright (c) <2012> <franka>
+# Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
 #############################################################
-
- 
-# Definition of Host method array for inheritance actions
-# vimEdit method only if bash isinteractive
-if [[ -n "$PS1" ]]; then
-   declare -a __HostMethods__=(getHostName getHostUser getHostPort isAlive vimEdit)
-else
-   declare -a __HostMethods__=(getHostName getHostUser getHostPort isAlive)
-fi
-
-# Definition of Host method array:
-declare -a __Host__=(${__HostMethods__[@]} ${__ObjectMethods__[@]})
-
 
 #########################
 # constructor  function #
 #########################
-Host() {
+SshHost() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 3 )) || (( $# == 4 )); then
@@ -45,7 +32,22 @@ Host() {
          I18n.err.message "Sorry, no full stop character allowed in objectname"
          return 1
       fi
-
+      
+      if command -v ssh >/dev/null 2>&1; then
+         # Test for passwordless ssh login
+         ssh -p "${port}" -q -o "BatchMode yes" "${user}@${name}" : 1>/dev/null 2>&1
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            I18n.err.message "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
+            return 1
+         fi
+      else
+         __throw "NotInPathException" ": ssh not in path"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue 
+      fi
+ 
       local pointer="$(__getPointer)"
 
       local class=$FUNCNAME
@@ -65,16 +67,17 @@ Host() {
    __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
    return $returnValue
 }
-__registerClass Host
+__registerClass SshHost
 
 
 ######################
 # getter function(s) #
 ######################
 
-__getHostName() {
+__getSshHostName() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
+   local class="$2"
    if (( $# == 2 )); then
       local this="$1"
       local key
@@ -98,13 +101,14 @@ __getHostName() {
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
+   __stackOrHelp "${class}" "${FUNCNAME:2}"
    return $returnValue
 }
 
-__getHostUser() {
+__getSshHostUser() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
+   local class="$2"
    if (( $# == 2 )); then
       local this="$1"
       local key
@@ -128,13 +132,14 @@ __getHostUser() {
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
+   __stackOrHelp "${class}" "${FUNCNAME:2}"
    return $returnValue
 }
 
-__getHostPort() {
+__getSshHostPort() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
+   local class="$2"
    if (( $# == 2 )); then
       local this="$1"
       local key
@@ -158,92 +163,126 @@ __getHostPort() {
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
+   __stackOrHelp "${class}" "${FUNCNAME:2}"
    return $returnValue
 }
 
 __isAlive() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
+   local class="$2"
    if (( $# == 2 )); then
       local this="$1"
-      local machine="$("$this".getHostName)"
-      # icmp alive test
-      if ping -c 1 -w 5 "$machine" &>/dev/null ; then
-         Boolean.TRUE
+      local machine="$("$this".getSshHostName)"
+      if command -v ping >/dev/null 2>&1; then
+         # icmp alive test
+         if ping -c 1 -w 5 "$machine" >/dev/null 2>&1; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+         return $returnValue
       else
-         Boolean.FALSE
+         __throw "NotInPathException" ": ping not in path"
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME:2}"
+         return $returnValue
       fi
-      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
+   __stackOrHelp "${class}" "${FUNCNAME:2}"
    return $returnValue
 }
 
+###############################
+# Interactive admin functions #
+###############################
+
+# only available if bash is interactive --> may not be used in scripts !
 if [[ -n "$PS1" ]]; then
    __vimEdit() {
       __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      local class="$2"
       declare -i returnValue=0
       if (( $# == 3 )); then
          local this="$1"
-         local machine="$("$this".getHostName)"
-         local user="$("$this".getHostUser)"
-         local port="$("$this".getHostPort)"
-         local argobject="$3"
-         local argclass
-         argclass="$("$argobject".getClass 2>/dev/null)"
-         if (( $? == 0 )); then
-            if [[ "class File" == "$argclass" ]]; then
-               # Test for "easy login"
-               ssh -p "$port" -q -t -o "BatchMode yes" "$user@$machine" :
-               returnValue=$?
-               if (( $returnValue == 0)); then
-                  vim scp://$user@$machine:$port/"$("$argobject".toString)"
-                  return $?
-               fi
-               return $returnValue
+         local machine="$("$this".getSshHostName)"
+         local user="$("$this".getSshHostUser)"
+         local port="$("$this".getSshHostPort)"
+         local file="$3"
+         if command -v vim >/dev/null 2>&1; then
+            if command -v scp >/dev/null 2>&1; then
+               vim scp://${user}@${machine}:${port}/"${file}"
+               return $?
             else
-               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+               __throw "NotInPathException" ": scp not in path"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
                return $returnValue
             fi
          else
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            __throw "NotInPathException" ": vim not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __stackOrHelp "${class}" "${FUNCNAME:2}"
+            return $returnValue               
+         fi
+      fi
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      return $returnValue
+   }
+
+   __connect() {
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      declare -i returnValue=0
+      local class="$2"
+      if (( $# == 2 )); then
+         local this="$1"
+         local machine="$("$this".getSshHostName)"
+         local user="$("$this".getSshHostUser)"
+         local port="$("$this".getSshHostPort)"
+         if command -v ssh >/dev/null 2>&1; then 
+            ssh -p "${port}" "${user}@${machine}"
+            return $?
+         else
+            __throw "NotInPathException" ": ssh not in path"
+            returnValue=$?
+            __stackOrHelp "${class}" "${FUNCNAME:2}"
             return $returnValue
          fi
       fi
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
       return $returnValue
    }
 fi
 
-complete -W  "$(echo ${__Host__[@]}) all Host" Host.help
+complete -W  "$(echo ${__SshHost__[@]}) all SshHost" SshHost.help
 
 #################
 # help function #
 #################
-Host.help() {  
+SshHost.help() {  
    local printStream=${printStream:-out}  
    if (( $# == 0 )); then
       System.${printStream}.println "
-                    Usage: Host.help all|methodname
+                    Usage: SshHost.help all|methodname
                     Available methods:
                     -getClass
                     -toString
                     -equals
                     -hashCode
-                    -getHostName
-                    -getHostUser
-                    -getHostPort
+                    -getSshHostName
+                    -getSshHostUser
+                    -getSshHostPort
+                    -isAlive
+                    -vimEdit
+                    -connect
                     Constructor: 
-                    -Host
+                    -SshHost
       " 
       return 0
    fi
@@ -251,28 +290,29 @@ Host.help() {
    do
       local match=$(Boolean.FALSE)
       case $1 in
-         Host|all)
+         SshHost|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               Host
-                  Constructor for the Host objects.
+               SshHost
+                  Constructor for the SshHost objects, checks if passwordless auth is possible 
+                  with object name and user.
                Parameters:
                   objectname
                   <name>
                   <user>
-                  <port>
+                  [<port>] default: 22
                   No "." character is allowed in the objectname string.
                Returns:
                   None
                Throws:
-                  IllegalArgumentException - if number of arguments != 4
+                  IllegalArgumentException - if number of arguments != 3 AND != 4
                Example:
-                  Host a <name> <user> <port> 
+                  SshHost a <name> <user> [<port>] 
             ";;& 
-         getHostName|all)
+         getSshHostName|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getHostName
+               getSshHostName
                   Returns the value of name
                Parameters:
                   None
@@ -281,15 +321,15 @@ Host.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  Host b 1 2 3
-                  b.getName
-                  >>>1
+                  SshHost mymachine mymachine.mydom.org mysshaccount
+                  b.getSshHostName
+                  >>>mymachine.mydom.org
             ";;& 
-         getHostUser|all)
+         getSshHostUser|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getHostUser
-                  Returns the value of user
+               getSshHostUser
+                  Returns the value of user (ssh-user)
                Parameters:
                   None
                Returns:
@@ -297,15 +337,15 @@ Host.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  Host b 1 2 3
-                  b.getUser
-                  >>>2
+                  SshHost mymachine mymachine.mydom.org mysshaccount
+                  b.getSshHostUser
+                  >>>mysshaccount
             ";;& 
-         getHostPort|all)
+         getSshHostPort|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getHostPort
-                  Returns the value of port
+               getSshHostPort
+                  Returns the value of port (ssh-port)
                Parameters:
                   None
                Returns:
@@ -313,9 +353,12 @@ Host.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  Host b 1 2 3
-                  b.getPort
-                  >>>3
+                  SshHost mymachine mymachine.mydom.org mysshaccount
+                  b.getSshHostPort
+                  >>>22
+                  SshHost mymachine mymachine.mydom.org mysshaccount 888
+                  b.getSshHostPort
+                  >>>888
             ";;& 
          getClass|all)
             match=$(Boolean.TRUE)
@@ -329,15 +372,15 @@ Host.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  Host b 1 2 3
+                  SshHost b 1 2 3
                   b.getClass
-                  >>>class Host
+                  >>>class SshHost
             ";;&
          toString|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                toString
-                  Returns a String object representing this Host object in sorted order. 
+                  Returns a String object representing this SshHost object in sorted order. 
                Parameters:
                   None
                Throws:
@@ -345,7 +388,7 @@ Host.help() {
                                      - if tr not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  Host b 1 2 3
+                  SshHost b 1 2 3
                   b.toString
                   >>><name>|<port>|<user>
             ";;&
@@ -353,34 +396,34 @@ Host.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                hashCode
-                  Returns a hash code for this Host object.
+                  Returns a hash code for this SshHost object.
                Parameters:
                   None
                Returns:
-                  a hash code for this Host.
+                  a hash code for this SshHost.
                Throws:
                   NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  Host b 1 2 3
+                  SshHost b 1 2 3
                   b.hashCode
             ";;&
          equals|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                equals
-                  Returns true if and only if the argument is a Host object that 
-                  represents the same Host value as this object. 
+                  Returns true if and only if the argument is a SshHost object that 
+                  represents the same SshHost value as this object. 
                Parameters:
-                  anObject - The object to compare this Host against
+                  anObject - The object to compare this SshHost against
                Returns:
-                  true if the Host objects represent the same value; false otherwise.
+                  true if the SshHost objects represent the same value; false otherwise.
                Throws:
                   IllegalArgumentException - if number of arguments != 1
                                            - if arguent is no object
                Example:
-                  Host b 1 2 3
-                  Host c 1 2 3
+                  SshHost b 1 2 3
+                  SshHost c 1 2 3
                   a.equals b
                   >>>true
             ";;&
@@ -394,5 +437,3 @@ Host.help() {
       shift
    done 
 }
-
-

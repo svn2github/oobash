@@ -8,6 +8,7 @@
 # -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines !
 # -man oobash -->ReadMe.txt content !
 # -use of System.out.print in generator DONE
+# -i18n for "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
 #
 # ssh/host ideas:
 # remote2localCopy, local2remoteCopy remote2remoteCopy
@@ -48,7 +49,7 @@
 # for network sockets
 
 # 0.70 
-# Wrapper for some GUI libs
+# Wrapper for some GUI libs ?
 
 # 0.80
-# Wrapper for some version control systems
+# Wrapper for some version control systems ?
