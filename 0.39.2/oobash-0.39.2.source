@@ -105,11 +105,11 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
 # Definition of SshHost method array for inheritance actions
-# vimEdit method only if bash is interactive
+# vimEdit and connect method only if bash is interactive
 if [[ -n "$PS1" ]]; then
-   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive vimEdit connect)
+   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copyTo vimEdit connect)
 else
-   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive)
+   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copyTo)
 fi
 
 # Definition of SshHost method array:
