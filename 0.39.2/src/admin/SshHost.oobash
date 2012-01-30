@@ -225,9 +225,7 @@ __copyTo() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
-   echo count is $#
    if (( $# == 4 )) || (( $# == 5 )); then
-      echo "really ?"
       local this="$1"
       local file="$3"
       local argobject="$4"
@@ -238,14 +236,15 @@ __copyTo() {
             local targetmachine="$("$argobject".getSshHostName)"
             local file2="${5:-$file}"
             local bool="$(Boolean.TRUE)"
-            echo "${this}".command 'cd "$(dirname "$file")" && tar -cf - "$(basename "$file")" 2>/dev/null' | "${targetmachine}".command 'cd "$(dirname "$file")" && tar -xf - 2>/dev/null'
-            "${this}".command 'cd "$(dirname "$file")" && tar -cf - "$(basename "$file")" 2>/dev/null' | "${targetmachine}".command 'cd "$(dirname "$file")" && tar -xf - 2>/dev/null'
-            for status in ${PIPESTATUS[*]}; do
+            cmd="$(echo ""${this}".command 'cd -- "$(dirname -- "$file")" && tar -cf - "$(basename -- "$file")" 2>/dev/null' | "${targetmachine}".command 'cd -- "$file2" && tar -xf - 2>/dev/null'")"
+            eval $cmd
+            for status in ${PIPESTATUS[@]}; do
                if (( "$status" != 0 )); then
                   bool="$(Boolean.FALSE)"
                   break
                fi
             done
+            
             if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
                Boolean.TRUE
             else
@@ -256,6 +255,11 @@ __copyTo() {
          __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
          return $returnValue
       fi
    fi
