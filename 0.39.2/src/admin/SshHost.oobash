@@ -237,7 +237,7 @@ __copyTo() {
             local file2="${5:-$file}"
             local bool="$(Boolean.TRUE)"
             cmd="$(echo ""${this}".command 'cd -- "$(dirname -- "$file")" && tar -cf - "$(basename -- "$file")" 2>/dev/null' | "${targetmachine}".command 'cd -- "$file2" && tar -xf - 2>/dev/null'")"
-            eval $cmd
+            eval "$cmd"
             for status in ${PIPESTATUS[@]}; do
                if (( "$status" != 0 )); then
                   bool="$(Boolean.FALSE)"
