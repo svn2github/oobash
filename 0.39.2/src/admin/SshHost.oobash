@@ -249,7 +249,6 @@ __copyTo() {
 
             ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
             for status in ${PIPESTATUS[@]}; do
-               #echo "stati are ${PIPESTATUS[@]}"
                if (( "$status" != 0 )); then
                   bool="$(Boolean.FALSE)"
                   break
