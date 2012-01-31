@@ -244,8 +244,8 @@ __copyTo() {
             local targetFile="${5:-$file}"
 
             local bool="$(Boolean.TRUE)"
-            cmd1="cd -- \"$(dirname -- "$file")\" && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
-            cmd2="cd -- \"$targetFile\" && tar -xf - 2>/dev/null"
+            cmd1="cd -- \"$(dirname -- "$file")\" 2>/dev/null && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
+            cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
 
             ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
             for status in ${PIPESTATUS[@]}; do
