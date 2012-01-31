@@ -227,18 +227,29 @@ __copyTo() {
    local class="$2"
    if (( $# == 4 )) || (( $# == 5 )); then
       local this="$1"
-      local file="$3"
       local argobject="$4"
       local argclass
       argclass="$("${argobject}".getClass 2>/dev/null)"
       if (( $? == 0 )); then
          if [[ "$("$this".getClass)" == "$argclass" ]]; then
-            local targetmachine="$("$argobject".getSshHostName)"
-            local file2="${5:-$file}"
+            # start
+            local machine="$("$this".getSshHostName)"
+            local user="$("$this".getSshHostUser)"
+            declare -i port="$("$this".getSshHostPort)"
+            local file="$3"
+            # target 
+            local targetMachine="$("$argobject".getSshHostName)"
+            local targetUser="$("$argobject".getSshHostUser)"
+            declare -i targetPort="$("$argobject".getSshHostPort)"
+            local targetFile="${5:-$file}"
+
             local bool="$(Boolean.TRUE)"
-            cmd="$(echo ""${this}".command 'cd -- "$(dirname -- "$file")" && tar -cf - "$(basename -- "$file")" 2>/dev/null' | "${targetmachine}".command 'cd -- "$file2" && tar -xf - 2>/dev/null'")"
-            eval "$cmd"
+            cmd1="cd -- \"$(dirname -- "$file")\" && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
+            cmd2="cd -- \"$targetFile\" && tar -xf - 2>/dev/null"
+
+            ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
             for status in ${PIPESTATUS[@]}; do
+               #echo "stati are ${PIPESTATUS[@]}"
                if (( "$status" != 0 )); then
                   bool="$(Boolean.FALSE)"
                   break
