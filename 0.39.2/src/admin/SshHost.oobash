@@ -221,7 +221,7 @@ __command() {
    return $returnValue
 }
 
-__copyTo() {
+__copy() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -244,10 +244,30 @@ __copyTo() {
             local targetFile="${5:-$file}"
 
             local bool="$(Boolean.TRUE)"
-            cmd1="cd -- \"$(dirname -- "$file")\" 2>/dev/null && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
-            cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
-
-            ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
+            if command -v dirname >/dev/null 2>&1; then
+               if command -v basename >/dev/null 2>&1; then
+                  cmd1="cd -- \"$(dirname -- "$file")\" 2>/dev/null && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
+                  cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
+               else
+                  __throw "NotInPathException" ": basename not in path"
+                  returnValue=$?
+                  __stackOrHelp "${class}" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
+            else
+               __throw "NotInPathException" ": dirname not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            if command -v ssh >/dev/null 2>&1; then
+               ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
+            else
+               __throw "NotInPathException" ": ssh not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               return $returnValue
+            fi
             for status in ${PIPESTATUS[@]}; do
                if (( "$status" != 0 )); then
                   bool="$(Boolean.FALSE)"
@@ -363,6 +383,7 @@ SshHost.help() {
                     -getSshHostUser
                     -getSshHostPort
                     -isAlive
+                    -copy
                     -vimEdit
                     -connect
                     Constructor: 
