@@ -8,12 +8,12 @@
 # -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines !
 # -man oobash -->ReadMe.txt content !
 # -use of System.out.print in generator DONE
-# -i18n for "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
+# -i18n for "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'" DONE
 #
 # ssh/host ideas:
-# remote2localCopy, local2remoteCopy remote2remoteCopy
-# remote2lcalDiff, local2remoteDiff, remote2remoteDiff
-# remoteCmd isAlive
+# remote2localCopy, local2remoteCopy remote2remoteCopy  --> copy
+# remote2lcalDiff, local2remoteDiff, remote2remoteDiff  --> diff
+# remoteCmd isAlive                                     --> command isAlive
 # ssh -p 22 -q -t -o "BatchMode yes" $user@$machine whoami
 # (-t only in interacive bash ?)
 #

@@ -76,12 +76,12 @@ $userClass() {
       done
       System.out.println "      
       if ! __visible \"\$this\"; then
-         I18n.err.message \"Sorry, objectname '\$this' is not valid\"
+         I18n.err.message \"Sorry, objectname '\\\$this' is not valid\"
          return 1
       fi  
 
       if ! __checkForKeywords \"\$this\"; then
-         I18n.err.message \"Sorry, objectname '\$this' is a keyword\"
+         I18n.err.message \"Sorry, objectname '\\\$this' is a keyword\"
          return 1
       fi 
 
@@ -203,7 +203,7 @@ ${userClass}.help() {
       do
          System.out.println "                  <${attributes[$i]}>"
       done
-   System.out.println "                  No \".\" character is allowed in the objectname string.
+   System.out.println "                  No \".\" or space character is allowed in the objectname string.
                Returns:
                   None
                Throws:

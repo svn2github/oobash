@@ -162,7 +162,7 @@ Boolean.help() {
                Parameters:
                   objectname string
                   s - the string to be converted to a Boolean.
-                  No "." character is allowed in the objectname string.
+                  No "." or space character is allowed in the objectname string.
                Returns:
                   None
                Throws:

@@ -19,19 +19,19 @@ How it works
 
 A) command_not_found_handle
 ############################
-Every object.method command is not existing. THe last step before the bash gives you a "command not found" is to see,
-if there is a command_not_found_handle function.
+Every object.method command is not existing. The last step before the bash gives you a "command not found",
+is to look if there is a command_not_found_handle function.
 This function is part of this framework and is used to handle the object.method situation:
- a) split object.method to object and method
- b) check if object exists
- c) check if method for this object exists
- d) if all checks are fine call the function $method 
-    with the arguments object class and the other arguments if there are some:
+ a) split object.method to "object" and "method" part
+ b) check if "object" exists
+ c) check if "method" for this object exists
+ d) if all checks are fine call the function __$method 
+    with the arguments "object" "class" and the other arguments if there are some:
     __$method "$this" "$class" "$@"
 All this action makes the framework a relative slow thing, but everything comes at a price...
 Because the shell executes the command_not_found_handle function in a separate execution environment, no "setters" are available.
 You could echo some setter functionality into the environment, but at the moment, this does not happen to avoid environemnt pollution and
-you will not be able to use a setter function in a __function (separate execution environment!).
+you will not be able to use a setter function in a __function (separate execution environment! all your informations are gone if you jump back to the parent shell).
 
 B) Registry
 ###########

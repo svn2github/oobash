@@ -19,12 +19,12 @@ SshHost() {
       local port="${4:-22}"
       
       if ! __visible "$this"; then
-         I18n.err.message "Sorry, objectname '$this' is not valid"
+         I18n.err.message "Sorry, objectname '\$this' is not valid"
          return 1
       fi  
 
       if ! __checkForKeywords "$this"; then
-         I18n.err.message "Sorry, objectname '$this' is a keyword"
+         I18n.err.message "Sorry, objectname '\$this' is a keyword"
          return 1
       fi 
 
@@ -38,7 +38,7 @@ SshHost() {
          ssh -p "${port}" -q -o "BatchMode yes" "${user}@${name}" : 1>/dev/null 2>&1
          returnValue=$?
          if (( $returnValue != 0 )); then
-            I18n.err.message "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
+            I18n.err.message "Sorry, no passwordless authentication possible with SshHost '\$name' and user '\$user'"
             return 1
          fi
       else
@@ -195,6 +195,7 @@ __isAlive() {
    return $returnValue
 }
 
+# do i really need eval, if used in functions ?
 __command() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -221,6 +222,8 @@ __command() {
    return $returnValue
 }
 
+#Run cmds over ssh, without escaping quotes
+#ssh host -l user $(<cmd.txt)
 __copy() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -241,10 +244,91 @@ __copy() {
             local targetMachine="$("$argobject".getSshHostName)"
             local targetUser="$("$argobject".getSshHostUser)"
             declare -i targetPort="$("$argobject".getSshHostPort)"
-            local targetFile="${5:-$file}"
-
+            
             local bool="$(Boolean.TRUE)"
             if command -v dirname >/dev/null 2>&1; then
+               local targetFile="${5:-"$(dirname "$file")"}"
+               if command -v basename >/dev/null 2>&1; then
+                  cmd1="cd -- \"$(dirname -- "$file")\" 2>/dev/null && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
+                  cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
+               else
+                  __throw "NotInPathException" ": basename not in path"
+                  returnValue=$?
+                  __stackOrHelp "${class}" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
+            else
+               __throw "NotInPathException" ": dirname not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            if command -v ssh >/dev/null 2>&1; then
+               ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
+            else
+               __throw "NotInPathException" ": ssh not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            for status in ${PIPESTATUS[@]}; do
+               if (( "$status" != 0 )); then
+                  bool="$(Boolean.FALSE)"
+                  break
+               fi
+            done
+            
+            if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+            return $returnValue
+         fi
+         __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "${class}" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+# diff two files on different machines
+# diff <(ssh -n machine1 cat /tmp/test1) <(ssh -n machine2 cat /tmp/test2)
+# Bash Process Substitution
+__fileDiff() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 4 )) || (( $# == 5 )); then
+      local this="$1"
+      local argobject="$4"
+      local argclass
+      argclass="$("${argobject}".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "$("$this".getClass)" == "$argclass" ]]; then
+            # start
+            local machine="$("$this".getSshHostName)"
+            local user="$("$this".getSshHostUser)"
+            declare -i port="$("$this".getSshHostPort)"
+            local file="$3"
+            # target 
+            local targetMachine="$("$argobject".getSshHostName)"
+            local targetUser="$("$argobject".getSshHostUser)"
+            declare -i targetPort="$("$argobject".getSshHostPort)"
+            
+            local bool="$(Boolean.TRUE)"
+            if command -v dirname >/dev/null 2>&1; then
+               local targetFile="${5:-"$(dirname "$file")"}"
                if command -v basename >/dev/null 2>&1; then
                   cmd1="cd -- \"$(dirname -- "$file")\" 2>/dev/null && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
                   cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
