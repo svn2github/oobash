@@ -325,7 +325,7 @@ if [[ $(Boolean.parseBoolean "$__QUIET__") != $(Boolean.TRUE) ]] && [[ ! -z $PS1
    System.out.println "  -Math.toRadians -Math.hypot -Math.ceil -Math.floor"
    System.out.println " System:"
    System.out.println "  -System.exit -System.currentTimeMillis -System.currentTimeNanos -System.out.println"
-   System.out.println "  -System.err.println -System.runtime"
+   System.out.println "  -System.err.println -System.out.print System.err.print -System.runtime"
    System.out.println 
    I18n.out.message " Some String constants:"
    System.out.println "  -String.digits -String.asciiLetters -String.asciiLettersLowerCase"

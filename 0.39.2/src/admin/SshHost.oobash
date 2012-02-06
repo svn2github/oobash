@@ -235,7 +235,7 @@ __copy() {
       argclass="$("${argobject}".getClass 2>/dev/null)"
       if (( $? == 0 )); then
          if [[ "$("$this".getClass)" == "$argclass" ]]; then
-            # start
+            # source
             local machine="$("$this".getSshHostName)"
             local user="$("$this".getSshHostUser)"
             declare -i port="$("$this".getSshHostPort)"
@@ -264,6 +264,7 @@ __copy() {
                return $returnValue
             fi
             if command -v ssh >/dev/null 2>&1; then
+               echo "ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)""
                ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
             else
                __throw "NotInPathException" ": ssh not in path"
@@ -271,6 +272,7 @@ __copy() {
                __stackOrHelp "${class}" "${FUNCNAME:2}"
                return $returnValue
             fi
+
             for status in ${PIPESTATUS[@]}; do
                if (( "$status" != 0 )); then
                   bool="$(Boolean.FALSE)"
