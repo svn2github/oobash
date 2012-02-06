@@ -167,34 +167,6 @@ __getSshHostPort() {
    return $returnValue
 }
 
-__isAlive() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   local class="$2"
-   if (( $# == 2 )); then
-      local this="$1"
-      local machine="$("$this".getSshHostName)"
-      if command -v ping >/dev/null 2>&1; then
-         # icmp alive test
-         if ping -c 1 -w 5 "$machine" >/dev/null 2>&1; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-         return $returnValue
-      else
-         __throw "NotInPathException" ": ping not in path"
-         returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-   fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "${class}" "${FUNCNAME:2}"
-   return $returnValue
-}
-
 # do i really need eval, if used in functions ?
 __command() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -307,7 +279,7 @@ __copy() {
 # diff two files on different machines
 # diff <(ssh -n machine1 cat /tmp/test1) <(ssh -n machine2 cat /tmp/test2)
 # Bash Process Substitution
-__fileDiff() {
+__diff() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -327,44 +299,15 @@ __fileDiff() {
             local targetMachine="$("$argobject".getSshHostName)"
             local targetUser="$("$argobject".getSshHostUser)"
             declare -i targetPort="$("$argobject".getSshHostPort)"
-            
-            local bool="$(Boolean.TRUE)"
-            if command -v dirname >/dev/null 2>&1; then
-               local targetFile="${5:-"$(dirname "$file")"}"
-               if command -v basename >/dev/null 2>&1; then
-                  cmd1="cd -- \"$(dirname -- "$file")\" 2>/dev/null && tar -cf - \"$(basename -- "$file")\" 2>/dev/null"
-                  cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
-               else
-                  __throw "NotInPathException" ": basename not in path"
-                  returnValue=$?
-                  __stackOrHelp "${class}" "${FUNCNAME:2}"
-                  return $returnValue
-               fi
-            else
-               __throw "NotInPathException" ": dirname not in path"
-               returnValue=$?
-               __stackOrHelp "${class}" "${FUNCNAME:2}"
-               return $returnValue
-            fi
+            local targetFile="${5:-"$file"}"
+
             if command -v ssh >/dev/null 2>&1; then
-               ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
+               diff <(ssh -n -p "${port}" "${user}"@"${machine}" "(<$file)") <(ssh -n -p "${targetPort}" "${targetUser}"@"${targetMachine}" "(<$targetFile)")
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
                __stackOrHelp "${class}" "${FUNCNAME:2}"
                return $returnValue
-            fi
-            for status in ${PIPESTATUS[@]}; do
-               if (( "$status" != 0 )); then
-                  bool="$(Boolean.FALSE)"
-                  break
-               fi
-            done
-            
-            if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
-               Boolean.TRUE
-            else
-               Boolean.FALSE
             fi
             return $returnValue
          fi
@@ -470,6 +413,7 @@ SshHost.help() {
                     -getSshHostPort
                     -isAlive
                     -copy
+                    -fileDiff
                     -vimEdit
                     -connect
                     Constructor: 
