@@ -42,7 +42,6 @@ __decoratorCheck() {
 
    local decorated="$1"
    local file="$2"
-   shift; shift
 
    declare -i returnValue=0
    declare -i offset=0

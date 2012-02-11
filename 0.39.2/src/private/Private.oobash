@@ -23,7 +23,7 @@ __lookForLoggingPropertiesFile() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local call="$1"
    local directory=$(dirname ${call/[0-9]* /})
-   if [[ -r $directory/${__LOGGINGPROPERTIESFILE__} ]]; then
+   if [[ -r "$directory"/"${__LOGGINGPROPERTIESFILE__}" ]]; then
       __LOGGERPROPS__=$(Boolean.TRUE)
    else
       __LOGGERPROPS__=$(Boolean.FALSE)
@@ -629,6 +629,7 @@ __dependencyCheck() {
       return 1
    fi
 }
+__registerFunction __dependencyCheck
 
 # private
 # check for gnu date
@@ -650,6 +651,7 @@ __gnudateCheck() {
    fi
    return 0
 }
+__registerFunction __stackOrHelp
 
 # private
 # decision: call stacktrace or help
@@ -673,6 +675,7 @@ __stackOrHelp() {
    fi
    return 0
 }
+__registerFunction __stackOrHelp
 
 # private
 # prints or prints not the traceback header to stderr
@@ -685,6 +688,7 @@ __tracebackHeader() {
    fi
    return 0
 }
+__registerFunction __tracebackHeader
 
 # private
 # creates an object pointer
