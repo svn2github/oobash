@@ -6,21 +6,9 @@
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating !
 # -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines ! DONE: getLine
 # -man oobash -->ReadMe.txt content !
-#
-# -Process Class ?
-# -Analyze log4oobash.properties ?
-# -$Class.getAll functions if bash4.2 (declare global arrays) ?
-# -possibility to check if argument is of type array ?
-# -File.copy File.createSymLink ?
-# -set own TMPDIR ?
-# -quote String function ?
-# -Generate class file directly into myClasses package structure ?
-# -Decorator.help + man page ?
-# -http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads Process.setPriority ?
-# -not chained Exceptions, but chained return values ?
 
 # 0.39.3
-# -some addon methods for host, file, string ?
+# -some addon methods for file, string ?
 
 # 0.39.4
 # url decode/encode ?
