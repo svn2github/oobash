@@ -726,22 +726,24 @@ __stacktrace() {
       ((i++))
    done
 
-   declare -i pid=${BASHPID}
-   declare -i index=0
-   declare -a status
-   shopt -s extglob
-   while (( $pid >= 1 ))
-   do
-      mapfile status </proc/$pid/status
-      until [[ ${status[$index]:0:4} == "PPid" ]]
+   if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+      declare -i pid=${BASHPID}
+      declare -i index=0
+      declare -a status
+      shopt -s extglob
+      while (( $pid >= 1 ))
       do
-         ((index++))
+         mapfile status </proc/$pid/status
+         until [[ ${status[$index]:0:4} == "PPid" ]]
+         do
+            ((index++))
+         done
+         command=$(</proc/$pid/cmdline)
+         System.err.println "   Process ${command}, pid ${pid}"
+         pid=${status[$index]/PPid:/}
       done
-      command=$(</proc/$pid/cmdline)
-      System.err.println "   Process ${command}, pid ${pid}"
-      pid=${status[$index]/PPid:/}
-   done
-   shopt -u extglob
-   return $returnValue
+      shopt -u extglob
+      return $returnValue
+   fi
 }
 __registerFunction __stacktrace
