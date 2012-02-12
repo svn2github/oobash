@@ -35,7 +35,7 @@
 ####################################################
 
 __decoratorCheck() {
-   # we will not fill the array with /bin/bash...
+   # No use of decorators in interactive shell
    if [[ "${0##*/}" == "bash" ]]; then
       return 0
    fi
@@ -49,6 +49,7 @@ __decoratorCheck() {
 
    mapfile Arr < "$file"
 
+   # TODO: look for () is weak...
    # bottom-up search for function start by looking for "()"
    while [[ "${Arr[line-offset]}" == "${Arr[line-offset]/"()"/}" ]]
    do 
