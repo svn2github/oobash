@@ -7,11 +7,6 @@
 # -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines ! DONE: getLine
 # -man oobash -->ReadMe.txt content !
 #
-# ssh/host ideas:
-# --> copy, diff, tunnel, runScript, command, isAlive
-# -use known_hosts to create SshHost objects
-# -pseudo terminal ?
-#
 # -Process Class ?
 # -Analyze log4oobash.properties ?
 # -$Class.getAll functions if bash4.2 (declare global arrays) ?
@@ -22,7 +17,6 @@
 # -Generate class file directly into myClasses package structure ?
 # -Decorator.help + man page ?
 # -http://www.javamex.com/tutorials/threads/priority_what.shtml mapping to nice for threads Process.setPriority ?
-# -check where gnu date is really neccessary/alternatives ?
 # -not chained Exceptions, but chained return values ?
 
 # 0.39.3

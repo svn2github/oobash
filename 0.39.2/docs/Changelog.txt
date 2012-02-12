@@ -219,8 +219,6 @@
 # Version:      0.39.2
 #    -added System.out.print, System.err.print
 #    -added File: getLine
-#    -added SshHost class: standard getters + copy, fileDiff, for interactive bash:connect, vimEdit
-#    -added abstract Host class: isAlive
 #    -small fixes
 
 
