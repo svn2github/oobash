@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source ../../oobash*.source 1>/dev/null 2>&1
 if (( $? != 0 )); then
    echo "Sorry, but could not find oobash"
