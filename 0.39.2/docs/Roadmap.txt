@@ -4,12 +4,12 @@
 # Man page for System, File !
 # -Man.generator (use OODIR for manpath) !
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating !
-# -File: setLine, setLines ! DONE: getLine, getLines, delLine, delLines
+# -File: linecount, linematch, setLine, setLines ! DONE: getLine, getLines, delLine, delLines
 # --> TODO: lines call line in for
 # -man oobash -->ReadMe.txt content !
 
 # 0.39.3
-# -some addon methods for file, string ?
+# -Process, some ssh ?
 
 # 0.39.4
 # url decode/encode ?
@@ -30,3 +30,9 @@
 
 # 0.80
 # Wrapper for some version control systems ?
+
+# 0.90 
+# integration of 
+# -jmxterm http://wiki.cyclopsgroup.org/jmxterm
+# -XMLStarlet http://xmlstar.sourceforge.net/
+# -xslt with http://xml.apache.org/xalan-j/commandline.html

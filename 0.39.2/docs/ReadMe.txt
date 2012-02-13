@@ -2,7 +2,7 @@
 # oobash #
 ##########
 
-oobash is only a fun project and no, there are no real objects and no real decorators, but who cares... ;-)
+oobash is only a fun project to implemnent some ideas and no, there are no real objects and no real decorators, but who cares... ;-).
 There is no downward compatibility until version 1.0.
 
 Fast start
@@ -129,7 +129,7 @@ H) Autocompletion
    This way an argument wordlist for the $Class.help function is generated and used by the bash autocompletion.  
    The content of the wordlist is every method that can be used by a $Class "object" plus the consructor of the $Class class and the keyword 'all'.
 
-I) I8N
+I) I18N
 ######
 The i18n of the bash uses the GNU gettext package.
 
