@@ -4,7 +4,8 @@
 # Man page for System, File !
 # -Man.generator (use OODIR for manpath) !
 # -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating !
-# -File: getLine, setLine, deleteLine, getLines, setLines, deleteteLines ! DONE: getLine
+# -File: setLine, setLines ! DONE: getLine, getLines, delLine, delLines
+# --> TODO: lines call line in for
 # -man oobash -->ReadMe.txt content !
 
 # 0.39.3

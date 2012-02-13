@@ -100,19 +100,18 @@ declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUppe
 
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
 
-declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear getLine)
+declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear getLine getLines delLine delLines)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
-declare -a __HostMethods__=(isAlive)
-
+#declare -a __HostMethods__=(isAlive)
 # Definition of SshHost method array for inheritance actions
 # vimEdit and connect method only if bash is interactive
-if [[ -n "$PS1" ]]; then
-   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copy fileDiff vimEdit connect)
-else
-   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copy fileDiff)
-fi
+#if [[ -n "$PS1" ]]; then
+#   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copy fileDiff vimEdit connect)
+#else
+#   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copy fileDiff)
+#fi
 
 # Definition of SshHost method array:
 declare -a __SshHost__=(${__SshHostMethods__[@]} ${__ObjectMethods__[@]} ${__HostMethods__[@]})
@@ -158,10 +157,6 @@ __import oobash.io.File
 
 # import i18n functions 
 __import oobash.i18n.I18nMessage
-
-# import admin functions 
-__import oobash.admin.SshHost
-__import oobash.admin.Host
 
 # Register already defined vars and functions
 __registerVar __ObjectMethods__
