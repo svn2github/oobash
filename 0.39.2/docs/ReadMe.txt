@@ -2,17 +2,19 @@
 # oobash #
 ##########
 
-oobash is only a fun project to implemnent some ideas and no, there are no real objects and no real decorators, but who cares... ;-).
+oobash is a fun project to implemnent some ideas and no, there are no real objects and no real decorators, but who cares... ;-).
 There is no downward compatibility until version 1.0.
 
 Fast start
 ===========
 
 To start simply source oobash-<version>.source file:
-1) source oobash-<version>.source
+source oobash-<version>.source
+
+After sourcing the file you will see some informations and then you can start to play around - hope you like it.
 
 To finally clean up your environment:
-1) __cleanUp
+__cleanUp
 
 How it works
 =============
@@ -140,17 +142,17 @@ then:
 3) edit the oobash/locale/<yourLocaleDir>oobash.po
 4) create your mo file: msgfmt -o oobash.mo oobash.po
 
-Iy you have some text output that should be translated, there are two functions available:
+If you have some text output that should be translated, there are two functions available:
 I18n.out.message
 I18n.err.message
+These functions try to use the locale translations.
 
 J) "Decorators"
 ################
 Will only work if shell is not interactive (script).
-You can see an example script in the docs/examples directory.
+You can see an example script using "decorators" in the docs/examples directory.
 __decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
 Available "decorators" at the moment: @calling @timestamp @deprecated
-The decorators call is realized with eval, so if you want to build your own "decorators", be careful.
 Decorators use stderr for echos, because the framework communication is on stdout.
 If you want to create an own decorator function: Do NOT use a framework command (e.g. System.out.println) in this decorator function!
 
@@ -159,10 +161,19 @@ K) Stacktrace
 Will only work if shell is not interactive (script).
 If there is an exception a stacktrace is shown.
 If the shell is interactive and an exception happens, then a "command help" is shown.
+You can disable the stacktrace or help function by setting:
+__STACKTRACE__="false"
+or
+__HELP__="false"
+in the oobash<version>.source file.
+You can see an stacktrace example script in the docs/examples directory.
 
 L) "Exceptions"
 ################
+The different existing exceptions and their return values:
+
 Exception                             ReturnValue
+-----------                          -------------
 DecoderException                      140
 IllegalArgumentException              150
 IndexOutOfBoundsException             160
