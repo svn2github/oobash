@@ -104,19 +104,6 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
-#declare -a __HostMethods__=(isAlive)
-# Definition of SshHost method array for inheritance actions
-# vimEdit and connect method only if bash is interactive
-#if [[ -n "$PS1" ]]; then
-#   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copy fileDiff vimEdit connect)
-#else
-#   declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort isAlive command copy fileDiff)
-#fi
-
-# Definition of SshHost method array:
-declare -a __SshHost__=(${__SshHostMethods__[@]} ${__ObjectMethods__[@]} ${__HostMethods__[@]})
-
-
 # register function:
 ####################
 
