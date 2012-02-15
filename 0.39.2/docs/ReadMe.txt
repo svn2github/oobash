@@ -2,7 +2,7 @@
 # oobash #
 ##########
 
-oobash is a fun project to implemnent some ideas and no, there are no real objects and no real decorators, but who cares... ;-).
+oobash is a fun project to have a proof of concept for some ideas and no, there are no real objects and no real decorators, but who cares... ;-).
 There is no downward compatibility until version 1.0.
 
 Fast start
@@ -132,7 +132,7 @@ H) Autocompletion
    The content of the wordlist is every method that can be used by a $Class "object" plus the consructor of the $Class class and the keyword 'all'.
 
 I) I18N
-######
+########
 The i18n of the bash uses the GNU gettext package.
 
 if you want to make your own oobash.po, oobash.mo file for i18n,
