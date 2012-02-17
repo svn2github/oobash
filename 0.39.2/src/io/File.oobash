@@ -1185,25 +1185,29 @@ __delLine() {
       fi
       declare -i line="$3"
       declare -i index=$((line-1))
+      ##echo 1 $(System.runtime)
       if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
          # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            ##echo 2 $(System.runtime)
             local file="$("$this".toString)"
             mapfile FILE < "$file"
+            ##echo 3 $(System.runtime)
             if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
                __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
-            local l
-            "$this".clear 1>/dev/null 2>/dev/null
+            > "$file" 1>/dev/null 2>/dev/null
+            ##echo 4 $(System.runtime)
             for indx in "${!FILE[@]}"
             do
               if (( $(($indx+1)) != $line)); then
-                 System.out.print "${FILE[indx]}" >> "$("$this".toString)"
+                 System.out.print "${FILE[indx]}" >> "$file"
               fi
-            done 
+            done
+            ##echo 5 $(System.runtime)
             return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
@@ -1274,6 +1278,83 @@ __delLines() {
             for ((index=index1;index2>=index;index++))
             do
                System.out.print "${FILE[index]}"
+            done
+            return $returnValue
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__linecount() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local file="$("$this".toString)"
+            mapfile FILE < "$file"
+            System.out.println "${#FILE[@]}"
+            return $returnValue
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__linematch() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      (local regex=$3) 2>/dev/null ||  (return 1)
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+      local regex="$3"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local file="$("$this".toString)"
+            mapfile FILE < "$file"
+            #echo "debug ${#FILE[@]}"
+            for ((index=0;index<"${#FILE[@]}";index++))
+            do
+               #echo "debug ${FILE[index]}"
+               if [[ ${FILE[index]} =~ $regex ]]; then
+                  System.out.print "${FILE[index]}"
+               fi
             done
             return $returnValue
          else

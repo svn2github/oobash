@@ -763,7 +763,7 @@ __matches() {
       local this="$1"   
       local regex="$3"
       shopt -s extglob
-      if [[ "$("$this".toString)" =~ $regex ]]; then
+      if [[ "$("$this".toString)" =~ "$regex" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
