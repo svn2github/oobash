@@ -1185,14 +1185,11 @@ __delLine() {
       fi
       declare -i line="$3"
       declare -i index=$((line-1))
-      ##echo 1 $(System.runtime)
       if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
          # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            ##echo 2 $(System.runtime)
             local file="$("$this".toString)"
             mapfile FILE < "$file"
-            ##echo 3 $(System.runtime)
             if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
                __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                returnValue=$?
@@ -1200,14 +1197,12 @@ __delLine() {
                return $returnValue
             fi
             > "$file" 1>/dev/null 2>/dev/null
-            ##echo 4 $(System.runtime)
             for indx in "${!FILE[@]}"
             do
               if (( $(($indx+1)) != $line)); then
                  System.out.print "${FILE[indx]}" >> "$file"
               fi
             done
-            ##echo 5 $(System.runtime)
             return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
@@ -1335,7 +1330,7 @@ __linematch() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       local this="$1"
-      (local regex=$3) 2>/dev/null ||  (return 1)
+      (local regex="$3") 2>/dev/null ||  (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
@@ -1348,11 +1343,9 @@ __linematch() {
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local file="$("$this".toString)"
             mapfile FILE < "$file"
-            #echo "debug ${#FILE[@]}"
             for ((index=0;index<"${#FILE[@]}";index++))
             do
-               #echo "debug ${FILE[index]}"
-               if [[ ${FILE[index]} =~ $regex ]]; then
+               if [[ "${FILE[index]}" =~ "$regex" ]]; then
                   System.out.print "${FILE[index]}"
                fi
             done

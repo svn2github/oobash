@@ -150,6 +150,7 @@ System.out.print() {
    return $returnValue
 }
 __registerFunction System.out.print
+
 System.runtime() { 
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0

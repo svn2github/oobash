@@ -3,10 +3,10 @@
 # 0.39.2
 # Man page for System, File !
 # -Man.generator (use OODIR for manpath) !
-# -System.sysdate if bash4.2 -> printf with %(fmt)T specifier -->strftime-like formating !
 # -File: setLine, setLines ! DONE: getLine, getLines, delLine, delLines, linecount, linematch
-# --> TODO: lines call line in for
 # -man oobash -->ReadMe.txt content !
+# @runtime
+# myClassFiles use of OODIR
 
 # 0.39.3
 # -Process, some ssh ?
