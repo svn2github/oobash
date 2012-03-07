@@ -126,7 +126,7 @@ H) Autocompletion
  * for the help system
    --------------------
    $Class stands for any class name that is used in this framework.
-   Following line / or similar is there for every $Class.help function.
+   Following line or similar is there for every $Class.help function.
    complete -W  "$(echo ${__$Class__[@]}) all $Class" $Class.help
    This way an argument wordlist for the $Class.help function is generated and used by the bash autocompletion.  
    The content of the wordlist is every method that can be used by a $Class "object" plus the consructor of the $Class class and the keyword 'all'.

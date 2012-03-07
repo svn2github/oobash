@@ -5,7 +5,7 @@
 # -Man.generator (use OODIR for manpath) !
 # -File: setLine, setLines ! DONE: getLine, getLines, delLine, delLines, linecount, linematch
 # -man oobash -->ReadMe.txt content !
-# @runtime
+# @runtime DONE
 # myClassFiles use of OODIR
 
 # 0.39.3
@@ -36,3 +36,5 @@
 # -jmxterm http://wiki.cyclopsgroup.org/jmxterm ? 
 # -XMLStarlet http://xmlstar.sourceforge.net/ ?
 # -xslt with http://xml.apache.org/xalan-j/commandline.html ?
+
+# 1.0 

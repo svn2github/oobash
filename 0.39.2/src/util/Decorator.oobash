@@ -31,23 +31,25 @@
 }
 
 @runtime() {
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      if __gnudateCheck && command -v bc >/dev/null 2>&1; then
-         local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
-         if [[ "${time:0:1}" == "." ]]; then
-            time=0"$time"
+   if (( $# != 0 )); then
+      # we have date command ?
+      if command -v date >/dev/null 2>&1; then
+         local testtimestamp
+         testtimestamp="$(date "+%N" 2>/dev/null)"
+         # is GNU date and is bc available ?
+         if [[ "${testtimestamp:$((${#testtimestamp}-1))}" != "N" ]] && command -v bc >/dev/null 2>&1; then
+            local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
+            if [[ "${time:0:1}" == "." ]]; then
+               time=0"$time"
+            fi
+            printf "%s\n" "Runtime: $time [seconds.nanoseconds]"
+            return 0
          fi
-         System.out.println "Runtime: $time [seconds.nanoseconds]"
-     else
-        System.out.println "Runtime: $SECONDS [seconds]"
-     fi
-     return $returnValue
+      fi
+      printf "%s\n" "Runtime: $SECONDS [seconds]"
+      return 0
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
-   return $returnValue
+   return 0
 }
 
 ####################################################

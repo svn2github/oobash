@@ -10,23 +10,27 @@ fi
 __STACKTRACE__="true"
 
 f3() {
+   declare -i returnValue=0
    System.out.println "Calling Math.adder 3 5 7 z and 'z' will cause an exception:"
    System.out.println
    Math.adder 3 5 7 z
+   returnValue=$?
    System.out.println
-   return 0
+   return $returnValue
 }
 
 f2() {
+   declare -i returnValue=0
    f3
-   return 0
+   returnValue=$?
+   return $returnValue
 }
 
 f1() {
+   declare -i returnValue=0
    f2
-   return 0
+   returnValue=$?
+   return $returnValue
 }
 
 f1
-
-System.exit 0

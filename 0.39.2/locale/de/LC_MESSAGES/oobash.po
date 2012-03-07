@@ -186,5 +186,5 @@ msgid " Could not change MANPATH!"
 msgstr " Konnte MANPATH nicht anpassen!"
 
 #: oobash/src/admin/SshHost.oobash
-msgid "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
-msgstr "Tut mir leid, passwortlose Authentifizierung auf SshHost '$name' nicht möglich"
+# msgid "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
+# msgstr "Tut mir leid, passwortlose Authentifizierung auf SshHost '$name' nicht möglich"

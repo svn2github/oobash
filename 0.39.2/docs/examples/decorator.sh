@@ -6,6 +6,8 @@ if (( $? != 0 )); then
    exit 0
 fi
 
+System.runtime
+
 # START -- My own addon decorator
 # Do not use framework commands (e.g. System.out.println) in a decorator !
 @false() {
@@ -67,6 +69,7 @@ printer5() {
    return 0
 }
 
+@runtime
 @false
 @false
 printer6() {
