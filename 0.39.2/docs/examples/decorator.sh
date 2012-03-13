@@ -6,8 +6,6 @@ if (( $? != 0 )); then
    exit 0
 fi
 
-System.runtime
-
 # START -- My own addon decorator
 # Do not use framework commands (e.g. System.out.println) in a decorator !
 @false() {
@@ -19,6 +17,7 @@ System.runtime
 }
 # END -- My own addon decorator
 
+@runtime
 @calling
 @timestamp
 printer1() {
@@ -29,6 +28,7 @@ printer1() {
    return 0
 }
 
+@runtime
 @calling
 printer2() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -38,6 +38,7 @@ printer2() {
    return 0
 }
 
+@runtime
 @deprecated
 @calling
 @timestamp
@@ -51,13 +52,14 @@ printer3() {
 
 printer4() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   System.out.println "i print printer4"
+   System.out.println "i print printer4, i am lonely...no decorator at all!"
    System.out.println "---------------------------"
    System.out.println
    return 0
 }
 
 
+@runtime
 @false
 @calling
 printer5() {

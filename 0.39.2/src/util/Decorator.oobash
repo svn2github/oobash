@@ -62,7 +62,6 @@ __decoratorCheck() {
       return 0
    fi
 
-   local decorated="$1"
    local file="$2"
 
    declare -i returnValue=0
@@ -92,7 +91,7 @@ __decoratorCheck() {
    declare -i i=0
    for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
    do
-      eval ${Arr[line-lineOffset[i]]} "${decorated}" "$@"
+      eval ${Arr[line-lineOffset[i]]} "$@"
       returnValue=$(($returnValue+$?))
    done
    return $returnValue
