@@ -7,6 +7,7 @@
 # -man oobash -->ReadMe.txt content !
 # @runtime DONE
 # myClassFiles use of OODIR
+# Calling: printer2 printer2 ./decorator.sh --> one time printer2 is enough
 
 # 0.39.3
 # -Process, some ssh ?
