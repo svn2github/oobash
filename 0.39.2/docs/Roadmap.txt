@@ -4,7 +4,7 @@
 # Man page for System, File !
 # -Man.generator (use OODIR for manpath) !
 # -File: setLine, setLines ! DONE: getLine, getLines, delLine, delLines, linecount, linematch
-# -man oobash -->ReadMe.txt content !
+# -man oobash -->ReadMe.txt content ! DONE
 # @runtime DONE
 # myClassFiles use of OODIR
 
