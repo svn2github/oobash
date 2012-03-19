@@ -1141,7 +1141,7 @@ __getLines() {
                return $returnValue
             fi
             if (( $index2 < $index1 )); then
-               __throw  "IllegalArgumentException" ": Last line has to greater or equal than first line"
+               __throw  "IllegalArgumentException" ": Last line has to be greater or equal than first line"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue

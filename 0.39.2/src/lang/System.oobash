@@ -238,8 +238,8 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.runtime
-               Returns the current runtime in nanoseconds, if GNU date and bc exists.
-               If bc or GNU date is missing the current runtime is returned in secons.
+               Returns the current runtime in nanosecond precision (if GNU date and bc exists).
+               If bc or GNU date is missing the current runtime is returned in seconds.
             Parameters:
                None
             Throws:
