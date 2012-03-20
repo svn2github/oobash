@@ -71,6 +71,7 @@ printer5() {
    return 0
 }
 
+@deprecated
 @runtime
 @false
 @false

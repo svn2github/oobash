@@ -279,27 +279,27 @@ System.help() {
          System.out.print|out.print|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            System.out.println
+            System.out.print
                Prints a String and then terminate the line to \"standard\" output 
             Parameters:
                x - The String to be printed.
             Throws:
                IllegalArgumentException - if number of arguments != 1
             Example:
-               System.out.println "hello"
+               System.out.print "hello"
                >>>hello>>>
             ";;&
          System.err.print|err.print|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            System.err.println
+            System.err.print
                Prints a String to \"standard\" error output
             Parameters:
                x - The String to be printed.
             Throws:
                IllegalArgumentException - if number of arguments != 1
             Example:
-               System.out.println "hello"
+               System.out.print "hello"
                >>>hello>>>
             ";;&
          System.currentTimeMillis|currentTimeMillis|all)

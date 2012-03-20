@@ -218,7 +218,10 @@
 #    -added man pages for System
 # Version:      0.39.2
 #    -added System.out.print, System.err.print
-#    -added File: getLine
+#    -added File: getLine delLine,linecount,linematch
+#    -added Man.generator
+#    -added new decorator: @runtime
+#    -added manpages for oobash, Class.generator, Man.generator
 #    -fixes
 
 
