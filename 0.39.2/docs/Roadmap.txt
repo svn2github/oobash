@@ -1,8 +1,7 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.2
-# Man page for System - Done, File !
-# manpages for Class.generator and Man.generator !
+# -Man page for System - Done, File !
 # -File: setLine, setLines ! DONE: getLine, getLines, delLine, delLines, linecount, linematch
 
 # 0.39.3
