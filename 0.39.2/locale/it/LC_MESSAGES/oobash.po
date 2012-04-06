@@ -93,6 +93,10 @@ msgstr "Spiacente, nome attributo non valido: '$attribute'."
 msgid "   Please enter one class name and the attributes"
 msgstr "   Inserire il nome della classe e gli attributi"
 
+#: oobash/src/util/Generator.oobash
+msgid "   Please enter one class name"
+msgstr "   Inserire il nome della classe"
+
 #: oobash/src/util/Generator.oobash:264
 msgid "   Example:"
 msgstr "   Esempio:"
@@ -100,6 +104,10 @@ msgstr "   Esempio:"
 #: oobash/src/util/Generator.oobash:265
 msgid "   Class.generator Person name age city > Person.oobash"
 msgstr "   Class.generator Persona nome anni paese > Persona.oobash"
+
+#: oobash/src/util/Generator.oobash
+msgid "   Man.generator Person"
+msgstr "   Man.generator Persona"
 
 #: oobash/src/util/Generator.oobash:266
 msgid "   source Person.oobash"

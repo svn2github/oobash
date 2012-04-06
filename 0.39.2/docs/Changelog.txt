@@ -218,11 +218,11 @@
 #    -added man pages for System
 # Version:      0.39.2
 #    -added System.out.print, System.err.print
-#    -added File: getLine delLine,linecount,linematch
+#    -added File: linematch, linecount
 #    -added Man.generator
 #    -added new decorator: @runtime
-#    -added manpages for oobash, Class.generator, Man.generator
-#    -fixes
+#    -added manpage for oobash
+#    -some fixes
 
 
 #################################################################
@@ -230,7 +230,7 @@
 # String manipulation with umlauts and other special characters
 # Math methods accept arguments with scientific notation
 # Math methods accept arguments float numbers with "." or ","
-# Developer support: Class.generator
+# Developer support: Class.generator, Man.generator
 # Use of bash autocompletion
 # Registry for environment cleanUp
 # i18n

@@ -7,7 +7,7 @@ if (( $? != 0 )); then
 fi
 
 # overwrites setting in ../../oobash*.source (but there default is 'true', too)
-__STACKTRACE__="true"
+__STACKTRACE__=true
 
 f3() {
    declare -i returnValue=0

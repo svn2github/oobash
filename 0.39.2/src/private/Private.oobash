@@ -161,8 +161,8 @@ if [[ ! -z $PS1 ]]; then
    }
 else
    __unalias() {
-   :
-   return 0
+      :
+      return 0
    }
 fi
 __registerFunction __unalias
@@ -190,8 +190,8 @@ if [[ ! -z $PS1 ]]; then
    }   
 else
    __alias() {
-   :
-   return 0
+      :
+      return 0
    }
 fi
 __registerFunction __alias
@@ -651,7 +651,7 @@ __gnudateCheck() {
    fi
    return 0
 }
-__registerFunction __stackOrHelp
+__registerFunction __gnudateCheck
 
 # private
 # decision: call stacktrace or help
@@ -743,7 +743,7 @@ __stacktrace() {
          pid=${status[$index]/PPid:/}
       done
       shopt -u extglob
-      return $returnValue
    fi
+   return $returnValue
 }
 __registerFunction __stacktrace

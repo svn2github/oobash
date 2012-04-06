@@ -1,17 +1,16 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.2
-# -Man page for System - Done, File !
-# -File: setLine, setLines ! DONE: getLine, getLines, delLine, delLines, linecount, linematch
-
 # 0.39.3
-# -Process
+# -process handling
+# -locking ?
+# -use/define own TMPDIR ?
 
 # 0.39.4
 # -some ssh
 
 # 0.39.5
-# -chained return values, decode/encode ?
+# -chained return values, url decode/encode ?
+# -pimp getopts 
 
 # 0.40
 # Assert 
@@ -25,10 +24,10 @@
 # for network sockets
 
 # 0.70 
-# Wrapper for some GUI libs ?
+# Facade for some GUI libs ?
 
 # 0.80
-# Wrapper for some version control systems ?
+# Facade for some version control systems ?
 
 # 0.90 
 # integration of 
@@ -36,4 +35,5 @@
 # -XMLStarlet http://xmlstar.sourceforge.net/ ?
 # -xslt with http://xml.apache.org/xalan-j/commandline.html ?
 
-# 1.0 
+# 1.0
+# HAL 9000 integration

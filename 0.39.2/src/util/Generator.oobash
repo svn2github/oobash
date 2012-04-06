@@ -3,7 +3,7 @@
 #     
 # License: The MIT License
 #
-# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+# Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
 
 #########################
 #########################
@@ -364,13 +364,12 @@ __registerFunction Class.generator
 
 Man.generator() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   if (( $# == 1 )); then
+   if (( $# == 1 )) && [[ ! -z $($1.help 2>/dev/null) ]]; then
       declare -i returnValue=0
       local class="$1"
       local destination=""${__OODIR__}"/man/man1/$class.1"
-
       System.out.println "
-.\\\" Copyright (c) <$(date +%Y)> Andreas Frank <andreas.gregor.frank@googlemail.com>
+.\\\" Copyright (c) <$(date +%Y 2>/dev/null)> $USER
 .\\\"
 .\\\" Permission is hereby granted, free of charge, to any person obtaining a copy
 .\\\" of this software and associated documentation files (the \"Software\"), to deal
@@ -392,13 +391,18 @@ Man.generator() {
       " > "${destination}"
 
       System.out.print ".TH oobash 1" >>"${destination}"
-      System.out.print " \"$(date "+%d %b %Y")\" bash4-Environment User Manuals" >> "${destination}"
+      System.out.print " \"$(date "+%d %b %Y" 2>/dev/null)\" bash4-Environment User Manuals" >> "${destination}"
       System.out.print " \""${__FILENAME__}"\"" >> "${destination}"
       System.out.println >> "${destination}"
       System.out.println ".SH NAME" >> "${destination}"
-      for i in $($class.help | grep "-")
-      do 
-         System.out.print "${i//-/} " >> "${destination}"
+      for line in $($class.help)
+      do
+         if [[ "$line" =~ ^.*-.*$ ]]; then
+            for funcname in $line
+            do 
+               System.out.print "${funcname//-/} " >> "${destination}"
+            done
+         fi
       done
       System.out.println >>"${destination}"
       System.out.println ".SH DESCRIPTION" >> "${destination}"
@@ -406,19 +410,19 @@ Man.generator() {
       System.out.println ".SH EXAMPLES" >> "${destination}"
       System.out.println "$("${class}".help all)" >> "${destination}"
       System.out.println ".SH AUTHOR">>"${destination}"
-      System.out.println "Andreas Frank <andreas.gregor.frank@googlemail.com>" >> "${destination}"
-      if command -v bc >/dev/null 2>&1; then 
-         gzip "${destination}"
-      else
-         __throw "NotInPathException" ": bc not in path"
-         returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
-         return $returnValue
+      System.out.println "$USER" >> "${destination}"
+      if command -v gzip >/dev/null 2>&1; then 
+         gzip -f "${destination}"
       fi
    else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      System.err.println
+      I18n.err.message "   Please enter one class name"
+      I18n.err.message "   Example:" 
+      I18n.err.message "   Class.generator Person name age city > Person.oobash" 
+      I18n.err.message "   source Person.oobash"
+      I18n.err.message "   Man.generator Person"
+      System.err.println 
+      returnValue=1 
    fi
    return $returnValue
 }

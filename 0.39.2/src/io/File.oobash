@@ -1054,246 +1054,6 @@ __clear() {
    return $returnValue
 }
 
-__getLine() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      (declare -i line=$3) 2>/dev/null ||  (return 1)
-      if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-      declare -i line="$3"
-      declare -i index=$((line-1))
-      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
-         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            local file="$("$this".toString)"
-            mapfile FILE < "$file"
-            if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
-               __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue               
-            fi
-            System.out.print "${FILE[index]}"
-            return $returnValue
-         else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-      else
-         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-   fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
-   return $returnValue
-}
-
-__getLines() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 4 )); then
-      local this="$1"
-      (declare -i line1=$3) 2>/dev/null ||  (return 1)
-      if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-      declare -i line1="$3"
-      declare -i index1=$((line1-1))
-      (declare -i line2=$4) 2>/dev/null ||  (return 1)
-      if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-      declare -i line2="$4"
-      declare -i index2=$((line2-1))
-      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
-         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            local file="$("$this".toString)"
-            mapfile FILE < "$file"
-            if (( $index1 < 0 )) || (( $index1 > $((${#FILE[@]}-1)) )); then
-               __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line1\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            if (( $index2 < 0 )) || (( $index2 > $((${#FILE[@]}-1)) )); then
-               __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line2\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            if (( $index2 < $index1 )); then
-               __throw  "IllegalArgumentException" ": Last line has to be greater or equal than first line"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            declare -i index
-            for ((index=index1;index2>=index;index++))
-            do
-               System.out.print "${FILE[index]}"
-            done
-            return $returnValue
-         else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-      else
-         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-   fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
-   return $returnValue
-}
-
-__delLine() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      (declare -i line=$3) 2>/dev/null ||  (return 1)
-      if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-      declare -i line="$3"
-      declare -i index=$((line-1))
-      if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
-         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            local file="$("$this".toString)"
-            mapfile FILE < "$file"
-            if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
-               __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            > "$file" 1>/dev/null 2>/dev/null
-            for indx in "${!FILE[@]}"
-            do
-              if (( $(($indx+1)) != $line)); then
-                 System.out.print "${FILE[indx]}" >> "$file"
-              fi
-            done
-            return $returnValue
-         else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-      else
-         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-   fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
-   return $returnValue
-}
-
-__delLines() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 4 )); then
-      local this="$1"
-      (declare -i line1=$3) 2>/dev/null ||  (return 1)
-      if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-      declare -i line1="$3"
-      declare -i index1=$((line1-1))
-      (declare -i line2=$4) 2>/dev/null ||  (return 1)
-      if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-      declare -i line2="$4"
-      declare -i index2=$((line2-1))
-      if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
-         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            local file="$("$this".toString)"
-            mapfile FILE < "$file"
-            if (( $index1 < 0 )) || (( $index1 > $((${#FILE[@]}-1)) )); then
-               __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line1\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            if (( $index2 < 0 )) || (( $index2 > $((${#FILE[@]}-1)) )); then
-               __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line2\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            if (( $index2 < $index1 )); then
-               __throw  "IllegalArgumentException" ": Last line has to greater or equal than first line"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            declare -i index
-            for ((index=index1;index2>=index;index++))
-            do
-               System.out.print "${FILE[index]}"
-            done
-            return $returnValue
-         else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-      else
-         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
-   fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
-   return $returnValue
-}
-
 __linecount() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1345,7 +1105,7 @@ __linematch() {
             mapfile FILE < "$file"
             for ((index=0;index<"${#FILE[@]}";index++))
             do
-               if [[ "${FILE[index]}" =~ "$regex" ]]; then
+               if [[ "${FILE[index]}" =~ $regex ]]; then
                   System.out.print "${FILE[index]}"
                fi
             done
@@ -1466,7 +1226,7 @@ File.help() {
       System.${printStream}.println "
       Usage: File.help all|methodname|constructor
       Available methods:
-      -File -isDirectory -exists -toString
+      -isDirectory -exists -toString
       -canRead -canWrite -canExecute
       -getName -hashCode -length
       -isHidden -isFile -mkdir -mkdirs -getParent
@@ -1476,8 +1236,9 @@ File.help() {
       -setExecutable -setReadable -setWritable
       -setReadOnly -File.createTempFile -delete
       -getAbsolutePath -getCanonicalPath -getPath -isAbsolute
-      -File.createTemporaryFile -createNewFile -lastModified
-      -setLastModified -getText -setText -append -clear
+      -File.createTemporaryFile -createNewFile 
+      -lastModified -setLastModified -getText 
+      -setText -append -clear -linematch -linecount
       Constructor:
       -File
                  "
@@ -1502,6 +1263,42 @@ File.help() {
                   IllegalArgumentException - if number of arguments != 2
                Example:
                   File a testfile
+            ";;&
+         linematch|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               linematch
+                  Looks for matching lines.
+               Parameters:
+                  regex - the regular expression to which every line of file is to be matched
+               Returns:
+                  All matching lines.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.linematch \"^root.*$\"
+                  >>>root:x:0:0:root:/root:/bin/bash
+            ";;&
+         linecount|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               linecount
+                  Counts the number of lines in file.
+               Parameters:
+                  None
+               Returns:
+                  Number of lines in file
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.linecount
+                  >>>40
             ";;&
          getText|all)
             match=$(Boolean.TRUE)

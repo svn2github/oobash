@@ -54,6 +54,7 @@ __cleanUp() {
    unset -f @deprecated
    unset -f @calling
    unset -f @timestamp
+   unset -f @runtime
    unset -f __cleanUp
    # i have to access BASH_ALIASES to see the changes with the "set" command (i don't know why...)
    echo ${BASH_ALIASES[@]} >/dev/null 2>&1
