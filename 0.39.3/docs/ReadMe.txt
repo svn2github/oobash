@@ -109,8 +109,8 @@ Even if your method doesn't use any argument, the command_not_found_handle funct
 1) objectname
 2) class name
 
-Method concatenation like a.toLoweCase.toUpperCase is not possible, but you certainly can simulate this by generating new "objects" e.g.
-String a abc
+Method concatenation like a.toLowerCase.toUpperCase is not possible, but you certainly can simulate this by generating new "objects" e.g.
+String a abcA
 String a "$(a.toLowerCase)"
 String a "$(a.toUpperCase)"
 
