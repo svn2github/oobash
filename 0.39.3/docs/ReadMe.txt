@@ -73,8 +73,8 @@ If there is no failure calling the "method" the return value will be 0, independ
 
 Only private functions and decorators make use of a 0/1 return value to represent a false or true.
 
-E) Own classes
-#####################
+E) Own classes and manpages
+############################
 
 a) Create own classes
 
