@@ -2001,7 +2001,7 @@ String.help() {
                Example:
                   String a abcdef
                   a.substring 2 4
-                  >>>cde
+                  >>>cd
             ";;&
          swapCase|all)
             match=$(Boolean.TRUE)
