@@ -120,7 +120,7 @@ G) "Inheritance"
 ################
 Inheritance is done by array concatenation.
 Every class has a __$ClassMethods__ array. The elements of this array are the methods that are defined in this $Class file.
-The __$ClassMethods__ array are only used for inheritance action.
+The __$ClassMethods__ arrays are only used for inheritance action.
 Every (not abstract) class has another array named: __$Class__. The elements of this array are the elements of one or more __$ClassMethods__ arrays.
 e.g.
 declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
@@ -164,7 +164,7 @@ J) "Decorators"
 Will only work if shell is not interactive (script).
 You can see an example script using "decorators" in the docs/examples directory.
 __decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
-Available "decorators" at the moment: @calling @timestamp @deprecated
+Available "decorators" at the moment: @calling @timestamp @deprecated @runtime
 Decorators use stderr for echos, because the framework communication is on stdout.
 If you want to create an own decorator function: Do NOT use a framework command (e.g. System.out.println) in this decorator function!
 
