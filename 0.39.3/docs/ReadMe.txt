@@ -179,7 +179,7 @@ or
 __HELP__="false"
 in the oobash<version>.source file.
 You can see an stacktrace example script in the docs/examples directory.
-Process information in the stacktrace is only available, if you use the Linux OS.
+Process/PID information in the stacktrace is only available, if you use the Linux OS.
 
 L) "Exceptions"
 ################
