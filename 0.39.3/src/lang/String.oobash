@@ -1291,7 +1291,7 @@ String.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  String abC
+                  String a abC
                   a.capitalize
                   >>>Abc
             ";;&
