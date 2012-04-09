@@ -1312,8 +1312,8 @@ String.help() {
                Example:
                   String a abc
                   a.center 5
-                  >>>abc 
-                  echo "'$(a.center 5)'"
+                  >>> abc 
+                  echo \"'\$(a.center 5)'\"
                   >>>' abc '
             ";;&   
          charAt|all)
