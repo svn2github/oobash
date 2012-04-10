@@ -2098,7 +2098,7 @@ File.help() {
          File.createTempFile|createTempFile|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "   
-               createTempFile
+               File.createTempFile
                   Creates an empty file in the default temporary-file directory, using the given prefix 
                   and suffix to generate its name. Invoking this method is equivalent to invoking 
                   createTempFile.
@@ -2125,7 +2125,7 @@ File.help() {
          File.createTemporaryFile|createTemporaryFile|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "   
-               createTemporaryFile
+               File.createTemporaryFile
                   Creates an empty file in the default temporary-file directory, using the given prefix and 
                   suffix to generate its name.
 
