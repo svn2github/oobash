@@ -112,6 +112,10 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
+declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus)
+
+declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
+
 # register function:
 ####################
 
@@ -146,6 +150,7 @@ __import oobash.lang.Math
 __import oobash.lang.System
 __import oobash.lang.String
 __import oobash.lang.Boolean
+__import oobash.lang.Process
 
 # import io classes
 __import oobash.io.File

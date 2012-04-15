@@ -1,9 +1,39 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.3
-# -process handling
-# -locking ?
-# -use/define own TMPDIR ?
+# -process handling ? yes
+# -locking ?No
+# -use/define own TMPDIR ? No
+
+???
+Object:
+--------
+__getAll
+
+File:
+------
+__encrypt
+__decrypt
+__isEncrypted
+
+__md5sum
+__sha1sum
+
+Process:
+--------
+getPid
+getParentPid
+getUser
+setPriority
+getPriority
+getStatus
+Process.create
+...
+
+Private:
+---------
+analyze log4oobash.properties
+???
 
 # 0.39.4
 # -some ssh
