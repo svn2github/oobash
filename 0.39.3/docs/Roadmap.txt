@@ -1,25 +1,26 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.3
-# -process handling ? yes
-# -locking ?No
-# -use/define own TMPDIR ? No
+-locking ? No
+-use/define own TMPDIR ? No
 
-???
+better documentation of generators in the oobash man page / Readme ? yes
+documentation of  decorators ? yes
+
 Object:
 --------
-__getAll
+__getAll ? no
 
 File:
 ------
-__encrypt
-__decrypt
-__isEncrypted
+__encrypt ???
+__decrypt ???
+ 
+__md5sum ? yes
+__sha1sum ? yes
 
-__md5sum
-__sha1sum
-
-Process:
+try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
+Process: ? yes
 --------
 getPid
 getParentPid
@@ -28,12 +29,13 @@ setPriority
 getPriority
 getStatus
 Process.create
+disown
+kill
 ...
 
 Private:
 ---------
-analyze log4oobash.properties
-???
+analyze log4oobash.properties ???
 
 # 0.39.4
 # -some ssh

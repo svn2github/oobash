@@ -223,7 +223,10 @@
 #    -added new decorator: @runtime
 #    -added manpage for oobash
 #    -some fixes
-
+# Version:      0.39.3
+#    -Added class Process with some methods/functions:
+#    Process, Process.create, getUser, getParentPid, getStatus, getPid
+#    --> new Dependency: ps
 
 #################################################################
 # Features:

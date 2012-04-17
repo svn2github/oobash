@@ -85,7 +85,7 @@ __ExceptionValues__=(
 )
 
 # all external commands used in this framework:
-declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd) 
+declare -a __Dependencies__=(base65 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps) 
 
 # Arrays for framework methods:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
@@ -112,7 +112,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
-declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus)
+declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand)
 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 

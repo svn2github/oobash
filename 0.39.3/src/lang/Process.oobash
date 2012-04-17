@@ -15,13 +15,12 @@ Process() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      # TODO: Check if PID exists
       declare -i pid="$2"
 
       if ! __visible "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is not valid"
          return 1
-      fi  
+      fi
 
       if ! __checkForKeywords "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is a keyword"
@@ -52,9 +51,9 @@ Process() {
 }
 __registerClass Process
 
-######################
-# getter function(s) #
-######################
+###########
+# Methods #
+###########
 
 __getPid() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -92,13 +91,11 @@ __getParentPid() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local file="$("$this".toString)"
       if command -v ps >/dev/null 2>&1; then
          declare -i pid="$("$this".getPid)"
-         declare -i parentPid
-         parentPid="$(ps  p "$pid" o ppid --no-headers 2>/dev/null)"
-         # TODO: lstrip ! + ""
-         System.out.println $parentPid
+         local Ppid="$(ps  -p "$pid" -o ppid 2>/dev/null)"
+         declare -i parentPid=${Ppid:5}
+         System.out.println "$parentPid"
          return $returnValue
       else
          __throw "NotInPathException" ": ps not in path"
@@ -118,19 +115,40 @@ __getUser() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local file="$("$this".toString)"
       if command -v ps >/dev/null 2>&1; then
          declare -i pid="$("$this".getPid)"
          local owner
-         owner="$(ps  p "$pid" o user --no-headers 2>/dev/null)"
-         System.out.println "$owner"
-         return $returnValue
+         owner="$(ps  -p "$pid" -o user 2>/dev/null)"
+         System.out.println "${owner:5}"
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"        
       fi
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__getCommand() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pid="$("$this".getPid)"
+         local cmd
+         cmd="$(ps  -p "$pid" -o cmd 2>/dev/null)"
+         System.out.println "${cmd:4}"
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"      
+      fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -143,12 +161,11 @@ __getStatus() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local file="$("$this".toString)"
       if command -v ps >/dev/null 2>&1; then
          declare -i pid="$("$this".getPid)"
-         local stat
-         stat="$(ps  p "$pid" o stat --no-headers 2>/dev/null)"
-         case ${stat:0:1} in
+         local stat="$(ps  -p "$pid" -o stat 2>/dev/null)"
+         stat=${stat:5:1}
+         case $stat in
             D)stat="Uninterruptible";;
             R)stat="Running";;
             S)stat="Interruptible";;
@@ -184,12 +201,21 @@ Process.create() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      # TODO: Check if PID exists
       local processCommand="$2"
-      #set +bm
-      $processCommand 1>/dev/null 2>&1 &
-      declare -i processPid=$!
+      set +mb
+      declare -i processPid
+      processPid=$(
+      $processCommand >/dev/null 2>&1 &
+      System.out.println $!
+      )
+      set -mb
       Process "$this" "$processPid"
+      returnValue=$?
+      if (( $returnValue == 0 )); then
+         Boolean.TRUE
+         return $returnValue
+      fi
+      Boolean.FALSE
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
