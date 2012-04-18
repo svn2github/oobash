@@ -17,6 +17,11 @@ Process() {
       local this="$1"
       declare -i pid="$2"
 
+      if [[ "$(Process.find $pid)" != true ]]; then
+         I18n.err.message "Sorry, pid '\$pid' is not valid"
+         return 1
+      fi
+      
       if ! __visible "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is not valid"
          return 1
@@ -204,14 +209,14 @@ Process.create() {
       local processCommand="$2"
       if command -v  $processCommand >/dev/null 2>&1; then
          if command -v ps >/dev/null 2>&1; then
-            set +mb
+            #set +mb
             declare -i processPid
             processPid=$(
-            $processCommand 2>/dev/null &
+            $processCommand 2>/dev/null 1>&2 & 
             System.out.println $!
             )
-            set -mb
-            Process "$this" "$processPid"
+            #set -mb
+            Process "$this" "$processPid" 2>/dev/null
             returnValue=$?
             if (( $returnValue == 0 )); then
                Boolean.TRUE
