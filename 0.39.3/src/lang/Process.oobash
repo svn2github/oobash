@@ -202,21 +202,35 @@ Process.create() {
    if (( $# == 2 )); then
       local this="$1"
       local processCommand="$2"
-      set +mb
-      declare -i processPid
-      processPid=$(
-      $processCommand >/dev/null 2>&1 &
-      System.out.println $!
-      )
-      set -mb
-      Process "$this" "$processPid"
-      returnValue=$?
-      if (( $returnValue == 0 )); then
-         Boolean.TRUE
+      if command -v  $processCommand >/dev/null 2>&1; then
+         if command -v ps >/dev/null 2>&1; then
+            set +mb
+            declare -i processPid
+            processPid=$(
+            $processCommand 2>/dev/null &
+            System.out.println $!
+            )
+            set -mb
+            Process "$this" "$processPid"
+            returnValue=$?
+            if (( $returnValue == 0 )); then
+               Boolean.TRUE
+               return $returnValue
+            fi
+            Boolean.FALSE
+            return $returnValue
+         else
+            __throw "NotInPathException" ": ps not in path"
+            returnValue=$?
+            __stackOrHelp "Process" "${FUNCNAME}"
+            return $returnValue
+         fi
+      else
+         __throw "NotInPathException" ": $processCommand not in path"
+         returnValue=$?
+         __stackOrHelp "Process" "${FUNCNAME}"
          return $returnValue
       fi
-      Boolean.FALSE
-      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    returnValue=$?
@@ -224,6 +238,34 @@ Process.create() {
    return $returnValue
 }
 __registerFunction Process.create
+
+Process.find() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      declare -i pid="$1"
+      if command -v ps >/dev/null 2>&1; then
+         local pidStat="$(ps  -p $pid -o stat 2>/dev/null)"
+         pidStat="${pidStat:5}"
+         if [[ -z "$pidStat" ]]; then
+            Boolean.FALSE
+         else
+            Boolean.TRUE 
+         fi
+         return $returnvalue
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "Process" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction Process.find
 
 complete -W  "$(echo ${__Process__[@]}) all Process" Process.help
 

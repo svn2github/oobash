@@ -84,8 +84,20 @@ __ExceptionValues__=(
  [Unknown]=250
 )
 
+# all available signals
+declare -a __Signals__
+shopt -s extglob
+declare signal=$(kill -l 2>/dev/null)
+declare -i counter=0
+for sig in ${signal//)/}; do
+        __Signals__[$counter]=$sig
+        ((counter++))
+done
+unset signal sig counter
+shopt -u extglob
+
 # all external commands used in this framework:
-declare -a __Dependencies__=(base65 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps) 
+declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum)
 
 # Arrays for framework methods:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
@@ -108,7 +120,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
                             mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial
                             isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified
                             setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear getLine
-                            getLines delLine delLines linecount linematch)
+                            getLines delLine delLines linecount linematch sha1sum md5sum)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
@@ -311,7 +323,7 @@ if [[ $(Boolean.parseBoolean "$__QUIET__") != $(Boolean.TRUE) ]] && [[ ! -z $PS1
    System.out.println "  -isNamedPipe -hasStickyBit -isSocket -isCharacterSpecial -isBlockSpecial -compareTo"
    System.out.println "  -setExecutable -setReadable -setWritable -getAbsolutePath -getCanonicalPath -getPath"
    System.out.println "  -isAbsolute -delete -setReadOnly -createNewFile -lastModified -setLastModified"  
-   System.out.println "  -linecount -linematch  -append -clear -getText -setText"
+   System.out.println "  -linecount -linematch  -append -clear -getText -setText -sha1sum -md5sum"
    System.out.println "  -File.createTemporaryFile -File.createTempFile" 
    System.out.println " Boolean:"
    System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"

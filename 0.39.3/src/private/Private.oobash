@@ -747,21 +747,3 @@ __stacktrace() {
    return $returnValue
 }
 __registerFunction __stacktrace
-
-# private
-# check for valid (existing) pid
-# called by:
-# Process
-__isValidPid() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   if command -v ps >/dev/null 2>&1; then
-      local pidStat="$(ps  -p $pid -o stat 2>/dev/null)"
-      pidStat="${pidStat:5}"
-      if [[ -z "$pidStat" ]]; then
-         return 1
-      fi
-   fi
-   # no ps --> no test --> valid
-   return 0
-}
-__registerFunction __isValidPid

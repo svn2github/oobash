@@ -224,9 +224,12 @@
 #    -added manpage for oobash
 #    -some fixes
 # Version:      0.39.3
+#    -Added global __Signals__ array
 #    -Added class Process with some methods/functions:
-#    Process, Process.create, getUser, getParentPid, getStatus, getPid
-#    --> new Dependency: ps
+#    -Process, Process.create, Process.find, getPid, getParentPid, getUser, getStatus, getCommand
+#    -Added File methods: md5sum, sha1sum
+#    -new Dependencies:ps, kill, md5sum, sha1sum
+#    -Fixes
 
 #################################################################
 # Features:

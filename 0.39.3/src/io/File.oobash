@@ -1129,6 +1129,84 @@ __linematch() {
    return $returnValue
 }
 
+__md5sum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local result
+            local file="$("$this".toString)"
+            if command -v md5sum >/dev/null 2>&1; then
+               result=$(md5sum -- "$file" 2>/dev/null)
+               System.out.println "${result/ */}"
+            else
+               __throw "NotInPathException" ": md5sum not in path"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            return $returnValue
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__sha1sum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local result
+            local file="$("$this".toString)"
+            if command -v sha1sum >/dev/null 2>&1; then
+               result=$(sha1sum -- "$file" 2>/dev/null)
+               System.out.println "${result/ */}"
+            else
+               __throw "NotInPathException" ": sha1sum not in path"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            return $returnValue
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
 # length
 # Masterfunction in the String.oobash file
 
@@ -1239,6 +1317,7 @@ File.help() {
       -File.createTemporaryFile -createNewFile 
       -lastModified -setLastModified -getText 
       -setText -append -clear -linematch -linecount
+      -sha1sum -md5sum
       Constructor:
       -File
                  "

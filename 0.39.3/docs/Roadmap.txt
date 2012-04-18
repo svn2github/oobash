@@ -22,13 +22,14 @@ __sha1sum ? yes
 try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
 Process: ? yes
 --------
-getPid
-getParentPid
-getUser
+getPid --Done
+getParentPid --Done
+getUser --Done
+getStatus --Done
+Process.create --Done
+Process.find --Done
 setPriority
 getPriority
-getStatus
-Process.create
 disown
 kill
 ...
@@ -37,12 +38,17 @@ Private:
 ---------
 analyze log4oobash.properties ???
 
+Stacktrace:
+------------
+If os not Linux: get cmd,pid,ppid for processinfo by ps ???
+
 # 0.39.4
 # -some ssh
+# -constructors should throw IllegalArgumentExceptions ?
 
 # 0.39.5
 # -chained return values, url decode/encode ?
-# -pimp getopts 
+# -pimp getopts ?
 
 # 0.40
 # Assert 
