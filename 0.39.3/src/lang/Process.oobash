@@ -17,7 +17,7 @@ Process() {
       local this="$1"
       declare -i pid="$2"
 
-      if [[ "$(Process.find $pid)" != true ]]; then
+      if [[ "$(Process.find $pid)" != "$(Boolean.TRUE)" ]]; then
          I18n.err.message "Sorry, pid '\$pid' is not valid"
          return 1
       fi
