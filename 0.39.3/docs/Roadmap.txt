@@ -11,13 +11,17 @@ Object:
 --------
 __getAll ? no
 
+All constructors:
+-----------------
+constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
+
 File:
 ------
 __encrypt ???
 __decrypt ???
  
-__md5sum ? yes
-__sha1sum ? yes
+__md5sum ? yes --Done
+__sha1sum ? yes -- Done
 
 try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
 Process: ? yes
@@ -28,6 +32,7 @@ getUser --Done
 getStatus --Done
 Process.create --Done
 Process.find --Done
+
 setPriority
 getPriority
 disown
@@ -44,7 +49,6 @@ If os not Linux: get cmd,pid,ppid for processinfo by ps ???
 
 # 0.39.4
 # -some ssh
-# -constructors should throw IllegalArgumentExceptions ?
 
 # 0.39.5
 # -chained return values, url decode/encode ?
