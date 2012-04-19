@@ -255,7 +255,6 @@ __setPriority() {
    return $returnValue
 }
 
-# If no signal is specified, the TERM signal is sent.
 __kill() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -375,13 +374,11 @@ Process.create() {
       local processCommand="$2"
       if command -v  $processCommand >/dev/null 2>&1; then
          if command -v ps >/dev/null 2>&1; then
-            #set +mb
             declare -i processPid
             processPid=$(
             $processCommand 2>/dev/null 1>&2 & 
             System.out.println $!
             )
-            #set -mb
             Process "$this" "$processPid" 2>/dev/null
             returnValue=$?
             if (( $returnValue == 0 )); then

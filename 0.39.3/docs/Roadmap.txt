@@ -29,17 +29,20 @@ getUser --Done -not ready -Docs missing
 getStatus --Done -Docs missing
 Process.create --Done -not ready -Docs missing
 Process.exists --Done -not ready -Docs missing --> __exists ???
+kill --Done -not ready -Docs missing
+getPriority --Done -not ready -Docs missing
+setPriority --Done -not ready -Docs missing
 
-setPriority
-getPriority
 disown
-kill
+
 ...
 lot of getters (ps: set of STANDARD FORMAT SPECIFIERS + http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/ps.1.html Keywords)
 
 -new NotExisting/RunningException ?
 
 -optimize getPid
+
+I18n.err.message "Sorry, pid '\$pid' is not valid" --> new property for locale po files ???
 
 Private:
 ---------
@@ -48,6 +51,11 @@ analyze log4oobash.properties ???
 Stacktrace:
 ------------
 If os not Linux: get cmd,pid,ppid for processinfo by ps ???
+
+__STARTTIME__:
+----------------
+First look for gdate then:
+__STARTTIME__="$(date +%s.%N 2>/dev/null)" ???
 
 # 0.39.4
 # -some ssh
