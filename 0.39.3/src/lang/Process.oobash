@@ -17,7 +17,7 @@ Process() {
       local this="$1"
       declare -i pid="$2"
 
-      if [[ "$(Process.find $pid)" != "$(Boolean.TRUE)" ]]; then
+      if [[ "$(Process.exists $pid)" != "$(Boolean.TRUE)" ]]; then
          I18n.err.message "Sorry, pid '\$pid' is not valid"
          return 1
       fi
@@ -195,6 +195,164 @@ __getStatus() {
    return $returnValue
 }
 
+
+__getPriority() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pid="$("$this".getPid)"
+         local prio="$(ps  -p "$pid" -o ni 2>/dev/null)"
+         declare -i priority=${prio:3}
+         System.out.println "$priority"
+         return $returnValue
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__setPriority() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      if command -v renice >/dev/null 2>&1; then
+         local this="$1"
+         declare -i pid="$("$this".getPid)"
+         (local priority="$3") 2>/dev/null ||  (return 1)
+         if (( $? != 0 )); then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         local priority="$3"
+
+         renice -m -t ${timestamp} -- ${file} 2>/dev/null
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+         return $returnValue
+      else
+         __throw "NotInPathException" ": renice not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__kill() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      if command -v touch >/dev/null 2>&1; then
+         if __gnudateCheck; then
+            local this="$1"
+            local file="$("$this".toString)"
+            (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
+            if (( $? != 0 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            declare -i milliSeconds="$3"
+            if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+               declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
+               declare -i epochSeconds=${milliSeconds:0:secondsLength}
+            else
+               declare -i epochSeconds=0
+            fi
+            local timestamp=$(date +"%y%m%d%H%M.%S" -d @$epochSeconds)
+            touch -m -t ${timestamp} -- ${file} 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+            return $returnValue
+         else
+            __throw "NotInPathException" ": GNU date not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__setLastModified() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      if command -v touch >/dev/null 2>&1; then
+         if __gnudateCheck; then
+            local this="$1"
+            local file="$("$this".toString)"
+            (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
+            if (( $? != 0 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            declare -i milliSeconds="$3"
+            if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+               declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
+               declare -i epochSeconds=${milliSeconds:0:secondsLength}
+            else
+               declare -i epochSeconds=0
+            fi
+            local timestamp=$(date +"%y%m%d%H%M.%S" -d @$epochSeconds)
+            touch -m -t ${timestamp} -- ${file} 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+            return $returnValue
+         else
+            __throw "NotInPathException" ": GNU date not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
 ##################
 #                #
 #     STATICS    # 
@@ -244,7 +402,7 @@ Process.create() {
 }
 __registerFunction Process.create
 
-Process.find() {
+Process.exists() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 1 )); then

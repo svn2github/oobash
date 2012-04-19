@@ -84,20 +84,21 @@ __ExceptionValues__=(
  [Unknown]=250
 )
 
-# all available signals
+# All available signals
 declare -a __Signals__
 shopt -s extglob
-declare signal=$(kill -l 2>/dev/null)
+declare signal="$(kill -l 2>/dev/null)"
 declare -i counter=0
-for sig in ${signal//)/}; do
-        __Signals__[$counter]=$sig
-        ((counter++))
+for sig in ${signal//)/}
+do
+   __Signals__[$counter]=$sig
+   ((counter++))
 done
 unset signal sig counter
 shopt -u extglob
 
 # all external commands used in this framework:
-declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum)
+declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum renice)
 
 # Arrays for framework methods:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
@@ -124,7 +125,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
-declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand)
+declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand getPriority setPriority kill disown)
 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 

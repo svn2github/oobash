@@ -19,25 +19,27 @@ File:
 ------
 __encrypt ???
 __decrypt ???
- 
-__md5sum ? yes --Done
-__sha1sum ? yes -- Done
 
 try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
 Process: ? yes
 --------
-getPid --Done
-getParentPid --Done
-getUser --Done
-getStatus --Done
-Process.create --Done
-Process.find --Done
+getPid --Done -not ready -Docs missing
+getParentPid --Done -not ready -Docs missing
+getUser --Done -not ready -Docs missing
+getStatus --Done -Docs missing
+Process.create --Done -not ready -Docs missing
+Process.exists --Done -not ready -Docs missing --> __exists ???
 
 setPriority
 getPriority
 disown
 kill
 ...
+lot of getters (ps: set of STANDARD FORMAT SPECIFIERS + http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/ps.1.html Keywords)
+
+-new NotExisting/RunningException ?
+
+-optimize getPid
 
 Private:
 ---------
