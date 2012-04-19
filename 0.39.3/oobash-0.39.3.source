@@ -94,6 +94,14 @@ do
    __Signals__[$counter]=$sig
    ((counter++))
 done
+set -o posix
+declare signal="$(kill -l 2>/dev/null)"
+for sig in ${signal//)/}
+do
+   __Signals__[$counter]=$sig
+   ((counter++))
+done
+set +o posix
 unset signal sig counter
 shopt -u extglob
 
