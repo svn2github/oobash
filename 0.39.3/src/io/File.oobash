@@ -1343,6 +1343,42 @@ File.help() {
                Example:
                   File a testfile
             ";;&
+         md5sum|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               md5sum
+                  Print MD5 (128-bit) checksum
+               Parameters:
+                  None
+               Returns:
+                  md5sum checksum.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.md5sum
+                  >>>02ee96097be33fdba99700e68a8c0365
+            ";;&
+         sha1sum|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               sha1sum
+                  Print SHA1 (160-bit) checksum.
+               Parameters:
+                  None
+               Returns:
+                  sha1sum checksum.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.sha1sum
+                  >>>848a8bd73c5d0a95a8bd860402e45c4a62046f10
+            ";;&
          linematch|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
