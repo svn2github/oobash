@@ -228,6 +228,7 @@
 #    -Added class Process with some methods/functions:
 #    -Process, Process.create, Process.exists, getPid, getParentPid, getUser, getStatus, getCommand
 #    -getPriority, setPriority, kill, disown
+#    -optimized stacktrace if os != linux
 #    -new Dependencies:ps, kill, renice, md5sum, sha1sum
 #    -Added global __Signals__ array
 #    -Fixes

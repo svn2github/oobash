@@ -725,12 +725,11 @@ __stacktrace() {
       System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line ${BASH_LINENO[$i]}, in ${FUNCNAME[$i]}"
       ((i++))
    done
-
+   declare -i pid=${BASHPID}
+   shopt -s extglob
    if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
-      declare -i pid=${BASHPID}
       declare -i index=0
       declare -a status
-      shopt -s extglob
       while (( $pid >= 1 ))
       do
          mapfile status </proc/$pid/status
@@ -742,8 +741,21 @@ __stacktrace() {
          System.err.println "   Process ${command}, pid ${pid}"
          pid=${status[$index]/PPid:/}
       done
-      shopt -u extglob
+   else
+      if command -v ps 2>&1 1>/dev/null; then
+         if command -v tail 2>&1 1>/dev/null; then
+            while (( $pid >= 1 ))
+            do
+               local process="$(ps -p $pid -o cmd 2>/dev/null | tail -1 2>/dev/null)"
+               local showpid="$(ps -p $pid -o pid 2>/dev/null | tail -1 2>/dev/null)"
+               System.out.print "   Process ${process##+([[:space:]])}"
+               System.out.println ", pid ${showpid##+([[:space:]])}"               
+               pid=$(ps -p $pid  -o ppid 2>/dev/null | tail -1 2>/dev/null)
+            done
+         fi
+      fi
    fi
+   shopt -u extglob
    return $returnValue
 }
 __registerFunction __stacktrace

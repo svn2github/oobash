@@ -9,11 +9,6 @@ All constructors:
 -----------------
 constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
 
-File:
-------
-__encrypt ???
-__decrypt ???
-
 try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
 Process: ? yes
 --------
@@ -31,17 +26,11 @@ lot of getters (ps: set of STANDARD FORMAT SPECIFIERS + http://developer.apple.c
 
 -new NotExisting/RunningException ?
 
--optimize getPid ?
-
 I18n.err.message "Sorry, pid '\$pid' is not valid" --> new property for locale po files ???
 
 Private:
 ---------
 analyze log4oobash.properties ???
-
-Stacktrace:
-------------
-If os not Linux: get cmd,pid,ppid for processinfo by ps ???
 
 # 0.39.4
 # -some ssh
