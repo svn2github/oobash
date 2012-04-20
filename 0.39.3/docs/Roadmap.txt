@@ -36,6 +36,14 @@ Stacktrace:
 --------------
 change docs now (ps info is available for not linux systems)
 
+System:
+-------
+Porperty functions
+load functions
+environment functions
+identityHashCode function
+nanoTime (used in Runtime) function
+
 # 0.39.4
 # -some ssh
 
