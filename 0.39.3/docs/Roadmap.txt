@@ -32,6 +32,10 @@ Private:
 ---------
 analyze log4oobash.properties ???
 
+Stacktrace:
+--------------
+change docs now (ps info is available for not linux systems)
+
 # 0.39.4
 # -some ssh
 
