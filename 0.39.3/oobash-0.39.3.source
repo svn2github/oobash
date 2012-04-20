@@ -13,13 +13,21 @@
 ######################
 ######################
 
+__STARTTIME__="$(date +%s.%N 2>/dev/null)"
+# hope to find a gnu date on macos systems (can't test this)
+if [[ -x "/opt/local/bin/date" ]]; then
+   __STARTTIME__="$(/opt/local/bin/date +%s.%N 2>/dev/null)"
+fi
+
+if [[ -x "/opt/local/bin/gdate" ]]; then
+   __STARTTIME__="$(/opt/local/bin/gdate +%s.%N 2>/dev/null)"
+fi
+SECONDS=0
 __VERSION__="0.39.3"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
 __HELP__="true"
-__STARTTIME__="$(date +%s.%N 2>/dev/null)"
-SECONDS=0
 
 # ----------------------------------------------------
 # Some start up tests:
@@ -204,7 +212,6 @@ if [[ -x "/opt/local/bin/date" ]]; then
    date() {
       /opt/local/bin/date "$@"
    }
-   __STARTTIME__="$(date +%s.%N 2>/dev/null)"
    __registerFunction date
 fi
 
@@ -212,7 +219,6 @@ if [[ -x "/opt/local/bin/gdate" ]]; then
    date() {
       /opt/local/bin/gdate "$@"
    }
-   __STARTTIME__="$(date +%s.%N 2>/dev/null)"
    __registerFunction date
 fi
 
