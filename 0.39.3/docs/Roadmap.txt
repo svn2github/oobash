@@ -12,6 +12,11 @@ constructors should throw IllegalArgumentExceptions instead of "echo ...; return
 try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
 Process: ? yes
 --------
+
+see stacktrace : if os = Linux use proc filesystem, else ps and tail
+ 
+http://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
+
 getPid --Done -not ready -Docs missing
 getParentPid --Done -not ready -Docs missing
 getUser --Done -not ready -Docs missing
@@ -21,28 +26,59 @@ Process.exists --Done -not ready -Docs missing --> __exists ???
 kill --Done -not ready -Docs missing
 getPriority --Done -not ready -Docs missing
 setPriority --Done -not ready -Docs missing
+__isDaemon (no controlling terminal) ??
+__getThreads ??
+__children ??
 ...
 lot of getters (ps: set of STANDARD FORMAT SPECIFIERS + http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/ps.1.html Keywords)
 
 -new NotExisting/RunningException ?
 
+Rename Process.create --> ProcessBuilder?
+Command not $1 but $@ ?
+
+As of 1.5, ProcessBuilder.start() is the preferred way to create a Process.
+--> own class -> __start ?
+The ProcessBuilder.start() and Runtime.exec methods create a native process
+
 I18n.err.message "Sorry, pid '\$pid' is not valid" --> new property for locale po files ???
+Class Process in Startmessage + i18n
 
 Private:
 ---------
 analyze log4oobash.properties ???
 
-Stacktrace:
---------------
-change docs now (ps info is available for not linux systems)
-
 System:
 -------
-Porperty functions
-load functions
-environment functions
-identityHashCode function
-nanoTime (used in Runtime) function
+-Property functions:
+
+declare -A assoca
+env | while IFS='=' read key val
+do
+   echo assoca[$key]=$val
+   assoca[$key]=$val
+done
+declare -p assoca
+
+-load functions
+-environment functions
+-identityHashCode function
+-nanoTime (used in Runtime) function
+
+File:
+------
+http://docs.oracle.com/javase/7/docs/api/
+-getFreeSpace ?
+-getTotalSpace ?
+
+Declare return value:
+----------------------
+Example:
+ (local priority="$3") 2>/dev/null ||  (return 1)
+Looks like bullshit !
+Check again !
+grep -r "(return 1)" * | grep -v txt |grep -v svn |wc -l
+13
 
 # 0.39.4
 # -some ssh

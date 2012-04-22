@@ -15,9 +15,9 @@ Process() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      declare -i pid="$2"
+      declare -i pId="$2"
 
-      if [[ "$(Process.exists $pid)" != "$(Boolean.TRUE)" ]]; then
+      if [[ "$(Process.exists $pId)" != "$(Boolean.TRUE)" ]]; then
          I18n.err.message "Sorry, pid '\$pid' is not valid"
          return 1
       fi
@@ -97,8 +97,8 @@ __getParentPid() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pid="$("$this".getPid)"
-         local Ppid="$(ps  -p "$pid" -o ppid 2>/dev/null)"
+         declare -i pId="$("$this".getPid)"
+         local Ppid="$(ps  -p "$pId" -o ppid 2>/dev/null)"
          declare -i parentPid=${Ppid:5}
          System.out.println "$parentPid"
          return $returnValue
@@ -121,9 +121,9 @@ __getUser() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pid="$("$this".getPid)"
+         declare -i pId="$("$this".getPid)"
          local owner
-         owner="$(ps  -p "$pid" -o user 2>/dev/null)"
+         owner="$(ps  -p "$pId" -o user 2>/dev/null)"
          System.out.println "${owner:5}"
       else
          __throw "NotInPathException" ": ps not in path"
@@ -144,9 +144,9 @@ __getCommand() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pid="$("$this".getPid)"
+         declare -i pId="$("$this".getPid)"
          local cmd
-         cmd="$(ps  -p "$pid" -o cmd 2>/dev/null)"
+         cmd="$(ps  -p "$pId" -o cmd 2>/dev/null)"
          System.out.println "${cmd:4}"
       else
          __throw "NotInPathException" ": ps not in path"
@@ -167,8 +167,8 @@ __getStatus() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pid="$("$this".getPid)"
-         local stat="$(ps  -p "$pid" -o stat 2>/dev/null)"
+         declare -i pId="$("$this".getPid)"
+         local stat="$(ps  -p "$pId" -o stat 2>/dev/null)"
          stat=${stat:5:1}
          case $stat in
             D)stat="Uninterruptible";;
@@ -202,8 +202,8 @@ __getPriority() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pid="$("$this".getPid)"
-         local prio="$(ps  -p "$pid" -o ni 2>/dev/null)"
+         declare -i pId="$("$this".getPid)"
+         local prio="$(ps  -p "$pId" -o ni 2>/dev/null)"
          declare -i priority=${prio:3}
          System.out.println "$priority"
          return $returnValue
@@ -226,7 +226,7 @@ __setPriority() {
    if (( $# == 3 )); then
       if command -v renice >/dev/null 2>&1; then
          local this="$1"
-         declare -i pid="$("$this".getPid)"
+         declare -i pId="$("$this".getPid)"
          (local priority="$3") 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
@@ -235,7 +235,7 @@ __setPriority() {
             return $returnValue
          fi
          local priority="$3"       
-         renice "$priority" -p "$pid" 1>/dev/null 2>&1
+         renice "$priority" -p "$pId" 1>/dev/null 2>&1
          if (( $? == 0 )); then
             Boolean.TRUE
          else
@@ -261,7 +261,7 @@ __kill() {
    if (( $# == 3 )) || (( $# == 2 )) ; then
       if command -v kill >/dev/null 2>&1; then
          local this="$1"
-         declare -i pid="$("$this".getPid)"
+         declare -i pId="$("$this".getPid)"
          local signal
          if (( $# == 3 )); then
             (local signal="$3") 2>/dev/null ||  (return 1)
@@ -292,7 +292,7 @@ __kill() {
          else
             signal="TERM"
          fi       
-         kill -s "$signal" "$pid" 1>/dev/null 2>&1
+         kill -s "$signal" "$pId" 1>/dev/null 2>&1
          if (( $? == 0 )); then
             Boolean.TRUE
          else
@@ -363,9 +363,9 @@ Process.exists() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 1 )); then
-      declare -i pid="$1"
+      declare -i pId="$1"
       if command -v ps >/dev/null 2>&1; then
-         local pidStat="$(ps  -p $pid -o stat 2>/dev/null)"
+         local pidStat="$(ps  -p $pId -o stat 2>/dev/null)"
          pidStat="${pidStat:5}"
          if [[ -z "$pidStat" ]]; then
             Boolean.FALSE
