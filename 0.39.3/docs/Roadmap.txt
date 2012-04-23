@@ -44,6 +44,8 @@ The ProcessBuilder.start() and Runtime.exec methods create a native process
 I18n.err.message "Sorry, pid '\$pid' is not valid" --> new property for locale po files ???
 Class Process in Startmessage + i18n
 
+toString for Process
+
 Private:
 ---------
 analyze log4oobash.properties ???
