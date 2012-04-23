@@ -227,9 +227,10 @@
 #    -Added File methods: md5sum, sha1sum
 #    -Added class Process with some methods/functions:
 #    -Process, Process.create, Process.exists, getPid, getParentPid, getUser, getStatus, getCommand
-#    -getPriority, setPriority, kill
+#    -getPriority, setPriority, kill, isDaemon
 #    -optimized stacktrace if os != linux
-#    -new Dependencies:ps, kill, renice, md5sum, sha1sum
+#    -new Dependencies:ps, kill, renice, md5sum, sha1sum, tail
+#    -new Exception: -NotRunningException return value:200
 #    -Added global __Signals__ array
 #    -Fixes
 

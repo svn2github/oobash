@@ -15,9 +15,9 @@ Process() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      declare -i pId="$2"
+      declare -i pid="$2"
 
-      if [[ "$(Process.exists $pId)" != "$(Boolean.TRUE)" ]]; then
+      if [[ "$(Process.exists $pid)" != "$(Boolean.TRUE)" ]]; then
          I18n.err.message "Sorry, pid '\$pid' is not valid"
          return 1
       fi
@@ -98,7 +98,7 @@ __getParentPid() {
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
          declare -i pId="$("$this".getPid)"
-         local Ppid="$(ps  -p "$pId" -o ppid 2>/dev/null)"
+         local Ppid="$(ps  -p "$pId" -o ppid 2>/dev/null | tail -1)"
          declare -i parentPid=${Ppid:5}
          System.out.println "$parentPid"
          return $returnValue
@@ -123,7 +123,7 @@ __getUser() {
       if command -v ps >/dev/null 2>&1; then
          declare -i pId="$("$this".getPid)"
          local owner
-         owner="$(ps  -p "$pId" -o user 2>/dev/null)"
+         owner="$(ps  -p "$pId" -o user 2>/dev/null | tail -1)"
          System.out.println "${owner:5}"
       else
          __throw "NotInPathException" ": ps not in path"
@@ -146,7 +146,7 @@ __getCommand() {
       if command -v ps >/dev/null 2>&1; then
          declare -i pId="$("$this".getPid)"
          local cmd
-         cmd="$(ps  -p "$pId" -o cmd 2>/dev/null)"
+         cmd="$(ps  -p "$pId" -o cmd 2>/dev/null | tail -1)"
          System.out.println "${cmd:4}"
       else
          __throw "NotInPathException" ": ps not in path"
@@ -168,8 +168,8 @@ __getStatus() {
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
          declare -i pId="$("$this".getPid)"
-         local stat="$(ps  -p "$pId" -o stat 2>/dev/null)"
-         stat=${stat:5:1}
+         local stat="$(ps  -p "$pId" -o stat 2>/dev/null | tail -1)"
+         stat=${stat:0:1}
          case $stat in
             D)stat="Uninterruptible";;
             R)stat="Running";;
@@ -178,7 +178,10 @@ __getStatus() {
             W)stat="Paging";;
             X)stat="Dead";;
             Z)stat="Defunct";;
-            *)stat="Unknown";;
+            *)stat= __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+                    returnValue=$?
+                    __stackOrHelp "$2" "${FUNCNAME:2}"
+                    return $returnValue;;
          esac
          System.out.println "$stat"
          return $returnValue
@@ -203,7 +206,7 @@ __getPriority() {
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
          declare -i pId="$("$this".getPid)"
-         local prio="$(ps  -p "$pId" -o ni 2>/dev/null)"
+         local prio="$(ps  -p "$pId" -o ni 2>/dev/null | tail -1)"
          declare -i priority=${prio:3}
          System.out.println "$priority"
          return $returnValue
@@ -244,6 +247,40 @@ __setPriority() {
          return $returnValue
       else
          __throw "NotInPathException" ": renice not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__isDaemon() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v ps >/dev/null 2>&1; then
+         local this="$1"
+         declare -i pId="$("$this".getPid)"
+         local tty
+         tty="$(ps  -p "$pId" -o tty 2>/dev/null | tail -1)"
+         if (( $? != 0 )); then
+            __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         if [[ "$tty" == "?" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+         return $returnValue
+      else
+         __throw "NotInPathException" ": ps not in path"
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
          return $returnValue
@@ -365,8 +402,7 @@ Process.exists() {
    if (( $# == 1 )); then
       declare -i pId="$1"
       if command -v ps >/dev/null 2>&1; then
-         local pidStat="$(ps  -p $pId -o stat 2>/dev/null)"
-         pidStat="${pidStat:5}"
+         local pidStat="$(ps  -p $pId -o stat 2>/dev/null | tail -1)"
          if [[ -z "$pidStat" ]]; then
             Boolean.FALSE
          else

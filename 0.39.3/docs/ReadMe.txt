@@ -192,4 +192,5 @@ IndexOutOfBoundsException             160
 IOException                           170
 NotInPathException                    180
 WrongClassException                   190
+NotRunningException                   200
 Unknown Exception                     250

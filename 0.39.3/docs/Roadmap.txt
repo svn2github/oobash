@@ -2,6 +2,9 @@
 
 # 0.39.3
 
+Script.generator (header...)
+Example: http://code.activestate.com/recipes/577862-bash-script-to-create-a-header-for-bash-scripts/?in=lang-bash
+
 better documentation of generators in the oobash man page / Readme ? yes
 documentation of  decorators ? yes
 
@@ -26,16 +29,13 @@ Process.exists --Done -not ready -Docs missing --> __exists ???
 kill --Done -not ready -Docs missing
 getPriority --Done -not ready -Docs missing
 setPriority --Done -not ready -Docs missing
-__isDaemon (no controlling terminal) ??
+__isDaemon (no controlling terminal) -- Yes
 __getThreads ??
 __children ??
 ...
 lot of getters (ps: set of STANDARD FORMAT SPECIFIERS + http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/ps.1.html Keywords)
 
--new NotExisting/RunningException ?
-
-Rename Process.create --> ProcessBuilder?
-Command not $1 but $@ ?
+-new NotRunningException -- YES
 
 As of 1.5, ProcessBuilder.start() is the preferred way to create a Process.
 --> own class -> __start ?

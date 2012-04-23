@@ -22,3 +22,4 @@ kill
 md5sum
 sha1sum
 renice
+tail
