@@ -168,16 +168,23 @@ __getStatus() {
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
          declare -i pId="$("$this".getPid)"
-         local stat="$(ps  -p "$pId" -o stat 2>/dev/null | tail -1)"
-         stat=${stat:0:1}
+         local stat="$(ps -p "$pId" -o s 2>/dev/null | tail -1)"
          case $stat in
             D)stat="Uninterruptible";;
-            R)stat="Running";;
-            S)stat="Interruptible";;
+            # R ok
+            R)stat="Runnable";;
+            # S ok
+            S)stat="Sleeping";;
+            # T ok
             T)stat="Stopped";;
+            # W not valid since the 2.6.xx kernel
             W)stat="Paging";;
-            X)stat="Dead";;
+            # Z zombie
             Z)stat="Defunct";;
+            # only SunOS
+            O)stat="Running";;
+            # only HP-UX
+            X)stat="Growing";;
             *)stat= __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
                     returnValue=$?
                     __stackOrHelp "$2" "${FUNCNAME:2}"
@@ -189,7 +196,35 @@ __getStatus() {
 #               T       Marks a stopped process.
 #               U       Marks a process in uninterruptible wait.
 #               Z       Marks a dead process (a ``zombie'').
-# uname -s Darwin 
+# uname -s Darwin
+
+# Gnu Linux ps man page:
+#               D       Uninterruptible sleep (usually IO)
+#               R       Running or runnable (on run queue)
+#               S       Interruptible sleep (waiting for an event to complete)
+#               T       Stopped, either by a job control signal or because it is being traced.
+#               W       paging (not valid since the 2.6.xx kernel)
+#               X       dead (should never be seen)
+#               Z       Defunct ("zombie") process, terminated but not reaped by its parent.
+# uname -s Linux
+
+# HP-UX ps man page:
+#               0 non-existent; (Null)
+#               S sleeping;
+#               W waiting;
+#               R running;
+#               I intermediate;
+#               Z terminated;
+#               T stopped;
+#               X growing.
+
+# Sun ps man page:
+#              O Process is running on a processor. (letter O)
+#              S Sleeping: process is waiting for an event to complete.
+#              R Runnable: process is on run queue.
+#              Z Zombie state: process terminated and parent not waiting.
+#              T Process is stopped, either by a job control signal or because it is being traced.
+ 
          esac
          System.out.println "$stat"
          return $returnValue
