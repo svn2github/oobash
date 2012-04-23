@@ -182,6 +182,14 @@ __getStatus() {
                     returnValue=$?
                     __stackOrHelp "$2" "${FUNCNAME:2}"
                     return $returnValue;;
+# OS X ps man page:
+#               I       Marks a process that is idle (sleeping for longer than about 20 seconds).
+#               R       Marks a runnable process.
+#               S       Marks a process that is sleeping for less than about 20 seconds.
+#               T       Marks a stopped process.
+#               U       Marks a process in uninterruptible wait.
+#               Z       Marks a dead process (a ``zombie'').
+# uname -s Darwin 
          esac
          System.out.println "$stat"
          return $returnValue
