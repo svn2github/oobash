@@ -2,6 +2,8 @@
 
 # 0.39.3
 
+look for other places in code for chained returnValues + Exception to stderr
+
 Script.generator (header...)
 Example: http://code.activestate.com/recipes/577862-bash-script-to-create-a-header-for-bash-scripts/?in=lang-bash
 
@@ -37,13 +39,6 @@ lot of getters (ps: set of STANDARD FORMAT SPECIFIERS + http://developer.apple.c
 
 -new NotRunningException -- YES
 
-As of 1.5, ProcessBuilder.start() is the preferred way to create a Process.
---> own class -> __start ?
-The ProcessBuilder.start() and Runtime.exec methods create a native process
-
-I18n.err.message "Sorry, pid '\$pid' is not valid" --> new property for locale po files ???
-Class Process in Startmessage + i18n
-
 toString for Process
 
 Private:
@@ -70,7 +65,8 @@ declare -p assoca
 File:
 ------
 http://docs.oracle.com/javase/7/docs/api/
--getFreeSpace ?
+there should be a solution with stat:
+-getFreeSpace ? 
 -getTotalSpace ?
 
 Declare return value:
@@ -81,6 +77,17 @@ Looks like bullshit !
 Check again !
 grep -r "(return 1)" * | grep -v txt |grep -v svn |wc -l
 13
+
+Check for writeableArray:
+---------------------------
+check for r (readonly !)
+declare -iauxtr q
+s="$(declare -p q)"
+t=${s/declare -/}
+array--> first letter is 'a' (after declare -p --> lexicographical order)
+writeable ' ' (=end of block) before r
+
+same with associativeArry....
 
 # 0.39.4
 # -some ssh

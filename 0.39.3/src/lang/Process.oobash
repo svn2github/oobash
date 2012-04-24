@@ -5,6 +5,7 @@
 # Copyright (c) <2012> <franka>
 #############################################################
 
+# TODO: if there is no tail, try string manipulation ?
 
 #########################
 # constructor  function #
@@ -16,11 +17,6 @@ Process() {
    if (( $# == 2 )); then
       local this="$1"
       declare -i pid="$2"
-
-      if [[ "$(Process.exists $pid)" != "$(Boolean.TRUE)" ]]; then
-         I18n.err.message "Sorry, pid '\$pid' is not valid"
-         return 1
-      fi
       
       if ! __visible "$this"; then
          I18n.err.message "Sorry, objectname '\$this' is not valid"
@@ -82,8 +78,31 @@ __getPid() {
             done              
          fi
       done
-      System.out.println "${__ATTRIBUTEPOOL__[${pointer}@pid]}" 
-      return $returnValue
+      if command -v ps >/dev/null 2>&1; then
+         if command -v tail >/dev/null 2>&1; then
+            local pId="$(ps  -p "${__ATTRIBUTEPOOL__[${pointer}@pid]}" -o pid 2>/dev/null | tail -1)"
+            declare -i pId=${pId}
+            if (( $pId == ${__ATTRIBUTEPOOL__[${pointer}@pid]} )); then
+               System.out.println "${__ATTRIBUTEPOOL__[${pointer}@pid]}"
+               return $returnValue
+            else
+               __throw "NotRunningException" ": Process with pid: \"${__ATTRIBUTEPOOL__[${pointer}@pid]}\" is not running"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+         else
+            __throw "NotInPathException" ": tail not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -97,11 +116,23 @@ __getParentPid() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pId="$("$this".getPid)"
-         local Ppid="$(ps  -p "$pId" -o ppid 2>/dev/null | tail -1)"
-         declare -i parentPid=${Ppid:5}
-         System.out.println "$parentPid"
-         return $returnValue
+         if command -v tail >/dev/null 2>&1; then
+            declare -i pId
+            pId="$("$this".getPid)"
+            returnValue=$?
+            if (( $returnValue != 0 )); then
+               return $returnValue
+            fi
+            local Ppid="$(ps  -p "$pId" -o ppid 2>/dev/null | tail -1)"
+            declare -i parentPid=${Ppid}
+            System.out.println "$parentPid"
+            return $returnValue
+         else
+            __throw "NotInPathException" ": tail not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -121,10 +152,22 @@ __getUser() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pId="$("$this".getPid)"
-         local owner
-         owner="$(ps  -p "$pId" -o user 2>/dev/null | tail -1)"
-         System.out.println "${owner:5}"
+         if command -v tail >/dev/null 2>&1; then
+            declare -i pId
+            pId="$("$this".getPid)"
+            returnValue=$?
+            if (( $returnValue != 0 )); then
+               return $returnValue
+            fi
+            local owner
+            owner="$(ps  -p "$pId" -o user 2>/dev/null | tail -1)"
+            System.out.println "${owner}"
+         else
+            __throw "NotInPathException" ": tail not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -144,10 +187,22 @@ __getCommand() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pId="$("$this".getPid)"
-         local cmd
-         cmd="$(ps  -p "$pId" -o cmd 2>/dev/null | tail -1)"
-         System.out.println "${cmd:4}"
+         if command -v tail >/dev/null 2>&1; then
+            declare -i pId
+            pId="$("$this".getPid)"
+            returnValue=$?
+            if (( $returnValue != 0 )); then
+               return $returnValue
+            fi
+            local cmd
+            cmd="$(ps  -p "$pId" -o cmd 2>/dev/null | tail -1)"
+            System.out.println "${cmd}"
+         else
+            __throw "NotInPathException" ": tail not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -167,67 +222,80 @@ __getStatus() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pId="$("$this".getPid)"
-         local stat="$(ps -p "$pId" -o s 2>/dev/null | tail -1)"
-         case $stat in
-            D)stat="Uninterruptible";;
-            # R ok
-            R)stat="Runnable";;
-            # S ok
-            S)stat="Sleeping";;
-            # T ok
-            T)stat="Stopped";;
-            # W not valid since the 2.6.xx kernel
-            W)stat="Paging";;
-            # Z zombie
-            Z)stat="Defunct";;
-            # only SunOS
-            O)stat="Running";;
-            # only HP-UX
-            X)stat="Growing";;
-            *)stat= __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
-                    returnValue=$?
-                    __stackOrHelp "$2" "${FUNCNAME:2}"
-                    return $returnValue;;
-# OS X ps man page:
-#               I       Marks a process that is idle (sleeping for longer than about 20 seconds).
-#               R       Marks a runnable process.
-#               S       Marks a process that is sleeping for less than about 20 seconds.
-#               T       Marks a stopped process.
-#               U       Marks a process in uninterruptible wait.
-#               Z       Marks a dead process (a ``zombie'').
-# uname -s Darwin
+         if command -v tail >/dev/null 2>&1; then
+            declare -i pId
+            pId="$("$this".getPid)"
+            returnValue=$?
+            if (( $returnValue != 0 )); then
+               return $returnValue
+            fi
+            local stat="$(ps -p "$pId" -o s 2>/dev/null | tail -1)"
+            # TODO: Decision for states...
+            case $stat in
+               D)stat="Uninterruptible";;
+               # R ok
+               R)stat="Runnable";;
+               # S ok
+               S)stat="Sleeping";;
+               # T ok
+               T)stat="Stopped";;
+               # W not valid since the 2.6.xx kernel
+               W)stat="Paging";;
+               # Z zombie
+               Z)stat="Defunct";;
+               # only SunOS
+               O)stat="Running";;
+               # only HP-UX
+               X)stat="Growing";;
+               *)stat= __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+                       returnValue=$?
+                       __stackOrHelp "$2" "${FUNCNAME:2}"
+                       return $returnValue;;
+               # OS X ps man page:
+               #               I       Marks a process that is idle (sleeping for longer than about 20 seconds).
+               #               R       Marks a runnable process.
+               #               S       Marks a process that is sleeping for less than about 20 seconds.
+               #               T       Marks a stopped process.
+               #               U       Marks a process in uninterruptible wait.
+               #               Z       Marks a dead process (a ``zombie'').
+               # uname -s Darwin
 
-# Gnu Linux ps man page:
-#               D       Uninterruptible sleep (usually IO)
-#               R       Running or runnable (on run queue)
-#               S       Interruptible sleep (waiting for an event to complete)
-#               T       Stopped, either by a job control signal or because it is being traced.
-#               W       paging (not valid since the 2.6.xx kernel)
-#               X       dead (should never be seen)
-#               Z       Defunct ("zombie") process, terminated but not reaped by its parent.
-# uname -s Linux
+               # Gnu Linux ps man page:
+               #               D       Uninterruptible sleep (usually IO)
+               #               R       Running or runnable (on run queue)
+               #               S       Interruptible sleep (waiting for an event to complete)
+               #               T       Stopped, either by a job control signal or because it is being traced.
+               #               W       paging (not valid since the 2.6.xx kernel)
+               #               X       dead (should never be seen)
+               #               Z       Defunct ("zombie") process, terminated but not reaped by its parent.
+               # uname -s Linux
 
-# HP-UX ps man page:
-#               0 non-existent; (Null)
-#               S sleeping;
-#               W waiting;
-#               R running;
-#               I intermediate;
-#               Z terminated;
-#               T stopped;
-#               X growing.
+               # HP-UX ps man page:
+               #               0 non-existent; (Null)
+               #               S sleeping;
+               #               W waiting;
+               #               R running;
+               #               I intermediate;
+               #               Z terminated;
+               #               T stopped;
+               #               X growing.
 
-# Sun ps man page:
-#              O Process is running on a processor. (letter O)
-#              S Sleeping: process is waiting for an event to complete.
-#              R Runnable: process is on run queue.
-#              Z Zombie state: process terminated and parent not waiting.
-#              T Process is stopped, either by a job control signal or because it is being traced.
- 
-         esac
-         System.out.println "$stat"
-         return $returnValue
+               # Sun ps man page:
+               #              O Process is running on a processor. (letter O)
+               #              S Sleeping: process is waiting for an event to complete.
+               #              R Runnable: process is on run queue.
+               #              Z Zombie state: process terminated and parent not waiting.
+               #              T Process is stopped, either by a job control signal or because it is being traced.
+
+            esac
+            System.out.println "$stat"
+            return $returnValue
+         else
+            __throw "NotInPathException" ": tail not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -248,11 +316,23 @@ __getPriority() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v ps >/dev/null 2>&1; then
-         declare -i pId="$("$this".getPid)"
-         local prio="$(ps  -p "$pId" -o ni 2>/dev/null | tail -1)"
-         declare -i priority=${prio:3}
-         System.out.println "$priority"
-         return $returnValue
+         if command -v tail >/dev/null 2>&1; then
+            declare -i pId
+            pId="$("$this".getPid)"
+            returnValue=$?
+            if (( $returnValue != 0 )); then
+               return $returnValue
+            fi
+            local prio="$(ps  -p "$pId" -o ni 2>/dev/null | tail -1)"
+            declare -i priority=${prio:3}
+            System.out.println "$priority"
+            return $returnValue
+         else
+            __throw "NotInPathException" ": tail not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -272,7 +352,12 @@ __setPriority() {
    if (( $# == 3 )); then
       if command -v renice >/dev/null 2>&1; then
          local this="$1"
-         declare -i pId="$("$this".getPid)"
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
          (local priority="$3") 2>/dev/null ||  (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
@@ -306,22 +391,35 @@ __isDaemon() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       if command -v ps >/dev/null 2>&1; then
-         local this="$1"
-         declare -i pId="$("$this".getPid)"
-         local tty
-         tty="$(ps  -p "$pId" -o tty 2>/dev/null | tail -1)"
-         if (( $? != 0 )); then
-            __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+         if command -v tail >/dev/null 2>&1; then
+            local this="$1"
+            declare -i pId
+            pId="$("$this".getPid)"
+            returnValue=$?
+            if (( $returnValue != 0 )); then
+               return $returnValue
+            fi
+            local tty
+            tty="$(ps  -p "$pId" -o tty 2>/dev/null | tail -1)"
+            # TODO: the next lines should be everywhere --> catch race condition
+            if (( $? != 0 )); then
+               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            if [[ "$tty" == "?" ]]; then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+            return $returnValue
+         else
+            __throw "NotInPathException" ": tail not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
-         if [[ "$tty" == "?" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-         return $returnValue
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -341,7 +439,12 @@ __kill() {
    if (( $# == 3 )) || (( $# == 2 )) ; then
       if command -v kill >/dev/null 2>&1; then
          local this="$1"
-         declare -i pId="$("$this".getPid)"
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
          local signal
          if (( $# == 3 )); then
             (local signal="$3") 2>/dev/null ||  (return 1)
@@ -405,26 +508,19 @@ Process.create() {
       local this="$1"
       local processCommand="$2"
       if command -v  $processCommand >/dev/null 2>&1; then
-         if command -v ps >/dev/null 2>&1; then
-            declare -i processPid
-            processPid=$(
-            $processCommand 2>/dev/null 1>&2 & 
-            System.out.println $!
-            )
-            Process "$this" "$processPid" 2>/dev/null
-            returnValue=$?
-            if (( $returnValue == 0 )); then
-               Boolean.TRUE
-               return $returnValue
-            fi
-            Boolean.FALSE
-            return $returnValue
-         else
-            __throw "NotInPathException" ": ps not in path"
-            returnValue=$?
-            __stackOrHelp "Process" "${FUNCNAME}"
+         declare -i processPid
+         processPid=$(
+         $processCommand 2>/dev/null 1>&2 &
+         System.out.println $!
+         )
+         Process "$this" "$processPid" 2>/dev/null
+         returnValue=$?
+         if (( $returnValue == 0 )); then
+            Boolean.TRUE
             return $returnValue
          fi
+         Boolean.FALSE
+         return $returnValue
       else
          __throw "NotInPathException" ": $processCommand not in path"
          returnValue=$?
@@ -445,12 +541,12 @@ Process.exists() {
    if (( $# == 1 )); then
       declare -i pId="$1"
       if command -v ps >/dev/null 2>&1; then
-         local pidStat="$(ps  -p $pId -o stat 2>/dev/null | tail -1)"
-         if [[ -z "$pidStat" ]]; then
-            Boolean.FALSE
-         else
-            Boolean.TRUE 
+         ps  -p $pId -o stat 2>/dev/null 1>&2
+         if (( $? == 0 ));then
+            Boolean.TRUE
+            return $returnvalue
          fi
+         Boolean.FALSE
          return $returnvalue
       else
          __throw "NotInPathException" ": ps not in path"
