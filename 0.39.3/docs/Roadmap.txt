@@ -69,6 +69,10 @@ Check again !
 grep -r "(return 1)" * | grep -v txt |grep -v svn |wc -l
 13
 
+Level:
+------
+correct all the help/man for Level !
+
 # 0.39.4
 # -some ssh
 
