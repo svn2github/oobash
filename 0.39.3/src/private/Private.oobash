@@ -825,7 +825,7 @@ __isWriteable() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local tmp
    tmp=$(declare -p "$1" 2>/dev/null)
-   if (( $? != 0 )); then
+   if (( $? == 0 )); then
       tmp=${tmp/declare -/}
       declare -i i
       for ((i=0; i < ${#tmp}; i++))
@@ -836,6 +836,7 @@ __isWriteable() {
             " ") return 0;;
          esac
       done
+   else
       return 1
    fi
 }
