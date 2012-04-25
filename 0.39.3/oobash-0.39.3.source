@@ -342,7 +342,7 @@ if [[ $(Boolean.parseBoolean "$__QUIET__") != $(Boolean.TRUE) ]] && [[ ! -z $PS1
    System.out.println "  -setExecutable -setReadable -setWritable -getAbsolutePath -getCanonicalPath -getPath"
    System.out.println "  -isAbsolute -delete -setReadOnly -createNewFile -lastModified -setLastModified"  
    System.out.println "  -linecount -linematch  -append -clear -getText -setText -sha1sum -md5sum"
-   System.out.println "  -File.createTemporaryFile -File.createTempFile" 
+   System.out.println "  -getTotalSpace -getFreeSpace -getUsableSpace -File.createTemporaryFile -File.createTempFile "
    System.out.println " Boolean:"
    System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"
    I18n.out.message " Usage: a.toString"
