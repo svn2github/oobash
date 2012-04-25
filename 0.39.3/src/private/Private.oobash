@@ -40,8 +40,7 @@
 # __stacktrace() generates stacktrace
 # __isArray() checks if given parameter is an array
 # __isAssocArray() checks if given parameter is an associative array
-# __isWriteableArray() checks if given parameter is an writeable array
-# __isWriteableAssocArray() checks if given parameter is an writeable associative array
+# __isWriteable() checks if given parameter is writeable
 
 
 # private
@@ -821,12 +820,13 @@ __isAssocArray() {
 __registerFunction __isAssocArray
 
 # private
-# checks if given parameter is an writeable array
-__isWriteableArray() {
+# checks if given parameter is writeable
+__isWriteable() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local tmp=$(declare -p "$1" 2>/dev/null)
-   tmp=${tmp/declare -/}
-   if [[ ${tmp:0:1} == "a" ]]; then
+   local tmp
+   tmp=$(declare -p "$1" 2>/dev/null)
+   if (( $? != 0 )); then
+      tmp=${tmp/declare -/}
       declare -i i
       for ((i=0; i < ${#tmp}; i++))
       do
@@ -836,31 +836,7 @@ __isWriteableArray() {
             " ") return 0;;
          esac
       done
-      return 0
-   else
       return 1
    fi
 }
-__registerFunction __isArray
-
-# private
-# checks if given parameter is an writeable associative array
-__isWriteableAssocArray() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local tmp=$(declare -p "$1" 2>/dev/null)
-   tmp=${tmp/declare -/}
-   if [[ ${tmp:0:1} == "A" ]]; then
-      declare -i i
-      for ((i=0; i < ${#tmp}; i++))
-      do
-         local char="${tmp:i:1}"
-         case "$char" in
-            "r") return 1;; 
-            " ") return 0;;
-         esac
-      done
-   else
-      return 1
-   fi
-}
-__registerFunction __isWriteableAssocArray
+__registerFunction __isWriteable
