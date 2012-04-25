@@ -225,6 +225,7 @@
 #    -some fixes
 # Version:      0.39.3
 #    -Added File methods: md5sum, sha1sum, getFreeSpace, getTotalSpace, getUsableSpace
+#    -Added private functions: __isAssocArray, __isArray, __isWriteableAssocArray, __isWriteableArray
 #    -Added class Process with some methods/functions:
 #    Process, Process.create, Process.exists, getPid, getParentPid, getUser, getStatus, getCommand
 #    -getPriority, setPriority, kill, isDaemon
