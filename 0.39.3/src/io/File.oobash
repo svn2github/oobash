@@ -2414,7 +2414,7 @@ File.help() {
                Returns:
                   An abstract pathname denoting a newly-created empty file
                Throws:
-                  IllegalArgumentException - If the prefix argument contains fewer than three characters
+                  IllegalArgumentException - if the prefix argument contains fewer than three characters
                                            - if number of arguments !=2 AND !=3
                   IOException - if file could not be created 
                   NotInPathException - if mktemp is not in path
@@ -2426,7 +2426,7 @@ File.help() {
                   >>>-rwxrwxrwx 1 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
                   TMPDIR=/
                   File.createTemporaryFile xxx .tmp
-                  >>>IOException: file could not be created
+                  >>>IOException: File could not be created
             ";;&         
          getName|all)
             match=$(Boolean.TRUE)
