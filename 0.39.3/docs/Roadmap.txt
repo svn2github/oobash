@@ -62,13 +62,6 @@ declare -p assoca
 -identityHashCode function
 -nanoTime (used in Runtime) function
 
-File:
-------
-http://docs.oracle.com/javase/7/docs/api/
-there should be a solution with stat:
--getFreeSpace ? 
--getTotalSpace ?
-
 Declare return value:
 ----------------------
 Example:

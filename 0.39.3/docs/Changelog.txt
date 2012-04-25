@@ -224,9 +224,9 @@
 #    -added manpage for oobash
 #    -some fixes
 # Version:      0.39.3
-#    -Added File methods: md5sum, sha1sum
+#    -Added File methods: md5sum, sha1sum, getFreeSpace, getTotalSpace, getUsableSpace
 #    -Added class Process with some methods/functions:
-#    -Process, Process.create, Process.exists, getPid, getParentPid, getUser, getStatus, getCommand
+#    Process, Process.create, Process.exists, getPid, getParentPid, getUser, getStatus, getCommand
 #    -getPriority, setPriority, kill, isDaemon
 #    -optimized stacktrace if os != linux
 #    -new Dependencies:ps, kill, renice, md5sum, sha1sum, tail
