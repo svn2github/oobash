@@ -21,7 +21,7 @@
 
 @timestamp() {
    if (($# != 0)); then
-      printf "%s\n" "Time is $(date "+%s.%N")" >&2
+      printf "%s\n" "Time is $(date "+%s.%N" 2>/dev/null)" >&2
    fi
    return 0
 }
@@ -41,15 +41,15 @@
          testtimestamp="$(date "+%N" 2>/dev/null)"
          # is GNU date and is bc available ?
          if [[ "${testtimestamp:$((${#testtimestamp}-1))}" != "N" ]] && command -v bc >/dev/null 2>&1; then
-            local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
+            local time="$(printf "%s\n" "$(date +"%s.%N")-${__STARTTIME__}" | bc -l)"
             if [[ "${time:0:1}" == "." ]]; then
-               time=0"$time"
+               time=0"${time}"
             fi
-            printf "%s\n" "Runtime: $time [seconds.nanoseconds]"
+            printf "%s\n" "Runtime: ${time} [seconds.nanoseconds]"
             return 0
          fi
       fi
-      printf "%s\n" "Runtime: $SECONDS [seconds]"
+      printf "%s\n" "Runtime: ${SECONDS} [seconds]"
       return 0
    fi
    return 0
@@ -64,14 +64,14 @@ __decoratorCheck() {
    if [[ "${0##*/}" == "bash" ]]; then
       return 0
    fi
-
+   
    local file="$2"
 
    declare -i returnValue=0
    declare -i offset=0
-   declare -i line="$BASH_LINENO"
+   declare -i line="${BASH_LINENO}"
 
-   mapfile Arr < "$file"
+   mapfile Arr < "${file}"
 
    # TODO: look for () is weak...
    # bottom-up search for function start by looking for "()"
