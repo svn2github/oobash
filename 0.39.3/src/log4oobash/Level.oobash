@@ -188,6 +188,7 @@ Level.help() {
                     -getSyslogEquivalent
                     -isGreaterOrEqual
                     -equals
+                    -hashCode
                     Constructor: 
                     -Level
                  " 
