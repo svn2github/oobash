@@ -1440,11 +1440,14 @@ File.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getTotalSpace
-                  Total space in bytes
+                  Returns the size of the partition named by this abstract pathname.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
                Parameters:
                   None
                Returns:
-                  Total space in bytes.
+                  The size, in bytes, of the partition or 0 if this abstract pathname
+                  does not name a partition
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                   NotInPathException - if stat is not in path
@@ -1460,11 +1463,16 @@ File.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getFreeSpace
-                  Free space in bytes
+                  Returns the number of unallocated bytes in the partition named by this 
+                  abstract path name.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
                Parameters:
                   None
                Returns:
-                  Free space in bytes.
+                  The number of unallocated bytes on the partition 0 if the abstract pathname 
+                  does not name a partition. This value will be less than or equal to the total 
+                  file system size returned by getTotalSpace.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                   NotInPathException - if stat is not in path
@@ -1480,11 +1488,19 @@ File.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getUsableSpace
-                  Usable space in bytes
+                  Returns the number of bytes available to this virtual machine on the partition 
+                  named by this abstract pathname. When possible, this method checks for write 
+                  permissions and other operating system restrictions and will therefore usually 
+                  provide a more accurate estimate of how much new data can actually be written 
+                  than getFreeSpace.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
                Parameters:
                   None
                Returns:
-                  Usable space in bytes for non-superuser.
+                  The number of available bytes on the partition or 0 if the abstract pathname 
+                  does not name a partition. On systems where this information is not available, 
+                  this method will be equivalent to a call to getFreeSpace.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                   NotInPathException - if stat is not in path
