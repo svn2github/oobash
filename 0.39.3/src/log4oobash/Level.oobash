@@ -201,7 +201,9 @@ Level.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                Level
-                  Constructor for the Level objects.
+                  Constructor for the Level objects. All objectnames are keywords
+                  after object creation.
+                  You will not be able to create another object with the same name.
                Parameters:
                   objectname 
                   level
