@@ -6,7 +6,7 @@
 -better documentation of generators in the oobash man page / Readme ? yes
 -documentation of  decorators ? yes
 -constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
--analyze log4oobash.properties
+
 
 Process:
 --------
@@ -48,6 +48,7 @@ grep -r "(return 1)" * | grep -v txt |grep -v svn |wc -l
 # -chained return values, url decode/encode ?
 # -pimp getopts ?
 # -Script.generator (header...)
+# -analyze log4oobash.properties
 
 # 0.40
 # Assert 

@@ -25,7 +25,7 @@ __getClass() {
    declare -i returnValue=0
    local class="$2"
    if (( $# == 2 )); then
-      System.out.println "class $class"
+      System.out.println "class ${class}"
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -44,20 +44,20 @@ __toString() {
       local key
       for key in "${!__OBJECTPOOL__[@]}"
       do 
-         if [[ "$this" == "$key" ]]; then
+         if [[ "$this" == "${key}" ]]; then
             local str="${__OBJECTPOOL__["$this"]}"
             declare -i i=0
             for ((i=0; i < ${#str}; i++))
             do
                local char="${str:i:1}"
-               if [[ $char == "@" ]]; then
+               if [[ ${char} == "@" ]]; then
                   local j=$(($i+1))
                   local pointer="${str:j}"
                fi
             done              
          fi
       done
-      case $class in
+      case "${class}" in
          Level) 
          System.out.println "${__ATTRIBUTEPOOL__[${pointer}@levelStr]}"
          return $returnValue
@@ -82,10 +82,10 @@ __toString() {
       fi         
       for key in $keys
       do
-         if [[ "$key" == "${pointer}"* ]]; then
-            if [[ $first == $(Boolean.TRUE) ]]; then
+         if [[ "${key}" == "${pointer}"* ]]; then
+            if [[ ${first} == $(Boolean.TRUE) ]]; then
                str="$str""${__ATTRIBUTEPOOL__["$key"]}"
-               first=$(Boolean.FALSE)
+               first="$(Boolean.FALSE)"
             else
                str="$str""|""${__ATTRIBUTEPOOL__["$key"]}"
             fi
@@ -158,10 +158,10 @@ __hashCode() {
             hash=$(System.out.println "$hash*31+$valueOf" | bc)
          done
          hash=$(System.out.println "$hash-((2^32)*($hash/(2^32)))" | bc) 
-         if (( $hash > 2147483647 )); then
-            hash=$(System.out.println "$hash-(2^32)" | bc)
+         if (( ${hash} > 2147483647 )); then
+            hash=$(System.out.println "${hash}-(2^32)" | bc)
          fi
-         case $class in
+         case ${class} in
             File)
                System.out.println $(($hash^1234321));;
             Boolean)
@@ -171,10 +171,10 @@ __hashCode() {
                   System.out.println 1237
                fi;;    
             String)
-               System.out.println $hash;; 
+               System.out.println ${hash};; 
             # Default for user created classes                
             *)
-               System.out.println $hash;;   
+               System.out.println ${hash};;   
          esac  
          return $returnValue
       else
