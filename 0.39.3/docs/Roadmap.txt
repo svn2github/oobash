@@ -6,7 +6,7 @@
 -better documentation of generators in the oobash man page / Readme ? yes
 -documentation of  decorators ? yes
 -constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
-
+-check this: http://www.mail-archive.com/bug-bash@gnu.org/msg05342.html
 
 Process:
 --------
