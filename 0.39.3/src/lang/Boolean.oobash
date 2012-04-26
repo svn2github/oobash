@@ -109,7 +109,7 @@ Boolean.parseBoolean() {
    declare -i returnValue=0
    if (( $# == 1 )); then
       declare -l bool="$1"
-      if [[ "$bool" == $(Boolean.TRUE) ]]; then
+      if [[ "${bool}" == $(Boolean.TRUE) ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE

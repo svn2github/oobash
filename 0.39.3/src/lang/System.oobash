@@ -75,7 +75,7 @@ System.exit() {
          return $returnValue
       fi
       declare -i status="$1"
-      if (( $status >= 0 && $status <= 255 )); then
+      if (( ${status} >= 0 && ${status} <= 255 )); then
          exit $status
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
@@ -96,7 +96,7 @@ System.err.println() {
    declare -i returnValue=0
    if (( $# <= 1  )); then
       local message="$1"
-      printf "%s\n" "$message" >&2
+      printf "%s\n" "${message}" >&2
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -111,7 +111,7 @@ System.out.println() {
    declare -i returnValue=0
    if (( $# <= 1  )); then
       local message="$1"
-      printf "%s\n" "$message"
+      printf "%s\n" "${message}"
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -126,7 +126,7 @@ System.err.print() {
    declare -i returnValue=0
    if (( $# <= 1  )); then
       local message="$1"
-      printf "%s" "$message" >&2
+      printf "%s" "${message}" >&2
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -141,7 +141,7 @@ System.out.print() {
    declare -i returnValue=0
    if (( $# <= 1  )); then
       local message="$1"
-      printf "%s" "$message"
+      printf "%s" "${message}"
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -158,11 +158,11 @@ System.runtime() {
       if __gnudateCheck && command -v bc >/dev/null 2>&1; then
          local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
          if [[ "${time:0:1}" == "." ]]; then
-            time=0"$time"
+            time=0"${time}"
          fi
-         System.out.println "Runtime: $time [seconds.nanoseconds]"
+         System.out.println "Runtime: ${time} [seconds.nanoseconds]"
      else
-        System.out.println "Runtime: $SECONDS [seconds]"
+        System.out.println "Runtime: ${SECONDS} [seconds]"
      fi
      return $returnValue
    fi
