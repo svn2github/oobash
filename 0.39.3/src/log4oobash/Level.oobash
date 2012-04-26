@@ -215,23 +215,6 @@ Level.help() {
                Example:
                   Level a <level> <levelStr> <syslogEquivalent> 
             ";;& 
-      equals|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               equals
-                  Two priorities are equal if their level fields are equal.
-               Parameters:
-                  anObject - The object to be compared with
-               Returns:
-                  true if and only if the objects have the same level field; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1
-               Example:
-                  Level a 1000 "FATAL" 0
-                  Level b 1000 "MYLEVEL" 0
-                  a.equals b
-                  >>>true
-            ";;&                   
       toInt|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -245,24 +228,8 @@ Level.help() {
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   Level b 2 3 4
-                  b.getLevel 
+                  b.toInt
                   >>>2 
-            ";;& 
-      toString|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               toString
-                  Returns the string representation of this level.
-               Parameters:
-                  None
-               Returns:
-                  The value of levelStr.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  Level b 2 3 4
-                  b.getLevelStr 
-                  >>>3 
             ";;& 
       getSyslogEquivalent|all)
             match=$(Boolean.TRUE)
@@ -296,9 +263,42 @@ Level.help() {
                Example:
                   Level a 1000 "FATAL" 0
                   Level b 1000 "MYLEVEL" 0
-                  a.equals b
+                  a.isGreaterOrEqual b
                   >>>true
-            ";;&                  
+            ";;&
+      toString|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toString
+                  Returns the string representation of this level.
+               Parameters:
+                  None
+               Returns:
+                  The value of levelStr.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Level b 2 3 4
+                  b.toString
+                  >>>3
+            ";;&
+      hashCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hashCode
+                  Returns a hash code for this Level object.
+               Parameters:
+                  None
+               Returns:
+                  a hash code for this Level.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Level INFO 20000 INFO  6
+                  INFO.hashCode
+                  >>>2251950
+            ";;&
       getClass|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -314,6 +314,23 @@ Level.help() {
                   Level b 2 3 4
                   b.getClass
                   >>>class Level
+            ";;&
+      equals|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               equals
+                  Two priorities are equal if their level fields are equal.
+               Parameters:
+                  anObject - The object to be compared with
+               Returns:
+                  true if and only if the objects have the same level field; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  Level a 1000 "FATAL" 0
+                  Level b 1000 "MYLEVEL" 0
+                  a.equals b
+                  >>>true
             ";;&
          *)   if [[ $match == $(Boolean.FALSE) ]]; then
                  System.${printStream}.println "                                  
