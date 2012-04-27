@@ -205,6 +205,22 @@ if [[ ! -z "$__QUIET__" ]]; then
    __registerVar __QUIET__
 fi
 
+# Export scriptpath if oobash is sourced by script
+if [[ -z $PS1 ]]; then
+   call="$(caller)"
+   call="${call/[0-9]* /}"
+   if [[ ${call:0:2} == "./" ]]; then
+      script="${PWD}"/"${call:2}"
+   elif [[ ${call:0:1} == "." ]]; then
+      script="${PWD}"/"${call}"
+   else
+      script="${call}"
+   fi
+   export __SCRIPT__="${script}"
+   unset script call
+   __registerVar __SCRIPT__
+fi
+
 # gnu date search:
 ###################
 
@@ -395,11 +411,6 @@ fi
 
 # Do we have logging propeties to use ?
 __lookForLoggingPropertiesFile "$(caller)"
-
-# Export scriptpath if shell is not interactive:
-if [[ -z $PS1 ]]; then
-   __exportScriptPath "$(caller)"
-fi
 
 if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]; then
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
