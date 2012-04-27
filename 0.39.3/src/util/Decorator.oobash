@@ -64,7 +64,7 @@ __decoratorCheck() {
    if [[ "${0##*/}" == "bash" ]]; then
       return 0
    fi
-   
+
    local file="$2"
 
    declare -i returnValue=0

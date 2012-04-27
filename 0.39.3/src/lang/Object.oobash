@@ -32,7 +32,6 @@ __getClass() {
    returnValue=$?
    __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
-
 }
 
 __toString() {

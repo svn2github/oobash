@@ -7,6 +7,14 @@
 -documentation of  decorators ? yes
 -constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
 -check this: http://www.mail-archive.com/bug-bash@gnu.org/msg05342.html
+-__decoratorCheck parameter not "${BASH_SOURCE[0]}" but "$(getAbsolutePath ${BASH_SOURCE[0]})"
+--> "cd somewhere" in script is possible
+-substitute echos in Private.oobash
+-check if this is usefull:
++__registerFunction __exportScriptPath
++if [[ -z $PS1 ]]; then
++   __registerVar __SCRIPTPATH__
++fi
 
 Process:
 --------

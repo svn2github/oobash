@@ -396,6 +396,11 @@ fi
 # Do we have logging propeties to use ?
 __lookForLoggingPropertiesFile "$(caller)"
 
+# Export scriptpath if shell is not interactive:
+if [[ -z $PS1 ]]; then
+   __exportScriptPath "$(caller)"
+fi
+
 if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]; then
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
    __registerVar __LayoutMethods__
