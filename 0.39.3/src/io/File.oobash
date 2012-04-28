@@ -745,12 +745,10 @@ __getAbsolutePath() {
    if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ ${file:0:2} == "./" ]]; then
-         System.out.println "${PWD}"/"${file:2}"
-      elif [[ ${file:0:1} == "." ]]; then
-         System.out.println "${PWD}"/"${file}"
-      else
+      if [[ ${file:0:1} == "/" ]]; then
          System.out.println "${file}"
+      else
+         System.out.println "${PWD}"/"${file}"
       fi
       return $returnValue
    fi
