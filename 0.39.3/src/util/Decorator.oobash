@@ -71,7 +71,7 @@ __decoratorCheck() {
    declare -i offset=0
    declare -i line="${BASH_LINENO}"
 
-   # important if you change PWD in script and you start the script eg ./script.sh
+   # ||: important if you change PWD in script and you start the script with relative path eg ./script.sh
    2>/dev/null mapfile Arr < "${file}" || mapfile Arr < "${__SCRIPT__}"
 
    # TODO: look for () is weak...
