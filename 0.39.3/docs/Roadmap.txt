@@ -3,16 +3,13 @@
 # 0.39.3
 -better documentation of generators in the oobash man page / Readme ? yes
 -documentation of  decorators ? yes
--documentation: what to do if i need my own exceptions
+-documentation: what to do if i want to define my own exception
 
 -constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
 
 Process:
 --------
-try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
  
-http://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
-
 getPid --Done -not ready -Docs missing
 getParentPid --Done -not ready -Docs missing
 getUser --Done -not ready -Docs missing
