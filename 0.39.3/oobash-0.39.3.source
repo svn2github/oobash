@@ -343,8 +343,8 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != $(Boolean.TRUE) ]] && [[ ! -z $P
    System.out.println 
    I18n.out.println " Try the developer tool: Class.generator"
    System.out.println 
-   I18n.out.println " Classes: String, File, Boolean, System, Math"
-   I18n.out.println " Constructors: String, File, Boolean"
+   I18n.out.println " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level"
+   I18n.out.println " Constructors: String, File, Boolean, Process, Level"
    I18n.out.println " Usage: String a teststring or File a testfile or Boolean a True"
    System.out.println 
    System.out.println " String:"
