@@ -6,7 +6,7 @@
 #############################################################
 
 # TODO: if there is no tail, try string manipulation ?
-# TODO:if there is no tail and no ps and os = linux use /proc where possible
+# TODO: if there is no tail and no ps and os = linux use /proc where possible
 
 #########################
 # constructor  function #
@@ -687,7 +687,7 @@ Process.help() {
                   b.equals c
                   >>>true
             ";;&
-         *)   if [[ $match == $(Boolean.FALSE) ]]; then
+         *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
                     "   

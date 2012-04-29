@@ -20,7 +20,7 @@ I18n.out.message() {
    if (( $# <= 1  )); then
       local printStream=out
       local message="$1"
-      __i18nMessage "$message"
+      __i18nMessage "${message}"
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -36,7 +36,7 @@ I18n.err.message() {
    local printStream=err
    if (( $# <= 1  )); then
       local message="$1"
-      __i18nMessage "$message"
+      __i18nMessage "${message}"
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
@@ -93,7 +93,7 @@ I18n.help() {
             Throws:
                IllegalArgumentException - if number of arguments > 1
             ";;&   
-         *)   if [[ $match == $(Boolean.FALSE) ]]; then
+         *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  I18n.${printStream}.println "                                  
                        No help found for $1
                     "   

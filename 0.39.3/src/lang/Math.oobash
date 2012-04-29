@@ -2187,7 +2187,7 @@ Math.help() {
                   Math.atan NaN
                   >>>NaN
             ";;&
-         *)   if [[ $match == $(Boolean.FALSE) ]]; then
+         *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
                     "   

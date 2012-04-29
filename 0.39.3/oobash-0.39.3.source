@@ -130,7 +130,7 @@ declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUppe
                               isAscii isDigit isHexDigit isPrintable isSpace isVisible zfill capitalize
                               center swapCase title   toUpperCase toLowerCase length concat trim contains
                               isEmpty startsWith lastIndexOf indexOf charAt endsWith replaceFirst replaceAll
-                              reverse substring equalsIgnoreCase matches rstrip lstrip isTitle  compareToIgnoreCase) 
+                              reverse substring equalsIgnoreCase matches rstrip lstrip isTitle compareToIgnoreCase) 
 
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
 
@@ -205,7 +205,7 @@ if [[ ! -z "$__QUIET__" ]]; then
    __registerVar __QUIET__
 fi
 
-# Export scriptpath if oobash is sourced by script
+# Export scriptpath + scriptname if oobash is sourced by script
 if [[ -z $PS1 ]]; then
    call="$(caller)"
    call="${call/[0-9]* /}"
@@ -220,6 +220,9 @@ if [[ -z $PS1 ]]; then
    unset script call
    __registerVar __SCRIPT__
 fi
+
+# Add oobash man pages to manpath
+export MANPATH=$MANPATH:${__OODIR__}/man
 
 # gnu date search:
 ###################
@@ -330,7 +333,7 @@ __registerFunction command_not_found_handle
 ###########################
 ###########################
 
-if [[ $(Boolean.parseBoolean "$__QUIET__") != $(Boolean.TRUE) ]] && [[ ! -z $PS1 ]]; then
+if [[ $(Boolean.parseBoolean "${__QUIET__}") != $(Boolean.TRUE) ]] && [[ ! -z $PS1 ]]; then
    System.out.println 
    I18n.out.message " oo-style framework for bash 4"
    I18n.out.message " Version:      ${__VERSION__}"
@@ -391,14 +394,6 @@ if [[ $(Boolean.parseBoolean "$__QUIET__") != $(Boolean.TRUE) ]] && [[ ! -z $PS1
       System.out.println
       I18n.out.message " Please install the missing package(s) to have complete functionality"
    fi
-fi
-
-# Add oobash man pages
-if command -v dirname >/dev/null 2>&1; then
-   export MANPATH=$MANPATH:"$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && System.out.println ${PWD} )"/man
-else
-   __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
-   I18n.out.message " Could not change MANPATH!"
 fi
 
 ##################################################

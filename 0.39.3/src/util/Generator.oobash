@@ -325,7 +325,7 @@ ${userClass}.help() {
                   b.equals c
                   >>>true
             \";;&
-         *)   if [[ \$match == \$(Boolean.FALSE) ]]; then
+         *)   if [[ \"\${match}\" == \"\$(Boolean.FALSE)\" ]]; then
                  System.\${printStream}.println \"                                  
                        No help found for \$1
                     \"   

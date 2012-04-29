@@ -1,20 +1,15 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.3
-
--look for other places in code for chained returnValues + Exception to stderr
 -better documentation of generators in the oobash man page / Readme ? yes
 -documentation of  decorators ? yes
--constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
--check this: http://www.mail-archive.com/bug-bash@gnu.org/msg05342.html
--substitute echos in Private.oobash
+-documentation: what to do if i need my own exceptions
 
+-constructors should throw IllegalArgumentExceptions instead of "echo ...; return 1" ???
 
 Process:
 --------
 try to care for http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/
-
-see stacktrace : if os = Linux use proc filesystem, else ps and tail
  
 http://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
 
@@ -23,15 +18,11 @@ getParentPid --Done -not ready -Docs missing
 getUser --Done -not ready -Docs missing
 getStatus --Done -Docs missing
 Process.create --Done -not ready -Docs missing
-Process.exists --Done -not ready -Docs missing --> __exists ???
+Process.exists --Done -not ready -Docs missing
 kill --Done -not ready -Docs missing
 getPriority --Done -not ready -Docs missing
 setPriority --Done -not ready -Docs missing
-__isDaemon (no controlling terminal) -- Yes
-__getThreads ??
-__children ??
-...
-lot of getters (ps: set of STANDARD FORMAT SPECIFIERS + http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/ps.1.html Keywords)
+isDaemon --Done -not ready -Docs missing
 
 Declare return value:
 ----------------------
