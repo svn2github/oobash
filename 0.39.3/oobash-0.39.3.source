@@ -13,14 +13,14 @@
 ######################
 ######################
 
-__STARTTIME__="$(date +%s.%N 2>/dev/null)"
+__STARTTIME__="`date +%s.%N 2>/dev/null`"
 # hope to find a gnu date on macos systems (can't test this)
-if [[ -x "/opt/local/bin/date" ]]; then
-   __STARTTIME__="$(/opt/local/bin/date +%s.%N 2>/dev/null)"
+if [ -x "/opt/local/bin/date" ]; then
+   __STARTTIME__="`/opt/local/bin/date +%s.%N 2>/dev/null`"
 fi
 
-if [[ -x "/opt/local/bin/gdate" ]]; then
-   __STARTTIME__="$(/opt/local/bin/gdate +%s.%N 2>/dev/null)"
+if [ -x "/opt/local/bin/gdate" ]; then
+   __STARTTIME__="`/opt/local/bin/gdate +%s.%N 2>/dev/null`"
 fi
 SECONDS=0
 __VERSION__="0.39.3"
@@ -36,7 +36,7 @@ export TEXTDOMAIN=oobash
 export TEXTDOMAINDIR="${0%${0##*/}}"locale
 
 # you should source not execute
-if [[ ${0##*/} == ${__FILENAME__} ]]; then
+if [ "${0##*/}" = "${__FILENAME__}" ]; then
    echo $"Sorry, you should: source ${__FILENAME__} and not execute it..."
    unset __FILENAME__
    unset __VERSION__
