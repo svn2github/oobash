@@ -335,17 +335,17 @@ __registerFunction command_not_found_handle
 
 if [[ $(Boolean.parseBoolean "${__QUIET__}") != $(Boolean.TRUE) ]] && [[ ! -z $PS1 ]]; then
    System.out.println 
-   I18n.out.message " oo-style framework for bash 4"
-   I18n.out.message " Version:      ${__VERSION__}"
-   I18n.out.message " Author:       andreas.gregor.frank@googlemail.com"
+   I18n.out.println " oo-style framework for bash 4"
+   I18n.out.println " Version:      ${__VERSION__}"
+   I18n.out.println " Author:       andreas.gregor.frank@googlemail.com"
    System.out.println 
-   I18n.out.message " Stop showing this message by setting __QUIET__=true"
+   I18n.out.println " Stop showing this message by setting __QUIET__=true"
    System.out.println 
-   I18n.out.message " Try the developer tool: Class.generator"
+   I18n.out.println " Try the developer tool: Class.generator"
    System.out.println 
-   I18n.out.message " Classes: String, File, Boolean, System, Math"
-   I18n.out.message " Constructors: String, File, Boolean"
-   I18n.out.message " Usage: String a teststring or File a testfile or Boolean a True"
+   I18n.out.println " Classes: String, File, Boolean, System, Math"
+   I18n.out.println " Constructors: String, File, Boolean"
+   I18n.out.println " Usage: String a teststring or File a testfile or Boolean a True"
    System.out.println 
    System.out.println " String:"
    System.out.println "  -base64Decode -base64Encode -capitalize -center -charAt -concat -contains -count -endsWith"
@@ -364,7 +364,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != $(Boolean.TRUE) ]] && [[ ! -z $P
    System.out.println "  -getTotalSpace -getFreeSpace -getUsableSpace -File.createTemporaryFile -File.createTempFile "
    System.out.println " Boolean:"
    System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"
-   I18n.out.message " Usage: a.toString"
+   I18n.out.println " Usage: a.toString"
    System.out.println 
    System.out.println " Math:"
    System.out.println "  -Math.random -Math.cos -Math.sin -Math.tan -Math.sqrt -Math.exp -Math.abs -Math.acos"
@@ -375,24 +375,24 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != $(Boolean.TRUE) ]] && [[ ! -z $P
    System.out.println "  -System.exit -System.currentTimeMillis -System.currentTimeNanos -System.out.println"
    System.out.println "  -System.err.println -System.out.print System.err.print -System.runtime"
    System.out.println 
-   I18n.out.message " Some String constants:"
+   I18n.out.println " Some String constants:"
    System.out.println "  -String.digits -String.asciiLetters -String.asciiLettersLowerCase"
    System.out.println "  -String.asciiLettersUpperCase -String.hexDigits -String.octDigits"
-   I18n.out.message " Some Math constants: -Math.E -Math.PI"
-   I18n.out.message " Some Boolean constants:  -Boolean.TRUE -Boolean.FALSE"
+   I18n.out.println " Some Math constants: -Math.E -Math.PI"
+   I18n.out.println " Some Boolean constants:  -Boolean.TRUE -Boolean.FALSE"
    System.out.println 
-   I18n.out.message " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help ..."
-   I18n.out.message " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
-   I18n.out.message " Example: String.help zfill"
+   I18n.out.println " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help ..."
+   I18n.out.println " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
+   I18n.out.println " Example: String.help zfill"
    System.out.println 
    # Check for external commands --> NotInPathException if command not found
-   I18n.out.message " Doing dependency check..."
+   I18n.out.println " Doing dependency check..."
    System.out.println
    if __dependencyCheck; then
-      I18n.out.message " Everything ok!"
+      I18n.out.println " Everything ok!"
    else
       System.out.println
-      I18n.out.message " Please install the missing package(s) to have complete functionality"
+      I18n.out.println " Please install the missing package(s) to have complete functionality"
    fi
 fi
 
@@ -428,5 +428,5 @@ if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]; then
    Level TRACE 5000 "TRACE"  7         2>/dev/null
    Level ALL -Infinity "ALL"  7        2>/dev/null
    
-return 0
+   return 0
 fi

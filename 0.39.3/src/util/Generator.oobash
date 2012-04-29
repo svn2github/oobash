@@ -21,7 +21,7 @@ Class.generator() {
       shift
       eval local \'"$userClass"\'=test 2>/dev/null
       if (( $? != 0 )); then
-         I18n.err.message "Sorry, no valid classname: '\$userClass'"
+         I18n.err.println "Sorry, no valid classname: '\$userClass'"
          return 1
       fi         
 
@@ -35,7 +35,7 @@ Class.generator() {
       do
          eval local \'"${attributes[$i]}"\'=test 2>/dev/null
          if (( $? != 0 )); then
-            I18n.err.message "Sorry, no valid attribute name: '\${attributes[$i]}'"
+            I18n.err.println "Sorry, no valid attribute name: '\${attributes[$i]}'"
             return 1
          else
             getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
@@ -76,17 +76,17 @@ $userClass() {
       done
       System.out.println "      
       if ! __visible \"\$this\"; then
-         I18n.err.message \"Sorry, objectname '\\\$this' is not valid\"
+         I18n.err.println \"Sorry, objectname '\\\$this' is not valid\"
          return 1
       fi  
 
       if ! __checkForKeywords \"\$this\"; then
-         I18n.err.message \"Sorry, objectname '\\\$this' is a keyword\"
+         I18n.err.println \"Sorry, objectname '\\\$this' is a keyword\"
          return 1
       fi 
 
       if ! __periodCheck \"\$this\"; then
-         I18n.err.message \"Sorry, no full stop character allowed in objectname\"
+         I18n.err.println \"Sorry, no full stop character allowed in objectname\"
          return 1
       fi
 
@@ -340,23 +340,23 @@ ${userClass}.help() {
       return 0       
    fi
    System.err.println
-   I18n.err.message "   Please enter one class name and the attributes"
-   I18n.err.message "   Example:" 
-   I18n.err.message "   Class.generator Person name age city > Person.oobash" 
-   I18n.err.message "   source Person.oobash" 
-   I18n.err.message "   Person a john 22 london"
-   I18n.err.message "   a.getPersonAge"
-   I18n.err.message "   >>>22" 
-   I18n.err.message "   a.getClass"
-   I18n.err.message "   >>>class Person"
-   I18n.err.message "   a.getPersonName"
-   I18n.err.message "   >>>john"
-   I18n.err.message "   a.getPersonCity"
-   I18n.err.message "   >>>london"
+   I18n.err.println "   Please enter one class name and the attributes"
+   I18n.err.println "   Example:" 
+   I18n.err.println "   Class.generator Person name age city > Person.oobash" 
+   I18n.err.println "   source Person.oobash" 
+   I18n.err.println "   Person a john 22 london"
+   I18n.err.println "   a.getPersonAge"
+   I18n.err.println "   >>>22" 
+   I18n.err.println "   a.getClass"
+   I18n.err.println "   >>>class Person"
+   I18n.err.println "   a.getPersonName"
+   I18n.err.println "   >>>john"
+   I18n.err.println "   a.getPersonCity"
+   I18n.err.println "   >>>london"
    System.err.println 
-   I18n.err.message "   If you develop something useful or funny, please" 
-   I18n.err.message "   send it to me and i will publish it on sourceforge."
-   I18n.err.message "   Happy bashing !"
+   I18n.err.println "   If you develop something useful or funny, please" 
+   I18n.err.println "   send it to me and i will publish it on sourceforge."
+   I18n.err.println "   Happy bashing !"
    System.err.println 
    return 1   
 }
@@ -416,11 +416,11 @@ Man.generator() {
       fi
    else
       System.err.println
-      I18n.err.message "   Please enter one class name"
-      I18n.err.message "   Example:" 
-      I18n.err.message "   Class.generator Person name age city > Person.oobash" 
-      I18n.err.message "   source Person.oobash"
-      I18n.err.message "   Man.generator Person"
+      I18n.err.println "   Please enter one class name"
+      I18n.err.println "   Example:" 
+      I18n.err.println "   Class.generator Person name age city > Person.oobash" 
+      I18n.err.println "   source Person.oobash"
+      I18n.err.println "   Man.generator Person"
       System.err.println 
       returnValue=1 
    fi

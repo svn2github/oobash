@@ -13,13 +13,13 @@
 #################
 #################
 
-
-I18n.out.message() {
+I18n.out.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# <= 1  )); then
       local printStream=out
       local message="$1"
+      local print=println
       __i18nMessage "${message}"
       return $returnValue
    fi
@@ -28,14 +28,15 @@ I18n.out.message() {
    __stackOrHelp "I18n" "${FUNCNAME}"
    return $returnValue
 }
-__registerFunction I18n.out.message
+__registerFunction I18n.out.println
 
-I18n.err.message() {
+I18n.err.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local printStream=err
    if (( $# <= 1  )); then
       local message="$1"
+      local print=println
       __i18nMessage "${message}"
       return $returnValue
    fi
@@ -44,7 +45,41 @@ I18n.err.message() {
    __stackOrHelp "I18n" "${FUNCNAME}"
    return $returnValue   
 }
-__registerFunction I18n.err.message
+__registerFunction I18n.err.println
+
+I18n.out.print() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# <= 1  )); then
+      local printStream=out
+      local message="$1"
+      local print=print
+      __i18nMessage "${message}"
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "I18n" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction I18n.out.print
+
+I18n.err.print() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local printStream=err
+   if (( $# <= 1  )); then
+      local message="$1"
+      local print=print
+      __i18nMessage "${message}"
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "I18n" "${FUNCNAME}"
+   return $returnValue   
+}
+__registerFunction I18n.err.print
 
 #################
 #               #
@@ -52,7 +87,7 @@ __registerFunction I18n.err.message
 #               #
 #################
 
-complete -W  "err.message out.message all" I18n.help
+complete -W  "err.print err.println out.print out.println all" I18n.help
 
 I18n.help() {  
    local printStream=${printStream:-out}
@@ -60,8 +95,8 @@ I18n.help() {
       System.${printStream}.println "
       Usage: I18n.help all|methodname
       Available methods:
-      -I18n.out.message
-      -I18n.err.message
+      -I18n.out.println -I18n.err.println
+      -I18n.out.print -I18n.err.print
       Constructor: 
       None
                  "
@@ -71,10 +106,34 @@ I18n.help() {
    do
       local match=$(Boolean.FALSE)  
       case $1 in 
-         I18n.out.message|out.message|all)
+         I18n.out.println|out.println|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            I18n.out.message
+            I18n.out.println
+               Translates a natural language message into the user’s language, by looking 
+               up the translation in a message catalog and prints the message and then terminates 
+               to stdout.
+            Parameters:
+               x - The message to be translated and printed.
+            Throws:
+               IllegalArgumentException - if number of arguments > 1 
+            ";;&
+         I18n.err.println|err.println|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            I18n.err.println
+               Translates a natural language message into the user’s language, by looking 
+               up the translation in a message catalog and prints the message and then terminates
+               to stderr.
+            Parameters:
+               x - The message to be translated and printed.
+            Throws:
+               IllegalArgumentException - if number of arguments > 1
+            ";;& 
+         I18n.out.print|out.print|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            I18n.out.print
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message to stdout.
             Parameters:
@@ -82,25 +141,25 @@ I18n.help() {
             Throws:
                IllegalArgumentException - if number of arguments > 1 
             ";;&
-         I18n.err.message|err.message|all)
+         I18n.err.print|err.print|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            I18n.err.message
+            I18n.err.print
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message to stderr.
             Parameters:
                x - The message to be translated and printed.
             Throws:
                IllegalArgumentException - if number of arguments > 1
-            ";;&   
+            ";;& 
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 I18n.${printStream}.println "                                  
+                 System.${printStream}.println "                                  
                        No help found for $1
                     "   
               fi
               ;;& 
       esac    
       shift
-   done            
+   done           
 }
 __registerFunction I18n.help

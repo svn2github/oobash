@@ -20,17 +20,17 @@ Process() {
       declare -i pid="$2"
       
       if ! __visible "$this"; then
-         I18n.err.message "Sorry, objectname '\$this' is not valid"
+         I18n.err.println "Sorry, objectname '\$this' is not valid"
          return 1
       fi
 
       if ! __checkForKeywords "$this"; then
-         I18n.err.message "Sorry, objectname '\$this' is a keyword"
+         I18n.err.println "Sorry, objectname '\$this' is a keyword"
          return 1
       fi 
 
       if ! __periodCheck "$this"; then
-         I18n.err.message "Sorry, no full stop character allowed in objectname"
+         I18n.err.println "Sorry, no full stop character allowed in objectname"
          return 1
       fi
 
@@ -574,11 +574,10 @@ Process.help() {
       System.${printStream}.println "
                     Usage: Process.help all|methodname
                     Available methods:
-                    -getClass
-                    -toString
-                    -equals
-                    -hashCode
-                    -getPid
+                    -getClass -toString -equals -hashCode -getPid
+                    -getParentPid -getUser -getStatus -getCommand
+                    -getPriority -setPriority -kill -isDaemon
+                    -Process.create -Process.exists,
                     Constructor: 
                     -Process
       " 
@@ -604,6 +603,164 @@ Process.help() {
                Example:
                   Process a <pid> 
             ";;& 
+         getParentPid|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getParentPid
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.getParentPid
+                  >>>0
+            ";;& 
+         getUser|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getUser
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.getUser
+                  >>>1
+            ";;& 
+         getStatus|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getStatus
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.getStatus
+                  >>>1
+            ";;& 
+         getCommand|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getCommand
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.getCommand
+                  >>>1
+            ";;& 
+         getPriority|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getPriority
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.getPriority
+                  >>>1
+            ";;& 
+         setPriority|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setPriority
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.setPriority
+                  >>>1
+            ";;& 
+         kill|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               kill
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.kill
+                  >>>1
+            ";;& 
+         isDaemon|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isDaemon
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.isDaemon
+                  >>>1
+            ";;& 
+         Process.create|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Process.create
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process.create
+                  >>>1
+            ";;& 
+         Process.exists|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Process.exists
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process.exists
+                  >>>1
+            ";;& 
          getPid|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -617,7 +774,7 @@ Process.help() {
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   Process b 1
-                  b.getProcessPid
+                  b.getPid
                   >>>1
             ";;& 
          getClass|all)

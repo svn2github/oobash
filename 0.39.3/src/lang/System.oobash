@@ -254,7 +254,7 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.out.println
-               Prints a String and then terminate the line to \"standard\" output 
+               Print a String and then terminate the line to \"standard\" output 
             Parameters:
                x - The String to be printed.
             Throws:
@@ -267,7 +267,7 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.err.println
-               Prints a String and then terminate the line to \"standard\" error output
+               Print a String and then terminate the line to \"standard\" error output
             Parameters:
                x - The String to be printed.
             Throws:
@@ -280,7 +280,7 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.out.print
-               Prints a String and then terminate the line to \"standard\" output 
+               Print a String to \"standard\" output 
             Parameters:
                x - The String to be printed.
             Throws:
@@ -293,7 +293,7 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.err.print
-               Prints a String to \"standard\" error output
+               Print a String to \"standard\" error output
             Parameters:
                x - The String to be printed.
             Throws:

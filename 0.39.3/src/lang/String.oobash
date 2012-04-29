@@ -27,17 +27,17 @@ String() {
       local this="$1"
 
       if ! __visible "$this"; then
-         I18n.err.message "Sorry, objectname '\$this' is not valid"
+         I18n.err.println "Sorry, objectname '\$this' is not valid"
          return 1
       fi  
 
       if ! __checkForKeywords "$this"; then
-         I18n.err.message "Sorry, objectname '\$this' is a keyword"
+         I18n.err.println "Sorry, objectname '\$this' is a keyword"
          return 1
       fi          
 
       if ! __periodCheck "$this"; then
-         I18n.err.message "Sorry, no full stop character allowed in objectname"
+         I18n.err.println "Sorry, no full stop character allowed in objectname"
          return 1
       fi
 
