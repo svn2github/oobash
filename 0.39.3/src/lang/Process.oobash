@@ -574,10 +574,10 @@ Process.help() {
       System.${printStream}.println "
                     Usage: Process.help all|methodname
                     Available methods:
-                    -getClass -toString -equals -hashCode -getPid
-                    -getParentPid -getUser -getStatus -getCommand
+                    -getClass -toString -equals -hashCode 
+                    -getUser -getStatus -getCommand -getPid
                     -getPriority -setPriority -kill -isDaemon
-                    -Process.create -Process.exists,
+                    -Process.create -Process.exists
                     Constructor: 
                     -Process
       " 
