@@ -180,7 +180,7 @@ __STACKTRACE__="false"
 or
 __HELP__="false"
 in the oobash<version>.source file.
-You can see an stacktrace example script in the docs/examples directory.
+You can see a stacktrace example script in the docs/examples directory.
 
 L) "Exceptions"
 ################
