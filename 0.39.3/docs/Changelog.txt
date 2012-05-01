@@ -194,7 +194,8 @@
 #    -hope for better macos support (can't test), by looking for gnu date/gdate in /opt/local/bin
 #    -new functions for registry: __registerAlias, __cleanUpAliases
 #    -new function for arg test: __periodCheck (checks if given string contains "." character) called by every constructor
-#    -new i18n package with I18nMessage file, content:I18n.out.message I18n.err.message I18n.help. New private function:__i18nMessage
+#    -new i18n package with I18nMessage file, content:I18n.out.message I18n.err.message I18n.help. 
+#     New private function:__i18nMessage
 #     http://tldp.org/LDP/abs/html/localization.html: $"..." syntax is deprecated --> use of gettext now
 #    -generated getters: get$Class$Attribute (Class.generator) to avoid name clashes
 #    -better readme file
@@ -204,7 +205,7 @@
 #    -oobash path is exported with the name __OODIR__
 #    -many fixes
 #    -deleted all method comments -- no time to maintain comments and help and no comments are better than wrong ones
-#    -style corections
+#    -style corrections
 #    -more consistent exceptions -> special return values for different exceptions
 # Version:      0.39.1
 #    -added stacktrace (if shell not interactive and an exception occured)
@@ -232,7 +233,7 @@
 #    Process, Process.create, Process.exists, getPid, getParentPid, getUser, getStatus, getCommand
 #    -getPriority, setPriority, kill, isDaemon
 #    -optimized stacktrace if os != linux
-#    -new Dependencies:ps, kill, renice, md5sum, sha1sum, tail
+#    -added dependencies:ps, kill, renice, md5sum, sha1sum, tail
 #    -new Exception: -NotRunningException return value:200
 #    -added global __Signals__ array
 #    -many fixes
