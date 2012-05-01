@@ -537,7 +537,7 @@ __registerFunction __posixFilePermissionsConverter
 # private
 # translates and prints message to given channel
 # called by:
-# -I18n.err.message -I18n.out.message
+# -I18n.err.print -I18n.out.print -I18n.err.println -I18n.out.println
 __i18nMessage() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local message="$1"

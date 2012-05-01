@@ -265,7 +265,7 @@ command_not_found_handle() {
    for ((i=0; i < ${#str}; i++))
    do
       local char="${str:i:1}"
-      case $char in
+      case ${char} in
          . )break;;
          * )this="$this""$char";;
       esac
@@ -276,22 +276,22 @@ command_not_found_handle() {
    # if extglob not set already --> set it now and change boolean 
    if (( $? == 1 )); then
       shopt -s extglob
-      unsetAtEnd=$(Boolean.TRUE)
+      unsetAtEnd="$(Boolean.TRUE)"
    fi 
    local method="${str/"$this"./}"
-   if [[ $(Boolean.parseBoolean "$unsetAtEnd") == $(Boolean.TRUE) ]]; then
+   if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
    shift
 
-   local objectExists=$(Boolean.FALSE)
-   local methodExists=$(Boolean.FALSE)
+   local objectExists="$(Boolean.FALSE)"
+   local methodExists="$(Boolean.FALSE)"
    
    local key
    for key in "${!__OBJECTPOOL__[@]}"
    do 
       if [[ "$this" == "$key" ]]; then
-         objectExists=$(Boolean.TRUE)
+         objectExists="$(Boolean.TRUE)"
          break
       fi
    done
@@ -301,7 +301,7 @@ command_not_found_handle() {
       for ((i=0; i < ${#string}; i++))
       do
          local char="${string:i:1}"
-         if [[ $char == "@" ]]; then
+         if [[ "${char}" == "@" ]]; then
             local class="${string:0:i}"
          fi
       done 
@@ -309,15 +309,16 @@ command_not_found_handle() {
       local meth
       for meth in $(eval echo \${!__${class}__[@]})
       do 
-         if [[ "$method" == "$(eval echo \${__${class}__[$meth]})" ]]; then
-            methodExists=$(Boolean.TRUE)  
+         if [[ "${method}" == "$(eval echo \${__${class}__[$meth]})" ]]; then
+            methodExists="$(Boolean.TRUE)"  
             break
          fi
       done
    fi
 
-   if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.FALSE) || $(Boolean.parseBoolean "$methodExists") == $(Boolean.FALSE) ]]; then
-      I18n.err.message "bash: \$str: command not found."
+   if [[ "$(Boolean.parseBoolean "$objectExists")" == "$(Boolean.FALSE)" || \
+         "$(Boolean.parseBoolean "$methodExists")" == "$(Boolean.FALSE)" ]]; then
+      I18n.err.println "bash: \$str: command not found."
       return 127
    fi
 

@@ -61,7 +61,7 @@
 
 __decoratorCheck() {
    # No use of decorators in interactive shell
-   if [[ "${0##*/}" == "bash" ]]; then
+   if [[ "${0##*/}" == "bash" ||  "${0##*/}" == "-bash" ]]; then
       return 0
    fi
 
