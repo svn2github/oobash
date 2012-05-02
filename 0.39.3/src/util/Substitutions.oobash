@@ -1,0 +1,50 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
+
+
+# stolen from bash source examples/functions/ and modified
+__basename() {
+   __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local path="$1"
+   local suffix="$2"
+   local tpath="${path%/}"
+
+   # Strip trailing '/' characters from path (unusual that this should
+   # ever occur, but basename(1) seems to deal with it.)
+   while [[ "${tpath}" != "${path}" ]]
+   do
+      tpath="${path}"
+      path="${tpath%/}"
+   done
+   # Strip off pathname
+   path="${path##*/}"
+   # Also strip off extension, if any.    
+   System.out.println "${path%${suffix}}"
+   return 0
+}
+
+# stolen from bash source examples/functions/ and modified
+__dirname() {
+   __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local dir="$1"
+   local tdir="${dir%/}"
+
+   # Strip trailing '/' characters from dir (unusual that this should
+   # ever occur, but dirname(1) seems to deal with it.)
+   while [[ "${tdir}" != "${dir}" ]]
+   do
+      tdir="${dir}"
+      dir="${tdir%/}"
+   done
+
+   if [[ "${dir%/*}" == "${dir}" ]]; then
+      System.out.println "."
+   else
+      System.out.println "${dir%/*}"
+   fi
+   return 0
+}
