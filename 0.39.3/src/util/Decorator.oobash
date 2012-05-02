@@ -14,7 +14,9 @@
 
 @calling() {
    if (($# != 0)); then
-      printf "%s\n" "Calling: $* " >&2
+      local func="$1"
+      shift;shift
+      printf "%s\n" "Calling: ${func} $*" >&2
    fi
    return 0
 }
@@ -95,7 +97,7 @@ __decoratorCheck() {
    declare -i i=0
    for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
    do
-      eval ${Arr[line-lineOffset[i]]} "$@"
+      eval ${Arr[line-lineOffset[i]]} \$@
       returnValue=$(($returnValue+$?))
    done
    return $returnValue

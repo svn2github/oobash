@@ -171,15 +171,15 @@ If you want to create an own decorator function: Do NOT use a framework command 
 
 Available decorators:
 
-@calling
+-@calling
 Prints to stderr: 
-"Calling: functionname sourcefile arguments"
+"Calling: functionname arguments"
 Example output:
-Calling: printer3 ./decorator.sh Arg1 Arg2
+Calling: printer3 Arg1 Arg2
 Returns: 0
 Dependeny: None
 
-@timestamp
+-@timestamp
 Prints to stderr: 
 "Time is  "seconds since 1970-01-01 00:00:00 UTC"."nanoseconds (000000000..999999999)" [seconds.nanoseconds]"
 Example output:
@@ -187,7 +187,7 @@ Time is 1335983081.406097069 [seconds.nanoseconds]
 Returns: 0
 Dependency: GNU date
 
-@deprecated
+-@deprecated
 Prints to stderr:
 "DeprecatedWarning for functionname"
 Example output:
@@ -195,7 +195,7 @@ DeprecatedWarning for printer3
 Returns 0
 Dependeny: None
 
-@runtime
+-@runtime
 Prints to stderr: 
 "Runtime: "seconds since script start" or "seconds.nanoseconds since script start" [seconds.nanoseconds] or [seconds]"
 Example output:
