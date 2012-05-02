@@ -21,7 +21,7 @@
 
 @timestamp() {
    if (($# != 0)); then
-      printf "%s\n" "Time is $(date "+%s.%N" 2>/dev/null)" >&2
+      printf "%s\n" "Time is $(date "+%s.%N" 2>/dev/null) [seconds.nanoseconds]" >&2
    fi
    return 0
 }
@@ -40,7 +40,7 @@
          local testtimestamp
          testtimestamp="$(date "+%N" 2>/dev/null)"
          # is GNU date and is bc available ?
-         if [[ "${testtimestamp:$((${#testtimestamp}-1))}" != "N" ]] && command -v bc >/dev/null 2>&1; then
+         if [[ "${testtimestamp: -1}" != "N" ]] && command -v bc >/dev/null 2>&1; then
             local time="$(printf "%s\n" "$(date +"%s.%N")-${__STARTTIME__}" | bc -l)"
             if [[ "${time:0:1}" == "." ]]; then
                time=0"${time}"

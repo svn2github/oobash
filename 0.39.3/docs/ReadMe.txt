@@ -166,9 +166,44 @@ J) "Decorators"
 Will only work if shell is not interactive (script).
 You can see an example script using "decorators" in the docs/examples directory.
 __decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
-Available "decorators" at the moment: @calling @timestamp @deprecated @runtime
 Decorators use stderr for echos, because the framework communication is on stdout.
 If you want to create an own decorator function: Do NOT use a framework command (e.g. System.out.println) in this decorator function!
+
+Available decorators:
+
+@calling
+Prints to stderr: 
+"Calling: functionname sourcefile arguments"
+Example output:
+Calling: printer3 ./decorator.sh Arg1 Arg2
+Returns: 0
+Dependeny: None
+
+@timestamp
+Prints to stderr: 
+"Time is  "seconds since 1970-01-01 00:00:00 UTC"."nanoseconds (000000000..999999999)" [seconds.nanoseconds]"
+Example output:
+Time is 1335983081.406097069 [seconds.nanoseconds]
+Returns: 0
+Dependency: GNU date
+
+@deprecated
+Prints to stderr:
+"DeprecatedWarning for functionname"
+Example output:
+DeprecatedWarning for printer3
+Returns 0
+Dependeny: None
+
+@runtime
+Prints to stderr: 
+"Runtime: "seconds since script start" or "seconds.nanoseconds since script start" [seconds.nanoseconds] or [seconds]"
+Example output:
+Runtime: 0.127926244 [seconds.nanoseconds]
+or if there is no bc or GNU date:
+Runtime: 3 [seconds]
+Returns 0
+Dependeny: None for seconds output, bc and GNU date for [seconds.nanoseconds] output
 
 K) Stacktrace
 ##############
@@ -184,6 +219,10 @@ You can see a stacktrace example script in the docs/examples directory.
 
 L) "Exceptions"
 ################
+If you want to use your own exception, you can define name and return value in the associative array:
+__ExceptionValues__. This array is defined in the oobash<version>.source file.
+Key is the name of the exception and value is the return value.
+
 The different existing exceptions and their return values:
 
 Exception                             ReturnValue
