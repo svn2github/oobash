@@ -28,7 +28,7 @@ Math.sin() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+            if [[ "${val}" == "NaN" || "${val}" == "Infinity" || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
             fi 
@@ -38,10 +38,10 @@ Math.sin() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -70,7 +70,7 @@ Math.cos() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+            if [[ "${val}" == "NaN" || "${val}" == "Infinity" || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
             fi 
@@ -80,10 +80,10 @@ Math.cos() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -112,18 +112,23 @@ Math.tan() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+            if [[ "${val}" == "NaN" || "${val}" == "Infinity" || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
             fi
-            local cos=$(Math.cos "$val")
+            local cos
+            cos=$(Math.cos "${val}")
+            returnValue=$?
+            if (( $returnValue != 0 )); then
+               return $returnValue
+            fi
             zerodivtest=$(System.out.println "$cos==0" | bc -l)
-            if (( $zerodivtest == 1 )); then
+            if (( zerodivtest == 1 )); then
                # FIXME ? NaN/Not defined/cos=10^-20
                System.out.println "NaN"
                return $returnValue
             fi
-            if [[ $cos == "NaN" || $cos == "Infinity" || $cos == "-Infinity" ]]; then
+            if [[ "${cos}" == "NaN" || "${cos}" == "Infinity" || "${cos}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
             fi
@@ -133,10 +138,10 @@ Math.tan() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -165,13 +170,13 @@ Math.atan() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then 
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ $val == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println $(Math.multiplier $(Math.PI) 0.5)
                return $returnValue            
-            elif [[ $val == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println $(Math.multiplier $(Math.PI) -0.5)
                return $returnValue                    
             fi
@@ -181,10 +186,10 @@ Math.atan() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -213,7 +218,7 @@ Math.asin() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+            if [[ "${val}" == "NaN" || "${val}" == "Infinity" || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
             fi 
@@ -223,12 +228,12 @@ Math.asin() {
                return $returnValue 
             fi 
             zerodivtest=$(System.out.println "$val==1" | bc -l)
-            if (( $zerodivtest == 1 )); then
+            if (( zerodivtest == 1 )); then
                System.out.println "$(Math.PI)/2" | bc -l
                return $returnValue 
             fi
             zerodivtest=$(System.out.println "$val==-1" | bc -l)
-            if (( $zerodivtest == 1 )); then
+            if (( zerodivtest == 1 )); then
                System.out.println "-$(Math.PI)/2" | bc -l
                return $returnValue 
             fi
@@ -239,10 +244,10 @@ Math.asin() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -271,7 +276,7 @@ Math.acos() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then
-            if [[ $val == "NaN" || $val == "Infinity" || $val == "-Infinity" ]]; then
+            if [[ "${val}" == "NaN" || "${val}" == "Infinity" || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
             fi 
@@ -281,7 +286,7 @@ Math.acos() {
                return $returnValue 
             fi 
             zerodivtest=$(System.out.println "$val==0" | bc -l)
-            if (( $zerodivtest == 1 )); then
+            if (( zerodivtest == 1 )); then
                System.out.println "$(Math.PI)/2" | bc -l
                return $returnValue 
             fi  
@@ -292,10 +297,10 @@ Math.acos() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -327,16 +332,16 @@ Math.max() {
          val2=$(__mathConverter "$2")
          if (( $? == 0 )); then
             if command -v bc >/dev/null 2>&1; then
-               if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
+               if [[ "${val1}" == "NaN" || "${val2}" == "NaN" ]]; then
                   System.out.println "NaN"
                   return $returnValue
-               elif [[ $val1 == "Infinity" || $val2 == "Infinity" ]]; then
+               elif [[ "${val1}" == "Infinity" || "${val2}" == "Infinity" ]]; then
                   System.out.println "Infinity"
                   return $returnValue   
-               elif [[ $val1 == "-Infinity" ]]; then
+               elif [[ "${val1}" == "-Infinity" ]]; then
                   System.out.println $2
                   return $returnValue         
-               elif [[ $val2 == "-Infinity" ]]; then
+               elif [[ "${val2}" == "-Infinity" ]]; then
                   System.out.println $1
                   return $returnValue     
                fi                 
@@ -382,16 +387,16 @@ Math.min() {
          val2=$(__mathConverter "$2")
          if (( $? == 0 )); then
             if command -v bc >/dev/null 2>&1; then            
-               if [[ $val1 == "NaN" || $val2 == "NaN" ]]; then
+               if [[ "${val1}" == "NaN" || "${val2}" == "NaN" ]]; then
                   System.out.println "NaN"
                   return $returnValue
-               elif [[ $val1 == "-Infinity" || $val2 == "-Infinity" ]]; then
+               elif [[ "${val1}" == "-Infinity" || "${val2}" == "-Infinity" ]]; then
                   System.out.println "-Infinity"
                   return $returnValue   
-               elif [[ $val1 == "Infinity" ]]; then
+               elif [[ "${val1}" == "Infinity" ]]; then
                   System.out.println $2
                   return $returnValue         
-               elif [[ $val2 == "Infinity" ]]; then
+               elif [[ "${val2}" == "Infinity" ]]; then
                   System.out.println $1
                   return $returnValue     
                fi               
@@ -434,10 +439,10 @@ Math.abs() {
       val1=$(__mathConverter "$1")
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then      
-            if [[ $val == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ $val == "Infinity" || $val == "-Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" || "${val}" == "-Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue            
             fi      
@@ -474,10 +479,10 @@ Math.sqrt() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then 
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" || $val == "-Infinity" ]]; then
+            if [[ "${val}" == "NaN" || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ $val == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue            
             fi
@@ -492,10 +497,10 @@ Math.sqrt() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -524,13 +529,13 @@ Math.exp() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ $val == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ $val == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println 0
                return $returnValue
             fi 
@@ -540,10 +545,10 @@ Math.exp() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -572,13 +577,13 @@ Math.expm1() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ $val == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ $val == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println -1
                return $returnValue
             fi 
@@ -588,10 +593,10 @@ Math.expm1() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -620,13 +625,13 @@ Math.sinh() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ "$val" == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ "$val" == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ "$val" == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return $returnValue
             fi 
@@ -637,10 +642,10 @@ Math.sinh() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -669,10 +674,10 @@ Math.cosh() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ "$val" == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ "$val" == "Infinity" || "$val" == "-Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" || "${val}" == "-Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
             elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
@@ -686,10 +691,10 @@ Math.cosh() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -718,13 +723,13 @@ Math.tanh() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ "$val" == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ "$val" == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println 1
                return $returnValue
-            elif [[ "$val" == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println -1
                return $returnValue
             fi 
@@ -735,10 +740,10 @@ Math.tanh() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -792,18 +797,18 @@ Math.random() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       if command -v bc >/dev/null 2>&1; then 
-         local unsetAtEnd=$(Boolean.FALSE) 
+         local unsetAtEnd="$(Boolean.FALSE)"
          # is extglob set ?
          shopt -q extglob
          # if extglob not set already --> set it now and change boolean 
          if (( $? == 1 )); then
             shopt -s extglob
-            unsetAtEnd=$(Boolean.TRUE)
+            unsetAtEnd="$(Boolean.TRUE)"
          fi    
          res=$(System.out.println "scale=15; $RANDOM/32768" | bc -l)
          result="${res%%+([0])}"
-         System.out.println 0$result  
-         if [[ "$unsetAtEnd" == $(Boolean.TRUE) ]]; then
+         System.out.println 0"${result}"  
+         if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
             shopt -u extglob
          fi  
          return $returnValue
@@ -827,28 +832,28 @@ Math.adder() {
       if command -v bc >/dev/null 2>&1; then
          local str=''
          declare -i returnValue=0
-         local first=$(Boolean.TRUE)
+         local first="$(Boolean.TRUE)"
          while (( $# ))
          do
             local value
             value=$(__mathConverter "$1")
             if (( $? == 0 )); then
-               if [[ $first == $(Boolean.TRUE) ]]; then
-                  if [[ "$value" == "NaN" ]]; then
+               if [[ "${first}" == "$(Boolean.TRUE)" ]]; then
+                  if [[ "${value}" == "NaN" ]]; then
                      System.out.println "NaN"
                      return $returnValue
-                  elif [[ "$value" == "Infinity" ]]; then
+                  elif [[ "${value}" == "Infinity" ]]; then
                      posinf="yes"
-                  elif [[ "$value" == "-Infinity" ]]; then
+                  elif [[ "${value}" == "-Infinity" ]]; then
                      neginf="yes"
                   fi
-                  str="($value)"
+                  str="(${value})"
                   first=$(Boolean.FALSE)
                else
-                  if [[ "$value" == "NaN" ]]; then
+                  if [[ "${value}" == "NaN" ]]; then
                      System.out.println "NaN"
                      return $returnValue
-                  elif [[ "$value" == "Infinity" ]]; then
+                  elif [[ "${value}" == "Infinity" ]]; then
                      posinf="yes"
                   elif [[ "$value" == "-Infinity" ]]; then
                      neginf="yes"
@@ -866,13 +871,13 @@ Math.adder() {
          if (( $returnValue != 0 )); then
             return $returnValue
          fi
-         if [[ $neginf == "yes" && $posinf == "yes" ]]; then
+         if [[ "${neginf}" == "yes" && "${posinf}" == "yes" ]]; then
             System.out.println "NaN"
             return $returnValue
-         elif  [[ $neginf == "yes" ]]; then
+         elif  [[ "${neginf}" == "yes" ]]; then
             System.out.println "-Infinity"
             return $returnValue
-         elif  [[ $posinf == "yes" ]]; then
+         elif  [[ "${posinf}" == "yes" ]]; then
             System.out.println "Infinity"
             return $returnValue     
          fi 
@@ -882,10 +887,10 @@ Math.adder() {
             return $returnValue
          fi
          if [[ "${output:0:1}" == "." ]]; then
-            System.out.println 0"$output"
+            System.out.println 0"${output}"
             return $returnValue 
          fi
-         System.out.println "$output"
+         System.out.println "${output}"
          return $returnValue 
       fi
       __throw "NotInPathException" ": bc not in path"
@@ -915,27 +920,27 @@ Math.multiplier() {
             local value
             value=$(__mathConverter "$1")
             if (( $? == 0 )); then
-               if [[ $first == $(Boolean.TRUE) ]]; then
-                  if [[ "$value" == "NaN" ]]; then
+               if [[ "${first}" == "$(Boolean.TRUE)" ]]; then
+                  if [[ "${value}" == "NaN" ]]; then
                      System.out.println "NaN"
                      return $returnValue
-                  elif [[ "$value" == "Infinity" ]]; then
+                  elif [[ "${value}" == "Infinity" ]]; then
                      posinf="yes"
-                  elif [[ "$value" == "-Infinity" ]]; then
+                  elif [[ "${value}" == "-Infinity" ]]; then
                      neginf="yes"
                   fi
                   str="($value)"
-                  first=$(Boolean.FALSE)
+                  first="$(Boolean.FALSE)"
                else
-                  if [[ "$value" == "NaN" ]]; then
+                  if [[ "${value}" == "NaN" ]]; then
                      System.out.println "NaN"
                      return $returnValue
-                  elif [[ "$value" == "Infinity" ]]; then
+                  elif [[ "${value}" == "Infinity" ]]; then
                      posinf="yes"
-                  elif [[ "$value" == "-Infinity" ]]; then
+                  elif [[ "${value}" == "-Infinity" ]]; then
                      neginf="yes"
                   fi                    
-                  str="$str*($value)"
+                  str="$str*(${value})"
                fi
             else
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
@@ -964,10 +969,10 @@ Math.multiplier() {
             return $returnValue
          fi
          if [[ "${output:0:1}" == "." ]]; then
-            System.out.println 0"$output"
+            System.out.println 0"${output}"
             return $returnValue 
          fi
-         System.out.println "$output"
+         System.out.println "${output}"
          return $returnValue
       fi
       __throw "NotInPathException" ": bc not in path"
@@ -990,10 +995,10 @@ Math.log() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN"  || $val == "-Infinity" ]]; then
+            if [[ "${val}" == "NaN"  || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ $val == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
             elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
@@ -1009,10 +1014,10 @@ Math.log() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -1041,13 +1046,13 @@ Math.log10() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ $val == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ $val == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue            
             elif (( $(System.out.println "$val==0" | bc -l) == 1 )); then
@@ -1060,10 +1065,10 @@ Math.log10() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -1092,10 +1097,10 @@ Math.log1p() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ $val == "Infinity" ]]; then
+            if [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ $val == "NaN" || $val == "-Infinity" ]]; then
+            elif [[ "${val}" == "NaN" || "${val}" == "-Infinity" ]]; then
                System.out.println "NaN"
                return $returnValue
             elif (( $(System.out.println "$val<-1" | bc -l) == 1 )); then
@@ -1111,10 +1116,10 @@ Math.log1p() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -1143,13 +1148,13 @@ Math.toDegrees() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ "$val" == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ "$val" == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ "$val" == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return $returnValue
             fi 
@@ -1159,10 +1164,10 @@ Math.toDegrees() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -1191,13 +1196,13 @@ Math.toRadians() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ "$val" == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ "$val" == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ "$val" == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return $returnValue
             fi 
@@ -1207,10 +1212,10 @@ Math.toRadians() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -1239,13 +1244,13 @@ Math.ceil() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ "$val" == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ "$val" == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ "$val" == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return $returnValue
             fi 
@@ -1256,10 +1261,10 @@ Math.ceil() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
@@ -1288,13 +1293,13 @@ Math.floor() {
       val=$(__mathConverter "$1") 
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then 
-            if [[ "$val" == "NaN" ]]; then
+            if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
-            elif [[ "$val" == "Infinity" ]]; then
+            elif [[ "${val}" == "Infinity" ]]; then
                System.out.println "Infinity"
                return $returnValue
-            elif [[ "$val" == "-Infinity" ]]; then
+            elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return $returnValue
             fi 
@@ -1306,16 +1311,16 @@ Math.floor() {
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println 0"$output"
+               System.out.println 0"${output}"
                return $returnValue 
             fi
-            System.out.println "$output"
+            System.out.println "${output}"
             return $returnValue
          fi
          __throw "NotInPathException" ": bc not in path"
          returnValue=$?
          __stackOrHelp "Math" "${FUNCNAME}"
-   return $returnValue
+         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
@@ -1341,13 +1346,13 @@ Math.hypot() {
          val2=$(__mathConverter "$2")
          if (( $? == 0 )); then
             if command -v bc >/dev/null 2>&1; then 
-               if [[ "$val1" == "Infinity" || "$val1" == "-Infinity" ]]; then
+               if [[ "${val1}" == "Infinity" || "${val1}" == "-Infinity" ]]; then
                   System.out.println "Infinity"
                   return $returnValue
-               elif [[ "$val2" == "Infinity" || "$val2" == "-Infinity" ]]; then
+               elif [[ "${val2}" == "Infinity" || "${val2}" == "-Infinity" ]]; then
                   System.out.println "Infinity"
                   return $returnValue                              
-               elif [[ "$val1" == "NaN" || "$val2" == "NaN" ]]; then 
+               elif [[ "${val1}" == "NaN" || "${val2}" == "NaN" ]]; then 
                   System.out.println "NaN"
                   return $returnValue            
                fi 
@@ -1358,10 +1363,10 @@ Math.hypot() {
                   return $returnValue
                fi
                if [[ "${output:0:1}" == "." ]]; then
-                  System.out.println 0"$output"
+                  System.out.println 0"${output}"
                   return $returnValue 
                fi
-               System.out.println "$output"
+               System.out.println "${output}"
                return $returnValue
             else
                __throw "NotInPathException" ": bc not in path"
