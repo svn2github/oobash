@@ -374,15 +374,8 @@ __getParent() {
    if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if command -v dirname >/dev/null 2>&1; then 
-         dirname -- "${file}"
-         return $?
-      else
-         __throw "NotInPathException" ": dirname not in path"
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
+      __dirname "${file}"
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -706,31 +699,17 @@ __getCanonicalPath() {
          if (( $? == 0 )); then
             System.out.println "$result"
          else
-            if command -v basename >/dev/null 2>&1; then
-               if command -v dirname >/dev/null 2>&1; then
-                  if command -v pwd >/dev/null 2>&1; then
-                     cd -P -- "$(dirname -- "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(basename -- "${file}")"
-                     if (( $? != 0 )); then
-                        readlink -m -- "${file}"
-                     fi
-                  else
-                     __throw "NotInPathException" ": pwd not in path"
-                     returnValue=$?
-                     __stackOrHelp "$2" "${FUNCNAME:2}"
-                     return $returnValue
-                  fi
-               else
-                  __throw "NotInPathException" ": dirname not in path (install the GNU sh-utils ?)"
-                  returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
-               fi               
+            if command -v pwd >/dev/null 2>&1; then
+               cd -P -- "$(__dirname "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(__basename "${file}")"
+               if (( $? != 0 )); then
+                  readlink -m -- "${file}"
+               fi
             else
-               __throw "NotInPathException" ": basename not in path (install the GNU sh-utils ?)"
+               __throw "NotInPathException" ": pwd not in path"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
-            fi            
+            fi
          fi
          return $returnValue
       fi
@@ -1912,7 +1891,6 @@ File.help() {
                   The pathname string of the parent directory named by this abstract pathname, 
                   or "." if this pathname does not name a parent
                Throws:
-                  NotInPathException - if dirname is not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   File x dfve
@@ -2227,6 +2205,8 @@ File.help() {
                   The canonical pathname string denoting the same file or directory as this abstract pathname
                Throws:
                   IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if pwd is not in path
+                                     - if readlink is not in path
                Example:
                   File a /xxx/s
                   a.getCanonicalPath

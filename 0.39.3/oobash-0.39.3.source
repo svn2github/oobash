@@ -115,7 +115,7 @@ unset signal sig counter
 shopt -u extglob
 
 # all external commands used in this framework:
-declare -a __Dependencies__=(base64 basename bc chmod date dirname mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum renice tail)
+declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum renice tail)
 
 # Arrays for framework methods:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
@@ -169,6 +169,7 @@ __registerFunction __import
 __import oobash.util.Decorator
 __import oobash.util.Registry
 __import oobash.util.Generator
+__import oobash.util.Substitutions
 
 # import private functions
 __import oobash.private.Private
