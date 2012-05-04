@@ -27,18 +27,24 @@ Boolean() {
       local this="$1"
 
       if ! __visible "$this"; then
-         I18n.err.println "Sorry, objectname '\$this' is not valid"
-         return 1
-      fi       
+         __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
 
       if ! __checkForKeywords "$this"; then
-         I18n.err.println "Sorry, objectname '\$this' is a keyword"
-         return 1
-      fi 
+         __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
 
       if ! __periodCheck "$this"; then
-         I18n.err.println "Sorry, no full stop character allowed in objectname"
-         return 1
+         __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
       fi
 
       local pointer="$(__getPointer)"
@@ -167,6 +173,9 @@ Boolean.help() {
                   None
                Throws:
                   IllegalArgumentException - if number of arguments != 2
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if contains full stop character
                Example:
                   Boolean a \"True\" produces a Boolean object that represents true.
                   Boolean a \"yes\"  produces a Boolean object that represents false.

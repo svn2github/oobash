@@ -236,6 +236,7 @@
 #    -added dependencies:ps, kill, renice, md5sum, sha1sum, tail
 #    -new Exception: -NotRunningException return value:200
 #    -added global __Signals__ array
+#    -all constructors now throw IllegalArgumentException intstead of a  "message + return 1"
 #    -many fixes
 
 #################################################################
