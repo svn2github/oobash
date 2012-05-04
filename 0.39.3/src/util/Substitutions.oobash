@@ -66,7 +66,7 @@ __dirname() {
    done
    dir="${tmpdir}"
 
-   # if there is no / in dir or only the root /
+   # if there is no / in dir, else...
    if [[ "${dir%/*}" == "$dir" ]]; then
       System.out.println "."
    else
