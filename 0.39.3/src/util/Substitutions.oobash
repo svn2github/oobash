@@ -55,7 +55,7 @@ __dirname() {
    dir="${tmpdir}"
 
    # if there is no / in dir or only the root /
-   if [[ "${1%/*}" == "$1" ]]; then
+   if [[ "${dir%/*}" == "$dir" ]]; then
       System.out.println "."
    else
       if [[ -z "${dir%/*}" ]]; then
