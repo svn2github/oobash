@@ -32,7 +32,7 @@ __dirname() {
    local dir="$1"
    local tmpdir="${dir%/}"
 
-   # Strip trailing '/' characters
+   # Strip trailing '/' characters from dir
    while [[ "${tmpdir}" != "${dir}" ]]
    do
       tmpdir="${dir}"
@@ -54,7 +54,7 @@ __dirname() {
    done
    dir="${tmpdir}"
 
-   # if there is no / in param or only the root /
+   # if there is no / in dir or only the root /
    if [[ "${1%/*}" == "$1" ]]; then
       System.out.println "."
    else
