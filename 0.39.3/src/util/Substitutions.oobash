@@ -27,24 +27,42 @@ __basename() {
    return 0
 }
 
-# stolen from bash source examples/functions/ and modified
 __dirname() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local dir="$1"
-   local tdir="${dir%/}"
+   local tmpdir="${dir%/}"
 
-   # Strip trailing '/' characters from dir (unusual that this should
-   # ever occur, but dirname(1) seems to deal with it.)
-   while [[ "${tdir}" != "${dir}" ]]
+   # Strip trailing '/' characters
+   while [[ "${tmpdir}" != "${dir}" ]]
    do
-      tdir="${dir}"
-      dir="${tdir%/}"
+      tmpdir="${dir}"
+      dir="${tmpdir%/}"
    done
 
+   # Strip double '/' characters from dir 
+   tmpdir='' 
+   local lastchar=''
+   for ((i=0; i < ${#dir}; i++))
+   do
+      local char="${dir:i:1}"
+      if [[ "${lastchar}" == "/" && "${char}" == "${lastchar}" ]]; then
+         :
+      else
+         tmpdir="${tmpdir}""${char}"
+      fi
+      lastchar=${char}
+   done
+   dir="${tmpdir}"
+
+   # if there is no / in param or only the root /
    if [[ "${1%/*}" == "$1" ]]; then
       System.out.println "."
    else
-      System.out.println "${dir%/*}"
+      if [[ -z "${dir%/*}" ]]; then
+         System.out.println "/"
+      else
+         System.out.println "${dir%/*}"
+      fi
    fi
    return 0
 }
