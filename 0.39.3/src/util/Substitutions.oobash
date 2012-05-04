@@ -32,12 +32,24 @@ __dirname() {
    local dir="$1"
    local tmpdir="${dir%/}"
 
+   # empty string "." is dirname
+   if [[ -z "${dir}" ]]; then
+      System.out.println "."
+      return 0
+   fi
+
    # Strip trailing '/' characters from dir
    while [[ "${tmpdir}" != "${dir}" ]]
    do
       tmpdir="${dir}"
       dir="${tmpdir%/}"
    done
+
+   # now empty --> only "/" characters --> "/" is dirname
+   if [[ -z "${dir}" ]]; then
+      System.out.println "/"
+      return 0
+   fi
 
    # Strip double '/' characters from dir 
    tmpdir='' 
