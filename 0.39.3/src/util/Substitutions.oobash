@@ -5,21 +5,26 @@
 #
 # Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
 
-
-# stolen from bash source examples/functions/ and modified
+# stolen from bash source examples/functions/ and modified/fixed
 __basename() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local path="$1"
    local suffix="$2"
    local tpath="${path%/}"
 
-   # Strip trailing '/' characters from path (unusual that this should
-   # ever occur, but basename(1) seems to deal with it.)
+   # Strip trailing '/' characters
    while [[ "${tpath}" != "${path}" ]]
    do
       tpath="${path}"
       path="${tpath%/}"
    done
+
+   # now empty --> only "/" characters --> basename is "/"
+   if [[ -z "${path}" && ! -z "$1" ]]; then
+      System.out.println "/"
+      return 0
+   fi
+
    # Strip off pathname
    path="${path##*/}"
    # Also strip off extension, if any.    
@@ -27,6 +32,7 @@ __basename() {
    return 0
 }
 
+# stolen from bash source examples/functions/ and modified/fixed
 __dirname() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local dir="$1"
@@ -45,13 +51,14 @@ __dirname() {
       dir="${tmpdir%/}"
    done
 
-   # now empty --> only "/" characters --> "/" is dirname
+   # now empty --> only "/" characters --> dirname is "/"
    if [[ -z "${dir}" ]]; then
       System.out.println "/"
       return 0
    fi
 
-   # Strip double '/' characters from dir 
+   # Strip double '/' characters from dir
+   # ! the original dirname is not doing this !
    tmpdir='' 
    local lastchar=''
    for ((i=0; i < ${#dir}; i++))
