@@ -365,13 +365,6 @@ __setPriority() {
          if (( $returnValue != 0 )); then
             return $returnValue
          fi
-         (local priority="$3") 2>/dev/null ||  (return 1)
-         if (( $? != 0 )); then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
          local priority="$3"       
          renice "${priority}" -p "${pId}" 1>/dev/null 2>&1
          if (( $? == 0 )); then
@@ -454,31 +447,22 @@ __kill() {
          fi
          local signal
          if (( $# == 3 )); then
-            (local signal="$3") 2>/dev/null ||  (return 1)
-            if (( $? != 0 )); then
+            local signalValid="$(Boolean.FALSE)"
+            local key
+            declare -u signal="$3"
+            for key in "${!__Signals__[@]}"
+            do 
+               if [[ "$signal" == "${__Signals__[key]}" ]]; then
+                  signalValid=$(Boolean.TRUE)  
+                  break
+               fi
+            done
+            if [[ "$signalValid" != "$(Boolean.TRUE)" ]]; then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
-            else
-               local signalValid="$(Boolean.FALSE)"
-               local key
-               declare -u signal="$3"
-               for key in "${!__Signals__[@]}"
-               do 
-                  if [[ "$signal" == "${__Signals__[key]}" ]]; then
-                     signalValid=$(Boolean.TRUE)  
-                     break
-                  fi
-               done
-               if [[ "$signalValid" != "$(Boolean.TRUE)" ]]; then
-                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-                  returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
-               fi               
-            fi
-            signal="$3"
+            fi               
          else
             signal="TERM"
          fi       

@@ -526,7 +526,8 @@ __zfill() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       local this="$1"
-      (declare -i width=$3) 2>/dev/null ||  (return 1)
+      # catch eg "+" param
+      (declare -i width=$3) 2>/dev/null || (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
@@ -584,7 +585,8 @@ __center() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       local this="$1"
-      (declare -i width=$3) 2>/dev/null ||  (return 1)
+      # catch eg "+" param
+      (declare -i width=$3) 2>/dev/null || (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
@@ -804,7 +806,8 @@ __startsWith() {
    declare -i returnValue=0
    case $# in 
       3) declare -i toffset=0;;
-      4) (declare -i tooffset=$4) 2>/dev/null ||  (return 1)
+      4) # catch eg "+" param
+         (declare -i tooffset=$4) 2>/dev/null || (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
@@ -835,7 +838,8 @@ __lastIndexOf() {
       3) local pattern="$3"
          declare -i to=$("$this".length);;
       4) local pattern="$3"
-         (declare -i to=$4 ) 2>/dev/null ||  (return 1)
+         # catch eg "+" param
+         (declare -i to=$4 ) 2>/dev/null || (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
@@ -881,7 +885,8 @@ __indexOf() {
       3) local pattern="$3"
          declare -i from=0;;
       4) local pattern="$3"
-         (declare -i from=$4) 2>/dev/null ||  (return 1)
+         # catch eg "+" param
+         (declare -i from=$4) 2>/dev/null || (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
@@ -929,7 +934,8 @@ __charAt() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       this="$1"
-      (declare -i pos=$3) 2>/dev/null ||  (return 1)
+      # catch eg "+" param
+      (declare -i pos=$3) 2>/dev/null || (return 1)
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
@@ -1019,7 +1025,8 @@ __substring() {
    declare -i count=$("$this".length)
    case $# in
       3) declare -i endIndex=$count;;
-      4) (declare -i endIndex=$4) 2>/dev/null ||  (return 1)
+      4) # catch eg "+" param
+         (declare -i endIndex=$4) 2>/dev/null || (return 1)
          if (( $? != 0 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
@@ -1032,7 +1039,8 @@ __substring() {
          __stackOrHelp "$2" "${FUNCNAME:2}" 
          return $returnValue;;
    esac
-   (declare -i beginIndex=$3) 2>/dev/null ||  (return 1)
+   # catch eg "+" param
+   (declare -i beginIndex=$3) 2>/dev/null || (return 1)
    if (( $? != 0 )); then
       __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
       returnValue=$?

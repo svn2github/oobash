@@ -894,6 +894,7 @@ __setLastModified() {
          if __gnudateCheck; then
             local this="$1"
             local file="$("$this".toString)"
+            # catch eg "+" param
             (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
@@ -1165,13 +1166,6 @@ __linematch() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       local this="$1"
-      (local regex="$3") 2>/dev/null ||  (return 1)
-      if (( $? != 0 )); then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi
       local regex="$3"
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
          # try to avoid at least some problems...
