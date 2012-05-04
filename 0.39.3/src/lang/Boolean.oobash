@@ -175,7 +175,7 @@ Boolean.help() {
                   IllegalArgumentException - if number of arguments != 2
                                            - if objectname is not valid
                                            - if objectname is a keyword
-                                           - if contains full stop character
+                                           - if objectname contains full stop character
                Example:
                   Boolean a \"True\" produces a Boolean object that represents true.
                   Boolean a \"yes\"  produces a Boolean object that represents false.

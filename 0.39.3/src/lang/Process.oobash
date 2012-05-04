@@ -592,7 +592,7 @@ Process.help() {
                   IllegalArgumentException - if number of arguments != 2
                                            - if objectname is not valid
                                            - if objectname is a keyword
-                                           - if contains full stop character
+                                           - if objectname contains full stop character
                Example:
                   Process a <pid> 
             ";;& 
