@@ -64,10 +64,12 @@ __dirname() {
    for ((i=0; i < ${#dir}; i++))
    do
       local char="${dir:i:1}"
-      if [[ "${lastchar}" == "/" && "${char}" == "${lastchar}" ]]; then
-         :
-      else
+      if [[ "${lastchar}" != "/" ]]; then
          tmpdir="${tmpdir}""${char}"
+      else
+         if [[ "${char}" != "${lastchar}" ]]; then
+            tmpdir="${tmpdir}""${char}"
+         fi
       fi
       lastchar=${char}
    done
