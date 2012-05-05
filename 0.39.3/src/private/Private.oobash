@@ -795,9 +795,9 @@ __registerFunction __stacktrace
 # checks if given parameter is an array
 __isArray() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local tmp=$(declare -p "$1" 2>/dev/null)
-   tmp=${tmp/declare -/}
-   if [[ ${tmp:0:1} == "a" ]]; then
+   local tmp="$(declare -p "$1" 2>/dev/null)"
+   tmp="${tmp/declare -/}"
+   if [[ "${tmp:0:1}" == "a" ]]; then
       return 0
    else
       return 1
@@ -809,9 +809,9 @@ __registerFunction __isArray
 # checks if given parameter is an associative array
 __isAssocArray() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local tmp=$(declare -p "$1" 2>/dev/null)
-   tmp=${tmp/declare -/}
-   if [[ ${tmp:0:1} == "A" ]]; then
+   local tmp="$(declare -p "$1" 2>/dev/null)"
+   tmp="${tmp/declare -/}"
+   if [[ "${tmp:0:1}" == "A" ]]; then
       return 0
    else
       return 1
@@ -824,9 +824,9 @@ __registerFunction __isAssocArray
 __isWriteable() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local tmp
-   tmp=$(declare -p "$1" 2>/dev/null)
+   tmp="$(declare -p "$1" 2>/dev/null)"
    if (( $? == 0 )); then
-      tmp=${tmp/declare -/}
+      tmp="${tmp/declare -/}"
       declare -i i
       for ((i=0; i < ${#tmp}; i++))
       do
