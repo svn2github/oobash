@@ -17,6 +17,15 @@ Process() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
+
+      # catch eg "+" param
+      (declare -i pid=$2) 2>/dev/null
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
       declare -i pid="$2"
       
       if ! __visible "$this"; then
@@ -38,6 +47,34 @@ Process() {
          returnValue=$?
          __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
+      fi
+
+      # try to validate pid
+      if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+         declare -i maxpid
+         maxpid=$(</proc/sys/kernel/pid_max)
+         if (( ${pid} < 1 || ${pid} > ${maxpid} )); then
+            __throw "IllegalArgumentException" ": Pid \"$pid\" is not valid"
+            returnValue=$?
+            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            return $returnValue
+         fi
+         if [[ ! -d /proc/${pid} ]]; then
+            __throw "NotRunningException" ": Process with pid: \"$pid\" is not running"
+            returnValue=$?
+            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            return $returnValue
+         fi
+      else
+         if command -v ps >/dev/null 2>&1; then
+            ps  -p "${pId}" -o stat 2>/dev/null 1>&2
+            if (( $? != 0 ));then
+               __throw "NotRunningException" ": Process with pid: \"$pid\" is not running"
+               returnValue=$?
+               __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+               return $returnValue
+            fi
+         fi
       fi
 
       local pointer="$(__getPointer)"
@@ -600,16 +637,16 @@ Process.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getParentPid
-                  Returns the value of pid
+                  Returns the value of parent pid
                Parameters:
                   None
                Returns:
-                  The value of pid.
+                  The value of parent pid or 0, if there is no parent pid.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  Process b 1
-                  b.getParentPid
+                  Process initProc 1
+                  initProc.getParentPid
                   >>>0
             ";;& 
          getUser|all)

@@ -895,7 +895,7 @@ __setLastModified() {
             local this="$1"
             local file="$("$this".toString)"
             # catch eg "+" param
-            (declare -i milliSeconds=$3) 2>/dev/null ||  (return 1)
+            (declare -i milliSeconds=$3) 2>/dev/null
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
                returnValue=$?

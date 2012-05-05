@@ -68,7 +68,7 @@ System.exit() {
    declare -i returnValue=0
    if (( $# == 1 )); then
       # catch eg "+" param
-      (declare -i status=$1) 2>/dev/null ||  (return 1)
+      (declare -i status=$1) 2>/dev/null
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
