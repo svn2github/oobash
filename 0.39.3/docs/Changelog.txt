@@ -234,10 +234,11 @@
 #    -getPriority, setPriority, kill, isDaemon
 #    -optimized stacktrace if os != linux
 #    -added dependencies:ps, kill, renice, md5sum, sha1sum, tail
-#    -deleted dependencies: dirname, basename
+#    -deleted dependencies: dirname, basename by using:
+#    Substitutions.oobash file with __basename, __dirname function
 #    -new Exception: -NotRunningException return value:200
 #    -added global __Signals__ array
-#    -all constructors now throw IllegalArgumentException intstead of a  "message + return 1"
+#    -all constructors now throw IllegalArgumentException intstead of a "message + return 1"
 #    -many fixes
 
 #################################################################

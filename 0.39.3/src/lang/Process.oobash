@@ -7,6 +7,8 @@
 
 # TODO: if there is no tail, try string manipulation ?
 # TODO: if there is no tail and no ps and os = linux use /proc where possible
+# TODO: get UserId GroupId
+# TODO: ProcessNotRunningException OR ProcessException
 
 #########################
 # constructor  function #
