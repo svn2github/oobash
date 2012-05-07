@@ -62,7 +62,8 @@ Process() {
             return $returnValue
          fi
          if [[ ! -d /proc/${pid} ]]; then
-            __throw "NotRunningException" ": Process with pid: \"$pid\" is not running"
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+
             returnValue=$?
             __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
@@ -71,7 +72,8 @@ Process() {
          if command -v ps >/dev/null 2>&1; then
             ps  -p "${pId}" -o stat 2>/dev/null 1>&2
             if (( $? != 0 ));then
-               __throw "NotRunningException" ": Process with pid: \"$pid\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+
                returnValue=$?
                __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
                return $returnValue

@@ -93,7 +93,7 @@ __ExceptionValues__=(
  [Unknown]=250
 )
 
-# All available signals
+# All available Process signals
 declare -a __Signals__
 shopt -s extglob
 declare signal="$(kill -l 2>/dev/null)"
