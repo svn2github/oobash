@@ -732,7 +732,7 @@ __getPointer() {
    else
       if command -v date 2>&1 1>/dev/null; then    
          # can't test but i think this should work with a bsd date
-         System.out.println $(date -r)${RANDOM}${RANDOM}${RANDOM}
+         System.out.println $(date "+%Y%m%d%H%M%S")${RANDOM}${RANDOM}${RANDOM}
       else    
          # not my problem...
          System.out.println ${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM} 
