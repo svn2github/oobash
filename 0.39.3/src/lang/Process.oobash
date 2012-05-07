@@ -21,7 +21,7 @@ Process() {
       local this="$1"
 
       # catch eg "+" param
-      (declare -i pid=$2) 2>/dev/null
+      (declare -i pid="$2") 2>/dev/null
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
          returnValue=$?
@@ -126,17 +126,18 @@ __getPid() {
       done
       if command -v ps >/dev/null 2>&1; then
          if command -v tail >/dev/null 2>&1; then
-            local pId="$(ps  -p "${__ATTRIBUTEPOOL__[${pointer}@pid]}" -o pid 2>/dev/null | tail -1)"
-            declare -i pId=${pId}
-            if (( $pId == ${__ATTRIBUTEPOOL__[${pointer}@pid]} )); then
-               System.out.println "${__ATTRIBUTEPOOL__[${pointer}@pid]}"
-               return $returnValue
-            else
-               __throw "NotRunningException" ": Process with pid: \"${__ATTRIBUTEPOOL__[${pointer}@pid]}\" is not running"
+            local pId
+            pId="$(ps  -p "${__ATTRIBUTEPOOL__[${pointer}@pid]}" -o pid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            if [[ "${pId: -3}" != "0 0" ]]; then
+               echo 1
+               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
+            pId=${pId%????}
+            System.out.println ${pId}
+            return $returnValue
          else
             __throw "NotInPathException" ": tail not in path"
             returnValue=$?
@@ -169,8 +170,15 @@ __getParentPid() {
             if (( $returnValue != 0 )); then
                return $returnValue
             fi
-            local Ppid="$(ps  -p "${pId}" -o ppid 2>/dev/null | tail -1)"
-            declare -i parentPid=${Ppid}
+            local ppid
+            ppid="$(ps  -p "${pId}" -o ppid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            if [[ "${ppid: -3}" != "0 0" ]]; then
+               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            declare -i parentPid=${Ppid%????}
             System.out.println "${parentPid}"
             return $returnValue
          else
@@ -206,8 +214,14 @@ __getUser() {
                return $returnValue
             fi
             local owner
-            owner="$(ps  -p "${pId}" -o user 2>/dev/null | tail -1)"
-            System.out.println "${owner}"
+            owner="$(ps  -p "${pId}" -o user 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            if [[ "${owner: -3}" != "0 0" ]]; then
+               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            System.out.println "${owner%????}"
          else
             __throw "NotInPathException" ": tail not in path"
             returnValue=$?
@@ -241,8 +255,14 @@ __getCommand() {
                return $returnValue
             fi
             local cmd
-            cmd="$(ps  -p "${pId}" -o cmd 2>/dev/null | tail -1)"
-            System.out.println "${cmd}"
+            cmd="$(ps  -p "${pId}" -o cmd 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            if [[ "${cmd: -3}" != "0 0" ]]; then
+               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            System.out.println "${cmd%????}"
          else
             __throw "NotInPathException" ": tail not in path"
             returnValue=$?
@@ -275,9 +295,16 @@ __getStatus() {
             if (( $returnValue != 0 )); then
                return $returnValue
             fi
-            local stat="$(ps -p "$pId" -o s 2>/dev/null | tail -1)"
+            local stat
+            stat="$(ps -p "$pId" -o s 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            if [[ "${stat: -3}" != "0 0" ]]; then
+               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
             # TODO: Decision for states...
-            case "${stat}" in
+            case "${stat%????}" in
                D)stat="Uninterruptible";;
                # R ok
                R)stat="Runnable";;
@@ -289,7 +316,7 @@ __getStatus() {
                W)stat="Paging";;
                # Z zombie
                Z)stat="Defunct";;
-               # only SunOS
+               # only SunOS (letter O)
                O)stat="Running";;
                # only HP-UX
                X)stat="Growing";;
@@ -369,8 +396,15 @@ __getPriority() {
             if (( $returnValue != 0 )); then
                return $returnValue
             fi
-            local prio="$(ps  -p "${pId}" -o ni 2>/dev/null | tail -1)"
-            declare -i priority=${prio}
+            declare -i prio
+            prio="$(ps  -p "${pId}" -o ni 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            if [[ "${prio: -3}" != "0 0" ]]; then
+               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            declare -i priority=${prio%????}
             System.out.println "${priority}"
             return $returnValue
          else
@@ -439,15 +473,15 @@ __isDaemon() {
                return $returnValue
             fi
             local tty
-            tty="$(ps  -p "${pId}" -o tty 2>/dev/null | tail -1)"
+            tty="$(ps  -p "${pId}" -o tty 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             # TODO: the next lines should be everywhere --> catch race condition
-            if (( $? != 0 )); then
+            if [[ "${tty: -3}" != "0 0" ]]; then
                __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
-            if [[ "${tty}" == "?" ]]; then
+            if [[ "${tty%????}" == "?" ]]; then
                Boolean.TRUE
             else
                Boolean.FALSE
