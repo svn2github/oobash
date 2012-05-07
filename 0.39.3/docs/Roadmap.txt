@@ -28,6 +28,10 @@ getStatus --Done -Docs missing
 
 Process.createDaemon ?
 
+Substitutions:
+----------------
+substitute: readlink
+
 # 0.39.4
 # -some ssh
 # -some System functions
