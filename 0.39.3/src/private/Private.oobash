@@ -777,7 +777,7 @@ __stacktrace() {
          if command -v tail 2>&1 1>/dev/null; then
             while (( $pid >= 1 ))
             do
-               local process="$(ps -p $pid -o cmd 2>/dev/null | tail -1 2>/dev/null)"
+               local process="$(ps -p $pid -o command 2>/dev/null | tail -1 2>/dev/null)"
                local showpid="$(ps -p $pid -o pid 2>/dev/null | tail -1 2>/dev/null)"
                System.out.print "   Process ${process##+([[:space:]])}"
                System.out.println ", pid ${showpid##+([[:space:]])}"               

@@ -63,24 +63,22 @@ Process() {
          fi
          if [[ ! -d /proc/${pid} ]]; then
             __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-
             returnValue=$?
             __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
          fi
       else
          if command -v ps >/dev/null 2>&1; then
-            ps  -p "${pId}" -o stat 2>/dev/null 1>&2
+            ps  -p "${pid}" -o stat 2>/dev/null 1>&2
             if (( $? != 0 ));then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-
                returnValue=$?
                __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
                return $returnValue
             fi
          fi
       fi
-
+      
       local pointer="$(__getPointer)"
 
       local class="${FUNCNAME}"
@@ -180,7 +178,7 @@ __getParentPid() {
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
-            declare -i parentPid=${Ppid%????}
+            declare -i parentPid=${ppid%????}
             System.out.println "${parentPid}"
             return $returnValue
          else
@@ -257,7 +255,7 @@ __getCommand() {
                return $returnValue
             fi
             local cmd
-            cmd="$(ps  -p "${pId}" -o cmd 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            cmd="$(ps  -p "${pId}" -o command 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${cmd: -3}" != "0 0" ]]; then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?

@@ -239,6 +239,7 @@
 #    -new Exception: -ProcessException return value:200
 #    -added global __Signals__ array
 #    -all constructors now throw IllegalArgumentException intstead of a "message + return 1"
+#    -optimized/repaired for OSX/Darwin (Thanks to my friend Jens Maukisch for a OS X ssh account)
 #    -many fixes
 
 #################################################################
