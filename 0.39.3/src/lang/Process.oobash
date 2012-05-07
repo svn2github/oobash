@@ -396,7 +396,7 @@ __getPriority() {
             if (( $returnValue != 0 )); then
                return $returnValue
             fi
-            declare -i prio
+            local prio
             prio="$(ps  -p "${pId}" -o ni 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${prio: -3}" != "0 0" ]]; then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"

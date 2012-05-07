@@ -1208,16 +1208,31 @@ __md5sum() {
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
             local file="$("$this".toString)"
-            if command -v md5sum >/dev/null 2>&1; then
-               result=$(md5sum -- "$file" 2>/dev/null)
-               System.out.println "${result/ */}"
-            else
-               __throw "NotInPathException" ": md5sum not in path"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+            case "$(uname -s 2>/dev/null)" in
+            Darwin|FreeBSD|DragonFly)
+               if command -v md5 >/dev/null 2>&1; then
+                  result=$(md5 -- "$file" 2>/dev/null)
+                  System.out.println "${result/*= /}"
+               else
+                  __throw "NotInPathException" ": shasum not in path"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
                return $returnValue
-            fi
-            return $returnValue
+               ;;
+            *) if command -v md5sum >/dev/null 2>&1; then
+                  result=$(md5sum -- "$file" 2>/dev/null)
+                  System.out.println "${result/ */}"
+               else
+                  __throw "NotInPathException" ": sha1sum not in path"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
+               return $returnValue
+               ;;
+            esac
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
@@ -1247,16 +1262,31 @@ __sha1sum() {
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
             local file="$("$this".toString)"
-            if command -v sha1sum >/dev/null 2>&1; then
-               result=$(sha1sum -- "$file" 2>/dev/null)
-               System.out.println "${result/ */}"
-            else
-               __throw "NotInPathException" ": sha1sum not in path"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+            case "$(uname -s 2>/dev/null)" in
+            Darwin|FreeBSD|DragonFly)
+               if command -v shasum >/dev/null 2>&1; then
+                  result=$(shasum -- "$file" 2>/dev/null)
+                  System.out.println "${result/ */}"
+               else
+                  __throw "NotInPathException" ": shasum not in path"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
                return $returnValue
-            fi
-            return $returnValue
+               ;;
+            *) if command -v sha1sum >/dev/null 2>&1; then
+                  result=$(sha1sum -- "$file" 2>/dev/null)
+                  System.out.println "${result/ */}"
+               else
+                  __throw "NotInPathException" ": sha1sum not in path"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
+               return $returnValue
+               ;;
+            esac
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?

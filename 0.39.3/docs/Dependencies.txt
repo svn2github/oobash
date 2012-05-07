@@ -17,7 +17,7 @@ tr
 pwd
 ps
 kill
-md5sum
-sha1sum
+md5sum/md5 
+sha1sum/shasum
 renice
 tail

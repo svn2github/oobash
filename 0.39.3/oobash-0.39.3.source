@@ -14,6 +14,8 @@
 ######################
 
 __STARTTIME__="`date +%s.%N 2>/dev/null`"
+
+# OS X
 # hope to find a gnu date on macos systems (can't test this)
 if [ -x "/opt/local/bin/date" ]; then
    __STARTTIME__="`/opt/local/bin/date +%s.%N 2>/dev/null`"
@@ -71,7 +73,7 @@ fi
 # ----------------------------------------------------
 
 # i18n function library from the gnu textutils
-if command -v gettext.sh >/dev/null 2>&1 ;then
+if command -v gettext.sh >/dev/null 2>&1; then
    source gettext.sh
 fi
 
@@ -115,7 +117,14 @@ unset signal sig counter
 shopt -u extglob
 
 # all external commands used in this framework:
-declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum renice tail)
+case "$(uname -s 2>/dev/null)" in
+Darwin|FreeBSD|DragonFly)
+   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5 shasum renice tail)
+   ;;
+*)
+   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum renice tail)
+   ;;
+esac
 
 # Arrays for framework methods:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
