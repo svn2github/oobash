@@ -10,7 +10,6 @@ rm
 rmdir
 stat
 touch
-gettext
 wc
 sort
 tr

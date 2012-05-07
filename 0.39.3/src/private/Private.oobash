@@ -551,7 +551,7 @@ __i18nMessage() {
       return 0
    else
       # fall back to old school bash i18n
-      System.${printStream}.${print} "$(eval System.out.println $\"$message\")"
+      System.${printStream}.${print} "$(eval System.out.println \$"\"${message}\"")"
       return 0
    fi
    return 0

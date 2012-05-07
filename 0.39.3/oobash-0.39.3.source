@@ -119,10 +119,10 @@ shopt -u extglob
 # all external commands used in this framework:
 case "$(uname -s 2>/dev/null)" in
 Darwin|FreeBSD|DragonFly)
-   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5 shasum renice tail)
+   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill md5 shasum renice tail)
    ;;
 *)
-   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch gettext wc sort tr pwd ps kill md5sum sha1sum renice tail)
+   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill md5sum sha1sum renice tail)
    ;;
 esac
 
