@@ -130,7 +130,7 @@ __getPid() {
             pId="$(ps  -p "${__ATTRIBUTEPOOL__[${pointer}@pid]}" -o pid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${pId: -3}" != "0 0" ]]; then
                echo 1
-               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
@@ -173,7 +173,7 @@ __getParentPid() {
             local ppid
             ppid="$(ps  -p "${pId}" -o ppid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${ppid: -3}" != "0 0" ]]; then
-               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
@@ -216,7 +216,7 @@ __getUser() {
             local owner
             owner="$(ps  -p "${pId}" -o user 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${owner: -3}" != "0 0" ]]; then
-               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
@@ -257,7 +257,7 @@ __getCommand() {
             local cmd
             cmd="$(ps  -p "${pId}" -o cmd 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${cmd: -3}" != "0 0" ]]; then
-               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
@@ -298,7 +298,7 @@ __getStatus() {
             local stat
             stat="$(ps -p "$pId" -o s 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${stat: -3}" != "0 0" ]]; then
-               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
@@ -320,7 +320,7 @@ __getStatus() {
                O)stat="Running";;
                # only HP-UX
                X)stat="Growing";;
-               *)__throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               *)__throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                  returnValue=$?
                  __stackOrHelp "$2" "${FUNCNAME:2}"
                  return $returnValue;;
@@ -399,7 +399,7 @@ __getPriority() {
             declare -i prio
             prio="$(ps  -p "${pId}" -o ni 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${prio: -3}" != "0 0" ]]; then
-               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
@@ -474,9 +474,8 @@ __isDaemon() {
             fi
             local tty
             tty="$(ps  -p "${pId}" -o tty 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
-            # TODO: the next lines should be everywhere --> catch race condition
             if [[ "${tty: -3}" != "0 0" ]]; then
-               __throw "NotRunningException" ": Process with pid: \"$pId\" is not running"
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
