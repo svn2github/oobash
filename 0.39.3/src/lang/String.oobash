@@ -1109,7 +1109,7 @@ __length() {
                   result="$(wc -c -- < "$("$this".toString)")"
                   shopt -s extglob
                   # trimming...
-                  local result="${str##+([[:space:]])}"
+                  local result="${result##+([[:space:]])}"
                   System.out.println "$result"
                else
                   System.out.println 0
