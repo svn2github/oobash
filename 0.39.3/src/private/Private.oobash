@@ -645,13 +645,17 @@ __dependencyCheck() {
       if ! command -v ${__Dependencies__[i]} >/dev/null 2>&1; then
          bool="$(Boolean.FALSE)"
          __throw "NotInPathException" ": ${__Dependencies__[i]} not in path"
-      else 
-         if [[ "${__Dependencies__[i]}" == "date" ]]; then
-            if ! __gnudateCheck; then 
-               bool="$(Boolean.FALSE)"
-               __throw "NotInPathException" ": GNU date not in path"
-            fi
-         fi         
+      else
+         case "${__Dependencies__[i]}" in
+            date) if ! __gnudateCheck; then
+                     bool="$(Boolean.FALSE)"
+                     __throw "NotInPathException" ": GNU date not in path"
+                  fi;;
+            stat) if ! __gnustatCheck; then
+                     bool="$(Boolean.FALSE)"
+                     __throw "NotInPathException" ": GNU stat not in path"
+                  fi;;
+         esac
       fi
    done
    if [[ "${bool}" == "$(Boolean.TRUE)" ]]; then
@@ -666,11 +670,14 @@ __registerFunction __dependencyCheck
 # check for gnu date
 # called by:
 # __dependencyCheck
+# System.currentTimeMillis
+# System.currentTimeNanos
+# System.runtime
+#__setLastModified
 __gnudateCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    # For this framework it is important to work with a gnu date, so:
    # special check for gnu date with nanoseconds gnu feature:
-   # can't test but hope it works...
    if command -v date >/dev/null 2>&1; then
       local testtimestamp
       testtimestamp="$(date "+%N" 2>/dev/null)"
@@ -683,6 +690,27 @@ __gnudateCheck() {
    return 0
 }
 __registerFunction __gnudateCheck
+
+# private
+# check for gnu stat
+# called by:
+# __dependencyCheck
+__gnustatCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   # For this framework it is important to work with a gnu stat, so:
+   # special check for gnu stat with "--file-system" gnu feature:
+   if command -v stat >/dev/null 2>&1; then
+      stat --file-system / 2>/dev/null 1>&2
+      if (( $? != 0 )); then
+         return 1
+      fi
+   else
+      return 1
+   fi
+   return 0
+}
+__registerFunction __gnustatCheck
+
 
 # private
 # decision: call stacktrace or help

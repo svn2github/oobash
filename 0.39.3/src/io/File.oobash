@@ -99,14 +99,14 @@ __getTotalSpace() {
       local this="$1"
       local file="$("$this".toString)"
       if [[ -e "${file}" ]]; then
-         if command -v stat >/dev/null 2>&1; then
+         if __gnustatCheck; then
             set -f
             local totalFormula
-            totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" "${file}")
+            totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" "${file}" 2>/dev/null)
             set + f
             System.out.println "$(eval System.out.print "${totalFormula}")"
          else
-            __throw "NotInPathException" ": stat not in path"
+            __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
@@ -129,14 +129,14 @@ __getUsableSpace() {
       local this="$1"
       local file="$("$this".toString)"
       if [[ -e "${file}" ]]; then
-         if command -v stat >/dev/null 2>&1; then
+         if __gnustatCheck; then
             set -f
             local usableFormula
-            usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" "${file}")
+            usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" "${file}" 2>/dev/null)
             set + f
             System.out.println "$(eval System.out.print "${usableFormula}")"
          else
-            __throw "NotInPathException" ": stat not in path"
+            __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
@@ -159,14 +159,14 @@ __getFreeSpace() {
       local this="$1"
       local file="$("$this".toString)"
       if [[ -e "${file}" ]]; then
-         if command -v stat >/dev/null 2>&1; then
+         if __gnustatCheck; then
             set -f
             local freeFormula
-            freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" "${file}")
+            freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" "${file}" 2>/dev/null)
             set + f
             System.out.println "$(eval System.out.print "${freeFormula}")"
          else
-            __throw "NotInPathException" ": stat not in path"
+            __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
@@ -850,7 +850,7 @@ __lastModified() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
-      if command -v stat >/dev/null 2>&1; then
+      if __gnustatCheck; then
          local this="$1"
          local file="$("$this".toString)"
          local result
@@ -874,7 +874,7 @@ __lastModified() {
          fi         
          return $returnValue
       else
-         __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+         __throw "NotInPathException" ": GNU stat not in path (install the GNU coreutils ?)"
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
          return $returnValue
