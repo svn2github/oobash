@@ -1105,7 +1105,7 @@ __length() {
       case $class in
          File)
             if command -v wc >/dev/null 2>&1; then
-               if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+               if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
                   result="$(wc -c -- < "$("$this".toString)")"
                   shopt -s extglob
                   # trimming...
