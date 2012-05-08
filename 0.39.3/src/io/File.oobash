@@ -695,14 +695,14 @@ __getCanonicalPath() {
       local file="$("$this".getAbsolutePath)"
       if command -v readlink >/dev/null 2>&1; then 
          local result=''
-         result=$(readlink -e -- "${file}")
+         result=$(readlink -e -- "${file}" 2>/dev/null)
          if (( $? == 0 )); then
             System.out.println "$result"
          else
             if command -v pwd >/dev/null 2>&1; then
                cd -P -- "$(__dirname "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(__basename "${file}")"
                if (( $? != 0 )); then
-                  readlink -m -- "${file}"
+                  readlink -m -- "${file}" 2>/dev/null
                fi
             else
                __throw "NotInPathException" ": pwd not in path"

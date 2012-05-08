@@ -30,7 +30,8 @@ Process.createDaemon ?
 
 Substitutions:
 ----------------
-substitute: readlink
+substitute: gnu readlink
+substitute: gnu stat
 
 # 0.39.4
 # -some ssh

@@ -5,10 +5,10 @@ date (gnu!)
 mkdir
 mktemp
 mv
-readlink
+readlink (gnu!)
 rm
 rmdir
-stat
+stat (gnu!)
 touch
 wc
 sort

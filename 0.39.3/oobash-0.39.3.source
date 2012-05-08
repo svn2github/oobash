@@ -146,8 +146,8 @@ declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__Compa
 declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir
                             mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial
                             isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified
-                            setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear getLine
-                            getLines delLine delLines linecount linematch sha1sum md5sum getTotalSpace getFreeSpace getUsableSpace)
+                            setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear 
+                            linecount linematch sha1sum md5sum getTotalSpace getFreeSpace getUsableSpace)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
