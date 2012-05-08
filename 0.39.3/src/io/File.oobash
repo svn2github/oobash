@@ -1435,7 +1435,6 @@ File.help() {
                Parameters:
                   objectname
                   filename
-                  No \".\" or space character is allowed in the objectname string.
                Returns
                   None
                Throws:

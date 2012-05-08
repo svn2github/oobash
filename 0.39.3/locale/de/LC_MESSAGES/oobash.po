@@ -75,7 +75,7 @@ msgstr " Verfügbares Hilfe System: String.help, File.help, Math.help, System.he
 
 #: oobash/oobash-0.38.5.source:260
 msgid " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
-msgstr " Anwendung: Klassenname.help  Methodenname(s)|Konstruktorname|Konstantenname oder Schlüsselwort all"
+msgstr " Anwendung: Klassenname.help  Methodenname(n)|Konstruktorname|Konstantenname oder Schlüsselwort all"
 
 #: oobash/oobash-0.38.5.source:261
 msgid " Example: String.help zfill"

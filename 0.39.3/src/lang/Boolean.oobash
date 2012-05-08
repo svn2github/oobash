@@ -168,7 +168,6 @@ Boolean.help() {
                Parameters:
                   objectname string
                   s - the string to be converted to a Boolean.
-                  No "." or space character is allowed in the objectname string.
                Returns:
                   None
                Throws:

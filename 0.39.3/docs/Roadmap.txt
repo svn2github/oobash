@@ -30,16 +30,7 @@ substitute: gnu readlink
 
 Docs:
 ------
--Delete this line in all help/man for all constructors:
-No "." or space character is allowed in the objectname string.
-
 -better documentation of generators in the oobash man page / Readme ? yes
-
-I18n:
-----------
- Anwendung: Klassenname.help  Methodenname(s)|Konstruktorname|Konstantenname oder Schlusselwort all
-Methodenname(s) --> Methodenname(n)
-
 
 # 0.39.4
 # -some ssh
