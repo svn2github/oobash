@@ -1214,7 +1214,7 @@ __md5sum() {
                   result=$(md5 -- "$file" 2>/dev/null)
                   System.out.println "${result/*= /}"
                else
-                  __throw "NotInPathException" ": shasum not in path"
+                  __throw "NotInPathException" ": md5 not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
                   return $returnValue
@@ -1225,7 +1225,7 @@ __md5sum() {
                   result=$(md5sum -- "$file" 2>/dev/null)
                   System.out.println "${result/ */}"
                else
-                  __throw "NotInPathException" ": sha1sum not in path"
+                  __throw "NotInPathException" ": md5sum not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
                   return $returnValue
@@ -1460,7 +1460,7 @@ File.help() {
                   does not name a partition
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if stat is not in path
+                  NotInPathException - if GNU stat is not in path
                Example:
                   File x /etc/passwd
                   x.getTotalSpace
@@ -1485,7 +1485,7 @@ File.help() {
                   file system size returned by getTotalSpace.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if stat is not in path
+                  NotInPathException - if GNU stat is not in path
                Example:
                   File x /etc/passwd
                   x.getFreeSpace
@@ -1513,7 +1513,7 @@ File.help() {
                   this method will be equivalent to a call to getFreeSpace.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if stat is not in path
+                  NotInPathException - if GNU stat is not in path
                Example:
                   File x /etc/passwd
                   x.getUsableSpace
@@ -1535,6 +1535,7 @@ File.help() {
                   IllegalArgumentException - if number of arguments != 0
                   IOException - if object does not represent a regular file
                               - if cannot read file
+                  NotInPathException - if md5/md5sum is not in path
                Example:
                   File x /etc/passwd
                   x.md5sum
@@ -1553,6 +1554,7 @@ File.help() {
                   IllegalArgumentException - if number of arguments != 0
                   IOException - if object does not represent a regular file
                               - if cannot read file
+                  NotInPathException - if shasum/sha1sum is not in path
                Example:
                   File x /etc/passwd
                   x.sha1sum
@@ -2265,7 +2267,7 @@ File.help() {
                   since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if 
                   an I/O error occurs
                Throws:
-                  NotInPathException - if stat is not in path
+                  NotInPathException - if GNU stat is not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
