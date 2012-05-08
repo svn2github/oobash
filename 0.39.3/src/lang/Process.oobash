@@ -480,7 +480,7 @@ __isDaemon() {
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
-            if [[ "${tty%????}" == "?" || "${tty%????}" == "??" ]] ; then
+            if [[ "${tty%????}" =~ "?" ]] ; then
                Boolean.TRUE
             else
                Boolean.FALSE
