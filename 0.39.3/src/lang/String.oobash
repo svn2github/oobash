@@ -1102,11 +1102,11 @@ __length() {
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
-      case $class in
+      case "${class}" in
          File)
             if command -v wc >/dev/null 2>&1; then
                if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
-                  result="$(wc -c -- < "$("$this".toString)")"
+                  result="$(wc -c -- < "${str}")"
                   shopt -s extglob
                   # trimming...
                   local result="${result##+([[:space:]])}"
