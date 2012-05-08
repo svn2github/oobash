@@ -129,8 +129,7 @@ __getPid() {
             local pId
             pId="$(ps  -p "${__ATTRIBUTEPOOL__[${pointer}@pid]}" -o pid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${pId: -3}" != "0 0" ]]; then
-               echo 1
-               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               __throw "ProcessException" ": Process with pid: \"${__ATTRIBUTEPOOL__[${pointer}@pid]}\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
@@ -296,7 +295,7 @@ __getStatus() {
                return $returnValue
             fi
             local stat
-            stat="$(ps -p "$pId" -o s 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            stat="$(ps -p "$pId" -o state 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${stat: -3}" != "0 0" ]]; then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
@@ -304,7 +303,7 @@ __getStatus() {
                return $returnValue
             fi
             # TODO: Decision for states...
-            case "${stat%????}" in
+            case "${stat:0:1}" in
                D)stat="Uninterruptible";;
                # R ok
                R)stat="Runnable";;
@@ -524,12 +523,12 @@ __kill() {
             declare -u signal="$3"
             for key in "${!__Signals__[@]}"
             do 
-               if [[ "$signal" == "${__Signals__[key]}" ]]; then
+               if [[ "${signal}" == "${__Signals__[key]}" ]]; then
                   signalValid=$(Boolean.TRUE)  
                   break
                fi
             done
-            if [[ "$signalValid" != "$(Boolean.TRUE)" ]]; then
+            if [[ "${signalValid}" != "$(Boolean.TRUE)" ]]; then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
@@ -538,7 +537,7 @@ __kill() {
          else
             signal="TERM"
          fi       
-         kill -s "{$signal}" "${pId}" 1>/dev/null 2>&1
+         kill -s "${signal}" "${pId}" 1>/dev/null 2>&1
          if (( $? == 0 )); then
             Boolean.TRUE
          else
