@@ -1106,7 +1106,11 @@ __length() {
          File)
             if command -v wc >/dev/null 2>&1; then
                if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-                  wc -c -- < "$("$this".toString)"
+                  result="$(wc -c -- < "$("$this".toString)")"
+                  shopt -s extglob
+                  # trimming...
+                  local result="${str##+([[:space:]])}"
+                  System.out.println "$result"
                else
                   System.out.println 0
                fi
