@@ -5,10 +5,7 @@
 # Copyright (c) <2012> <franka>
 #############################################################
 
-# TODO: if there is no tail, try string manipulation ?
-# TODO: if there is no tail and no ps and os = linux use /proc where possible
 # TODO: get UserId GroupId
-# TODO: ProcessNotRunningException OR ProcessException
 
 #########################
 # constructor  function #
@@ -62,7 +59,7 @@ Process() {
             return $returnValue
          fi
          if [[ ! -d /proc/${pid} ]]; then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            __throw "ProcessException" ": Process with pid: \"$pid\" can't be managed"
             returnValue=$?
             __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
@@ -71,7 +68,7 @@ Process() {
          if command -v ps >/dev/null 2>&1; then
             ps  -p "${pid}" -o stat 2>/dev/null 1>&2
             if (( $? != 0 ));then
-               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               __throw "ProcessException" ": Process with pid: \"$pid\" can't be managed"
                returnValue=$?
                __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
                return $returnValue
@@ -656,7 +653,6 @@ Process.help() {
                Parameters:
                   objectname
                   <pid>
-                  No "." or space character is allowed in the objectname string.
                Returns:
                   None
                Throws:

@@ -34,6 +34,7 @@
 # __cleanUpVars() unsets the registered variables
 # __dependencyCheck() check for external commands (element of __Dependencies__ array) that are used in this framework
 # __gnudateCheck() check for gnu date
+# __gnustatCheck() checks for gnu stat
 # __stackOrHelp() decision: call stacktrace or help
 # __tracebackHeader() prints the traceback header to stderr
 # __getPointer() creates an object pointer (unique identifier)
@@ -695,6 +696,10 @@ __registerFunction __gnudateCheck
 # check for gnu stat
 # called by:
 # __dependencyCheck
+# __getTotalSpace
+# __getUsableSpace
+# __getFreeSpace
+# __lastModified
 __gnustatCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    # For this framework it is important to work with a gnu stat, so:
