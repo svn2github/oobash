@@ -5,28 +5,23 @@
 Process:
 --------
 
-Process.creare $2 option: PID-file
+__getStatus --Decision missing: What stati ?
+Process.creare --Decision missing: 2nd Param for pidfile ?
+Process.exists --Decision missing: delete ?
 
-Process.create --Done -not ready -Docs missing
-
-good:
-kill --Done -not ready -Docs missing
-getPriority --Done -not ready -Docs missing
-setPriority --Done -not ready -Docs missing
-isDaemon --Done -not ready -Docs missing
-getPid --Done -not ready -Docs missing
-getParentPid --Done -not ready -Docs missing
-getUser --Done -not ready -Docs missing
-
-delete again ?:
-Process.exists --Done -not ready -Docs missing
-or argument not pid but object
-
-getStatus --Done -Docs missing
+Create:
+__getThreads
+__getChildren
+__getUserId 
+__getGroupId
 
 Substitutions:
 ----------------
 substitute: gnu readlink
+
+File:
+-------
+getInode
 
 Docs:
 ------
