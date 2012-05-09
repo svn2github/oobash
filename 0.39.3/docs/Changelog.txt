@@ -225,7 +225,7 @@
 #    -added manpage for oobash
 #    -some fixes
 # Version:      0.39.3
-#    -added File methods: md5sum, sha1sum, getFreeSpace, getTotalSpace, getUsableSpace
+#    -added File methods: md5sum, sha1sum, getFreeSpace, getTotalSpace, getUsableSpace, getInode
 #    -added I18n methods: I18n.out.print, I18n.err.print, I18n.out.println, I18n.err.println
 #    -deleted I18n methods: I18n.out.message, I18n.err.message
 #    -added private functions: __isAssocArray, __isArray, __isWriteable, gnustatCheck

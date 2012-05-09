@@ -1306,6 +1306,40 @@ __sha1sum() {
    return $returnValue
 }
 
+__getInode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         local result
+         local file="$("$this".toString)"
+         if command -v stat >/dev/null 2>&1; then
+            if __gnustatCheck; then
+               stat -c '%i' "$file" 2>/dev/null
+            else
+               stat -f '%i' "$file" 2>/dev/null
+            fi
+            return $returnValue
+         else
+            __throw "NotInPathException" ": stat not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
 # length
 # Masterfunction in the String.oobash file
 
@@ -1417,7 +1451,7 @@ File.help() {
       -lastModified -setLastModified -getText 
       -setText -append -clear -linematch -linecount
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
-      -getUsableSpace
+      -getUsableSpace -getInode
       Constructor:
       -File
                  "
@@ -1444,6 +1478,24 @@ File.help() {
                                            - if objectname contains full stop character
                Example:
                   File a testfile
+            ";;&
+         getInode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getInode
+                  Returns the inode number.
+               Parameters:
+                  None
+               Returns:
+                  Returns the inode number
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat is not in path
+                  IOException" ": if file does not exist
+               Example:
+                  File x /etc/passwd
+                  x.getInode
+                  >>>2499132
             ";;&
          getTotalSpace|all)
             match=$(Boolean.TRUE)
