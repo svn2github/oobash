@@ -22,7 +22,7 @@ substitute: gnu readlink
 
 Docs:
 ------
--better documentation of generators in the oobash man page / Readme ? yes
+-better documentation of generators in the oobash man page / Readme
 
 Man.generator:
 ---------------

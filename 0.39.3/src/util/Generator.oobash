@@ -209,8 +209,7 @@ ${userClass}.help() {
       do
          System.out.println "                  <${attributes[$i]}>"
       done
-   System.out.println "                  No \".\" or space character is allowed in the objectname string.
-               Returns:
+   System.out.println "              Returns:
                   None
                Throws:
                   IllegalArgumentException - if number of arguments != $((${#attributes[@]}+1))
