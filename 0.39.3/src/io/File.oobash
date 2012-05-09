@@ -941,6 +941,7 @@ __setLastModified() {
                   return $returnValue
                fi
             else
+               # bsd date
                timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
             fi
          else
@@ -949,7 +950,7 @@ __setLastModified() {
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
-         touch -m -t ${timestamp} -- ${file} #2>/dev/null
+         touch -m -t ${timestamp} -- ${file} 2>/dev/null
          if (( $? == 0 )); then
             Boolean.TRUE
          else
