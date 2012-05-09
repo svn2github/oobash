@@ -1491,7 +1491,7 @@ File.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                   NotInPathException - if stat is not in path
-                  IOException" ": if file does not exist
+                  IOException - if file does not exist
                Example:
                   File x /etc/passwd
                   x.getInode
