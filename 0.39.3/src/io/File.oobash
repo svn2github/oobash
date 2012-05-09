@@ -913,38 +913,49 @@ __setLastModified() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       if command -v touch >/dev/null 2>&1; then
-         if __gnudateCheck; then
-            local this="$1"
-            local file="$("$this".toString)"
-            # catch eg "+" param
-            (declare -i milliSeconds=$3) 2>/dev/null
-            if (( $? != 0 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi            
-            declare -i milliSeconds="$3"
-            if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then 
-               declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
-               declare -i epochSeconds=${milliSeconds:0:secondsLength}
-            else
-               declare -i epochSeconds=0
-            fi
-            local timestamp=$(date +"%y%m%d%H%M.%S" -d @${epochSeconds})
-            touch -m -t ${timestamp} -- ${file} 2>/dev/null
-            if (( $? == 0 )); then
-               Boolean.TRUE
-            else
-               Boolean.FALSE
-            fi
-            return $returnValue
-         else
-            __throw "NotInPathException" ": GNU date not in path"
+         local this="$1"
+         local file="$("$this".toString)"
+         # catch eg "+" param
+         (declare -i milliSeconds=$3) 2>/dev/null
+         if (( $? != 0 )); then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
+         declare -i milliSeconds="$3"
+         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+            declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
+            declare -i epochSeconds=${milliSeconds:0:secondsLength}
+         else
+            declare -i epochSeconds=0
+         fi
+         local timestamp
+         if command -v date >/dev/null 2>&1; then
+            if __gnudateCheck; then
+               timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
+               # check if this gnu date is too old to the -d @.... job
+               if (( $? != 0 )); then
+                  # better than a TooOldGnuDateException ;-)
+                  Boolean.FALSE
+                  return $returnValue
+               fi
+            else
+               timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
+            fi
+         else
+            __throw "NotInPathException" ": date not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         touch -m -t ${timestamp} -- ${file} #2>/dev/null
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+         return $returnValue
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
