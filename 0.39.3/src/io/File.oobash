@@ -102,7 +102,7 @@ __getTotalSpace() {
          if __gnustatCheck; then
             set -f
             local totalFormula
-            totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" "${file}" 2>/dev/null)
+            totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" -- "${file}" 2>/dev/null)
             set + f
             System.out.println "$(eval System.out.print "${totalFormula}")"
          else
@@ -132,7 +132,7 @@ __getUsableSpace() {
          if __gnustatCheck; then
             set -f
             local usableFormula
-            usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" "${file}" 2>/dev/null)
+            usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" -- "${file}" 2>/dev/null)
             set + f
             System.out.println "$(eval System.out.print "${usableFormula}")"
          else
@@ -162,7 +162,7 @@ __getFreeSpace() {
          if __gnustatCheck; then
             set -f
             local freeFormula
-            freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" "${file}" 2>/dev/null)
+            freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" -- "${file}" 2>/dev/null)
             set + f
             System.out.println "$(eval System.out.print "${freeFormula}")"
          else
