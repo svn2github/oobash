@@ -1015,7 +1015,6 @@ __replaceAll() {
    returnValue=$?
    __stackOrHelp "$2" "${FUNCNAME:2}" 
    return $returnValue
-
 }
 
 __substring() {

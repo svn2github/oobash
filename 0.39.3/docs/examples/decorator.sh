@@ -7,7 +7,7 @@ fi
 # START -- My own addon decorator
 # Do not use framework commands (e.g. System.out.println) in a decorator !
 @false() {
-   if (($# != 0)); then
+   if (( $# != 0 )); then
       echo  "I am false and will return 1" >&2
       return 1 
    fi

@@ -13,7 +13,7 @@
 ##############
 
 @calling() {
-   if (($# != 0)); then
+   if (( $# != 0 )); then
       local func="$1"
       shift;shift
       printf "%s\n" "Calling: ${func} $*" >&2
@@ -22,14 +22,14 @@
 }
 
 @timestamp() {
-   if (($# != 0)); then
+   if (( $# != 0 )); then
       printf "%s\n" "Time is $(date "+%s.%N" 2>/dev/null) [seconds.nanoseconds]" >&2
    fi
    return 0
 }
 
 @deprecated() {
-   if (($# != 0)); then
+   if (( $# != 0 )); then
       printf "%s\n" "DeprecatedWarning for $1" >&2
    fi
    return 0
