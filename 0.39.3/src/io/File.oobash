@@ -894,6 +894,7 @@ __lastModified() {
                System.out.println "0"
             fi
             return $returnValue
+         fi
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
          returnValue=$?
