@@ -4,6 +4,7 @@
 
 Process:
 --------
+Docs missing !
 
 __getStatus --Decision missing: What stati ?
 Process.creare --Decision missing: 2nd Param for pidfile ?
@@ -19,13 +20,13 @@ Substitutions:
 ----------------
 substitute: gnu readlink
 
-File:
--------
-getInode
-
 Docs:
 ------
 -better documentation of generators in the oobash man page / Readme ? yes
+
+Man.generator:
+---------------
+methodname : bold
 
 # 0.39.4
 # -some ssh
