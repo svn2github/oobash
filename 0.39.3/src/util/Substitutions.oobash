@@ -53,4 +53,3 @@ __dirname() {
    return 0
 }
 
-

@@ -56,7 +56,7 @@ File() {
 
       __alias "$this" ${FUNCNAME}
 
-      __attribute pathname "${pathname}"        
+      __attribute pathname "$(__stripPath "${pathname}")"
 
       return $returnValue      
    fi

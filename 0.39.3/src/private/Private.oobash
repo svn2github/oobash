@@ -879,8 +879,12 @@ __registerFunction __isWriteable
 
 # private
 # strips double and trailing "/" characters in given path
+# called by:
+# __dirname
+# __basename
+# File constructor
 __stripPath() {
-   local path=$1
+   local path="$1"
 
    # empty --> nothing to do
    if [[ -z "${path}" ]]; then
