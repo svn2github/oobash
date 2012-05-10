@@ -5,77 +5,46 @@
 #
 # Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
 
-# stolen from bash source examples/functions/ and modified/fixed
 __basename() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local path="$1"
    local suffix="$2"
-   local tpath="${path%/}"
 
-   # Strip trailing '/' characters
-   while [[ "${tpath}" != "${path}" ]]
-   do
-      tpath="${path}"
-      path="${tpath%/}"
-   done
-
-   # now empty --> only "/" characters --> basename is "/"
-   if [[ -z "${path}" && ! -z "$1" ]]; then
-      System.out.println "/"
+   # empty string --> basename is ""
+   if [[ -z "${path}" ]]; then
+      System.out.println ""
       return 0
    fi
 
+   path="$(__stripPath "${path}")"
+
    # Strip off pathname
    path="${path##*/}"
+
+   # empty string after strip off pathname --> basename is "/"
+   if [[ -z "${path}" ]]; then
+      path="/"
+   fi
+
    # Also strip off extension, if any.    
    System.out.println "${path%${suffix}}"
    return 0
 }
 
-# stolen from bash source examples/functions/ and modified/fixed
 __dirname() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local dir="$1"
    local tmpdir="${dir%/}"
 
-   # empty string "." is dirname
+   # empty string --> dirname is "."
    if [[ -z "${dir}" ]]; then
       System.out.println "."
       return 0
    fi
 
-   # Strip trailing '/' characters from dir
-   while [[ "${tmpdir}" != "${dir}" ]]
-   do
-      tmpdir="${dir}"
-      dir="${tmpdir%/}"
-   done
+   dir="$(__stripPath "$dir")"
 
-   # now empty --> only "/" characters --> dirname is "/"
-   if [[ -z "${dir}" ]]; then
-      System.out.println "/"
-      return 0
-   fi
-
-   # Strip double '/' characters from dir
-   # ! the original dirname is not doing this !
-   tmpdir='' 
-   local lastchar=''
-   for ((i=0; i < ${#dir}; i++))
-   do
-      local char="${dir:i:1}"
-      if [[ "${lastchar}" != "/" ]]; then
-         tmpdir="${tmpdir}""${char}"
-      else
-         if [[ "${char}" != "${lastchar}" ]]; then
-            tmpdir="${tmpdir}""${char}"
-         fi
-      fi
-      lastchar=${char}
-   done
-   dir="${tmpdir}"
-
-   # if there is no / in dir, else...
+   # if there is no / in dir --> dirname is "."
    if [[ "${dir%/*}" == "$dir" ]]; then
       System.out.println "."
    else
@@ -83,3 +52,5 @@ __dirname() {
    fi
    return 0
 }
+
+

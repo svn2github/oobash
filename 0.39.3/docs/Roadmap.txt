@@ -22,6 +22,10 @@ Man pages:
 -----------
 B. line before methodname line
 
+getPath:
+--------
+--> use __stripPath (+ in more File methods?)
+
 # 0.39.4
 # -some ssh
 # -some System functions
