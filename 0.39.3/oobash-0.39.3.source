@@ -14,16 +14,6 @@
 ######################
 
 __STARTTIME__="`date +%s.%N 2>/dev/null`"
-
-# OS X
-# hope to find a gnu date on macos systems (can't test this)
-if [ -x "/opt/local/bin/date" ]; then
-   __STARTTIME__="`/opt/local/bin/date +%s.%N 2>/dev/null`"
-fi
-
-if [ -x "/opt/local/bin/gdate" ]; then
-   __STARTTIME__="`/opt/local/bin/gdate +%s.%N 2>/dev/null`"
-fi
 SECONDS=0
 __VERSION__="0.39.3"
 __FILENAME__="oobash-${__VERSION__}.source"
@@ -233,24 +223,6 @@ fi
 
 # Add oobash man pages to manpath
 export MANPATH=$MANPATH:${__OODIR__}/man
-
-# gnu date search:
-###################
-
-# hope to find a gnu date on macos systems (can't test this)
-if [[ -x "/opt/local/bin/date" ]]; then
-   date() {
-      /opt/local/bin/date "$@"
-   }
-   __registerFunction date
-fi
-
-if [[ -x "/opt/local/bin/gdate" ]]; then
-   date() {
-      /opt/local/bin/gdate "$@"
-   }
-   __registerFunction date
-fi
 
 ###################
 ###################
