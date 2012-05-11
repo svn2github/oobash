@@ -122,9 +122,12 @@ __base64Encode() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      if command -v base64 >/dev/null 2>&1; then 
-         System.out.println "$("$this".toString)" | base64 --wrap=0 2>/dev/null
-         return $?
+      if command -v base64 >/dev/null 2>&1; then
+         local encoded
+         encoded="$(System.out.println "$("$this".toString)" | base64 --wrap=0 2>/dev/null)"
+         returnValue=$?
+         System.out.println "${encoded}"
+         return $returnValue
       fi
       __throw "NotInPathException" ": base64 not in path (install the GNU coreutils ?)"
       returnValue=$?
