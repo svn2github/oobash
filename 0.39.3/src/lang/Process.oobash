@@ -390,7 +390,6 @@ __getStatus() {
                  else
                     stat="Paging"
                  fi;;
-               # Z zombie OK
                Z)stat="Defunct";;
                # only SunOS (letter O)
                O)stat="Running";;
