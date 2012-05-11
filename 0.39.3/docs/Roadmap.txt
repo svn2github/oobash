@@ -10,10 +10,6 @@ __getStatus --Decision missing: What stati ?
 Process.creare --Decision missing: 2nd Param for pidfile ?
 Process.exists --Decision missing: delete ?
 
-Create:
-__getUserId 
-__getGroupId
-
 Substitutions:
 ----------------
 substitute: gnu readlink

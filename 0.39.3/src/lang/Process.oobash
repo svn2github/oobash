@@ -9,9 +9,6 @@
 # constructor  function #
 #########################
 
-#__getUserId
-#__getGroupId
-
 Process() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -251,7 +248,7 @@ __getEffectiveUserId() {
                return $returnValue
             fi
             local euid
-            euid="$(ps  -p "${pId}" -o euid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            euid="$(ps  -p "${pId}" -o uid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${euid: -3}" != "0 0" ]]; then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
