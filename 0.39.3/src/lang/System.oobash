@@ -27,13 +27,12 @@ System.currentTimeMillis() {
       if __gnudateCheck; then
          local date=$(date +%s%N)
          System.out.println ${date:0:13}
-         return $returnValue
       else
          __throw "NotInPathException" ": GNU date not in path"
          returnValue=$?
          __stackOrHelp "System" "${FUNCNAME}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    returnValue=$?
@@ -48,13 +47,12 @@ System.currentTimeNanos() {
    if (( $# == 0 )); then
       if __gnudateCheck; then
          date +%s%N
-         return $returnValue
       else
          __throw "NotInPathException" ": GNU date not in path"
          returnValue=$?
          __stackOrHelp "System" "${FUNCNAME}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    returnValue=$?

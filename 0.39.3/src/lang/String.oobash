@@ -150,7 +150,6 @@ __base64Decode() {
             __throw "DecoderException" ": Decoding problem with: $("$this".toString) "
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}" 
-            return $returnValue
          else
             System.out.println "$output"
          fi
@@ -352,7 +351,6 @@ __count() {
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}" 
-            return $returnValue
          fi
       fi
       return $returnValue
@@ -645,13 +643,12 @@ __equalsIgnoreCase() {
          __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}" 
-         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}" 
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -969,11 +966,10 @@ __endsWith() {
       local str="$("$this".toString)"
       if [[ "$str" == *"$endstring" ]]; then
          Boolean.TRUE
-         return $returnValue
       else
          Boolean.FALSE
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?

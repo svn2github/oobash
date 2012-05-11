@@ -109,7 +109,6 @@ __getTotalSpace() {
             __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
          fi
       else
          System.out.println "0"
@@ -139,7 +138,6 @@ __getUsableSpace() {
             __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
          fi
       else
          System.out.println "0"
@@ -169,7 +167,6 @@ __getFreeSpace() {
             __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
          fi
       else
          System.out.println "0"
@@ -326,13 +323,12 @@ __mkdir() {
          else
             Boolean.FALSE
          fi
-         return $returnValue
       else
          __throw "NotInPathException" ": mkdir not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -354,13 +350,12 @@ __mkdirs() {
          else
             Boolean.FALSE
          fi
-         return $returnValue
       else
          __throw "NotInPathException" ": mkdir not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -515,33 +510,28 @@ __renameTo() {
                   result=$?
                   if (( $result == 0 )); then
                      Boolean.TRUE
-                     return $returnValue
                   else
                      Boolean.FALSE
-                     return $returnValue
                   fi
                else
                   __throw "NotInPathException" ": mv not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
                fi            
             else
-               Boolean.FALSE
-               return $returnValue
+               Boolean.FALSE               
             fi
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -586,13 +576,12 @@ __setReadable() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       returnValue=$?
       __stackOrHelp "$2" "${FUNCNAME:2}"
-      return $returnValue
-   fi 
+   fi
+   return $returnValue
 }
 
 __setWritable() {
@@ -632,13 +621,12 @@ __setWritable() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       returnValue=$?
       __stackOrHelp "$2" "${FUNCNAME:2}"
-      return $returnValue
-   fi 
+   fi
+   return $returnValue
 }
 
 __setExecutable() {
@@ -678,13 +666,12 @@ __setExecutable() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       returnValue=$?
       __stackOrHelp "$2" "${FUNCNAME:2}"
-      return $returnValue
-   fi      
+   fi
+   return $returnValue
 }
 
 __getCanonicalPath() {
@@ -708,7 +695,6 @@ __getCanonicalPath() {
                __throw "NotInPathException" ": pwd not in path"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
             fi
          fi
          return $returnValue
@@ -795,19 +781,17 @@ __delete() {
             else
                Boolean.FALSE
             fi
-            return $returnValue
          else
             __throw "NotInPathException" ": rmdir not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
          fi
       else
          __throw "NotInPathException" ": rm not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi      
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -832,13 +816,12 @@ __createNewFile() {
          else
             Boolean.FALSE
          fi
-         return $returnValue
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -873,7 +856,6 @@ __lastModified() {
             else
                System.out.println "0"
             fi
-            return $returnValue
          else
             result=$(stat -L -f '%m' -t '+%Y' -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
@@ -893,14 +875,13 @@ __lastModified() {
             else
                System.out.println "0"
             fi
-            return $returnValue
          fi
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi    
+         __stackOrHelp "$2" "${FUNCNAME:2}"        
+      fi
+      return $returnValue   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -956,13 +937,12 @@ __setLastModified() {
          else
             Boolean.FALSE
          fi
-         return $returnValue
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi    
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+      return $returnValue   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -983,13 +963,12 @@ __setReadOnly() {
          else
             Boolean.FALSE
          fi
-         return $returnValue
       else
          __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi    
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+      return $returnValue   
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1009,19 +988,17 @@ __getText() {
             local file="$("$this".toString)"
             text="$(<"$file")"
             System.out.println "$text"
-            return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
    returnValue=$?
@@ -1048,31 +1025,27 @@ __setText() {
                   else
                      Boolean.FALSE
                   fi
-                  return $returnValue
                else
                   __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
+                  __stackOrHelp "$2" "${FUNCNAME:2}"                  
                fi
             else
                __throw "IOException" ": Cannot write file \"$("$this".toString)\""
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
             fi
          else 
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            __stackOrHelp "$2" "${FUNCNAME:2}"           
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1099,31 +1072,27 @@ __append() {
                   else
                      Boolean.FALSE
                   fi
-                  return $returnValue
                else
                   __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
                fi
             else
                __throw "IOException" ": Cannot write file \"$("$this".toString)\""
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
+               __stackOrHelp "$2" "${FUNCNAME:2}"               
+            fi            
          else 
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1144,19 +1113,17 @@ __clear() {
             else
                Boolean.FALSE
             fi
-            return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot write file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1175,19 +1142,17 @@ __linecount() {
             local file="$("$this".toString)"
             mapfile FILE < "$file"
             System.out.println "${#FILE[@]}"
-            return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1212,19 +1177,17 @@ __linematch() {
                   System.out.print "${FILE[index]}"
                fi
             done
-            return $returnValue
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"   
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1251,9 +1214,7 @@ __md5sum() {
                   __throw "NotInPathException" ": md5 not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
                fi
-               return $returnValue
                ;;
             *) if command -v md5sum >/dev/null 2>&1; then
                   result=$(md5sum -- "$file" 2>/dev/null)
@@ -1262,23 +1223,20 @@ __md5sum() {
                   __throw "NotInPathException" ": md5sum not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
-               fi
-               return $returnValue
+               fi               
                ;;
             esac
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1305,9 +1263,7 @@ __sha1sum() {
                   __throw "NotInPathException" ": shasum not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
                fi
-               return $returnValue
                ;;
             *) if command -v sha1sum >/dev/null 2>&1; then
                   result=$(sha1sum -- "$file" 2>/dev/null)
@@ -1317,22 +1273,20 @@ __sha1sum() {
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
                   return $returnValue
-               fi
-               return $returnValue
+               fi               
                ;;
             esac
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1354,19 +1308,17 @@ __getInode() {
             else
                stat -f '%i' "$file" 2>/dev/null
             fi
-            return $returnValue
          else
             __throw "NotInPathException" ": stat not in path"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -1420,19 +1372,17 @@ File.createTemporaryFile() {
                chmod ${permissions} -- "${temporaryFile}"
             fi
             System.out.println "${temporaryFile}"
-            return $returnValue
          else
             __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
             returnValue=$?
-            __stackOrHelp "File" "${FUNCNAME}"
-            return $returnValue
-         fi      
+            __stackOrHelp "File" "${FUNCNAME}"            
+         fi
       else
          __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "File" "${FUNCNAME}"
-         return $returnValue
+         __stackOrHelp "File" "${FUNCNAME}"         
       fi
+      return $returnValue
    fi 
    __throw "IllegalArgumentException" ": Wrong number of arguments $#"
    returnValue=$?
@@ -1685,8 +1635,7 @@ File.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getText
-                  Returns string that is the content of file.successful
-                  Only works with regular files.
+                  Returns string that is the content of file.successful.
                Parameters:
                   None
                Returns:
@@ -1706,7 +1655,6 @@ File.help() {
             System.${printStream}.println "
                setText
                   Sets string as content of file.
-                  Only works with regular files.
                Parameters:
                   String object
                Returns:
@@ -1729,7 +1677,6 @@ File.help() {
             System.${printStream}.println "
                append
                   Appends string to content of file.
-                  Only works with regular files.
                Parameters:
                   String object
                Returns:
@@ -1751,7 +1698,6 @@ File.help() {
             System.${printStream}.println "
                clear
                   Deletes content of file.
-                  Only works with regular files.
                Parameters:
                   None
                Returns:

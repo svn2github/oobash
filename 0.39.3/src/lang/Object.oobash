@@ -113,23 +113,21 @@ __equals() {
             Level)
                if [[ "$("$argobject".toInt)" == "$("$this".toInt)" ]]; then
                   Boolean.TRUE
-                  return $returnValue
                fi;;            
             *)
                if [[ "$("$argobject".toString)" == "$("$this".toString)" ]]; then
                   Boolean.TRUE
-                  return $returnValue
                fi;;
             esac
+            return $returnValue
          fi
          Boolean.FALSE
-         return $returnValue
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
       fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
@@ -175,13 +173,12 @@ __hashCode() {
             *)
                System.out.println ${hash};;   
          esac  
-         return $returnValue
       else
          __throw "NotInPathException" ": bc not in path"
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi   
+      fi
+      return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
