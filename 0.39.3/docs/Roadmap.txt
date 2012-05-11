@@ -18,10 +18,6 @@ Substitutions:
 ----------------
 substitute: gnu readlink
 
-Man pages:
------------
-B. line before methodname line
-
 # 0.39.4
 # -some ssh
 # -some System functions

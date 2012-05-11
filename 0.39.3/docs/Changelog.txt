@@ -232,7 +232,7 @@
 #    -added private functions: __isAssocArray, __isArray, __isWriteable, gnustatCheck, stripPath
 #    -added class Process with some methods/functions:
 #    Process, Process.create, Process.exists, getPid, getParentPid, getUser, getStatus, getCommand
-#    -getPriority, setPriority, kill, isDaemon
+#    -getPriority, setPriority, kill, isDaemon, getEffectiveUserId, getRealUserId
 #    -optimized stacktrace if os != linux
 #    -added dependencies:ps, kill, renice, md5sum, sha1sum, tail
 #    -deleted dependencies: gettext, dirname, basename
