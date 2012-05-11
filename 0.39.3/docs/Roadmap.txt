@@ -4,11 +4,9 @@
 
 Process:
 --------
-Docs missing !
 
-__getStatus --Decision missing: What stati ?
-Process.creare --Decision missing: 2nd Param for pidfile ?
-Process.exists --Decision missing: delete ?
+Process.create --Decision missing: 2nd Param for pidfile ?
+Process man page + help
 
 Substitutions:
 ----------------

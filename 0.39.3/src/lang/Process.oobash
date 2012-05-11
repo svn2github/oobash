@@ -379,63 +379,35 @@ __getStatus() {
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
-            # TODO: Decision for states...
             case "${stat:0:1}" in
-               D)stat="Uninterruptible";;
-               # R ok
+               U|D)stat="Uninterruptible";;
                R)stat="Runnable";;
-               # S ok
                S)stat="Sleeping";;
-               # T ok
                T)stat="Stopped";;
-               # W not valid since the 2.6.xx kernel
-               W)stat="Paging";;
-               # Z zombie
+               # W not valid since the 2.6.xx linux kernel
+               W)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
+                    stat="Waiting"
+                 else
+                    stat="Paging"
+                 fi;;
+               # Z zombie OK
                Z)stat="Defunct";;
                # only SunOS (letter O)
                O)stat="Running";;
-               # only HP-UX
+               # only HP-UX -- no idea what this means
                X)stat="Growing";;
+               # only HP-UX: Null
+               0)stat="NotExisting";;
+               I)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
+                    # no idea what this means
+                    stat="Intermediate"
+                 else
+                    stat="Idle"
+                 fi;;
                *)__throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                  returnValue=$?
                  __stackOrHelp "$2" "${FUNCNAME:2}"
                  return $returnValue;;
-               # OS X ps man page:
-               #               I       Marks a process that is idle (sleeping for longer than about 20 seconds).
-               #               R       Marks a runnable process.
-               #               S       Marks a process that is sleeping for less than about 20 seconds.
-               #               T       Marks a stopped process.
-               #               U       Marks a process in uninterruptible wait.
-               #               Z       Marks a dead process (a ``zombie'').
-               # uname -s Darwin
-
-               # Gnu Linux ps man page:
-               #               D       Uninterruptible sleep (usually IO)
-               #               R       Running or runnable (on run queue)
-               #               S       Interruptible sleep (waiting for an event to complete)
-               #               T       Stopped, either by a job control signal or because it is being traced.
-               #               W       paging (not valid since the 2.6.xx kernel)
-               #               X       dead (should never be seen)
-               #               Z       Defunct ("zombie") process, terminated but not reaped by its parent.
-               # uname -s Linux
-
-               # HP-UX ps man page:
-               #               0 non-existent; (Null)
-               #               S sleeping;
-               #               W waiting;
-               #               R running;
-               #               I intermediate;
-               #               Z terminated;
-               #               T stopped;
-               #               X growing.
-
-               # Sun ps man page:
-               #              O Process is running on a processor. (letter O)
-               #              S Sleeping: process is waiting for an event to complete.
-               #              R Runnable: process is on run queue.
-               #              Z Zombie state: process terminated and parent not waiting.
-               #              T Process is stopped, either by a job control signal or because it is being traced.
-
             esac
             System.out.println "${stat}"
          else
@@ -664,32 +636,6 @@ Process.create() {
    return $returnValue
 }
 __registerFunction Process.create
-
-Process.exists() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 1 )); then
-      declare -i pId="$1"
-      if command -v ps >/dev/null 2>&1; then
-         ps  -p "${pId}" -o stat 2>/dev/null 1>&2
-         if (( $? == 0 ));then
-            Boolean.TRUE
-            return $returnvalue
-         fi
-         Boolean.FALSE
-      else
-         __throw "NotInPathException" ": ps not in path"
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME}"
-      fi
-      return $returnValue
-   fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "Process" "${FUNCNAME}"
-   return $returnValue
-}
-__registerFunction Process.find
 
 complete -W  "$(echo ${__Process__[@]}) all Process" Process.help
 
