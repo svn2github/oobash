@@ -658,6 +658,10 @@ __dependencyCheck() {
                      bool="$(Boolean.FALSE)"
                      __throw "NotInPathException" ": GNU stat not in path"
                   fi;;
+            readlink) if ! __gnureadlinkCheck; then
+                         bool="$(Boolean.FALSE)"
+                         __throw "NotInPathException" ": GNU readlink not in path"
+                      fi;;                      
          esac
       fi
    done
@@ -718,6 +722,26 @@ __gnustatCheck() {
 }
 __registerFunction __gnustatCheck
 
+# private
+# check for gnu readlink
+# called by:
+# __dependencyCheck
+# __getCanonicalPath
+__gnureadlinkCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   # For this framework it is important to work with a gnu stat, so:
+   # special check for gnu stat with "--file-system" gnu feature:
+   if command -v readlink >/dev/null 2>&1; then
+      readlink -f / 2>/dev/null 1>&2
+      if (( $? != 0 )); then
+         return 1
+      fi
+   else
+      return 1
+   fi
+   return 0
+}
+__registerFunction __gnureadlinkCheck
 
 # private
 # decision: call stacktrace or help

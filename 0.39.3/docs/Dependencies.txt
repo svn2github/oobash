@@ -1,14 +1,14 @@
 base64
 bc
 chmod
-date (gnu!)
+date/gdate (GNU!)
 mkdir
 mktemp
 mv
-readlink (gnu!)
+readlink/greadlink (GNU!)
 rm
 rmdir
-stat (gnu!)
+stat/gstat (GNU!)
 touch
 wc
 sort

@@ -30,6 +30,7 @@ __basename() {
    System.out.println "${path%${suffix}}"
    return 0
 }
+__registerFunction __basename
 
 __dirname() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -52,4 +53,4 @@ __dirname() {
    fi
    return 0
 }
-
+__registerFunction __dirname

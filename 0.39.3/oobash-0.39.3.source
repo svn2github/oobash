@@ -14,6 +14,9 @@
 ######################
 
 __STARTTIME__="`date +%s.%N 2>/dev/null`"
+if command -v gdate >/dev/null 2>&1; then
+   __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
+fi
 SECONDS=0
 __VERSION__="0.39.3"
 __FILENAME__="oobash-${__VERSION__}.source"
@@ -223,6 +226,41 @@ fi
 
 # Add oobash man pages to manpath
 export MANPATH=$MANPATH:${__OODIR__}/man
+
+# if there are any gnu tools, try to use them...
+if command -v gdate >/dev/null 2>&1; then
+   testtimestamp="$(gdate "+%N" 2>/dev/null)"
+   if [[ "${testtimestamp: -1}" != "N" ]]; then
+      date() {
+         gdate $@
+         return $?
+      }
+      __registerFunction gdate
+   fi
+   __registerVar testtimestamp
+fi
+
+if command -v gstat >/dev/null 2>&1; then
+   gstat --file-system / 2>/dev/null 1>&2
+   if (( $? == 0 )); then
+      stat() {
+         gstat $@
+         return $?
+      }
+      __registerFunction gstat
+   fi
+fi
+
+if command -v greadlink >/dev/null 2>&1; then
+   greadlink -f / 2>/dev/null 1>&2
+   if (( $? == 0 )); then
+      readlink() {
+         greadlink $@
+         return $?
+      }   
+      __registerFunction greadlink
+   fi
+fi
 
 ###################
 ###################

@@ -680,7 +680,7 @@ __getCanonicalPath() {
    if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".getAbsolutePath)"
-      if command -v readlink >/dev/null 2>&1; then 
+      if __gnureadlinkCheck; then 
          local result=''
          result=$(readlink -e -- "${file}" 2>/dev/null)
          if (( $? == 0 )); then
@@ -699,7 +699,7 @@ __getCanonicalPath() {
          fi
          return $returnValue
       fi
-      __throw "NotInPathException" ": readlink not in path (install the GNU coreutils ?)"
+      __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
       returnValue=$?
       __stackOrHelp "$2" "${FUNCNAME:2}"
       return $returnValue

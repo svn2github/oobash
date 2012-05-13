@@ -25,8 +25,8 @@ System.currentTimeMillis() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       if __gnudateCheck; then
-         local date=$(date +%s%N)
-         System.out.println ${date:0:13}
+         local dat=$(date +%s%N)
+         System.out.println ${dat:0:13}
       else
          __throw "NotInPathException" ": GNU date not in path"
          returnValue=$?
@@ -46,7 +46,7 @@ System.currentTimeNanos() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       if __gnudateCheck; then
-         date +%s%N
+         date "+%s%N"
       else
          __throw "NotInPathException" ": GNU date not in path"
          returnValue=$?

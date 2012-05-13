@@ -229,7 +229,7 @@
 #    -added File methods: md5sum, sha1sum, getFreeSpace, getTotalSpace, getUsableSpace, getInode
 #    -added I18n methods: I18n.out.print, I18n.err.print, I18n.out.println, I18n.err.println
 #    -deleted I18n methods: I18n.out.message, I18n.err.message
-#    -added private functions: __isAssocArray, __isArray, __isWriteable, gnustatCheck, stripPath
+#    -added private functions: __isAssocArray, __isArray, __isWriteable, gnustatCheck, gnureadlinkCheck, stripPath
 #    -added Substitutions file: __basename; __dirname
 #    -added class Process with some methods/functions:
 #    Process, Process.create, getPid, getParentPid, getUser, getStatus, getCommand

@@ -1,15 +1,5 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.3
-
-Process:
---------
-Process man page + help
-
-Substitutions:
-----------------
-substitute: gnu readlink
-
 # 0.39.4
 # -some ssh
 # -some System functions
