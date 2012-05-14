@@ -1272,7 +1272,6 @@ __sha1sum() {
                   __throw "NotInPathException" ": sha1sum not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
                fi               
                ;;
             esac
