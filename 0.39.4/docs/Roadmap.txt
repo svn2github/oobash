@@ -1,0 +1,46 @@
+# MAYBE ROADMAP (very unstable ;-) ):
+
+# 0.39.4
+# -some ssh
+# -some System functions
+# -better documentation for generators
+# -Man.generator: bold methodnames
+
+# 0.39.5
+# -chained return values
+# -url decode/encode ?
+# -Script.generator (header...)
+# -some Process functions
+
+# 0.39.6
+# -analyze log4oobash.properties
+# -some File functions
+# -colours ?
+
+# 0.40
+# Assert 
+# + Tests (execute modules to test --- python style)
+
+# 0.50
+# Logging
+
+# 0.60
+# Use of /dev/tcp and /dev/udp
+# for network sockets
+
+# 0.70
+# -pimp getopts/or create an alternative ? 
+# -oobash.freeze --> conservation of the status quo
+
+# 0.80
+# Facade for some version control systems ?
+
+# 0.90 
+# integration of 
+# -jmxterm http://wiki.cyclopsgroup.org/jmxterm ? 
+# -XMLStarlet http://xmlstar.sourceforge.net/ ?
+# -xslt with http://xml.apache.org/xalan-j/commandline.html ?
+
+# 1.0
+# Facade for some GUI libs ?
+# HAL 9000 integration

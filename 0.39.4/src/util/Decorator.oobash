@@ -1,0 +1,104 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com
+#
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+# For cleanup: All the functions here don't have to be registered in the Registry.
+# They are deleted in the __cleanUp function by name
+  
+##############
+# decorators #
+##############
+
+@calling() {
+   if (( $# != 0 )); then
+      local func="$1"
+      shift;shift
+      printf "%s\n" "Calling: ${func} $*" >&2
+   fi
+   return 0
+}
+
+@timestamp() {
+   if (( $# != 0 )); then
+      printf "%s\n" "Time is $(date "+%s.%N" 2>/dev/null) [seconds.nanoseconds]" >&2
+   fi
+   return 0
+}
+
+@deprecated() {
+   if (( $# != 0 )); then
+      printf "%s\n" "DeprecatedWarning for $1" >&2
+   fi
+   return 0
+}
+
+@runtime() {
+   if (( $# != 0 )); then
+      # we have date command ?
+      if command -v date >/dev/null 2>&1; then
+         local testtimestamp
+         testtimestamp="$(date "+%N" 2>/dev/null)"
+         # is GNU date and is bc available ?
+         if [[ "${testtimestamp: -1}" != "N" ]] && command -v bc >/dev/null 2>&1; then
+            local time="$(printf "%s\n" "$(date +"%s.%N")-${__STARTTIME__}" | bc -l)"
+            if [[ "${time:0:1}" == "." ]]; then
+               time=0"${time}"
+            fi
+            printf "%s\n" "Runtime: ${time} [seconds.nanoseconds]"
+            return 0
+         fi
+      fi
+      printf "%s\n" "Runtime: ${SECONDS} [seconds]"
+      return 0
+   fi
+   return 0
+}
+
+####################################################
+# function to handle decorators, if there are some #
+####################################################
+
+__decoratorCheck() {
+   # No use of decorators in interactive shell
+   if [[ "${0##*/}" == "bash" ||  "${0##*/}" == "-bash" ]]; then
+      return 0
+   fi
+
+   local file="$2"
+
+   declare -i returnValue=0
+   declare -i offset=0
+   declare -i line="${BASH_LINENO}"
+
+   # ||: important if you change PWD in script and you start the script with relative path eg ./script.sh
+   2>/dev/null mapfile Arr < "${file}" || mapfile Arr < "${__SCRIPT__}"
+
+   # TODO: look for () is weak...
+   # bottom-up search for function start by looking for "()"
+   while [[ "${Arr[line-offset]}" == "${Arr[line-offset]/"()"/}" ]]
+   do 
+      ((offset++))
+   done   
+   ((offset++))
+
+   # bottom-up search for decorators
+   declare -a lineOffset
+
+   while [[ "${Arr[line-offset]:0:1}" == "@" ]]
+   do
+      lineOffset[$[${#lineOffset[@]}]]=$offset
+      ((offset++))
+   done
+
+   # call all the decorators from top to bottom
+   declare -i i=0
+   for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
+   do
+      eval ${Arr[line-lineOffset[i]]} \$@
+      returnValue=$(($returnValue+$?))
+   done
+   return $returnValue
+}
