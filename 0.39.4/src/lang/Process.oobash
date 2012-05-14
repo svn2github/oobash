@@ -878,7 +878,7 @@ Process.help() {
                Example:
                   Process b 1
                   b.kill
-                  >>>1
+                  >>>false
             ";;& 
          isDaemon|all)
             match=$(Boolean.TRUE)
