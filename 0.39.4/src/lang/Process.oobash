@@ -651,7 +651,7 @@ Process.create() {
 }
 __registerFunction Process.create
 
-complete -W  "$(echo ${__Process__[@]}) all Process" Process.help
+complete -W  "$(echo ${__Process__[@]}) create all Process" Process.help
 
 #################
 # help function #
@@ -900,7 +900,7 @@ Process.help() {
                   b.isDaemon
                   >>>true
             ";;& 
-         Process.create|all)
+         Process.create|create|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                Process.create
