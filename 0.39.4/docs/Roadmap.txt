@@ -1,10 +1,54 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.4
+# 0.39.4 original:
 # -some ssh
 # -some System functions
 # -better documentation for generators
 # -Man.generator: bold methodnames
+
+File: 
+------
+fix extension, base --> use only __basename of this !
+no extension if only hidden file
+ 
+sha1sum/shasum/md5sum/md5 --> all with openssl
+
+getCanonicalFile
+getAbsoluteFile
+list
+listFiles
+
+File constructor --> args 3 --> objname path filename
+File constructor --> args 4 --> objname path basename extension
+
+File.listRoots
+
+System:
+--------
+System.sleep
+System.usleep
+
+Process:
+-----------
+__wait
+__getThreads
+__children
+__memory
+
+"0 0" --> terrible !
+get rid of tail !
+
+Code:
+-------
+       -n STRING
+              the length of STRING is nonzero
+
+       STRING equivalent to -n STRING
+
+       -z STRING
+              the length of STRING is zero
+
+--> ! -z --> -n 
 
 # 0.39.5
 # -chained return values
