@@ -49,7 +49,12 @@ __dirname() {
    if [[ "${dir%/*}" == "$dir" ]]; then
       System.out.println "."
    else
-      System.out.println "${dir%/*}"
+      # /one --> ""
+      if [[ -z "${dir%/*}" ]]; then
+         System.out.println "/"
+      else
+         System.out.println "${dir%/*}"
+      fi
    fi
    return 0
 }
