@@ -241,8 +241,7 @@
 #    -added global __Signals__ array
 #    -all constructors now throw IllegalArgumentException intstead of a "message + return 1"
 #    -many fixes
-# Version:      0.39.4
-#    -added File methods: base, extension
+# Version:      0.39.3.1
 #    -fixes
 
 #################################################################

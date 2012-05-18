@@ -116,7 +116,7 @@ __throw() {
    local message="$2"
    __tracebackHeader
    System.err.println "${exception}${message}"
-   if [[ ! -z ${__ExceptionValues__[$exception]} ]]; then
+   if [[ ! -z "${__ExceptionValues__[$exception]}" ]]; then
       returnValue=${__ExceptionValues__[$exception]}
    else   
       returnValue=${__ExceptionValues__[Unknown]}
@@ -181,7 +181,7 @@ __registerFunction __destructor
 # Only active in interactive bash
 # called by:
 # -every constructor
-if [[ ! -z $PS1 ]]; then
+if [[ ! -z "$PS1" ]]; then
    __unalias() {
       __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
       local this="$1"
@@ -210,7 +210,7 @@ __registerFunction __unalias
 # in the interactive bash. 
 # called by:
 # -every constructor
-if [[ ! -z $PS1 ]]; then
+if [[ ! -z "$PS1" ]]; then
    __alias() {
       __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
       local this="$1"

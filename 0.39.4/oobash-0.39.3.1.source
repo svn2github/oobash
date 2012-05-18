@@ -18,7 +18,7 @@ if command -v gdate >/dev/null 2>&1; then
    __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
 fi
 SECONDS=0
-__VERSION__="0.39.3"
+__VERSION__="0.39.3.1"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
@@ -140,7 +140,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
                             mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial
                             isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified
                             setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear 
-                            linecount linematch sha1sum md5sum getTotalSpace getFreeSpace getUsableSpace getInode base extension)
+                            linecount linematch sha1sum md5sum getTotalSpace getFreeSpace getUsableSpace getInode)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
@@ -209,7 +209,7 @@ if [[ ! -z "$__QUIET__" ]]; then
 fi
 
 # Export scriptpath + scriptname if oobash is sourced by script
-if [[ -z $PS1 ]]; then
+if [[ -z "$PS1" ]]; then
    call="$(caller)"
    call="${call/[0-9]* /}"
    if [[ ${call:0:2} == "./" ]]; then
@@ -354,7 +354,7 @@ __registerFunction command_not_found_handle
 ###########################
 ###########################
 
-if [[ $(Boolean.parseBoolean "${__QUIET__}") != $(Boolean.TRUE) ]] && [[ ! -z $PS1 ]]; then
+if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z "$PS1" ]]; then
    System.out.println 
    I18n.out.println " oo-style framework for bash 4"
    I18n.out.println " Version:      ${__VERSION__}"
