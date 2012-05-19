@@ -1434,7 +1434,7 @@ File.help() {
       -lastModified -setLastModified -getText 
       -setText -append -clear -linematch -linecount
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
-      -getUsableSpace -getInode -extension -base
+      -getUsableSpace -getInode
       Constructor:
       -File
                  "
