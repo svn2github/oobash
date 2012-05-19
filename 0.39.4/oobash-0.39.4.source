@@ -18,7 +18,7 @@ if command -v gdate >/dev/null 2>&1; then
    __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
 fi
 SECONDS=0
-__VERSION__="0.39.3.1"
+__VERSION__="0.39.4"
 __FILENAME__="oobash-${__VERSION__}.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
@@ -195,6 +195,8 @@ __import oobash.i18n.I18nMessage
 __registerVar __ObjectMethods__
 __registerVar __ComparableMethods__
 __registerVar __Dependencies__
+__registerVar __ExceptionValues__
+__registerVar __Signals__
 __registerVar __VERSION__
 __registerVar __FILENAME__
 __registerVar __LOGGINGPROPERTIESFILE__
