@@ -243,6 +243,8 @@
 #    -many fixes
 # Version:      0.39.3.1
 #    -fixes
+# Version:      0.39.4
+#    -added File methods: base, extension
 
 #################################################################
 # Features:

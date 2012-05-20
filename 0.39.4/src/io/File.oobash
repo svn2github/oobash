@@ -73,17 +73,39 @@ __registerClass File
 #                   #
 #####################
 
-__canRead() {
+__base() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local file="$("$this".toString)"
-      if [[ -r "${file}" ]]; then
-         Boolean.TRUE
+      local file="$(__basename "$("$this".toString)")"
+      local path="$(__dirname "$("$this".toString)")"
+      # test for hidden file
+      if [[ ! -z "${file%.*}" ]]; then
+         System.out.println "${file%.*}"
       else
-         Boolean.FALSE
-      fi
+         System.out.println "${file}"
+      fi 
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
+   return $returnValue
+}
+
+__extension() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$(__basename "$("$this".toString)")"
+      local extension="${file##*.}"
+      local output=""
+      if [[ ."${extension}" != "${file}" && "${extension}" != "${file}" ]]; then
+         output="${extension}"  
+      fi 
+      System.out.println "${output}"
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -176,6 +198,25 @@ __getFreeSpace() {
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
    returnValue=$?
    __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__canRead() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -r "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}" 
    return $returnValue
 }
 
@@ -1434,7 +1475,7 @@ File.help() {
       -lastModified -setLastModified -getText 
       -setText -append -clear -linematch -linecount
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
-      -getUsableSpace -getInode
+      -getUsableSpace -getInode -base -extension
       Constructor:
       -File
                  "
@@ -1461,6 +1502,39 @@ File.help() {
                                            - if objectname contains full stop character
                Example:
                   File a testfile
+            ";;&
+         base|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               base
+                  Returns the basename of this file, without extension suffix 
+                  and without the splitting "." character.
+               Parameters:
+                  None
+               Returns:
+                  Returns the baename of this file
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x docs/Readme.txt
+                  x.base
+                  >>>docs/Readme
+            ";;&
+         extension|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               extension
+                  Returns the extension suffix of this file.
+               Parameters:
+                  None
+               Returns:
+                  Returns suffix
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x docs/Readme.txt
+                  x.extension
+                  >>>txt
             ";;&
          getInode|all)
             match=$(Boolean.TRUE)

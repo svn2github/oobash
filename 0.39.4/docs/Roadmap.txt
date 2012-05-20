@@ -6,6 +6,53 @@
 # -better documentation for generators
 # -Man.generator: bold methodnames
 
+Fix File:
+------------
+base, extension --> Problems with eg:
+../..
+hidden Files
+/
+...
+
++getCanonicalFile ?
++getAbsoluteFile ?
++list array ?
++listFiles array ?
++File.listRoots array ?
+
+Fix String:
+------------
+        y.replaceAll "" " "
+        y.replaceFirst "" " "
++ method split
+
+Math:
+----------
+http://phodd.net/gnu-bc/bcfaq.html#bccbrt
+static double  cbrt(double a)
+          Returns the cube root of a double value.
+
+http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#pow%28double,%20double%29
+http://phodd.net/gnu-bc/code/funcs.bc
+static double  pow(double a, double b)
+          Returns the value of the first argument raised to the power of the second argument.
+
+Process:
+----------
+getMemorySize
+s     size         memory size in kilobytes
+getStartTime
+T     start_time   time process was started
+
+Object:
+--------
+__getAll
+
+Substitute:
+-----------
+openssl --> sha1 md5 base64
+string manipulation in Process--> get rid of tail
+
 # 0.39.5
 # -chained return values
 # -url decode/encode ?
