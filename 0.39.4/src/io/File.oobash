@@ -82,9 +82,9 @@ __base() {
       local path="$(__dirname "$("$this".toString)")"
       # test for hidden file
       if [[ ! -z "${file%.*}" ]]; then
-         System.out.println "${file%.*}"
+         System.out.println "$(__stripPath "${path}"/"${file%.*}")"
       else
-         System.out.println "${file}"
+         System.out.println "$(__stripPath "${path}"/"${file}")"
       fi 
       return $returnValue
    fi

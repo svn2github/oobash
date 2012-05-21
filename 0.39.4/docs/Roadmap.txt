@@ -6,14 +6,8 @@
 # -better documentation for generators
 # -Man.generator: bold methodnames
 
-Fix File:
+File:
 ------------
-base, extension --> Problems with eg:
-../..
-hidden Files
-/
-...
-
 +getCanonicalFile ?
 +getAbsoluteFile ?
 +list array ?
@@ -22,8 +16,6 @@ hidden Files
 
 Fix String:
 ------------
-        y.replaceAll "" " "
-        y.replaceFirst "" " "
 + method split
 
 Math:

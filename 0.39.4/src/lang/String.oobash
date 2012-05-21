@@ -988,8 +988,12 @@ __replaceFirst() {
       local substring="$3"
       local replacement="$4"
       local str="$("$this".toString)"
-      shopt -s extglob
-      System.out.println "${str/$substring/$replacement}"
+      if [[ -z "${substring}" ]]; then
+         System.out.println "${replacement}""${str}"
+      else
+         shopt -s extglob
+         System.out.println "${str/$substring/$replacement}"
+      fi
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -1006,8 +1010,19 @@ __replaceAll() {
       local substring="$3"
       local replacement="$4"
       local str="$("$this".toString)"
-      shopt -s extglob
-      System.out.println "${str//$substring/$replacement}"
+      if [[ -z "${substring}" ]]; then
+         declare -i i=0
+         local result="${replacement}"
+         for ((i=0; i < ${#str}; i++))
+         do
+            local char="${str:i:1}"
+            result="$result""$char""${replacement}"
+         done
+         System.out.println "${result}"
+      else
+         shopt -s extglob
+         System.out.println "${str//$substring/$replacement}"
+      fi
       return $returnValue
    fi
    __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -1015,6 +1030,8 @@ __replaceAll() {
    __stackOrHelp "$2" "${FUNCNAME:2}" 
    return $returnValue
 }
+
+
 
 __substring() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"

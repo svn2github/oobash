@@ -140,7 +140,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
                             mkdirs getParent renameTo isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial
                             isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath lastModified
                             setLastModified setReadOnly getPath isAbsolute delete createNewFile setText getText append clear 
-                            linecount linematch sha1sum md5sum getTotalSpace getFreeSpace getUsableSpace getInode)
+                            linecount linematch sha1sum md5sum getTotalSpace getFreeSpace getUsableSpace getInode base extension)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
