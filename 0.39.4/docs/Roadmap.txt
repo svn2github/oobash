@@ -28,14 +28,6 @@ http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#pow%28double,%20dou
 http://phodd.net/gnu-bc/code/funcs.bc
 static double  pow(double a, double b)
           Returns the value of the first argument raised to the power of the second argument.
-
-Process:
-----------
-getMemorySize
-s     size         memory size in kilobytes
-getStartTime
-T     start_time   time process was started
-
 Object:
 --------
 __getAll

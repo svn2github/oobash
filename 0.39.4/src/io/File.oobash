@@ -73,7 +73,7 @@ __registerClass File
 #                   #
 #####################
 
-__base() {
+__getBase() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
@@ -94,7 +94,7 @@ __base() {
    return $returnValue
 }
 
-__extension() {
+__getExtension() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
@@ -1475,7 +1475,7 @@ File.help() {
       -lastModified -setLastModified -getText 
       -setText -append -clear -linematch -linecount
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
-      -getUsableSpace -getInode -base -extension
+      -getUsableSpace -getInode -getBase -getExtension
       Constructor:
       -File
                  "
@@ -1503,12 +1503,12 @@ File.help() {
                Example:
                   File a testfile
             ";;&
-         base|all)
+         getBase|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               base
-                  Returns the basename of this file, without extension suffix 
-                  and without the splitting "." character.
+               getBase
+                  Returns the basename and path of this file, without extension suffix 
+                  and without the splitting \".\" character.
                Parameters:
                   None
                Returns:
@@ -1517,13 +1517,13 @@ File.help() {
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   File x docs/Readme.txt
-                  x.base
+                  x.getBase
                   >>>docs/Readme
             ";;&
-         extension|all)
+         getExtension|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               extension
+               getExtension
                   Returns the extension suffix of this file.
                Parameters:
                   None
@@ -1533,7 +1533,7 @@ File.help() {
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   File x docs/Readme.txt
-                  x.extension
+                  x.getExtension
                   >>>txt
             ";;&
          getInode|all)
