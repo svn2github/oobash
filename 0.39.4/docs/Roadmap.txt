@@ -6,6 +6,8 @@
 # -better documentation for generators
 # -Man.generator: bold methodnames
 
+Fix i18n mo/po files for the startmessage
+
 File:
 ------------
 +getCanonicalFile ?
