@@ -1031,8 +1031,6 @@ __replaceAll() {
    return $returnValue
 }
 
-
-
 __substring() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0

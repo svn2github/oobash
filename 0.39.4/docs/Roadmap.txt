@@ -14,16 +14,8 @@ File:
 +listFiles array ?
 +File.listRoots array ?
 
-Fix String:
-------------
-+ method split
-
 Math:
 ----------
-http://phodd.net/gnu-bc/bcfaq.html#bccbrt
-static double  cbrt(double a)
-          Returns the cube root of a double value.
-
 http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#pow%28double,%20double%29
 http://phodd.net/gnu-bc/code/funcs.bc
 static double  pow(double a, double b)

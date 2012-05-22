@@ -246,6 +246,7 @@
 # Version:      0.39.4
 #    -added File methods: getBase, getExtension
 #    -added Process: getMemorySize, getStartTime
+#    -added Math: cbrt
 #    -Fixes
 
 #################################################################

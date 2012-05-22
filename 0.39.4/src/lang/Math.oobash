@@ -20,6 +20,75 @@
 #                #
 ##################
 
+Math.cbrt() {
+   __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      local val
+      val=$(__mathConverter "$1")
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then
+            case "${val}" in
+            "NaN")        System.out.println "NaN"
+                          return $returnValue
+                          ;; 
+            "Infinity")   System.out.println "Infinity"
+                          return $returnValue
+                          ;;
+            "-Infinity")  System.out.println "-Infinity"
+                          return $returnValue
+                          ;;
+            esac
+            zerocheck=$(System.out.println "scale=os+5;if(scale<5)scale=5;$val*$val==0" | bc -l)
+            if (( zerocheck == 1 )); then
+               System.out.println "0"
+               return $returnValue
+            fi
+            # from: http://phodd.net/gnu-bc/code/funcs.bc
+            local cbrt_func=" define cbrt(x) {
+                              auto os,d,r,eps;
+                              if(x<0)return -cbrt(-x)
+                              os=scale
+                              scale=5;r=e(l(x)/3)
+                              scale=os+5;if(scale<5)scale=5
+                              d=1;eps=A^(3-scale)
+                              while(d>eps){
+                                 d=r;r=(r+r+x/(r*r))/3
+                                 d-=r;if(d<0)d=-d
+                              }
+                              scale=os
+                              return r/1
+                              }"
+            output="$(System.out.println "$cbrt_func;cbrt($val)" | bc -l)"
+            if [[ "${output:0:2}" == '-.' ]]; then
+               System.out.println  -0."${output:2}"
+               return $returnValue
+            fi
+            if [[ "${output:0:1}" == "." ]]; then
+               System.out.println 0"${output}"
+               return $returnValue
+            fi
+            System.out.println "${output}"
+            return $returnValue
+         fi
+         __throw "NotInPathException" ": bc not in path"
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         returnValue=$?
+         __stackOrHelp "Math" "${FUNCNAME}"
+         return $returnValue
+      fi
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "Math" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction Math.cbrt
+
 Math.sin() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1254,8 +1323,8 @@ Math.ceil() {
                System.out.println "-Infinity"
                return $returnValue
             fi 
-            local CEIL_FUNCTION="define ceil(x) {if (x<0) {return x/1} else {if (scale(x)==0) {return x} else {return x/1 + 1 }}}"
-            output=$(System.out.println "$CEIL_FUNCTION;ceil($val)" | bc)
+            local ceil_func="define ceil(x) {if (x<0) {return x/1} else {if (scale(x)==0) {return x} else {return x/1 + 1 }}}"
+            output=$(System.out.println "$ceil_func;ceil($val)" | bc)
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return $returnValue
@@ -1304,8 +1373,8 @@ Math.floor() {
                return $returnValue
             fi 
             # http://phodd.net/gnu-bc/code/funcs.bc
-            local FLOOR_FUNCTION="define floor(x) {auto os,xx;os=scale;scale=0; xx=x/1; if(xx>x)xx-=1;scale=os;return(xx)}"
-            output=$(System.out.println "$FLOOR_FUNCTION;floor($val)" | bc)
+            local floor_func="define floor(x) {auto os,xx;os=scale;scale=0; xx=x/1; if(xx>x)xx-=1;scale=os;return(xx)}"
+            output=$(System.out.println "$floor_func;floor($val)" | bc)
             if [[ "${output:0:2}" == '-.' ]]; then
                System.out.println  -0."${output:2}"
                return $returnValue
@@ -1651,15 +1720,45 @@ Math.help() {
                   Math.sqrt 1e-2
                   >>>0.10000000000000000000
                   Math.sqrt -4
-                  NaN
+                  >>>NaN
                   Math.sqrt 4
                   >>>2.00000000000000000000
-                  Math.sqrt 1e2
-                  >>>10.00000000000000000000
-                  Math.sqrt 1,232
-                  >>>1.10995495404092863573
-                  Math.sqrt 1.232
-                  >>>1.10995495404092863573
+                  Math.sqrt Infinity
+                  >>>Infinity
+                  Math.sqrt -Infinity
+                  >>>NaN
+                  Math.sqrt NaN
+                  >>>NaN
+            ";;&
+         Math.cbrt|cbrt|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.cbrt
+                  Returns the cube root of a double value. For positive finite x, cbrt(-x) == -cbrt(x); that is,
+                  the cube root of a negative value is the negative of the cube root of that value's magnitude.
+                  Special cases:
+                  * If the argument is NaN, then the result is NaN.
+                  * If the argument is infinite, then the result is an infinity with the same sign as the argument.
+                  * If the argument is zero, then the result is a zero.
+               Parameters:
+                  a - a value.
+               Returns:
+                  the cube root of a.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.cbrt
+               Example:
+                  Math.cbrt NaN
+                  >>>NaN
+                  Math.cbrt Infinity
+                  >>>Infinity
+                  Math.cbrt -Infinity
+                  >>>-Infinity
+                  Math.cbrt 3e-2
+                  >>>0.31072325059538588668
+                  Math.cbrt 0
+                  >>>0
             ";;&
          Math.cos|cos|all)
             match=$(Boolean.TRUE)
