@@ -1377,17 +1377,54 @@ __getPosixFilePermissions() {
          if command -v stat >/dev/null 2>&1; then
             local output
             if __gnustatCheck; then
-               output="$(stat -c '%A' "$file" 2>/dev/null)"
+               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
             else
-               output="$(stat -f '%Sp' "$file" 2>/dev/null)"
+               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            if [[ "${output:0:1}" != "r" && "${output:0:1}" != "-" ]]; then
-               System.out.println "${output:1}"
-            else
-               System.out.println "${output}"
-            fi
+            System.out.println "${output: -9}"
          else
             __throw "NotInPathException" ": stat not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+   returnValue=$?
+   __stackOrHelp "$2" "${FUNCNAME:2}"
+   return $returnValue
+}
+
+__setPosixFilePermissions() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         local result
+         local file="$("$this".toString)"
+         if command -v chmod >/dev/null 2>&1; then
+            local permissions=''
+            permissions=$(__posixFilePermissionsConverter "$3")
+            if (( $? != 0 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            chmod "${permissions}" -- "${file}" 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
          fi
@@ -1446,8 +1483,8 @@ File.createTemporaryFile() {
                __stackOrHelp "File" "${FUNCNAME}"
                return $returnValue
             fi
-            if [[ -n ${permissions} ]]; then
-               chmod ${permissions} -- "${temporaryFile}"
+            if [[ -n "${permissions}" ]]; then
+               chmod "${permissions}" -- "${temporaryFile}"
             fi
             System.out.println "${temporaryFile}"
          else
@@ -2631,7 +2668,9 @@ File.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getPosixFilePermissions
-                  Returns primitive string of permission attributes
+                  Returns primitive string of permission attributes.
+                  By default, symbolic links are followed and the file attribute
+                  of the final target of the link is read.
                Parameters:
                   None
                Returns:
@@ -2644,6 +2683,25 @@ File.help() {
                   File x /etc/passwd
                   x.getPosixFilePermissions
                   >>>-rw-r--r--
+            ";;&
+         setPosixFilePermissions|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setPosixFilePermissions
+                  Sets a file's POSIX permissions.
+               Parameters:
+                  attrs - A list of file attributes to set
+               Returns:
+                  Returns true, if the permissions are set successfully, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if attrs is given, but is no posixFilePermission 
+                  NotInPathException - if chmod is not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/passwd
+                  x.setPosixFilePermissions \"-rw-r--r--\"
+                  >>>false
             ";;&
          File.createTempFile|createTempFile|all)
             match=$(Boolean.TRUE)
@@ -2700,6 +2758,7 @@ File.help() {
                Throws:
                   IllegalArgumentException - if the prefix argument contains fewer than three characters
                                            - if number of arguments !=2 AND !=3
+                                           - if attrs is given, but is no posixFilePermission
                   IOException - if file could not be created 
                   NotInPathException - if mktemp is not in path
                                      - if chmod is not in path
@@ -2740,6 +2799,7 @@ File.help() {
                Throws:
                   IllegalArgumentException - if the prefix argument contains fewer than three characters
                                            - if number of arguments !=2 AND !=3
+                                           - if attrs is given, but is no posixFilePermission
                   IOException - if directory could not be created
                   NotInPathException - if mktemp is not in path
                                      - if chmod is not in path

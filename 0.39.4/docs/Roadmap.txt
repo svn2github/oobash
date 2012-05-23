@@ -14,12 +14,8 @@ File:
 +listFiles array ?
 +File.listRoots array ?
 
-
-getPosixFilePermissions
-stat -c "%A" /example (GNU)
-stat -f "%Sp"  /example(bsd)
-
-setPosixFilePermissions
+Fix:
+File.createTemporaryDir, File.createTempDir
 
 look at for some ideas / change own File.createTemporaryDir, File.createTempDir:
 http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html#createTempDir%28%29
