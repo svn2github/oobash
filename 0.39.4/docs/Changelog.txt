@@ -244,9 +244,9 @@
 # Version:      0.39.3.1
 #    -fixes
 # Version:      0.39.4
-#    -added File methods: getBase, getExtension
+#    -added File methods: getBase, getExtension, File.createTemporaryDir, File.createTempDir
 #    -added Process: getMemorySize, getStartTime
-#    -added Math: cbrt
+#    -added Math: Math.cbrt
 #    -Fixes
 
 #################################################################

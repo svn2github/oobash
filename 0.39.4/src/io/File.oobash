@@ -1447,13 +1447,85 @@ File.createTempFile() {
 }
 __registerFunction File.createTempFile
 
+File.createTemporaryDir() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )) || (( $# == 3 )); then
+      if command -v mktemp >/dev/null 2>&1; then
+         if command -v chmod >/dev/null 2>&1; then
+            local tempdir=${TMPDIR:-/tmp};
+            local prefix="$1"
+            if (( ${#prefix} < 3 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            local suffix="$2"
+            if (( $# == 3 )); then
+               local permissions=''
+               permissions=$(__posixFilePermissionsConverter "$3")
+               if (( $? != 0 )); then
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+                  returnValue=$?
+                  __stackOrHelp "File" "${FUNCNAME}"
+                  return $returnValue
+               fi
+            fi
+            local temporaryFile
+            temporaryFile=$(mktemp -d --tmpdir="${tempdir}" --suffix="${suffix}" "${prefix}"XXXXXXXXXXXXXXXXXX 2>/dev/null)
+            if (( $? != 0 )); then
+               __throw "IOException" ": Directory could not be created"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            if [[ -n ${permissions} ]]; then
+               chmod ${permissions} -- "${temporaryFile}"
+            fi
+            System.out.println "${temporaryFile}"
+         else
+            __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __stackOrHelp "File" "${FUNCNAME}"
+         fi
+      else
+         __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "File" "${FUNCNAME}"
+      fi
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "File" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction File.createTemporaryDir
+
+File.createTempDir() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )) || (( $# == 2 )); then
+      local prefix="$1"
+      local suffix=${2:-.tmp}
+      File.createTemporaryDir "${prefix}" "${suffix}"
+      return $returnValue
+   fi
+   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+   returnValue=$?
+   __stackOrHelp "File" "${FUNCNAME}"
+   return $returnValue
+}
+__registerFunction File.createTempDir
+
 #################
 #               #
 #     HELP      # 
 #               #
 #################
 
-complete -W  "$(echo ${__File__[@]}) all File createTempFile createTemporaryFile" File.help
+complete -W  "$(echo ${__File__[@]}) all File createTempFile createTemporaryFile createTempDir createTemporaryDir" File.help
 
 File.help() {  
    local printStream=${printStream:-out}
@@ -1476,6 +1548,7 @@ File.help() {
       -setText -append -clear -linematch -linecount
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
       -getUsableSpace -getInode -getBase -getExtension
+      -File.createTemporaryDir -File.createTempDir
       Constructor:
       -File
                  "
@@ -2495,7 +2568,26 @@ File.help() {
                   File a /tmp/abc
                   a.createNewFile
                   >>>true
-            ";;& 
+            ";;&
+         getName|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getName
+                  This is just the last name in the pathname's name sequence.
+               Parameters:
+                  None
+               Returns:
+                  The name of the file or directory denoted by this abstract
+                  pathname. This is just the last name in the pathname's name
+                  sequence. If the pathname's name sequence is empty, then the
+                  empty string is returned.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.getName
+                  >>>abc
+               ";;&
          File.createTempFile|createTempFile|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "   
@@ -2562,26 +2654,74 @@ File.help() {
                   TMPDIR=/
                   File.createTemporaryFile xxx .tmp
                   >>>IOException: File could not be created
-            ";;&         
-         getName|all)
+            ";;&
+         File.createTemporaryDir|createTemporaryDir|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getName
-                  This is just the last name in the pathname's name sequence.
+               File.createTemporaryDir
+                  Creates an empty directory in the default temporary-file directory, using the given prefix and
+                  suffix to generate its name.
+
+                  The attrs parameter is an optional primitive string of attributes to set when creating
+                  the file.
+
+                  When using the attrs parameter the resulting directory may have more restrictive access
+                  permissions than directories created by the createTempDir method.
+                  The attrs parameter is a String representing the permissions. It has 9 characters that
+                  are interpreted as three sets of three. The first set refers to the owner's permissions;
+                  the next to the group permissions and the last to others. Within each set, the first
+                  character is 'r' to indicate permission to read ( view the directory's contents), the second
+                  character is 'w' to indicate permission to write (create new files or delete file(s) in the directory),
+                  and the third character is 'x' for execute permission (user can cd into the directory). Where a
+                  permission is not set then the corresponding character is set to '-'.
                Parameters:
-                  None
+                  prefix - The prefix string to be used in generating the file's name; must be at least three characters long
+                  suffix - The suffix string to be used in generating the file's name
+                  attrs - An optional list of file attributes to set when creating the file
                Returns:
-                  The name of the file or directory denoted by this abstract 
-                  pathname. This is just the last name in the pathname's name 
-                  sequence. If the pathname's name sequence is empty, then the 
-                  empty string is returned.
+                  An abstract pathname denoting a newly-created empty directory
                Throws:
-                  IllegalArgumentException - if number of arguments != 0
+                  IllegalArgumentException - if the prefix argument contains fewer than three characters
+                                           - if number of arguments !=2 AND !=3
+                  IOException - if directory could not be created
+                  NotInPathException - if mktemp is not in path
+                                     - if chmod is not in path
                Example:
-                  File a /tmp/abc
-                  a.getName
-                  >>>abc
-               ";;&
+                  File.createTemporaryDir xxx .tmp rwxrwxrwx
+                  >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  ll /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  >>>-rwxrwxrwx 1 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  TMPDIR=/
+                  File.createTemporaryDir xxx .tmp
+                  >>>IOException: File could not be created
+            ";;&
+         File.createTempDir|createTempDir|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               File.createTempDir
+                  Creates an empty directory in the default temporary-file directory, using the given prefix
+                  and suffix to generate its name. Invoking this method is equivalent to invoking
+                  createTempFile.
+
+                  The createTemporaryDir method provides an alternative method to create an empty file
+                  in the temporary-file directory. Files created by that method may have more restrictive
+                  access permissions to directories created by this method and so may be more suited to
+                  security-sensitive applications.
+               Parameters:
+                  prefix - The prefix string to be used in generating the directory's name; must be at least
+                  three characters long
+                  suffix - The suffix string to be used in generating the directory's name is optional. If
+                  missing the suffix ".tmp" will be used
+               Returns:
+                  An abstract pathname denoting a newly-created empty directory
+               Throws:
+                  IllegalArgumentException - if number of arguments !=1 AND !=2
+               Example:
+                  File.createTempDir fff
+                  >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
+                  File.createTempDir fff xxx
+                  >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
+            ";;&    
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
