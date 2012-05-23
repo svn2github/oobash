@@ -611,7 +611,7 @@ __setReadable() {
          # all
          local ownerOrAll="a"
       fi
-      chmod ${ownerOrAll}${setOrDenyPermission}r -- "${file}" 2>/dev/null
+      chmod ${ownerOrAll}${setOrDenyPermission}r "${file}" 2>/dev/null
       if (( $? == 0 )); then
          Boolean.TRUE
       else
@@ -656,7 +656,7 @@ __setWritable() {
          # all
          local ownerOrAll="a"
       fi
-      chmod ${ownerOrAll}${setOrDenyPermission}w -- "${file}" 2>/dev/null
+      chmod ${ownerOrAll}${setOrDenyPermission}w "${file}" 2>/dev/null
       if (( $? == 0 )); then
          Boolean.TRUE
       else
@@ -701,7 +701,7 @@ __setExecutable() {
          # all
          local ownerOrAll="a"
       fi
-      chmod ${ownerOrAll}${setOrDenyPermission}x -- "${file}" 2>/dev/null
+      chmod ${ownerOrAll}${setOrDenyPermission}x "${file}" 2>/dev/null
       if (( $? == 0 )); then
          Boolean.TRUE
       else
@@ -998,7 +998,7 @@ __setReadOnly() {
       if command -v chmod >/dev/null 2>&1; then
          local this="$1"
          local file="$("$this".toString)"
-         chmod 444 -- "$file" >/dev/null 2>&1
+         chmod 444 "$file" >/dev/null 2>&1
          if (( $? == 0 )); then
             Boolean.TRUE
          else
@@ -1417,7 +1417,7 @@ __setPosixFilePermissions() {
                __stackOrHelp "File" "${FUNCNAME}"
                return $returnValue
             fi
-            chmod "${permissions}" -- "${file}" 2>/dev/null
+            chmod "${permissions}" "${file}" 2>/dev/null
             if (( $? == 0 )); then
                Boolean.TRUE
             else
@@ -1484,7 +1484,7 @@ File.createTemporaryFile() {
                return $returnValue
             fi
             if [[ -n "${permissions}" ]]; then
-               chmod "${permissions}" -- "${temporaryFile}"
+               chmod "${permissions}" "${temporaryFile}"
             fi
             System.out.println "${temporaryFile}"
          else
@@ -1556,7 +1556,7 @@ File.createTemporaryDir() {
                return $returnValue
             fi
             if [[ -n ${permissions} ]]; then
-               chmod ${permissions} -- "${temporaryFile}"
+               chmod ${permissions} "${temporaryFile}"
             fi
             System.out.println "${temporaryFile}"
          else
