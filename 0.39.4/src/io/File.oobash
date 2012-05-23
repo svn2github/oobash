@@ -1375,10 +1375,16 @@ __getPosixFilePermissions() {
          local result
          local file="$("$this".toString)"
          if command -v stat >/dev/null 2>&1; then
+            local output
             if __gnustatCheck; then
-               stat -c '%A' "$file" 2>/dev/null
+               output="$(stat -c '%A' "$file" 2>/dev/null)"
             else
-               stat -f '%Sp' "$file" 2>/dev/null
+               output="$(stat -f '%Sp' "$file" 2>/dev/null)"
+            fi
+            if [[ "${output:0:1}" != "r" && "${output:0:1}" != "-" ]]; then
+               System.out.println "${output:1}"
+            else
+               System.out.println "${output}"
             fi
          else
             __throw "NotInPathException" ": stat not in path"
