@@ -66,7 +66,7 @@ msgid " Some Math constants: -Math.E -Math.PI"
 msgstr " Einige Math Konstanten: -Math.E -Math.PI"
 
 #: oobash/oobash-0.38.5.source:257
-msgid " Some Boolean constants:  -Boolean.TRUE -Boolean.FALSE"
+msgid " Some Boolean constants: -Boolean.TRUE -Boolean.FALSE"
 msgstr " Einige Boolean Konstanten: -Boolean.TRUE -Boolean.FALSE"
 
 #: oobash/oobash-0.38.5.source:259
@@ -74,8 +74,8 @@ msgid " Available help systems: String.help, File.help, Math.help, System.help, 
 msgstr " Verfügbares Hilfe System: String.help, File.help, Math.help, System.help, Boolean.help ..."
 
 #: oobash/oobash-0.38.5.source:260
-msgid " Usage: Classname.help  methodname(s)|constructorname|constantname or keyword: all"
-msgstr " Anwendung: Klassenname.help  Methodenname(n)|Konstruktorname|Konstantenname oder Schlüsselwort all"
+msgid " Usage: Classname.help methodname(s)|constructorname|constantname or keyword: all"
+msgstr " Anwendung: Klassenname.help Methodenname(n)|Konstruktorname|Konstantenname oder Schlüsselwort all"
 
 #: oobash/oobash-0.38.5.source:261
 msgid " Example: String.help zfill"

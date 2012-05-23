@@ -154,12 +154,11 @@ then:
 3) edit the oobash/locale/<yourLocaleDir>oobash.po
 4) create your mo file: msgfmt -o oobash.mo oobash.po
 
-If you have some text output that should be translated, there are four functions available:
+If you have some text output that should be translated, there are four functions available, that try to use the locale translations:
 I18n.out.print
 I18n.err.print
 I18n.out.println
 I18n.err.println
-These functions try to use the locale translations.
 
 J) "Decorators"
 ################
