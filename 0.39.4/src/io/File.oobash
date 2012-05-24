@@ -1690,6 +1690,7 @@ File.help() {
             System.${printStream}.println "
                getInode
                   Returns the inode number.
+                  getInode does not follow links.
                Parameters:
                   None
                Returns:
@@ -2806,8 +2807,8 @@ File.help() {
                Example:
                   File.createTemporaryDir xxx .tmp rwxrwxrwx
                   >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
-                  ll /tmp/xxxStlt01lvAKe1P3se8i.tmp
-                  >>>-rwxrwxrwx 1 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  ll /tmp
+                  >>>drwxrwxrwx    2 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
                   TMPDIR=/
                   File.createTemporaryDir xxx .tmp
                   >>>IOException: File could not be created

@@ -17,10 +17,6 @@ File:
 deleteDirectoryContents ?
 deleteRecursively ?
 
-Fix:
-File.createTemporaryDir, File.createTempDir --> no suffix !?
-getInode --> decision what to do with links ? --> in help/man
-
 look at for some ideas:
 http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html#createTempDir%28%29
 http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html#createTempDirectory%28java.nio.file.Path,%20java.lang.String,%20java.nio.file.attribute.FileAttribute...%29
