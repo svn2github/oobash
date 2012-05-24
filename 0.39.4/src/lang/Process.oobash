@@ -339,8 +339,6 @@ __getMemorySize() {
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
-
-            local euid=${euid%????}
             shopt -s extglob
             # trimming...
             mem="${mem##+([[:space:]])}"
@@ -384,6 +382,9 @@ __getStartTime() {
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
+            shopt -s extglob
+            # trimming...
+            start="${start##+([[:space:]])}"
             System.out.println "${start%????}"
          else
             __throw "NotInPathException" ": tail not in path"

@@ -14,8 +14,8 @@ File:
 +listFiles array ?
 +File.listRoots array ?
 
-deleteDirectoryContents
-deleteRecursively
+deleteDirectoryContents ?
+deleteRecursively ?
 
 Fix:
 File.createTemporaryDir, File.createTempDir --> no suffix !?
