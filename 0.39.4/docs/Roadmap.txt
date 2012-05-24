@@ -19,7 +19,6 @@ deleteRecursively ?
 
 Fix:
 File.createTemporaryDir, File.createTempDir --> no suffix !?
-compare getStartTime output gnu<-->bsd
 getInode --> decision what to do with links ? --> in help/man
 
 look at for some ideas:

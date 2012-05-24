@@ -375,7 +375,7 @@ __getStartTime() {
                return $returnValue
             fi
             local start
-            start="$(ps  -p "${pId}" -o start 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+            start="$(ps  -p "${pId}" -o lstart 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
             if [[ "${start: -3}" != "0 0" ]]; then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
@@ -785,9 +785,8 @@ Process.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getStartTime
-                  Returns the time the command started. If the process was started less than 24 hours ago, 
-                  the output format is \"HH:MM:SS\", else it is
-                  \"  mmm dd\" (where mmm is a three-letter month name).
+                  Returns the time the command started.
+                  Format: \"+%a %b %d %H:%M:%S %Y\"
                Parameters:
                   None
                Returns:
@@ -800,7 +799,7 @@ Process.help() {
                Example:
                   Process initProc 1
                   initProc.getStartTime
-                  >>>19:11:52
+                  >>>Wed May 23 12:56:32 2012
             ";;& 
          getMemorySize|all)
             match=$(Boolean.TRUE)
