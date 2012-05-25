@@ -164,7 +164,7 @@ J) "Decorators"
 ################
 Will only work if shell is not interactive (script).
 You can see an example script using "decorators" in the docs/examples directory.
-__decoratorCheck calls the "decorators" and returns the sum of all decorator return values.
+__decoratorCheck calls the "decorators" and returns the sum (if below 256 otherwise $((sum%256)) ) of all decorator return values.
 Decorators use stderr for echos, because the framework communication is on stdout.
 If you want to create an own decorator function: Do NOT use a framework command (e.g. System.out.println) in this decorator function!
 
