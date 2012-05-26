@@ -26,11 +26,11 @@ __getClass() {
    local class="$2"
    if (( $# == 2 )); then
       System.out.println "class ${class}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -91,11 +91,11 @@ __toString() {
          fi      
       done
       System.out.println "${str}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -127,11 +127,11 @@ __equals() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -178,10 +178,10 @@ __hashCode() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }

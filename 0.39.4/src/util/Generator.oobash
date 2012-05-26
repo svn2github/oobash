@@ -103,17 +103,18 @@ $userClass() {
       __destructor \"\$this\"
 
       __alias \"\$this\" \"\$FUNCNAME\"
+
       "
       for (( i=0; i < ${#attributes[@]}; i++))
       do
          System.out.println "      __attribute ${attributes[$i]} \"\$${attributes[$i]}\""
       done
       System.out.println "
-      return \$returnValue
+   else
+      __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+      returnValue=\$?
+      __stackOrHelp \"\${FUNCNAME}\" \"\${FUNCNAME}\"
    fi
-   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
-   returnValue=\$?
-   __stackOrHelp \"\${FUNCNAME}\" \"\${FUNCNAME}\"
    return \$returnValue
 }
 __registerClass $userClass
@@ -154,11 +155,11 @@ do
          fi
       done
       System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${attributes[$j]}]}\" 
-      return \$returnValue
+   else
+      __throw \"IllegalArgumentException\" \": Wrong number of arguments \$((\$#-2))\"
+      returnValue=\$?
+      __stackOrHelp \"\${class}\" \"\${FUNCNAME:2}\"
    fi
-   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$((\$#-2))\"
-   returnValue=\$?
-   __stackOrHelp \"\${class}\" \"\${FUNCNAME:2}\"
    return \$returnValue
 }
 "

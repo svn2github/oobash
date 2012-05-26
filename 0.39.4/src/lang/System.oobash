@@ -32,11 +32,11 @@ System.currentTimeMillis() {
          returnValue=$?
          __stackOrHelp "System" "${FUNCNAME}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.currentTimeMillis
@@ -52,11 +52,11 @@ System.currentTimeNanos() {
          returnValue=$?
          __stackOrHelp "System" "${FUNCNAME}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.currentTimeNanos
@@ -71,21 +71,21 @@ System.exit() {
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
          __stackOrHelp "System" "${FUNCNAME}"
-         return $returnValue
-      fi
-      declare -i status="$1"
-      if (( ${status} >= 0 && ${status} <= 255 )); then
-         exit $status
       else
-         __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
-         returnValue=$?
-         __stackOrHelp "System" "${FUNCNAME}"
-         return $returnValue
+         declare -i status="$1"
+         if (( ${status} >= 0 && ${status} <= 255 )); then
+            exit $status
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
+            returnValue=$?
+            __stackOrHelp "System" "${FUNCNAME}"
+         fi
       fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.exit
@@ -96,11 +96,11 @@ System.err.println() {
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "${message}" >&2
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.err.println
@@ -111,11 +111,11 @@ System.out.println() {
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s\n" "${message}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.out.println
@@ -126,11 +126,11 @@ System.err.print() {
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s" "${message}" >&2
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.err.print
@@ -141,11 +141,11 @@ System.out.print() {
    if (( $# <= 1  )); then
       local message="$1"
       printf "%s" "${message}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.out.print
@@ -163,11 +163,11 @@ System.runtime() {
      else
         System.out.println "Runtime: ${SECONDS} [seconds]"
      fi
-     return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "System" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction System.runtime

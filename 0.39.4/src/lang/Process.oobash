@@ -84,11 +84,11 @@ Process() {
       
       __attribute pid "${pid}"
 
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
    return $returnValue
 }
 __registerClass Process
@@ -141,11 +141,11 @@ __getPid() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"        
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "${class}" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -159,19 +159,18 @@ __getParentPid() {
             declare -i pId
             pId="$("$this".getPid)"
             returnValue=$?
-            if (( $returnValue != 0 )); then
-               return $returnValue
+            if (( $returnValue == 0 )); then
+               local ppid
+               ppid="$(ps  -p "${pId}" -o ppid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
+               if [[ "${ppid: -3}" != "0 0" ]]; then
+                  __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+               else
+                  declare -i parentPid=${ppid%????}
+                  System.out.println "${parentPid}"
+               fi
             fi
-            local ppid
-            ppid="$(ps  -p "${pId}" -o ppid 2>/dev/null | tail -1;echo ${PIPESTATUS[@]})"
-            if [[ "${ppid: -3}" != "0 0" ]]; then
-               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            declare -i parentPid=${ppid%????}
-            System.out.println "${parentPid}"
          else
             __throw "NotInPathException" ": tail not in path"
             returnValue=$?
@@ -182,11 +181,11 @@ __getParentPid() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -209,13 +208,13 @@ __getRealUserId() {
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
+            else
+               local ruid=${ruid%????}
+               shopt -s extglob
+               # trimming...
+               ruid="${ruid##+([[:space:]])}"
+               System.out.println "${ruid}"
             fi
-            local ruid=${ruid%????}
-            shopt -s extglob
-            # trimming...
-            ruid="${ruid##+([[:space:]])}"
-            System.out.println "${ruid}"
          else
             __throw "NotInPathException" ": tail not in path"
             returnValue=$?
@@ -226,11 +225,11 @@ __getRealUserId() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 

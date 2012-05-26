@@ -48,11 +48,10 @@
                time=0"${time}"
             fi
             printf "%s\n" "Runtime: ${time} [seconds.nanoseconds]"
-            return 0
          fi
+      else
+         printf "%s\n" "Runtime: ${SECONDS} [seconds]"
       fi
-      printf "%s\n" "Runtime: ${SECONDS} [seconds]"
-      return 0
    fi
    return 0
 }

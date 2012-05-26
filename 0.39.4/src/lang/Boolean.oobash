@@ -59,11 +59,11 @@ Boolean() {
 
       __attribute bool "$bool"        
 
-      return $returnValue
-   fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   returnValue=$?                                                                 
-   __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"                                             
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+      returnValue=$?                                                                 
+      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+   fi                                           
    return $returnValue
 }
 __registerClass Boolean
@@ -87,11 +87,11 @@ Boolean.TRUE() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 'true'
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+      returnValue=$?
+      __stackOrHelp "Boolean" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   returnValue=$?
-   __stackOrHelp "Boolean" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction Boolean.TRUE
@@ -101,11 +101,11 @@ Boolean.FALSE() {
    declare -i returnValue=0
    if (( $# == 0 )); then
       System.out.println 'false'
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+      returnValue=$?
+      __stackOrHelp "Boolean" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   returnValue=$?
-   __stackOrHelp "Boolean" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction Boolean.FALSE
@@ -120,11 +120,11 @@ Boolean.parseBoolean() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
+      returnValue=$?
+      __stackOrHelp "Boolean" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-   returnValue=$?
-   __stackOrHelp "Boolean" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction Boolean.parseBoolean

@@ -97,10 +97,10 @@ __compareTo() {
          fi	
       done
       System.out.println $result
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }

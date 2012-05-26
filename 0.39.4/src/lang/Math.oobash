@@ -1436,29 +1436,26 @@ Math.hypot() {
                   return $returnValue 
                fi
                System.out.println "${output}"
-               return $returnValue
             else
                __throw "NotInPathException" ": bc not in path"
                returnValue=$?
-               __stackOrHelp "Math" "${FUNCNAME}"
-               return $returnValue
+               __stackOrHelp "Math" "${FUNCNAME}"               
             fi
          else 
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
             returnValue=$?
             __stackOrHelp "Math" "${FUNCNAME}"
-            return $returnValue
          fi  
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
          __stackOrHelp "Math" "${FUNCNAME}"
-         return $returnValue
       fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "Math" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "Math" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction Math.hypot

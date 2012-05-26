@@ -58,11 +58,11 @@ File() {
 
       __attribute pathname "$(__stripPath "${pathname}")"
 
-      return $returnValue      
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
    return $returnValue 	
 }
 __registerClass File
@@ -86,11 +86,11 @@ __getBase() {
       else
          System.out.println "$(__stripPath "${path}"/"${file}")"
       fi 
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}" 
    return $returnValue
 }
 
@@ -106,11 +106,11 @@ __getExtension() {
          output="${extension}"  
       fi 
       System.out.println "${output}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}" 
    return $returnValue
 }
 
@@ -135,11 +135,11 @@ __getTotalSpace() {
       else
          System.out.println "0"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -164,11 +164,11 @@ __getUsableSpace() {
       else
          System.out.println "0"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -193,11 +193,11 @@ __getFreeSpace() {
       else
          System.out.println "0"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -212,11 +212,11 @@ __canRead() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}" 
    return $returnValue
 }
 
@@ -231,11 +231,11 @@ __canWrite() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -250,11 +250,11 @@ __canExecute() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -265,11 +265,11 @@ __getName() {
       local this="$1"
       local file="$("$this".toString)"
       System.out.println "${file##*/}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -284,11 +284,11 @@ __isDirectory() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -303,11 +303,11 @@ __exists() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -322,11 +322,11 @@ __isFile() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -342,11 +342,11 @@ __isHidden() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -369,11 +369,11 @@ __mkdir() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -396,11 +396,11 @@ __mkdirs() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -411,11 +411,11 @@ __getParent() {
       local this="$1"
       local file="$("$this".toString)"
       __dirname "${file}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -430,11 +430,11 @@ __isSymbolicLink() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -449,11 +449,11 @@ __isNamedPipe() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -468,11 +468,11 @@ __hasStickyBit() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -487,11 +487,11 @@ __isSocket() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -506,11 +506,11 @@ __isCharacterSpecial() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -525,11 +525,11 @@ __isBlockSpecial() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -572,11 +572,11 @@ __renameTo() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -743,11 +743,11 @@ __getCanonicalPath() {
       __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
       returnValue=$?
       __stackOrHelp "$2" "${FUNCNAME:2}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -762,11 +762,11 @@ __getAbsolutePath() {
       else
          System.out.println "${PWD}"/"${file}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -777,11 +777,11 @@ __getPath() {
       local this="$1"
       local file="$("$this".toString)"
       System.out.println "${file}" 
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -796,11 +796,11 @@ __isAbsolute() {
       else
          Boolean.FALSE
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -832,11 +832,11 @@ __delete() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -862,11 +862,11 @@ __createNewFile() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -922,11 +922,11 @@ __lastModified() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"        
       fi
-      return $returnValue   
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -983,11 +983,11 @@ __setLastModified() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue   
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1009,11 +1009,11 @@ __setReadOnly() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue   
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1039,11 +1039,11 @@ __getText() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1086,11 +1086,11 @@ __setText() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1133,11 +1133,11 @@ __append() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1164,11 +1164,11 @@ __clear() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1193,11 +1193,11 @@ __linecount() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1228,11 +1228,11 @@ __linematch() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"   
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1277,11 +1277,11 @@ __md5sum() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1326,11 +1326,11 @@ __sha1sum() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1358,11 +1358,11 @@ __getInode() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"         
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1392,11 +1392,11 @@ __getPosixFilePermissions() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1433,11 +1433,11 @@ __setPosixFilePermissions() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 
@@ -1497,11 +1497,11 @@ File.createTemporaryFile() {
          returnValue=$?
          __stackOrHelp "File" "${FUNCNAME}"         
       fi
-      return $returnValue
-   fi 
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "File" "${FUNCNAME}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
+   fi
    return $returnValue
 }
 __registerFunction File.createTemporaryFile
@@ -1513,11 +1513,11 @@ File.createTempFile() {
       local prefix="$1"
       local suffix=${2:-.tmp}
       File.createTemporaryFile "${prefix}" "${suffix}"
-      return $returnValue
-   fi 
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "File" "${FUNCNAME}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
+   fi
    return $returnValue
 }
 __registerFunction File.createTempFile
@@ -1569,11 +1569,11 @@ File.createTemporaryDir() {
          returnValue=$?
          __stackOrHelp "File" "${FUNCNAME}"
       fi
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "File" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction File.createTemporaryDir
@@ -1585,11 +1585,11 @@ File.createTempDir() {
       local prefix="$1"
       local suffix=${2:-.tmp}
       File.createTemporaryDir "${prefix}" "${suffix}"
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-   returnValue=$?
-   __stackOrHelp "File" "${FUNCNAME}"
    return $returnValue
 }
 __registerFunction File.createTempDir

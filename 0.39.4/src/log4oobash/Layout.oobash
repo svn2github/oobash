@@ -30,11 +30,11 @@ __getContentType() {
          HTMLLayout) System.out.println "text/html";;
          *) System.out.println "text/plain";;
       esac
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 __registerFunction __getContentType
@@ -71,11 +71,11 @@ Log session start time '"$(date)"'<br>
 </tr>'
 ;;
       esac
-      return $returnValue
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 __registerFunction __getHeader
@@ -84,17 +84,17 @@ __getFooter() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
-   local class="$2"
-   case $class in
-      HTMLLayout) System.out.println '</table>
+      local class="$2"
+      case $class in
+         HTMLLayout) System.out.println '</table>
 <br>
 </body></html>';;
-   esac
-      return $returnValue
+      esac
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
    fi
-   __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-   returnValue=$?
-   __stackOrHelp "$2" "${FUNCNAME:2}"
    return $returnValue
 }
 __registerFunction __getFooter
