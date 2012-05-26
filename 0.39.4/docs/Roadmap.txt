@@ -6,24 +6,12 @@
 # -better documentation for generators
 # -Man.generator: bold methodnames
 
-File:
-------------
-look at for some ideas:
-http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html#createTempDir%28%29
-http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html#createTempDirectory%28java.nio.file.Path,%20java.lang.String,%20java.nio.file.attribute.FileAttribute...%29
-http://commons.apache.org/io/api-release/index.html
-
 Math:
 ----------
 http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#pow%28double,%20double%29
 http://phodd.net/gnu-bc/code/funcs.bc
 static double  pow(double a, double b)
           Returns the value of the first argument raised to the power of the second argument.
-
-Substitute/Dependencies:
-------------------------
-use openssl --> get rid of sha1 md5 base64
-string manipulation in Process--> get rid of tail
 
 # 0.39.5
 # -chained return values

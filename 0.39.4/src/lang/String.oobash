@@ -124,7 +124,7 @@ __base64Encode() {
       local this="$1"
       if command -v base64 >/dev/null 2>&1; then
          local encoded
-         encoded="$(System.out.println "$("$this".toString)" | base64 --wrap=0 2>/dev/null)"
+         encoded="$(System.out.print "$("$this".toString)" | base64 --wrap=0 2>/dev/null)"
          returnValue=$?
          System.out.println "${encoded}"
          return $returnValue
@@ -148,7 +148,7 @@ __base64Decode() {
       if command -v base64 >/dev/null 2>&1; then       
          declare -i returnValue
          local output
-         output="$(System.out.println "$("$this".toString)" | base64 --wrap=0 -d 2>/dev/null)"
+         output="$(System.out.print "$("$this".toString)" | base64 --wrap=0 -d 2>/dev/null)"
          if (( $? != 0 )); then
             __throw "DecoderException" ": Decoding problem with: $("$this".toString) "
             returnValue=$?
