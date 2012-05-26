@@ -2,9 +2,6 @@
 
 # 0.39.4 original:
 # -some ssh
-# -some System functions
-# -better documentation for generators
-# -Man.generator: bold methodnames
 
 Math:
 ----------
@@ -24,11 +21,13 @@ add static FileUtils
 # -chained return values
 # -url decode/encode ?
 # -Script.generator (header...)
+# -Man.generator: bold methodnames
+# -better documentation for generators
 # -some Process functions
 
 # 0.39.6
 # -analyze log4oobash.properties
-# -some File functions
+# -some System functions
 # -colours ?
 
 # 0.40
