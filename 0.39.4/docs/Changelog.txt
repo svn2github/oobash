@@ -248,6 +248,8 @@
 #                         setPosixFilePermissions
 #    -added Process: getMemorySize, getStartTime
 #    -added Math: Math.cbrt
+#    -added dependency: openssl
+#    -removed dependencies: base64 md5sum/md5 sha1sum/shasum
 #    -Fixes
 
 #################################################################

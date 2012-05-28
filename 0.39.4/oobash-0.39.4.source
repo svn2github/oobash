@@ -110,14 +110,8 @@ unset signal sig counter
 shopt -u extglob
 
 # all external commands used in this framework:
-case "$(uname -s 2>/dev/null)" in
-Darwin|FreeBSD|DragonFly)
-   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill md5 shasum renice tail)
-   ;;
-*)
-   declare -a __Dependencies__=(base64 bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill md5sum sha1sum renice tail)
-   ;;
-esac
+declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill renice tail openssl)
+
 
 # Arrays for framework methods:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)

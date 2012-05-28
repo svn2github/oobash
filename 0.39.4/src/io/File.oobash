@@ -1245,28 +1245,15 @@ __md5sum() {
          # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
-            local file="$("$this".toString)"
-            case "$(uname -s 2>/dev/null)" in
-            Darwin|FreeBSD|DragonFly)
-               if command -v md5 >/dev/null 2>&1; then
-                  result=$(md5 -- "$file" 2>/dev/null)
-                  System.out.println "${result/*= /}"
+            local file="$("$this".getAbsolutePath)"
+               if command -v openssl >/dev/null 2>&1; then
+                  result=$(openssl dgst -md5 "$file" 2>/dev/null)
+                  System.out.println "${result/* /}"
                else
-                  __throw "NotInPathException" ": md5 not in path"
+                  __throw "NotInPathException" ": openssl not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
                fi
-               ;;
-            *) if command -v md5sum >/dev/null 2>&1; then
-                  result=$(md5sum -- "$file" 2>/dev/null)
-                  System.out.println "${result/ */}"
-               else
-                  __throw "NotInPathException" ": md5sum not in path"
-                  returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-               fi               
-               ;;
-            esac
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
@@ -1294,28 +1281,15 @@ __sha1sum() {
          # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
-            local file="$("$this".toString)"
-            case "$(uname -s 2>/dev/null)" in
-            Darwin|FreeBSD|DragonFly)
-               if command -v shasum >/dev/null 2>&1; then
-                  result=$(shasum -- "$file" 2>/dev/null)
-                  System.out.println "${result/ */}"
+            local file="$("$this".getAbsolutePath)"
+               if command -v openssl >/dev/null 2>&1; then
+                  result=$(openssl dgst -sha1 "$file" 2>/dev/null)
+                  System.out.println "${result/* /}"
                else
-                  __throw "NotInPathException" ": shasum not in path"
+                  __throw "NotInPathException" ": openssl not in path"
                   returnValue=$?
                   __stackOrHelp "$2" "${FUNCNAME:2}"
                fi
-               ;;
-            *) if command -v sha1sum >/dev/null 2>&1; then
-                  result=$(sha1sum -- "$file" 2>/dev/null)
-                  System.out.println "${result/ */}"
-               else
-                  __throw "NotInPathException" ": sha1sum not in path"
-                  returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-               fi               
-               ;;
-            esac
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
@@ -1333,7 +1307,6 @@ __sha1sum() {
    fi
    return $returnValue
 }
-
 __getInode() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
