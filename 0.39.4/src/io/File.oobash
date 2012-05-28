@@ -1766,7 +1766,7 @@ File.help() {
                   IllegalArgumentException - if number of arguments != 0
                   IOException - if object does not represent a regular file
                               - if cannot read file
-                  NotInPathException - if md5/md5sum is not in path
+                  NotInPathException - if openssl is not in path
                Example:
                   File x /etc/passwd
                   x.md5sum
@@ -1785,7 +1785,7 @@ File.help() {
                   IllegalArgumentException - if number of arguments != 0
                   IOException - if object does not represent a regular file
                               - if cannot read file
-                  NotInPathException - if shasum/sha1sum is not in path
+                  NotInPathException - if openssl is not in path
                Example:
                   File x /etc/passwd
                   x.sha1sum

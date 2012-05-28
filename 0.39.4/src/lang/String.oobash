@@ -1291,7 +1291,7 @@ String.help() {
                Returns:
                   base64 decoded data
                Throws:
-                  NotInPathException - if base64 not in path
+                  NotInPathException - if openssl not in path
                   DecoderException - if problem with decoding
                   IllegalArgumentException - if number of arguments != 0
                Example:
@@ -1310,7 +1310,7 @@ String.help() {
                Returns:
                   base64 encoded data
                Throws:
-                  NotInPathException - if base64 not in path
+                  NotInPathException - if openssl not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc
