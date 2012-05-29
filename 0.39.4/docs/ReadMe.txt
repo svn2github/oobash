@@ -227,10 +227,11 @@ The different existing exceptions and their return values:
 Exception                             ReturnValue
 -----------                          -------------
 DecoderException                      140
-IllegalArgumentException              150
-IndexOutOfBoundsException             160
-IOException                           170
-NotInPathException                    180
-WrongClassException                   190
-ProcessException                      200
+AuthException                         141
+IllegalArgumentException              142
+IndexOutOfBoundsException             143
+IOException                           144
+NotInPathException                    145
+WrongClassException                   146
+ProcessException                      147
 Unknown Exception                     250

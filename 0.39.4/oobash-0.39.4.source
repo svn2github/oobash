@@ -79,6 +79,7 @@ declare -A __Registry__
 declare -A __ExceptionValues__
 __ExceptionValues__=( 
  [DecoderException]=140
+ [AuthException]=141
  [IllegalArgumentException]=150
  [IndexOutOfBoundsException]=160
  [IOException]=170
