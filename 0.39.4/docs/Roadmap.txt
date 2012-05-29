@@ -10,14 +10,10 @@ http://phodd.net/gnu-bc/code/funcs.bc
 static double  pow(double a, double b)
           Returns the value of the first argument raised to the power of the second argument.
 
-+ reduce return lines in Math
-
 File:
 -------
 del renameTo
 add static FileUtils
-
-Process, String reduce return lines (if #args arguments else...)
 
 lstrip -->private ?
 

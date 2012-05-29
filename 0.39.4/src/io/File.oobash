@@ -1246,14 +1246,14 @@ __md5sum() {
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
             local file="$("$this".getAbsolutePath)"
-               if command -v openssl >/dev/null 2>&1; then
-                  result=$(openssl dgst -md5 "$file" 2>/dev/null)
-                  System.out.println "${result/* /}"
-               else
-                  __throw "NotInPathException" ": openssl not in path"
-                  returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-               fi
+            if command -v openssl >/dev/null 2>&1; then
+               result=$(openssl dgst -md5 "$file" 2>/dev/null)
+               System.out.println "${result/* /}"
+            else
+               __throw "NotInPathException" ": openssl not in path"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
@@ -1282,14 +1282,14 @@ __sha1sum() {
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
             local file="$("$this".getAbsolutePath)"
-               if command -v openssl >/dev/null 2>&1; then
-                  result=$(openssl dgst -sha1 "$file" 2>/dev/null)
-                  System.out.println "${result/* /}"
-               else
-                  __throw "NotInPathException" ": openssl not in path"
-                  returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-               fi
+            if command -v openssl >/dev/null 2>&1; then
+               result=$(openssl dgst -sha1 "$file" 2>/dev/null)
+               System.out.println "${result/* /}"
+            else
+               __throw "NotInPathException" ": openssl not in path"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
