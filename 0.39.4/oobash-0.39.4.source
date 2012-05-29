@@ -144,6 +144,10 @@ declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand 
 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 
+declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort copy fileDiff vimEdit connect)
+
+declare -a __SshHost__=(${__SshHostMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+
 # register function:
 ####################
 
@@ -186,6 +190,9 @@ __import oobash.io.File
 
 # import i18n functions 
 __import oobash.i18n.I18nMessage
+
+# import netservice functions
+__import oobash.netservice.SshHost
 
 # Register already defined vars and functions
 __registerVar __ObjectMethods__
