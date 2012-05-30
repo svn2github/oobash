@@ -3,9 +3,8 @@
 # 0.39.4:
 # -some ssh
 
-check if Process still works on OSX without tail
+File:check if Process still works on OSX without tail
 
-File:
 -------
 File.createTemporaryDir, File.createTempDir --> look at java Files util
 

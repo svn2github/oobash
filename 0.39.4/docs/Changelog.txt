@@ -114,7 +114,7 @@
 #    -Some code clean up  
 #    -Some fixes
 # Version:      0.35     Date:         03.01.2011, 04.01.2011, 09.01.2011, 15.01.2011, 16.01.2001 
-#    -Tool for generating own classes: Class.generator()
+#    -Tool for generating own classes: Class.generator
 #    -Added Math methods: Math.log10, Math.log1p, Math.log, Math.expm1, Math.cosh, Math.sinh, Math.tanh 
 #                         Math.toDegrees, Math.toRadians, Math.hypot, Math.ceil, Math.floor
 #    -Added to Math: -Infinity, Infinity 
@@ -157,7 +157,7 @@
 #     * code cleanup in the help functions
 #     * deleted forgotten stupid test echos in String constructor
 #     * catch the dbase64Decode "wrong input" errors --> DecoderException
-#     * readonly vars are not used anymore --> clean function will folow
+#     * readonly vars are not used anymore --> clean function will follow
 #     * ...
 #    -Added Level class  (prepare for 0.39 -- but no logging possible now) with following methods:
 #     *getClass *toInt *toString *getSyslogEquivalent *isGreaterOrEqual *equals. Gets sourced, if log4oobash.properties file is found. 
@@ -244,9 +244,9 @@
 # Version:      0.39.3.1
 #    -Fixes
 # Version:      0.39.4
-#    -added File methods: getBase, getExtension, File.createTemporaryDir, File.createTempDir, getPosixFilePermissions,
-#                         setPosixFilePermissions
-     -removed File: renameTo method
+#    -added File methods: getBase, getExtension, getPosixFilePermissions, setPosixFilePermissions
+#    File.createTemporaryDir, File.createTempDir,
+#    -removed File: renameTo method
 #    -added Process: getMemorySize, getStartTime
 #    -added Math: Math.cbrt
 #    -added experimental class Ssh with some methods/functions:
@@ -254,7 +254,7 @@
 #    -added dependency: openssl
 #    -removed dependencies: base64 md5sum/md5 sha1sum/shasum tail
 #    -changed return values for exceptions, added AuthException
-#    -Fixes
+#    -many fixes
 
 #################################################################
 # Features:
@@ -267,4 +267,6 @@
 # i18n
 # man pages
 # "decorators" for your functions (with almost pythonic look)
+# Manage your system processes
+# Use some ssh features
 #################################################################
