@@ -268,5 +268,4 @@
 # man pages
 # "decorators" for your functions (with almost pythonic look)
 # Manage your system processes
-# Use some ssh features
 #################################################################
