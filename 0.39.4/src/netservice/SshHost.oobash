@@ -44,7 +44,7 @@ SshHost() {
          ssh -p "${port}" -q -o "BatchMode yes" "${user}@${name}" : 1>/dev/null 2>&1
          returnValue=$?
          if (( $returnValue != 0 )); then
-            __throw "AuthException" ": no passwordless authentication possible with SshHost '\$name' and user '\$user'"
+            __throw "AuthException" ": no passwordless authentication possible with SshHost '${name}' and user '${user}'"
             returnValue=$?
             __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue 
@@ -82,7 +82,7 @@ __registerClass SshHost
 # getter function(s) #
 ######################
 
-__getSshHostName() {
+__getSshHost() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -113,7 +113,7 @@ __getSshHostName() {
    return $returnValue
 }
 
-__getSshHostUser() {
+__getSshUser() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -144,7 +144,7 @@ __getSshHostUser() {
    return $returnValue
 }
 
-__getSshHostPort() {
+__getSshPort() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -175,20 +175,24 @@ __getSshHostPort() {
    return $returnValue
 }
 
-# do i really need eval, if used in functions ?
 __command() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
    if (( $# == 3 )); then
       local this="$1"
-      local machine="$("$this".getSshHostName)"
-      local user="$("$this".getSshHostUser)"
-      local port="$("$this".getSshHostPort)"
+      local machine="$("$this".getSshHost)"
+      local user="$("$this".getSshUser)"
+      local port="$("$this".getSshPort)"
       local command="$3"
       if command -v ssh >/dev/null 2>&1; then
-         ssh -p "${port}" "${user}@${machine}" "${command}"
+         ssh -p "${port}" -q -o "BatchMode yes" "${user}@${machine}" "${command} 2>/dev/null"
          returnValue=$?
+         # if not used in script let's try a pseudo-tty allocation
+         # --> may not be used in scripts !
+         if (( $returnValue != 0 )) && [[ -n "$PS1" ]]; then
+            ssh -t -p "${port}" -q -o "BatchMode yes" "${user}@${machine}" "${command}"
+         fi
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
@@ -216,23 +220,23 @@ __copy() {
       if (( $? == 0 )); then
          if [[ "$("$this".getClass)" == "$argclass" ]]; then
             # source
-            local machine="$("$this".getSshHostName)"
-            local user="$("$this".getSshHostUser)"
-            declare -i port="$("$this".getSshHostPort)"
+            local machine="$("$this".getSshHost)"
+            local user="$("$this".getSshUser)"
+            declare -i port="$("$this".getSshPort)"
             local file="$3"
             # target 
-            local targetMachine="$("$argobject".getSshHostName)"
-            local targetUser="$("$argobject".getSshHostUser)"
-            declare -i targetPort="$("$argobject".getSshHostPort)"
+            local targetMachine="$("$argobject".getSshHost)"
+            local targetUser="$("$argobject".getSshUser)"
+            declare -i targetPort="$("$argobject".getSshPort)"
             
             local bool="$(Boolean.TRUE)"
             local targetFile="${5:-"$(__dirname "$file")"}"
-            # TODO: check for tar command
+           
             cmd1="cd -- \"$(__dirname "$file")\" 2>/dev/null && tar -cf - \"$(__basename "$file")\" 2>/dev/null"
             cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
             if command -v ssh >/dev/null 2>&1; then
-               echo "ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)""
-               ssh -p "${port}" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
+               echo "ssh -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)""
+               ssh -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" -q -o "BatchMode yes" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
@@ -285,18 +289,18 @@ __diff() {
       if (( $? == 0 )); then
          if [[ "$("$this".getClass)" == "$argclass" ]]; then
             # start
-            local machine="$("$this".getSshHostName)"
-            local user="$("$this".getSshHostUser)"
-            declare -i port="$("$this".getSshHostPort)"
+            local machine="$("$this".getSshHost)"
+            local user="$("$this".getSshUser)"
+            declare -i port="$("$this".getSshPort)"
             local file="$3"
             # target 
-            local targetMachine="$("$argobject".getSshHostName)"
-            local targetUser="$("$argobject".getSshHostUser)"
-            declare -i targetPort="$("$argobject".getSshHostPort)"
+            local targetMachine="$("$argobject".getSshHost)"
+            local targetUser="$("$argobject".getSshUser)"
+            declare -i targetPort="$("$argobject".getSshPort)"
             local targetFile="${5:-"$file"}"
 
             if command -v ssh >/dev/null 2>&1; then
-               diff <(ssh -n -p "${port}" "${user}"@"${machine}" "(<$file)") <(ssh -n -p "${targetPort}" "${targetUser}"@"${targetMachine}" "(<$targetFile)")
+               diff <(ssh -n -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}" "(<$file)") <(ssh -n -p "${targetPort}" -q -o "BatchMode yes" "${targetUser}"@"${targetMachine}" "(<$targetFile)")
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
@@ -332,9 +336,9 @@ if [[ -n "$PS1" ]]; then
       declare -i returnValue=0
       if (( $# == 3 )); then
          local this="$1"
-         local machine="$("$this".getSshHostName)"
-         local user="$("$this".getSshHostUser)"
-         local port="$("$this".getSshHostPort)"
+         local machine="$("$this".getSshHost)"
+         local user="$("$this".getSshUser)"
+         local port="$("$this".getSshPort)"
          local file="$3"
          if command -v vim >/dev/null 2>&1; then
             if command -v scp >/dev/null 2>&1; then
@@ -364,9 +368,9 @@ if [[ -n "$PS1" ]]; then
       local class="$2"
       if (( $# == 2 )); then
          local this="$1"
-         local machine="$("$this".getSshHostName)"
-         local user="$("$this".getSshHostUser)"
-         local port="$("$this".getSshHostPort)"
+         local machine="$("$this".getSshHost)"
+         local user="$("$this".getSshUser)"
+         local port="$("$this".getSshPort)"
          if command -v ssh >/dev/null 2>&1; then 
             ssh -p "${port}" "${user}@${machine}"
             returnValue=$?
@@ -399,12 +403,12 @@ SshHost.help() {
                     -toString
                     -equals
                     -hashCode
-                    -getSshHostName
-                    -getSshHostUser
-                    -getSshHostPort
-                    -isAlive
+                    -getSshHost
+                    -getSshUser
+                    -getSshPort
+                    -command
                     -copy
-                    -fileDiff
+                    -diff
                     -vimEdit
                     -connect
                     Constructor: 
@@ -420,8 +424,8 @@ SshHost.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                SshHost
-                  Constructor for the SshHost objects, checks if passwordless auth is possible 
-                  with object name and user.
+                  Constructor for the SshHost objects, checks if passwordless auth
+                  is possible with name and user.
                Parameters:
                   objectname
                   <name>
@@ -432,13 +436,14 @@ SshHost.help() {
                   None
                Throws:
                   IllegalArgumentException - if number of arguments != 3 AND != 4
+                  AuthException - if passwordless auth is not possible
                Example:
                   SshHost a <name> <user> [<port>] 
             ";;& 
-         getSshHostName|all)
+         getSshHost|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getSshHostName
+               getSshHost
                   Returns the value of name
                Parameters:
                   None
@@ -451,10 +456,10 @@ SshHost.help() {
                   b.getSshHostName
                   >>>mymachine.mydom.org
             ";;& 
-         getSshHostUser|all)
+         getSshUser|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getSshHostUser
+               getSshUser
                   Returns the value of user (ssh-user)
                Parameters:
                   None
@@ -467,10 +472,10 @@ SshHost.help() {
                   b.getSshHostUser
                   >>>mysshaccount
             ";;& 
-         getSshHostPort|all)
+         getSshPort|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getSshHostPort
+               getSshPort
                   Returns the value of port (ssh-port)
                Parameters:
                   None

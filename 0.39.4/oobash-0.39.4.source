@@ -145,7 +145,7 @@ declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand 
 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 
-declare -a __SshHostMethods__=(getSshHostName getSshHostUser getSshHostPort copy fileDiff vimEdit connect)
+declare -a __SshHostMethods__=(getSshHost getSshUser getSshPort copy diff command vimEdit connect)
 
 declare -a __SshHost__=(${__SshHostMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
