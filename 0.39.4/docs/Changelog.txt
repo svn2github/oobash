@@ -248,8 +248,8 @@
 #                         setPosixFilePermissions
 #    -added Process: getMemorySize, getStartTime
 #    -added Math: Math.cbrt
-#    -added class SshHost with some methods/functions:
-#    SshHost, 
+#    -added experimental class Ssh with some methods/functions:
+#    Ssh, getSshHost, getSshUser, getSshPort, copy, diff, command, vimEdit, connect
 #    -added dependency: openssl
 #    -removed dependencies: base64 md5sum/md5 sha1sum/shasum
 #    -changed return values for exceptions, added AuthException
