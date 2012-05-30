@@ -277,6 +277,7 @@ __copy() {
 # diff two files on different machines
 # diff <(ssh -n machine1 cat /tmp/test1) <(ssh -n machine2 cat /tmp/test2)
 # Bash Process Substitution
+# example: host1.diff /tmp/xxx host2 /tmp/yyy
 __diff() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -289,18 +290,20 @@ __diff() {
       if (( $? == 0 )); then
          if [[ "$("$this".getClass)" == "$argclass" ]]; then
             # start
-            local machine="$("$this".getSshHost)"
+            local host="$("$this".getSshHost)"
             local user="$("$this".getSshUser)"
             declare -i port="$("$this".getSshPort)"
             local file="$3"
             # target 
-            local targetMachine="$("$argobject".getSshHost)"
+            local targethost="$("$argobject".getSshHost)"
             local targetUser="$("$argobject".getSshUser)"
             declare -i targetPort="$("$argobject".getSshPort)"
             local targetFile="${5:-"$file"}"
-
             if command -v ssh >/dev/null 2>&1; then
-               diff <(ssh -n -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}" "(<$file)") <(ssh -n -p "${targetPort}" -q -o "BatchMode yes" "${targetUser}"@"${targetMachine}" "(<$targetFile)")
+               # TODO: check if file is directory or regular file
+               # --> cat or find $file
+               # TODO: check for diff command
+               diff <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}") <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}")
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
@@ -399,20 +402,12 @@ SshHost.help() {
       System.${printStream}.println "
                     Usage: SshHost.help all|methodname
                     Available methods:
-                    -getClass
-                    -toString
-                    -equals
-                    -hashCode
-                    -getSshHost
-                    -getSshUser
-                    -getSshPort
-                    -command
-                    -copy
-                    -diff
-                    -vimEdit
-                    -connect
+                    -getClass -toString -equals
+                    -hashCode -getSshHost -getSshUser
+                    -getSshPort -command -copy -diff
+                    -vimEdit -connect
                     Constructor: 
-                    -SshHost
+                    -Ssh
       " 
       return 0
    fi
