@@ -193,7 +193,7 @@ __import oobash.io.File
 __import oobash.i18n.I18nMessage
 
 # import netservice functions
-__import oobash.netservice.SshHost
+__import oobash.netservice.Ssh
 
 # Register already defined vars and functions
 __registerVar __ObjectMethods__

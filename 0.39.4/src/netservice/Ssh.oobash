@@ -8,7 +8,7 @@
 #########################
 # constructor  function #
 #########################
-SshHost() {
+Ssh() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 3 )) || (( $# == 4 )); then
@@ -423,12 +423,12 @@ SshHost.help() {
          SshHost|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               SshHost
-                  Constructor for the SshHost objects, checks if passwordless auth
+               Ssh
+                  Constructor for the Ssh objects, checks if passwordless auth
                   is possible with name and user.
                Parameters:
                   objectname
-                  <name>
+                  <hostname>
                   <user>
                   [<port>] default: 22
                   No "." character is allowed in the objectname string.
@@ -436,9 +436,12 @@ SshHost.help() {
                   None
                Throws:
                   IllegalArgumentException - if number of arguments != 3 AND != 4
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if objectname contains full stop character
                   AuthException - if passwordless auth is not possible
                Example:
-                  SshHost a <name> <user> [<port>] 
+                  Ssh a <hostname> <user> [<port>]
             ";;& 
          getSshHost|all)
             match=$(Boolean.TRUE)
