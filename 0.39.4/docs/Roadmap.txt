@@ -1,16 +1,13 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.4 original:
+# 0.39.4:
 # -some ssh
 
-remove tail dependency in Process
+check if Process still works on OSX without tail
 
 File:
 -------
-del renameTo
-add static FileUtils
-
-lstrip -->private ?
+File.createTemporaryDir, File.createTempDir --> look at java Files util
 
 # 0.39.5
 # -chained return values
@@ -19,6 +16,8 @@ lstrip -->private ?
 # -Man.generator: bold methodnames
 # -better documentation for generators
 # -some Process functions
+# -add static FileUtils
+
 
 # 0.39.6
 # -analyze log4oobash.properties
