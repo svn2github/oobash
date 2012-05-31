@@ -16,5 +16,4 @@ pwd
 ps
 kill
 renice
-tail
 openssl

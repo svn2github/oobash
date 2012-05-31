@@ -2,7 +2,8 @@
 # oobash #
 ##########
 
-oobash is a fun project to have a proof of concept for some ideas and no, there are no real objects and no real decorators, but who cares... ;-).
+oobash is a fun project to have a proof of concept for some ideas and no, 
+there are no real objects and no real decorators, but who cares... ;-).
 There is no downward compatibility until version 1.0.
 
 Fast start
