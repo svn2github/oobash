@@ -3,8 +3,6 @@
 # 0.39.4:
 # -some ssh
 
--check if Process still works on OSX without tail
-
 -remove tail dependency in stacktrace
 
 -File.createTemporaryDir, File.createTempDir --> look at java Files util

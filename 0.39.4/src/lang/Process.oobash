@@ -407,8 +407,11 @@ __getStatus() {
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
-         stat="${stat/*S?/}"
-         # TODO: why {stat:0:1} ?
+         if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+            stat="${stat/*S?/}"
+         else
+            stat="${stat/*STAT?/}"
+         fi
          case "${stat:0:1}" in
             U|D)stat="Uninterruptible";;
             R)stat="Runnable";;
