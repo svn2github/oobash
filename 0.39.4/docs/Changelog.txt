@@ -245,7 +245,7 @@
 #    -Fixes
 # Version:      0.39.4
 #    -added File methods: getBase, getExtension, getPosixFilePermissions, setPosixFilePermissions
-#    File.createTemporaryDir, File.createTempDir,
+#    File.createTemporaryDir, File.createTempDir
 #    -removed File: renameTo method
 #    -added Process: getMemorySize, getStartTime
 #    -added Math: Math.cbrt
