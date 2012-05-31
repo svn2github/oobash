@@ -3,8 +3,6 @@
 # 0.39.4:
 # -some ssh
 
--remove tail dependency in stacktrace
-
 -File.createTemporaryDir, File.createTempDir --> look at java Files util
 
 # 0.39.5
@@ -21,6 +19,8 @@
 # -analyze log4oobash.properties
 # -some System functions
 # -colours ?
+# -remove tail dependency in stacktrace
+
 
 # 0.40
 # Assert 
