@@ -6,10 +6,10 @@
 # -Script.generator (header...)
 # -Man.generator: bold methodnames
 # -better documentation for generators
-# -some Process functions
+# -some more Process functions
 # -add static FileUtils
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy, diff
+# -Ssh: copy, diff...
 
 # 0.39.6
 # -analyze log4oobash.properties

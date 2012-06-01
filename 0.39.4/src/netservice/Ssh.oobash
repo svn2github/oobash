@@ -186,7 +186,7 @@ __command() {
       local port="$("$this".getSshPort)"
       local command="$3"
       if command -v ssh >/dev/null 2>&1; then
-         local retValue
+         local returnValue
          ssh -p "${port}" -q -o "BatchMode yes" "${user}@${machine}" "${command} 2>/dev/null"
          retValue=$?
          if (( $retValue != 0 )) && [[ -n "$PS1" ]]; then
@@ -368,7 +368,7 @@ Ssh.help() {
                Parameters:
                   command
                Returns:
-                  command result
+                  command echo output
                Throws:
                   IllegalArgumentException - if number of arguments != 1
                Example:
