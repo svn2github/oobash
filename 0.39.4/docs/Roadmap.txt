@@ -1,8 +1,5 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.4:
--File.createTemporaryDir, File.createTempDir --> look at java Files util
-
 # 0.39.5
 # -chained return values
 # -url decode/encode ?
@@ -11,15 +8,14 @@
 # -better documentation for generators
 # -some Process functions
 # -add static FileUtils
+# -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy, diff
-
 
 # 0.39.6
 # -analyze log4oobash.properties
 # -some System functions
 # -colours ?
 # -remove tail dependency in stacktrace
-
 
 # 0.40
 # Assert 
