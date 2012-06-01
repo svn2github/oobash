@@ -1,8 +1,6 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.4:
-# -some ssh
-
 -File.createTemporaryDir, File.createTempDir --> look at java Files util
 
 # 0.39.5
@@ -13,6 +11,7 @@
 # -better documentation for generators
 # -some Process functions
 # -add static FileUtils
+# -Ssh: copy, diff
 
 
 # 0.39.6

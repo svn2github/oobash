@@ -17,7 +17,6 @@ ps
 kill
 renice
 openssl
-diff
 ssh
 scp
 vim

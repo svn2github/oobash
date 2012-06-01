@@ -250,8 +250,8 @@
 #    -added Process: getMemorySize, getStartTime
 #    -added Math: Math.cbrt
 #    -added experimental class Ssh with some methods/functions:
-#    Ssh, getSshHost, getSshUser, getSshPort, copy, diff, command, vimEdit, connect
-#    -added dependency: openssl, diff, ssh, scp, vim
+#    Ssh, getSshHost, getSshUser, getSshPort, command, vimEdit, connect
+#    -added dependency: openssl, ssh, scp, vim
 #    -removed dependencies: base64 md5sum/md5 sha1sum/shasum tail
 #    -changed return values for exceptions, added AuthException
 #    -many fixes
