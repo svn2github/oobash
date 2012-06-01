@@ -17,3 +17,4 @@ ps
 kill
 renice
 openssl
+diff

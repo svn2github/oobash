@@ -80,12 +80,12 @@ declare -A __ExceptionValues__
 __ExceptionValues__=( 
  [DecoderException]=140
  [AuthException]=141
- [IllegalArgumentException]=150
- [IndexOutOfBoundsException]=160
- [IOException]=170
- [NotInPathException]=180
- [WrongClassException]=190
- [ProcessException]=200
+ [IllegalArgumentException]=142
+ [IndexOutOfBoundsException]=143
+ [IOException]=144
+ [NotInPathException]=145
+ [WrongClassException]=146
+ [ProcessException]=147
  [Unknown]=250
 )
 
@@ -111,7 +111,7 @@ unset signal sig counter
 shopt -u extglob
 
 # all external commands used in this framework:
-declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill renice openssl)
+declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill renice openssl diff)
 
 
 # Arrays for framework methods:
