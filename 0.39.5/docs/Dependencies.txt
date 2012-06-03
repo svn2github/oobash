@@ -20,3 +20,4 @@ openssl
 ssh
 scp
 vim
+diff

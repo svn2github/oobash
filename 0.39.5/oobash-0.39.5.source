@@ -112,7 +112,8 @@ unset signal sig counter
 shopt -u extglob
 
 # All external commands used in this framework:
-declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill renice openssl ssh scp vim)
+declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill 
+                             renice openssl ssh scp vim diff)
 
 
 # Arrays for framework methods and inheritance happens here:
