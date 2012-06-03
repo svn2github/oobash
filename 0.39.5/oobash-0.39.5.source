@@ -138,7 +138,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
                             isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath 
                             lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText 
                             getText append clear linecount linematch sha1sum md5sum getTotalSpace getFreeSpace 
-                            getUsableSpace getInode base extension getPosixFilePermissions setPosixFilePermissions
+                            getUsableSpace getInode getBase getExtension getPosixFilePermissions setPosixFilePermissions
                             getLine delLine)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
