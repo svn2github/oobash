@@ -73,6 +73,7 @@ fi
 # Used arrays:
 ###############
 
+# Used for environment cleanup
 declare -A __Registry__
 
 # Return values for exceptions:
@@ -89,7 +90,7 @@ __ExceptionValues__=(
  [Unknown]=250
 )
 
-# All available Process signals
+# All available Process signals (used in kill)
 declare -a __Signals__
 shopt -s extglob
 declare signal="$(kill -l 2>/dev/null)"
@@ -110,11 +111,11 @@ set +o posix
 unset signal sig counter
 shopt -u extglob
 
-# all external commands used in this framework:
+# All external commands used in this framework:
 declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill renice openssl ssh scp vim)
 
 
-# Arrays for framework methods:
+# Arrays for framework methods and inheritance happens here:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
 
 declare -a __ComparableMethods__=(compareTo)
@@ -210,7 +211,7 @@ __registerVar __HELP__
 __registerVar __STARTTIME__
 __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
-if [[ ! -z "$__QUIET__" ]]; then
+if [[ ! -z "${__QUIET__}" ]]; then
    __registerVar __QUIET__
 fi
 
@@ -231,9 +232,9 @@ if [[ -z "$PS1" ]]; then
 fi
 
 # Add oobash man pages to manpath
-export MANPATH=$MANPATH:${__OODIR__}/man
+export MANPATH=$MANPATH:"${__OODIR__}"/man
 
-# if there are any gnu tools, try to use them...
+# for bsd systems: if there are any gnu tools, try to use them...
 if command -v gdate >/dev/null 2>&1; then
    testtimestamp="$(gdate "+%N" 2>/dev/null)"
    if [[ "${testtimestamp: -1}" != "N" ]]; then
@@ -439,7 +440,7 @@ fi
 # Do we have logging propeties to use ?
 __lookForLoggingPropertiesFile "$(caller)"
 
-if [[ "$__LOGGERPROPS__" == "$(Boolean.TRUE)" ]]; then
+if [[ "${__LOGGERPROPS__}" == "$(Boolean.TRUE)" ]]; then
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
    __registerVar __LayoutMethods__
 

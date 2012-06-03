@@ -11,6 +11,8 @@
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy, diff...
 
+zfill minimize this... calls
+
 # 0.39.6
 # -analyze log4oobash.properties
 # -some System functions

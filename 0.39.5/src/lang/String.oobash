@@ -215,6 +215,10 @@ __title() {
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toLowerCase)"
+      if [[ "${str:0:1}" == "ß" ]]; then
+         str="${str/ß/ss}"
+      fi
+      str="${str// ß/ ss}"
       System.out.println "${str~}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -701,7 +705,11 @@ __capitalize() {
       local this="$1"
       local str="$("$this".toLowerCase)"
       local firstchar="${str:0:1}"
-      firstchar="$(__strUpper "$firstchar")"
+      if [[ "$firstchar" == "ß" ]]; then
+         firstchar=Ss
+      else
+         firstchar="$(__strUpper "$firstchar")"
+      fi
       System.out.println "$firstchar""${str:1}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
