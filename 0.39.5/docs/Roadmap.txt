@@ -10,6 +10,7 @@
 # -add static FileUtils +  set -Line
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy, diff...
+# -use ẞ (big shar s) instead of SS upper/lower
 
 # 0.39.6
 # -analyze log4oobash.properties

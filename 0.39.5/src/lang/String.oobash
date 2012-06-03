@@ -573,10 +573,13 @@ __swapCase() {
          local char="${str:i:1}"
          case $char in
             # small sharp s
-            \DF )                  
+            ß)                  
             swaped="$swaped""SS";;
+            # big sharp s
+            ẞ)
+            swaped="$swaped""ß";;
             # ignore case 
-            * ) 
+            *) 
             swaped="$swaped""${char~}" ;;
          esac
       done
