@@ -215,11 +215,24 @@ __title() {
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toLowerCase)"
-      if [[ "${str:0:1}" == "ß" ]]; then
-         str="${str/ß/ss}"
-      fi
-      str="${str// ß/ ss}"
-      System.out.println "${str~}"
+      local output="${str~}"
+      # "${str~}" does not work with big sharp s --> let's loop ;-(
+      local next="$(Boolean.TRUE)"
+      local result=''
+      for ((i=0; i < ${#output}; i++))
+      do
+         local char="${output:i:1}"
+         if [[ "${next}" == "$(Boolean.TRUE)" && "${char}" == "ß" ]]; then
+            char="ẞ"
+         fi
+         if [[ "$(__strUpper  "${char}")" == "$(__strLower  "${char}")" ]]; then
+            next="$(Boolean.TRUE)"
+         else
+            next="$(Boolean.FALSE)"
+         fi
+         result="${result}""${char}"
+      done
+      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -574,7 +587,7 @@ __swapCase() {
          case $char in
             # small sharp s
             ß)                  
-            swaped="$swaped""SS";;
+            swaped="$swaped""ẞ";;
             # big sharp s
             ẞ)
             swaped="$swaped""ß";;

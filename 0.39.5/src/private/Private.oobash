@@ -269,6 +269,7 @@ __registerFunction __visible
 # -__compareToIgnoreCase
 # -__toUpperCase
 # -__capitalize
+# -__title
 __strUpper() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -u str="$1"
@@ -281,7 +282,7 @@ __strUpper() {
       case "${valueOf}" in
          # small sharp s 
          223 )                  
-         upper="${upper}""SS";;
+         upper="${upper}""ẞ";;
          228|246|252|224|226|230|231|232|233|234|235|238|239|244|156|249|251|261|281|243|263|322|324|347|378|380|225|237|241|250|259|537|351|539|355|283|367|253|269|314|328|341|345|353|382|271|357|248|229|337|369|236|242|240|254)
          upper="${upper}""${char~}";;       
          * ) 
@@ -297,6 +298,7 @@ __registerFunction __strUpper
 # returns given string lowercase
 # called by:
 # -__toLowerCase
+# -__title
 __strLower() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -l str="$1"
@@ -790,7 +792,7 @@ __registerFunction __tracebackHeader
 __getPointer() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if __gnudateCheck; then
-      System.currentTimeNanos
+      System.out.println $(System.currentTimeNanos)${RANDOM}${RANDOM}
    else
       if command -v date 2>&1 1>/dev/null; then    
          # can't test but i think this should work with a bsd date
