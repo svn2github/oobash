@@ -196,3 +196,11 @@ msgstr ""
 #: oobash/src/admin/SshHost.oobash
 # msgid "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
 # msgstr ""
+
+#: oobash/src/util/Generator.oobash:
+msgid "   Please enter one script name"
+msgstr "   Inserire il nome della script"
+
+#: oobash/src/util/Generator.oobash:
+msgid "   Crash! Script already exists."
+msgstr "   Crash! Il script esiste già."

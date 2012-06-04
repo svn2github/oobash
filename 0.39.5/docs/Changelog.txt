@@ -258,6 +258,7 @@
 # Version:      0.39.5
 #    -File: added getLine, delLine
 #    -Ssh: added diff, copy
+#    -added Script.generator (skeleton) + scripts directory
 #    -support for upper case sharp s
 #    -added Dependencies: diff
 #    -Fixes

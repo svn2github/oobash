@@ -167,6 +167,7 @@ msgstr "Tut mir leid, aber der Objektname '$this' ist nicht gültig"
 
 #: oobash/src/lang/String.oobash:46
 msgid "Sorry, objectname '$this' is a keyword"
+
 msgstr "Tut mir leid, aber der Objektname '$this' ist ein Schlüsselwort."
 
 #: oobash/src/lang/String.oobash:59
@@ -196,3 +197,11 @@ msgstr " Konnte MANPATH nicht anpassen!"
 #: oobash/src/admin/SshHost.oobash
 # msgid "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
 # msgstr "Tut mir leid, passwortlose Authentifizierung auf SshHost '$name' nicht möglich"
+
+#: oobash/src/util/Generator.oobash:
+msgid "   Please enter one script name"
+msgstr "   Bitte geben Sie eine Skriptnmen ein"
+
+#: oobash/src/util/Generator.oobash:
+msgid "   Crash! Script already exists."
+msgstr "   Abbruch ! Skript existiert bereits."

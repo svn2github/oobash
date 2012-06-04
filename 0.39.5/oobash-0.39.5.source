@@ -236,6 +236,9 @@ fi
 # Add oobash man pages to manpath
 export MANPATH=$MANPATH:"${__OODIR__}"/man
 
+# Add scripts directory to path
+export PATH=$PATH:"${__OODIR__}"/scripts
+
 # for bsd systems: if there are any gnu tools, try to use them...
 if command -v gdate >/dev/null 2>&1; then
    testtimestamp="$(gdate "+%N" 2>/dev/null)"

@@ -436,3 +436,46 @@ Man.generator() {
    return $returnValue
 }
 __registerFunction Man.generator
+
+Script.generator() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      local scriptname="$1"
+      local destination="${__OODIR__}"/scripts/"${scriptname}"
+      if [[ -e "${destination}" ]]; then
+         I18n.err.println "   Crash! Script already exists."
+         returnValue=1       
+      else
+         System.out.println '#!'${0} > "${destination}"
+         System.out.println "
+source "${__OODIR__}"/oobash-$(__basename $__OODIR__).source
+
+#############################################################
+# Author:  $USER
+# Date:    $(date +%Y-%m-%d 2>/dev/null)
+# Version: 1.0
+# License: The MIT License
+# Copyright (c) <$(date +%Y 2>/dev/null)> <$USER>
+#
+#         File:   "${scriptname}"
+#
+#         Usage:  "${destination}"
+#
+# Description:
+#
+#
+#############################################################
+         ">> "${destination}"
+         chmod 755 "${destination}" 2>/dev/null
+      fi
+   else
+      System.err.println
+      I18n.err.println "   Please enter one script name"
+      I18n.err.println "   Example:" 
+      System.err.println "   Script.generator script.sh" 
+      System.err.println 
+      returnValue=1 
+   fi
+   return $returnValue
+}
