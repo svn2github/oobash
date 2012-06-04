@@ -3,7 +3,6 @@
 # 0.39.5
 # -chained return values
 # -url decode/encode ?
-# -Script.generator (header...)
 # -Man.generator: bold methodnames
 # -better documentation for generators
 # -some more Process functions:__getThreads, __children

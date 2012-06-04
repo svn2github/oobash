@@ -70,7 +70,7 @@ D) Conventions
 * Boolean return values:
 -------------------------
 All public "methods" call a Boolean.TRUE or Boolean.FALSE to represent true or false --> true or false is echoed to the output channel.
-If there is no failure calling the "method" the return value will be 0, independent of any boolean true/false return value.
+If there is no failure calling the "method", the return value will be 0, independent of any boolean true/false return value.
 
 Only private functions and decorators make use of a 0/1 return value to represent a false or true.
 
@@ -106,7 +106,7 @@ F) Methods declaration
 ######################
 
 All methods begin with two underscore characters (you can see this in the section command_not_found_handle).
-Only the constructors do not follow this main principle (a __String looks to ugly ;-) ).
+Only the constructors/public statics/helpsystem do not follow this main principle (a __String looks to ugly ;-) ).
 
 Even if your method doesn't use any argument, the command_not_found_handle function will add two arguments:
 1) objectname
@@ -163,7 +163,7 @@ I18n.err.println
 
 J) "Decorators"
 ################
-Will only work if shell is not interactive (script).
+Will only work if shell is used in script.
 You can see an example script using "decorators" in the docs/examples directory.
 __decoratorCheck calls the "decorators" and returns the sum (if below 256 otherwise $((sum%256)) ) of all decorator return values.
 Decorators use stderr for echos, because the framework communication is on stdout.

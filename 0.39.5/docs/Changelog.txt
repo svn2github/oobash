@@ -258,7 +258,7 @@
 # Version:      0.39.5
 #    -File: added getLine, delLine
 #    -Ssh: added diff, copy
-#    -added Script.generator (skeleton) + scripts directory
+#    -added Script.generator (skeleton) + empty scripts directory
 #    -support for upper case sharp s
 #    -added Dependencies: diff
 #    -Fixes
@@ -268,7 +268,7 @@
 # String manipulation with umlauts and other special characters
 # Math methods accept arguments with scientific notation
 # Math methods accept arguments float numbers with "." or ","
-# Developer support: Class.generator, Man.generator
+# Developer support: Class.generator, Man.generator, Script.generator
 # Use of bash autocompletion
 # Registry for environment cleanUp
 # i18n
