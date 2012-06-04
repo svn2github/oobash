@@ -333,6 +333,9 @@ __copy() {
 # diff <(ssh -n machine1 cat /tmp/test1) <(ssh -n machine2 cat /tmp/test2)
 # Bash Process Substitution
 # example: host1.diff /tmp/xxx host2 /tmp/yyy
+
+# dir Diff ?
+# for i in $(find . -type f); do echo $i $(openssl dgst -md5 "$i" 2>/dev/null); done
 __diff() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
