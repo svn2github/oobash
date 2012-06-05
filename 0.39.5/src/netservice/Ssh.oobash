@@ -329,13 +329,11 @@ __copy() {
    return $returnValue
 }
 
-# diff two files on different machines
-# diff <(ssh -n machine1 cat /tmp/test1) <(ssh -n machine2 cat /tmp/test2)
-# Bash Process Substitution
 # example: host1.diff /tmp/xxx host2 /tmp/yyy
+# OR:
+# example: host1.diff /tmp/xxx host2
 
-# dir Diff ?
-# for i in $(find . -type f); do echo $i $(openssl dgst -md5 "$i" 2>/dev/null); done
+# TODO: for i in $(find .); do echo $i $(openssl dgst -md5 "$i" 2>/dev/null); done / extra method ?
 __diff() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -358,10 +356,109 @@ __diff() {
             declare -i targetPort="$("$argobject".getSshPort)"
             local targetFile="${5:-"$file"}"
             if command -v ssh >/dev/null 2>&1; then
-               # TODO: check if file is directory or regular file
-               # --> cat or find $file              
+               local checkf
+               checkf="${file}"
+               # TODO: only one command
+               local command1="
+                  if [ -d "${checkf}" ]; then
+                     if [ -x "${checkf}" ]; then
+                        echo directory
+                     else
+                        echo noSearchPermission
+                     fi
+                  else
+                     if [ -f "${checkf}" ]; then
+                        if [ -r "${checkf}" ]; then
+                           echo regular
+                        else
+                           echo noReadPermission
+                        fi
+                     else
+                        echo noRegular
+                     fi
+                  fi
+               "
+               local f1="$(ssh -n -p "${port}" "${user}"@"${host}" "${command1}")"
+               checkf="${targetFile}"
+               local command2="
+                  if [ -d "${checkf}" ]; then
+                     if [ -x "${checkf}" ]; then
+                        echo directory
+                     else
+                        echo noSearchPermission
+                     fi
+                  else
+                     if [ -f "${checkf}" ]; then
+                        if [ -r "${checkf}" ]; then
+                           echo regular
+                        else
+                           echo noReadPermission
+                        fi
+                     else
+                        echo noRegular
+                     fi
+                  fi
+               "
+               local f2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "${command2}")"
+               if [[ $f1 != $f2 ]]; then
+                     __throw "IllegalArgumentException" ": Illegal argument: diff of directory and regular file makes no sense"
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue
+               fi
+               # TODO: only one case
+               case "$f1" in
+                  noSearchPermission)
+                     __throw "IllegalArgumentException" ": Illegal argument: no search permission \"${file}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue;;
+                  noReadPermission)
+                     __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${file}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue;;
+                  noRegular)
+                     __throw "IllegalArgumentException" ": Illegal argument: \"${file}\" is no regular file"
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue;;
+                  "")
+                     __throw "IOException" ": Could not recognize type of \"${file}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue
+               esac
+               case "$f2" in
+                  noSearchPermission)
+                     __throw "IllegalArgumentException" ": Illegal argument: no search permission for \"${targetFile}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue;;
+                  noReadPermission)
+                     __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${targetFile}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue;;
+                  noRegular)
+                     __throw "IllegalArgumentException" ": Illegal argument: \"${targetFile}\" is no regular file"
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue;;
+                  "")
+                     __throw "IOException" ": Could not recognize type of \"${targetFile}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue;;
+               esac
                if command -v diff >/dev/null 2>&1; then
-                  diff <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}") <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}")
+                  if [[ "$f1" = "regular" ]]; then
+                     diff <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}") \
+                          <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}")
+                  else
+                     diff <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
+                          <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
+                  fi
                else
                   __throw "NotInPathException" ": diff not in path"
                   returnValue=$?
