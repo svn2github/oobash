@@ -10,10 +10,8 @@
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy, diff...
 
-not in the docs:
-x.setPriority -21
-IllegalArgumentException: Illegal argument: "-21" - has to be between -20 and 19
-
+great idea from: http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
+--> should be in Script.generator
 
 # 0.39.6
 # -analyze log4oobash.properties

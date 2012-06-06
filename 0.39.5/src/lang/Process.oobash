@@ -865,6 +865,7 @@ Process.help() {
                   True if priority is altered successfully. False otherwise.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
+                                           - if priority is not between -20 and 19
                   NotInPathException - if renice not in path
                Example:
                   Process.create a \"sleep 500\"
