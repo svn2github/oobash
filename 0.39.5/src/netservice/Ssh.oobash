@@ -356,19 +356,16 @@ __diff() {
             declare -i targetPort="$("$argobject".getSshPort)"
             local targetFile="${5:-"$file"}"
             if command -v ssh >/dev/null 2>&1; then
-               local checkf
-               checkf="${file}"
-               # TODO: only one command
-               local command1="
-                  if [ -d "${checkf}" ]; then
-                     if [ -x "${checkf}" ]; then
+               local command="
+                  if [ -d "\${checkf}" ]; then
+                     if [ -x "\${checkf}" ]; then
                         echo directory
                      else
                         echo noSearchPermission
                      fi
                   else
-                     if [ -f "${checkf}" ]; then
-                        if [ -r "${checkf}" ]; then
+                     if [ -f "\${checkf}" ]; then
+                        if [ -r "\${checkf}" ]; then
                            echo regular
                         else
                            echo noReadPermission
@@ -378,34 +375,8 @@ __diff() {
                      fi
                   fi
                "
-               local f1="$(ssh -n -p "${port}" "${user}"@"${host}" "${command1}")"
-               checkf="${targetFile}"
-               local command2="
-                  if [ -d "${checkf}" ]; then
-                     if [ -x "${checkf}" ]; then
-                        echo directory
-                     else
-                        echo noSearchPermission
-                     fi
-                  else
-                     if [ -f "${checkf}" ]; then
-                        if [ -r "${checkf}" ]; then
-                           echo regular
-                        else
-                           echo noReadPermission
-                        fi
-                     else
-                        echo noRegular
-                     fi
-                  fi
-               "
-               local f2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "${command2}")"
-               if [[ $f1 != $f2 ]]; then
-                     __throw "IllegalArgumentException" ": Illegal argument: diff of directory and regular file makes no sense"
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue
-               fi
+               local f1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command}")"
+               local f2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command}")"
                # TODO: only one case
                case "$f1" in
                   noSearchPermission)
@@ -451,6 +422,12 @@ __diff() {
                      __stackOrHelp "${class}" "${FUNCNAME:2}"
                      return $returnValue;;
                esac
+               if [[ $f1 != $f2 ]]; then
+                     __throw "IllegalArgumentException" ": Illegal argument: diff of directory and regular file makes no sense"
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue
+               fi
                if command -v diff >/dev/null 2>&1; then
                   if [[ "$f1" = "regular" ]]; then
                      diff <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}") \
