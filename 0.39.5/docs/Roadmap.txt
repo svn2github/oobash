@@ -13,6 +13,8 @@
 great idea from: http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
 --> should be in Script.generator
 
+rollback PATH and MANPATH after __cleanup
+
 # 0.39.6
 # -analyze log4oobash.properties
 # -some System functions

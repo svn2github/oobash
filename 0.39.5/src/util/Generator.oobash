@@ -479,3 +479,4 @@ source "${__OODIR__}"/oobash-$(__basename $__OODIR__).source
    fi
    return $returnValue
 }
+__registerFunction Script.generator

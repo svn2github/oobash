@@ -75,7 +75,7 @@ Ssh() {
    fi
    return $returnValue
 }
-__registerClass SshHost
+__registerClass Ssh
 
 
 ######################
@@ -332,8 +332,6 @@ __copy() {
 # example: host1.diff /tmp/xxx host2 /tmp/yyy
 # OR:
 # example: host1.diff /tmp/xxx host2
-
-# TODO: for i in $(find .); do echo $i $(openssl dgst -md5 "$i" 2>/dev/null); done / extra method ?
 __diff() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -374,62 +372,47 @@ __diff() {
                         echo noRegular
                      fi
                   fi
-               "
-               local f1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command}")"
-               local f2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command}")"
-               # TODO: only one case
-               case "$f1" in
-                  noSearchPermission)
-                     __throw "IllegalArgumentException" ": Illegal argument: no search permission \"${file}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue;;
-                  noReadPermission)
-                     __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${file}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue;;
-                  noRegular)
-                     __throw "IllegalArgumentException" ": Illegal argument: \"${file}\" is no regular file"
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue;;
-                  "")
-                     __throw "IOException" ": Could not recognize type of \"${file}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue
-               esac
-               case "$f2" in
-                  noSearchPermission)
-                     __throw "IllegalArgumentException" ": Illegal argument: no search permission for \"${targetFile}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue;;
-                  noReadPermission)
-                     __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${targetFile}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue;;
-                  noRegular)
-                     __throw "IllegalArgumentException" ": Illegal argument: \"${targetFile}\" is no regular file"
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue;;
-                  "")
-                     __throw "IOException" ": Could not recognize type of \"${targetFile}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue;;
-               esac
-               if [[ $f1 != $f2 ]]; then
+                  "
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command}")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command}")"
+               declare -i counter=0
+               declare -a F=( $file $targetFile )
+               declare -a H=( $host $targethost )
+               local info
+               for info in "${fileinfo1}" "${fileinfo2}"
+               do
+                  case "${info}" in
+                     noSearchPermission)
+                        __throw "IllegalArgumentException" ": Illegal argument: no search permission for \"${F[counter]}\" on \"${H[counter]}\""
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                     noReadPermission)
+                        __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${F[counter]}\" on \"${H[counter]}\""
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                     noRegular)
+                        __throw "IllegalArgumentException" ": Illegal argument: \"${F[counter]}\" on \"${H[counter]}\" is no regular file"
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                     "")
+                        __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue
+                  esac
+                  ((counter++))
+               done
+               if [[ "${fileinfo1}" != "${fileinfo2}" ]]; then
                      __throw "IllegalArgumentException" ": Illegal argument: diff of directory and regular file makes no sense"
                      returnValue=$?
                      __stackOrHelp "${class}" "${FUNCNAME:2}"
                      return $returnValue
                fi
                if command -v diff >/dev/null 2>&1; then
-                  if [[ "$f1" = "regular" ]]; then
+                  if [[ "$fileinfo1" = "regular" ]]; then
                      diff <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}") \
                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}")
                   else
@@ -464,7 +447,7 @@ __diff() {
    return $returnValue
 }
 
-complete -W  "$(echo ${__SshHost__[@]}) all SshHost" SshHost.help
+complete -W  "$(echo ${__Ssh__[@]}) all Ssh" Ssh.help
 
 #################
 # help function #
@@ -607,6 +590,36 @@ Ssh.help() {
                Example:
                   Ssh mymachine mymachine.mydom.org mysshaccount
                   mymachine.connect
+            ";;&
+         copy|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               copy
+                  Blub
+               Parameters:
+                  Blub
+               Returns:
+                  Blub
+               Throws:
+                  Blub
+               Example:
+                  Blub
+                  Blub
+            ";;&
+         diff|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               diff
+                  Blub
+               Parameters:
+                  Blub
+               Returns:
+                  Blub
+               Throws:
+                  Blub
+               Example:
+                  Blub
+                  Blub
             ";;&
          getClass|all)
             match=$(Boolean.TRUE)
