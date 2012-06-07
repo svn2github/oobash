@@ -594,19 +594,21 @@ __kill() {
             local signalValid="$(Boolean.FALSE)"
             local key
             declare -u signal="$3"
-            for key in "${!__Signals__[@]}"
-            do 
-               if [[ "${signal}" == "${__Signals__[key]}" ]]; then
-                  signalValid=$(Boolean.TRUE)  
-                  break
+            if [[ "${signal}" != 0 ]]; then
+               for key in "${!__Signals__[@]}"
+               do 
+                  if [[ "${signal}" == "${__Signals__[key]}" ]]; then
+                     signalValid=$(Boolean.TRUE)  
+                     break
+                  fi
+               done
+               if [[ "${signalValid}" != "$(Boolean.TRUE)" ]]; then
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
                fi
-            done
-            if [[ "${signalValid}" != "$(Boolean.TRUE)" ]]; then
-               __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi               
+            fi           
          else
             signal="TERM"
          fi       
@@ -915,7 +917,9 @@ Process.help() {
                kill
                   Sends signal to process.
                   You can see all valid signals, if you use the command
-                  'kill -l' in your shell.  
+                  'kill -l' in your shell.
+                  If signal is '0', then no signal is sent, but error
+                  checking is still performed.
                Parameters:
                   signal is optional [default: TERM]
                Returns:
