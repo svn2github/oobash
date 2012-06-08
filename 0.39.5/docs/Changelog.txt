@@ -260,6 +260,7 @@
 #    -Ssh: added diff, copy
 #    -added Script.generator (skeleton) + empty scripts directory
 #    -support for upper case sharp s
+#    -support for pseudo signal "0" with Process kill command
 #    -added Dependencies: diff
 #    -Fixes
 
