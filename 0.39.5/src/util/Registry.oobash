@@ -40,6 +40,8 @@ __registerFunction __registerVar
 # public  
 # cleans the environment
 __cleanUp() {
+   export PATH="$__OLDPATH"
+   export MANPATH="$__OLDMANPATH"
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    __cleanUpObjectsPool
    __cleanUpClasses

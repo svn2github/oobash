@@ -8,17 +8,15 @@
 # -some more Process functions:__getThreads, __children
 # -add static FileUtils +  set -Line
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy, diff grep
+# -Ssh: copy, diff, grep
 
 great idea from: http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
 --> should be used in Script.generator
 
-rollback PATH and MANPATH after __cleanup
-
-__cleanUp --> cleanUp (public !)
-
 __remoteGrep sting path boolean (bool ->  casesensitiv=true=default) 
-grep root /etc/passwd /dev/null (/dev/null-->filenameoutput!)
+e.g.: grep root /etc/passwd /dev/null (/dev/null-->filenameoutput!)
+
+getPointer --> use random + timestamp (nanoseconds are not available on every system)
 
 # 0.39.6
 # -analyze log4oobash.properties

@@ -139,7 +139,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
                             lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText 
                             getText append clear linecount linematch sha1sum md5sum getTotalSpace getFreeSpace 
                             getUsableSpace getInode getBase getExtension getPosixFilePermissions setPosixFilePermissions
-                            getLine delLine)
+                            getLine delLine setLine)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
@@ -234,9 +234,13 @@ if [[ -z "$PS1" ]]; then
 fi
 
 # Add oobash man pages to manpath
+__OLDMANPATH="$MANPATH"
+__registerVar __OLDMANPATH
 export MANPATH=$MANPATH:"${__OODIR__}"/man
 
 # Add scripts directory to path
+__OLDPATH="$PATH"
+__registerVar __OLDPATH
 export PATH=$PATH:"${__OODIR__}"/scripts
 
 # for bsd systems: if there are any gnu tools, try to use them...
