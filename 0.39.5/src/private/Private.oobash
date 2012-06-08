@@ -792,10 +792,10 @@ __registerFunction __tracebackHeader
 __getPointer() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if __gnudateCheck; then
+      # real nanoseconds are not available on every system --> + random
       System.out.println $(System.currentTimeNanos)${RANDOM}${RANDOM}
    else
       if command -v date 2>&1 1>/dev/null; then    
-         # can't test but i think this should work with a bsd date
          System.out.println $(date "+%Y%m%d%H%M%S")${RANDOM}${RANDOM}${RANDOM}
       else    
          # not my problem...
