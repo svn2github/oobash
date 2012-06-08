@@ -8,15 +8,18 @@
 # -some more Process functions:__getThreads, __children
 # -add static FileUtils +  set -Line
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy, diff, grep
+# -Ssh: copy, grep, grepIgnoreCase, grepInvertMatch
+
+ignoreCase:
+   diff, diffIgnoreAllSpace diffIgnoreBlankLines ???
+
+   grep, grepIgnoreCase, grepInvertMatch (all three methods: optional: lineNumber, default: true)
+   e.g.: grep root /etc/passwd /dev/null ( 2nd file: /dev/null--> filenameoutput!)
 
 great idea from: http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
 --> should be used in Script.generator
 
-__remoteGrep sting path boolean (bool ->  casesensitiv=true=default) 
-e.g.: grep root /etc/passwd /dev/null (/dev/null-->filenameoutput!)
-
-getPointer --> use random + timestamp (nanoseconds are not available on every system)
+getPointer --> use random + timestamp (real nanoseconds are not available on every system)
 
 # 0.39.6
 # -analyze log4oobash.properties
@@ -37,6 +40,7 @@ getPointer --> use random + timestamp (nanoseconds are not available on every sy
 # 0.70
 # -pimp getopts/or create an alternative ? 
 # -oobash.freeze --> conservation of the status quo
+# -oobash.onlineUpdate
 
 # 0.80
 # Facade for some version control systems ?

@@ -838,7 +838,7 @@ Ssh.help() {
                   the output is a diff of the two files.
                   if the first [ optional: and 3rd argument] defines a directory, then
                   the output is a diff of all filenames under given directory.
-                  stderr is redirected to /dev/null
+                  Remote stderr is redirected to /dev/null
                Parameters:
                   primititve file or path on this Ssh object
                   Ssh object
@@ -871,7 +871,7 @@ Ssh.help() {
                   if the first [ optional: and 3rd argument] defines a directory, then
                   the output is a diff of all filenames under given directory.
                   The diff output ignores all blank lines.
-                  stderr is redirected to /dev/null
+                  Remote stderr is redirected to /dev/null
                Parameters:
                   primititve file or path on this Ssh object
                   Ssh object
@@ -904,7 +904,7 @@ Ssh.help() {
                   if the first [ optional: and 3rd argument] defines a directory, then
                   the output is a diff of all filenames under given directory.
                   The diff output ignores all spaces.
-                  stderr is redirected to /dev/null
+                  Remote stderr is redirected to /dev/null
                Parameters:
                   primititve file or path on this Ssh object
                   Ssh object
