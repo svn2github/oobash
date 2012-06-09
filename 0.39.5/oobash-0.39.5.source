@@ -13,7 +13,6 @@
 ######################
 ######################
 
-set +e 
 __STARTTIME__="`date +%s.%N 2>/dev/null`"
 if command -v gdate >/dev/null 2>&1; then
    __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
