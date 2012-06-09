@@ -16,10 +16,12 @@
 
 File: longestLine, shortestLine ?
 
--some test with base64Decode again...
+-some test with base64Decode/Encode again...
 
 -use of __isInteger for integer args
 
+-remove version number from oobash filename ?
+ 
 # 0.39.6
 # -analyze log4oobash.properties
 # -some System functions
