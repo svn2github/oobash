@@ -455,7 +455,7 @@ source "${__OODIR__}"/oobash-*.source
 echo
 echo \"     This is a script skeleton for: \" 
 echo \"     $1 \"
-echo \"     You can find me here: \"
+echo \"     You can find it here: \"
 echo \"     "${__OODIR__}"/scripts/$1 \"
 echo
 
