@@ -3,10 +3,8 @@
 # 0.39.5
 # -chained return values
 # -url decode/encode ?
-# -Man.generator: bold methodnames
-# -better documentation for generators
 # -some more Process functions:__getThreads, __children
-# -add static FileUtils +  set -Line
+# -setLine
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy, grep, grepIgnoreCase, grepInvertMatch
 
@@ -20,10 +18,17 @@
 great idea from: http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
 --> should be used in Script.generator
 
+-some test with base64Decode again...
+
 # 0.39.6
 # -analyze log4oobash.properties
 # -some System functions
 # -colours ?
+
+# 0.39.7
+# -Man.generator: bold methodnames
+# -better documentation for generators
+# -add static FileUtils
 
 # 0.40
 # Assert 
