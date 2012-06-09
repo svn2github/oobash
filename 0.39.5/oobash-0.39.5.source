@@ -13,9 +13,6 @@
 ######################
 ######################
 
-# No set -e with this code
-set +e
-
 __STARTTIME__="`date +%s.%N 2>/dev/null`"
 if command -v gdate >/dev/null 2>&1; then
    __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
@@ -67,6 +64,10 @@ fi
 
 # End start up tests
 # ----------------------------------------------------
+
+#  no shell exit when a command exits non-zero 
+#  (some private functions in this framework do this!)
+set +errexit
 
 # i18n function library from the gnu textutils
 if command -v gettext.sh >/dev/null 2>&1; then
