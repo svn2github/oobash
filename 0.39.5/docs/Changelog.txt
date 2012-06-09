@@ -259,6 +259,7 @@
 #    -File: added getLine, delLine, setLine
 #    -Ssh: added diff, diffIgnoreAllSpace, diffIgnoreBlankLines, copy
 #    -added Script.generator (skeleton) + empty scripts directory
+#    -added private functions:__isInteger
 #    -support for upper case sharp s for String
 #    -support for pseudo signal "0" with Process kill command
 #    -rollback for PATH and MANPATH during __cleanUp
