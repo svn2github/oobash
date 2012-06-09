@@ -368,8 +368,8 @@ __diff() {
                      fi
                   fi
                   "
-               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command}")"
-               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command}")"
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
                declare -i counter=0
                declare -a F=( $file $targetFile )
                declare -a H=( $host $targethost )
@@ -392,11 +392,6 @@ __diff() {
                         returnValue=$?
                         __stackOrHelp "${class}" "${FUNCNAME:2}"
                         return $returnValue;;
-                     "")
-                        __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
-                        returnValue=$?
-                        __stackOrHelp "${class}" "${FUNCNAME:2}"
-                        return $returnValue
                   esac
                   ((counter++))
                done
@@ -408,11 +403,15 @@ __diff() {
                fi
                if command -v diff >/dev/null 2>&1; then
                   if [[ "$fileinfo1" = "regular" ]]; then
-                     diff <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
-                          <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}" 2>/dev/null)
+                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
+                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}" 2>/dev/null)
+                  elif [[ "$fileinfo1" = "directory" ]]; then
+                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
+                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
                   else
-                     diff <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
-                          <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
+                     __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
                   fi
                else
                   __throw "NotInPathException" ": diff not in path"
@@ -481,8 +480,8 @@ __diffIgnoreBlankLines() {
                      fi
                   fi
                   "
-               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command}")"
-               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command}")"
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
                declare -i counter=0
                declare -a F=( $file $targetFile )
                declare -a H=( $host $targethost )
@@ -505,11 +504,6 @@ __diffIgnoreBlankLines() {
                         returnValue=$?
                         __stackOrHelp "${class}" "${FUNCNAME:2}"
                         return $returnValue;;
-                     "")
-                        __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
-                        returnValue=$?
-                        __stackOrHelp "${class}" "${FUNCNAME:2}"
-                        return $returnValue
                   esac
                   ((counter++))
                done
@@ -523,9 +517,13 @@ __diffIgnoreBlankLines() {
                   if [[ "$fileinfo1" = "regular" ]]; then
                      diff -B <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
                              <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}" 2>/dev/null)
-                  else
+                  elif [[ "$fileinfo1" = "directory" ]]; then
                      diff -B <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
                              <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
+                  else
+                     __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
                   fi
                else
                   __throw "NotInPathException" ": diff not in path"
@@ -594,8 +592,8 @@ __diffIgnoreAllSpace() {
                      fi
                   fi
                   "
-               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command}")"
-               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command}")"
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
                declare -i counter=0
                declare -a F=( $file $targetFile )
                declare -a H=( $host $targethost )
@@ -618,11 +616,6 @@ __diffIgnoreAllSpace() {
                         returnValue=$?
                         __stackOrHelp "${class}" "${FUNCNAME:2}"
                         return $returnValue;;
-                     "")
-                        __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
-                        returnValue=$?
-                        __stackOrHelp "${class}" "${FUNCNAME:2}"
-                        return $returnValue
                   esac
                   ((counter++))
                done
@@ -636,9 +629,13 @@ __diffIgnoreAllSpace() {
                   if [[ "$fileinfo1" = "regular" ]]; then
                      diff -w <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
                              <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}" 2>/dev/null)
-                  else
+                  elif [[ "$fileinfo1" = "directory" ]]; then
                      diff -w <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
                              <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
+                  else
+                     __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
                   fi
                else
                   __throw "NotInPathException" ": diff not in path"
