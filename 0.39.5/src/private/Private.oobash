@@ -43,6 +43,7 @@
 # __isAssocArray() checks if given parameter is an associative array
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
+# __isInteger check for integer input
 
 
 
@@ -955,3 +956,27 @@ __stripPath() {
    return 0
 }
 __registerFunction __stripPath
+
+# private
+# declare -i arg --> check for integer input --> 
+# no string2integer surprises for the user
+# called by:
+__isInteger()
+{
+   local unsetAtEnd
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean 
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd="$(Boolean.TRUE)"
+   fi 
+   case $1 in
+   ?([-+])+([[:digit:]]) )
+      echo true;;
+   *) echo false;;
+   esac
+   if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
+      shopt -u extglob
+   fi
+}
+__registerFunction __isInteger
