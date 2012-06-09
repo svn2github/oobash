@@ -518,8 +518,8 @@ $USER
 =cut
          ">> "${destination}"
          chmod 755 "${destination}" 2>/dev/null
+         $1
       fi
-      $1
    else
       System.err.println
       I18n.err.println "   Please enter one script name"
