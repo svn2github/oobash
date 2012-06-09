@@ -15,10 +15,9 @@
    -grepCount
    --colour=never
 
-great idea from: http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
---> should be used in Script.generator
-
 -some test with base64Decode again...
+
+-use of __isInteger for integer args
 
 # 0.39.6
 # -analyze log4oobash.properties

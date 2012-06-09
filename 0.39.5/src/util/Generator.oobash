@@ -447,28 +447,79 @@ Script.generator() {
          I18n.err.println "   Crash! Script already exists."
          returnValue=1       
       else
-         System.out.println '#!'${0} > "${destination}"
+         System.out.println '#!'$SHELL > "${destination}"
          System.out.println "
-source "${__OODIR__}"/oobash-$(__basename $__OODIR__).source
 
-#############################################################
-# Author:  $USER
-# Date:    $(date +%Y-%m-%d 2>/dev/null)
-# Version: 1.0
-# License: The MIT License
-# Copyright (c) <$(date +%Y 2>/dev/null)> <$USER>
-#
-#         File:   "${scriptname}"
-#
-#         Usage:  "${destination}"
-#
-# Description:
-#
-#
-#############################################################
+source "${__OODIR__}"/oobash-*.source
+
+echo
+echo \"     This is a script skeleton for: \" 
+echo \"     $1 \"
+echo \"     You can find me here: \"
+echo \"     "${__OODIR__}"/scripts/$1 \"
+echo
+
+# Please complete/customise the pod doc below,
+# then you can use the pod (Plain Old Documentation) tools 
+# for this script.
+# some pod tools: pod2man pod2html pod2latex pod2text pod2usage
+# http://perldoc.perl.org/perlpod.html
+
+# Create man page for $1:
+# pod2man "${__OODIR__}"/scripts/$1 > "${__OODIR__}"/man/man1/$1.1
+# gzip "${__OODIR__}"/man/man1/$1.1
+
+#############
+# FUNCTIONS #
+#############
+
+usage() {
+   pod2usage \$0
+   return 0
+}
+
+########
+# Main #
+########
+usage
+
+############
+# POD Docs #
+############
+: <<=cut =pod
+=head1 NAME
+
+$1 - describe in few words 
+
+=head1 SYNOPSIS
+
+$1 [OPTION]
+
+=head1 DESCRIPTION
+
+Your description of $1 and all the options
+
+=head1 EXAMPLES
+
+$1
+
+=head1 SEE ALSO
+
+L<perlpod|pod::perlpod>, L<perlpodspec|pod::perlpodspec>
+
+=head1 LICENSE
+
+The MIT License
+
+=head1 AUTHOR
+
+$USER
+
+=cut
          ">> "${destination}"
          chmod 755 "${destination}" 2>/dev/null
       fi
+      $1
    else
       System.err.println
       I18n.err.println "   Please enter one script name"

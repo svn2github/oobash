@@ -259,6 +259,8 @@
 #    -File: added getLine, delLine, setLine
 #    -Ssh: added diff, diffIgnoreAllSpace, diffIgnoreBlankLines, copy
 #    -added Script.generator (skeleton) + empty scripts directory
+#     uses great idea to use pod docs in shell scripts from:
+#     http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
 #    -added private functions:__isInteger
 #    -support for upper case sharp s for String
 #    -support for pseudo signal "0" with Process kill command
