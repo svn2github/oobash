@@ -957,6 +957,14 @@ __stripPath() {
 }
 __registerFunction __stripPath
 
+# extglob has to set, to beable to source __isInteger without errors
+declare unsetAtEnd
+shopt -q extglob
+# if extglob not set already --> set it now and change boolean 
+if (( $? == 1 )); then
+   shopt -s extglob
+   unsetAtEnd="true"
+fi
 # private
 # declare -i arg --> check for integer input --> 
 # no string2integer surprises for the user
@@ -970,13 +978,18 @@ __isInteger()
       shopt -s extglob
       unsetAtEnd="$(Boolean.TRUE)"
    fi 
-   case $1 in
-   ?([-+])+([[:digit:]]) )
-      echo true;;
-   *) echo false;;
+   case "$1" in
+      ?([-+])+([[:digit:]]) )
+         return 0;;
+      *) return 1;;
    esac
    if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
 }
 __registerFunction __isInteger
+
+if [[ "${unsetAtEnd}" == "true" ]]; then
+   shopt -u extglob
+fi
+unset unsetAtEnd

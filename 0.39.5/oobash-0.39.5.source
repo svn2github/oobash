@@ -13,6 +13,7 @@
 ######################
 ######################
 
+set +e 
 __STARTTIME__="`date +%s.%N 2>/dev/null`"
 if command -v gdate >/dev/null 2>&1; then
    __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
@@ -92,7 +93,13 @@ __ExceptionValues__=(
 
 # All available Process signals (used in kill)
 declare -a __Signals__
-shopt -s extglob
+declare unsetAtEnd
+shopt -q extglob
+# if extglob not set already --> set it now and change boolean 
+if (( $? == 1 )); then
+   shopt -s extglob
+   unsetAtEnd="true"
+fi 
 declare signal="$(kill -l 2>/dev/null)"
 declare -i counter=0
 for sig in ${signal//)/}
@@ -108,8 +115,10 @@ do
    ((counter++))
 done
 set +o posix
-unset signal sig counter
-shopt -u extglob
+if [[ "${unsetAtEnd}" == "true" ]]; then
+   shopt -u extglob
+fi
+unset signal sig counter unsetAtEnd
 
 # All external commands used in this framework:
 declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill 
