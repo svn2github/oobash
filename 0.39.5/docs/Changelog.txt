@@ -263,6 +263,7 @@
 #    -support for upper case sharp s for String
 #    -support for pseudo signal "0" with Process kill command
 #    -rollback for PATH and MANPATH during __cleanUp
+#    -set +errexit (should be default anyway - needed by some private functions) in oobash-0.39.5.source
 #    -added Dependencies: diff
 #    -Fixes
 
