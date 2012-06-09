@@ -10,16 +10,15 @@
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy, grep, grepIgnoreCase, grepInvertMatch
 
-ignoreCase:
-   diff, diffIgnoreAllSpace diffIgnoreBlankLines ???
+   ideas for remoteGrep:
+   -grep, grepIgnoreCase, grepInvertMatch (all three methods: optional: lineNumber, default: true)
+   -grep root /etc/passwd /dev/null ( 2nd file: /dev/null--> filenameoutput!)
 
-   grep, grepIgnoreCase, grepInvertMatch (all three methods: optional: lineNumber, default: true)
-   e.g.: grep root /etc/passwd /dev/null ( 2nd file: /dev/null--> filenameoutput!)
+   -grepCount
+   --colour=never
 
 great idea from: http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
 --> should be used in Script.generator
-
-getPointer --> use random + timestamp (real nanoseconds are not available on every system)
 
 # 0.39.6
 # -analyze log4oobash.properties
@@ -28,10 +27,10 @@ getPointer --> use random + timestamp (real nanoseconds are not available on eve
 
 # 0.40
 # Assert 
-# + Tests (execute modules to test --- python style)
+# + Tests (execute modules to test -- python style)
 
 # 0.50
-# Logging
+# Logging (coproc ?)
 
 # 0.60
 # Use of /dev/tcp and /dev/udp
