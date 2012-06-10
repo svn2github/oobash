@@ -161,7 +161,8 @@ declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 
 declare -a __SshMethods__=(getSshHost getSshUser getSshPort copy diff diffIgnoreAllSpace diffIgnoreBlankLines 
-                           command vimEdit connect grep grepIgnoreCase grepInvertMatch)
+                           diffIgnoreSpaceAndBlank command vimEdit connect grep grepIgnoreCase 
+                           grepInvertMatch)
 
 declare -a __Ssh__=(${__SshMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
@@ -391,7 +392,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println 
    I18n.out.println " Stop showing this message by setting __QUIET__=true"
    System.out.println 
-   I18n.out.println " Try the developer tool: Class.generator"
+   I18n.out.println " Try the developer tools: Class.generator Script.generator Man.generator"
    System.out.println 
    I18n.out.println " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level"
    I18n.out.println " Constructors: String, File, Boolean, Process, Level"

@@ -38,8 +38,8 @@ msgid " Stop showing this message by setting __QUIET__=true"
 msgstr " Imposta __QUIET__=true per non visualizzare questo messaggio."
 
 #: oobash/oobash-0.38.5.source:220
-msgid " Try the developer tool: Class.generator"
-msgstr " Prova lo strumento per sviluppatori: Class.generator"
+msgid " Try the developer tools: Class.generator Script.generator Man.generator"
+msgstr " Prova gli strumenti per gli sviluppatori: Class.generator Script.generator Man.generator"
 
 #: oobash/oobash-0.38.5.source:222
 msgid " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level"
