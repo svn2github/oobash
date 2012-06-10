@@ -7,11 +7,22 @@
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy
 
+   ########
+   # DIFF #
+   ########
+   Not happy about the status quo: more thinking about possible diff methods...
+   if arg is directory:
+   -Recursively compare any subdirectories found, instead of diffing the results of two find commands ?
+   --> new diffFileTree method using find ?
+   -ignoreCase should be implemented in diff methods.
+
+   ########
+   # GREP #
+   ########
    ideas for remoteGrep:
    -grep, grepIgnoreCase, grepInvertMatch (all three methods: optional: lineNumber, default: true)
    -grep default options:
-   -H --colour=never -n
-
+   -rH --colour=never -n
    -grepCount ?
 
 File: longestLine, shortestLine ?
