@@ -786,7 +786,7 @@ __grep() {
       local host="$("$this".getSshHost)"
       local user="$("$this".getSshUser)"
       declare -i port="$("$this".getSshPort)"
-      local grepString="$3"
+      local grepPattern="$3"
       local file="$4"
       local showLineNumbers=${5:-true}
       if command -v ssh >/dev/null 2>&1; then
@@ -832,7 +832,7 @@ __grep() {
             showLines="-n"
          fi
          if [[ "$fileinfo" = "regular" || "$fileinfo" = "directory" ]]; then
-            ssh -n -p "${port}" "${user}"@"${host}" grep -rH --colour=never $showLines "${grepString}" "${file}" 2>/dev/null
+            ssh -n -p "${port}" "${user}"@"${host}" grep -rH --colour=never $showLines "${grepPattern}" "${file}" 2>/dev/null
          else
             __throw "IOException" ": Could not recognize type of \"${file}\" on \"${host}\""
             returnValue=$?
@@ -860,7 +860,7 @@ __grepInvertMatch() {
       local host="$("$this".getSshHost)"
       local user="$("$this".getSshUser)"
       declare -i port="$("$this".getSshPort)"
-      local grepString="$3"
+      local grepPattern="$3"
       local file="$4"
       local showLineNumbers=${5:-true}
       if command -v ssh >/dev/null 2>&1; then
@@ -906,7 +906,7 @@ __grepInvertMatch() {
             showLines="-n"
          fi
          if [[ "$fileinfo" = "regular" || "$fileinfo" = "directory" ]]; then
-            ssh -n -p "${port}" "${user}"@"${host}" grep -vrH --colour=never $showLines "${grepString}" "${file}" 2>/dev/null
+            ssh -n -p "${port}" "${user}"@"${host}" grep -vrH --colour=never $showLines "${grepPattern}" "${file}" 2>/dev/null
          else
             __throw "IOException" ": Could not recognize type of \"${file}\" on \"${host}\""
             returnValue=$?
@@ -934,7 +934,7 @@ __grepIgnoreCase() {
       local host="$("$this".getSshHost)"
       local user="$("$this".getSshUser)"
       declare -i port="$("$this".getSshPort)"
-      local grepString="$3"
+      local grepPattern="$3"
       local file="$4"
       local showLineNumbers=${5:-true}
       if command -v ssh >/dev/null 2>&1; then
@@ -980,7 +980,7 @@ __grepIgnoreCase() {
             showLines="-n"
          fi
          if [[ "$fileinfo" = "regular" || "$fileinfo" = "directory" ]]; then
-            ssh -n -p "${port}" "${user}"@"${host}" grep -rHi --colour=never $showLines "${grepString}" "${file}" 2>/dev/null
+            ssh -n -p "${port}" "${user}"@"${host}" grep -rHi --colour=never $showLines "${grepPattern}" "${file}" 2>/dev/null
          else
             __throw "IOException" ": Could not recognize type of \"${file}\" on \"${host}\""
             returnValue=$?
@@ -1161,6 +1161,87 @@ Ssh.help() {
                Example:
                   Blub
                   Blub
+            ";;&
+         grep|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               grep
+                  grep searches the given file (or recursive all files of the given directory)
+                  for lines containing a match to the given pattern. By default, grep prints 
+                  the matching lines.
+               Parameters:
+                  grepPattern
+                  file
+                  [showLineNumbers] Default: true   
+               Returns:
+                  matching lines
+               Throws:
+                  IllegalArgumentException -if no search permission for given file (if file is directory)
+                                           -if no read permission for given file (if file is a regular file)
+                                           -if given file is no regular file
+                                           -if Wrong number of arguments
+                  IOException -if Could not recognize type of file
+                  NotInPathException -if ssh not in path
+               Example:
+                  mymachine.grep root /etc/passwd
+                  >>>/etc/passwd:1:root:x:0:0:root:/root:/bin/bash
+                  >>>/etc/passwd:11:operator:x:11:0:operator:/root:/sbin/nologin
+                  mymachine.grep root /etc/passwd false
+                  >>>/etc/passwd:root:x:0:0:root:/root:/bin/bash
+                  >>>/etc/passwd:operator:x:11:0:operator:/root:/sbin/nologin
+            ";;&
+         grepIgnoreCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               grepIgnoreCase
+                  grepIgnoreCase searches the given file (or recursive all files of the given directory)
+                  for lines containing a match to the given pattern. By default, grepIgnoreCase prints
+                  the matching lines.
+                  This method ignores case distinctions in the grepPattern.
+               Parameters:
+                  grepPattern
+                  file
+                  [showLineNumbers] Default: true   
+               Returns:
+                  matching lines
+               Throws:
+                  IllegalArgumentException -if no search permission for given file (if file is directory)
+                                           -if no read permission for given file (if file is a regular file)
+                                           -if given file is no regular file
+                                           -if Wrong number of arguments
+                  IOException -if Could not recognize type of file
+                  NotInPathException -if ssh not in path
+               Example:
+                  mymachine.grepIgnoreCase ROOT /etc/passwd
+                  >>>/etc/passwd:1:root:x:0:0:root:/root:/bin/bash
+                  >>>/etc/passwd:11:operator:x:11:0:operator:/root:/sbin/nologin
+                  mymachine.grepIgnoreCase ROOT /etc/passwd false
+                  >>>/etc/passwd:root:x:0:0:root:/root:/bin/bash
+                  >>>/etc/passwd:operator:x:11:0:operator:/root:/sbin/nologin
+            ";;&
+         grepInvertMatch|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               grepInvertMatch
+                  grepInvertMatch searches the given file (or recursive all files of the given directory)
+                  for non-matching lines to the given pattern. By default, grepInvertMatch prints 
+                  the non-matching lines.
+               Parameters:
+                  grepPattern
+                  file
+                  [showLineNumbers] Default: true   
+               Returns:
+                  non-matching lines
+               Throws:
+                  IllegalArgumentException -if no search permission for given file (if file is directory)
+                                           -if no read permission for given file (if file is a regular file)
+                                           -if given file is no regular file
+                                           -if Wrong number of arguments
+                  IOException -if Could not recognize type of file
+                  NotInPathException -if ssh not in path
+               Example:
+                  mymachine.grepInvertMatch : /etc/passwd
+                  >>>
             ";;&
          diff|all)
             match=$(Boolean.TRUE)
