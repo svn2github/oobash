@@ -4,20 +4,19 @@
 # -some more Process functions:__getThreads, __children
 # -setLine
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy, -grepCount ?
+# -Ssh: copy
 
    ########
    # DIFF #
    ########
-   Not happy about the status quo: more thinking about possible diff methods...
+   delete all the diff methods again and find better solutions !
    if arg is directory:
    -Recursively compare any subdirectories found, instead of diffing the results of two find commands ?
    --> new diffFileTree method using find ?
    -ignoreCase should be implemented in diff methods.
 
-File: longestLine, shortestLine ?
-
 -some test with base64Decode/Encode again...
+-do not forget to complete all the man pages!
 
 # 0.39.6
 # -analyze log4oobash.properties
