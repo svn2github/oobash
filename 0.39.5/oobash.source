@@ -1,0 +1,488 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+######################
+######################
+##                  ##
+##     GLOBALS      ## 
+##                  ##
+######################
+######################
+
+__STARTTIME__="`date +%s.%N 2>/dev/null`"
+if command -v gdate >/dev/null 2>&1; then
+   __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
+fi
+SECONDS=0
+__VERSION__="0.39.5"
+__FILENAME__="oobash.source"
+__LOGGINGPROPERTIESFILE__='log4oobash.properties'
+__STACKTRACE__="true"
+__HELP__="true"
+
+# ----------------------------------------------------
+# Some start up tests:
+
+export TEXTDOMAIN=oobash
+export TEXTDOMAINDIR="${0%${0##*/}}"locale
+
+# you should source not execute
+if [ "${0##*/}" = "${__FILENAME__}" ]; then
+   echo $"Sorry, you should: source ${__FILENAME__} and not execute it..."
+   unset __FILENAME__
+   unset __VERSION__
+   unset __LOGGINGPROPERTIESFILE__
+   unset __STACKTRACE__
+   unset __HELP__
+   unset __STARTTIME__
+   unset TEXTDOMAINDIR
+   unset TEXTDOMAIN
+   exit 0
+fi
+
+export __OODIR__=$(cd -P "${BASH_ARGV[0]%/*}" 2>/dev/null; echo "${PWD}")
+export TEXTDOMAINDIR="${__OODIR__}/locale"
+
+# you need a bash 4 
+if [ $BASH_VERSINFO -lt 4 ]; then
+   echo $"Sorry, you need a bash version 4..."
+   unset __FILENAME__
+   unset __VERSION__
+   unset __LOGGINGPROPERTIESFILE__
+   unset __OODIR__
+   unset __STACKTRACE__
+   unset __HELP__
+   unset __STARTTIME__
+   unset TEXTDOMAINDIR
+   unset TEXTDOMAIN
+   return 0
+fi
+
+# End start up tests
+# ----------------------------------------------------
+
+#  no shell exit when a command exits non-zero 
+#  (some private functions in this framework do this!)
+set +errexit
+
+# i18n function library from the gnu textutils
+if command -v gettext.sh >/dev/null 2>&1; then
+   source gettext.sh
+fi
+
+# Used arrays:
+###############
+
+# Used for environment cleanup
+declare -A __Registry__
+
+# Return values for exceptions:
+declare -A __ExceptionValues__
+__ExceptionValues__=( 
+ [DecoderException]=140
+ [AuthException]=141
+ [IllegalArgumentException]=142
+ [IndexOutOfBoundsException]=143
+ [IOException]=144
+ [NotInPathException]=145
+ [WrongClassException]=146
+ [ProcessException]=147
+ [Unknown]=250
+)
+
+# All available Process signals (used in kill)
+declare -a __Signals__
+declare unsetAtEnd
+shopt -q extglob
+# if extglob not set already --> set it now and change boolean 
+if (( $? == 1 )); then
+   shopt -s extglob
+   unsetAtEnd="true"
+fi 
+declare signal="$(kill -l 2>/dev/null)"
+declare -i counter=0
+for sig in ${signal//)/}
+do
+   __Signals__[$counter]=$sig
+   ((counter++))
+done
+set -o posix
+declare signal="$(kill -l 2>/dev/null)"
+for sig in ${signal//)/}
+do
+   __Signals__[$counter]=$sig
+   ((counter++))
+done
+set +o posix
+if [[ "${unsetAtEnd}" == "true" ]]; then
+   shopt -u extglob
+fi
+unset signal sig counter unsetAtEnd
+
+# All external commands used in this framework:
+declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill 
+                             renice openssl ssh scp vim diff)
+
+
+# Arrays for framework methods and inheritance happens here:
+declare -a __ObjectMethods__=(getClass toString hashCode equals)
+
+declare -a __ComparableMethods__=(compareTo)
+
+declare -a __BooleanMethods__=()
+
+declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+
+declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUpperCase isAlnum isAlpha
+                              isAscii isDigit isHexDigit isPrintable isSpace isVisible zfill capitalize
+                              center swapCase title   toUpperCase toLowerCase length concat trim contains
+                              isEmpty startsWith lastIndexOf indexOf charAt endsWith replaceFirst replaceAll
+                              reverse substring equalsIgnoreCase matches rstrip lstrip isTitle compareToIgnoreCase) 
+
+declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
+
+declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirectory exists isFile isHidden mkdir
+                            mkdirs getParent isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial
+                            isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath 
+                            lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText 
+                            getText append clear linecount linematch sha1sum md5sum getTotalSpace getFreeSpace 
+                            getUsableSpace getInode getBase getExtension getPosixFilePermissions setPosixFilePermissions
+                            getLine delLine setLine)
+
+declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+
+declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand getPriority setPriority kill isDaemon 
+                               getEffectiveUserId getRealUserId getMemorySize getStartTime)
+
+declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
+
+declare -a __SshMethods__=(getSshHost getSshUser getSshPort copy diff diffIgnoreAllSpace diffIgnoreBlankLines 
+                           diffIgnoreSpaceAndBlank command vimEdit connect grep grepIgnoreCase 
+                           grepInvertMatch)
+
+declare -a __Ssh__=(${__SshMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+
+# register function:
+####################
+
+__registerFunction() {
+   local value="$1"
+   __Registry__["$value"]=function
+   return 0
+}
+__registerFunction __registerFunction
+
+# import function:
+# ################
+__import() {
+   local packageOrClass="${1/"oobash."/}"
+   source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
+   return 0
+}
+__registerFunction __import
+
+# import util functions
+__import oobash.util.Decorator
+__import oobash.util.Registry
+__import oobash.util.Generator
+__import oobash.util.Substitutions
+
+# import private functions
+__import oobash.private.Private
+
+# import lang classes
+__import oobash.lang.Object
+__import oobash.lang.Comparable
+__import oobash.lang.Math
+__import oobash.lang.System
+__import oobash.lang.String
+__import oobash.lang.Boolean
+__import oobash.lang.Process
+
+# import io classes
+__import oobash.io.File
+
+# import i18n functions 
+__import oobash.i18n.I18nMessage
+
+# import netservice functions
+__import oobash.netservice.Ssh
+
+# Register already defined vars and functions
+__registerVar __ObjectMethods__
+__registerVar __ComparableMethods__
+__registerVar __Dependencies__
+__registerVar __ExceptionValues__
+__registerVar __Signals__
+__registerVar __VERSION__
+__registerVar __FILENAME__
+__registerVar __LOGGINGPROPERTIESFILE__
+__registerVar __OODIR__
+__registerVar __STACKTRACE__
+__registerVar __HELP__
+__registerVar __STARTTIME__
+__registerVar TEXTDOMAINDIR
+__registerVar TEXTDOMAIN
+if [[ ! -z "${__QUIET__}" ]]; then
+   __registerVar __QUIET__
+fi
+
+# Export scriptpath + scriptname if oobash is sourced by script
+if [[ -z "$PS1" ]]; then
+   call="$(caller)"
+   call="${call/[0-9]* /}"
+   if [[ ${call:0:2} == "./" ]]; then
+      script="${PWD}"/"${call:2}"
+   elif [[ ${call:0:1} == "." ]]; then
+      script="${PWD}"/"${call}"
+   else
+      script="${call}"
+   fi
+   export __SCRIPT__="${script}"
+   unset script call
+   __registerVar __SCRIPT__
+fi
+
+# Add oobash man pages to manpath
+__OLDMANPATH="$MANPATH"
+__registerVar __OLDMANPATH
+export MANPATH=$MANPATH:"${__OODIR__}"/man
+
+# Add scripts directory to path
+__OLDPATH="$PATH"
+__registerVar __OLDPATH
+export PATH=$PATH:"${__OODIR__}"/scripts
+
+# for bsd systems: if there are any gnu tools, try to use them...
+if command -v gdate >/dev/null 2>&1; then
+   testtimestamp="$(gdate "+%N" 2>/dev/null)"
+   if [[ "${testtimestamp: -1}" != "N" ]]; then
+      date() {
+         gdate $@
+         return $?
+      }
+      __registerFunction gdate
+   fi
+   __registerVar testtimestamp
+fi
+
+if command -v gstat >/dev/null 2>&1; then
+   gstat --file-system / 2>/dev/null 1>&2
+   if (( $? == 0 )); then
+      stat() {
+         gstat $@
+         return $?
+      }
+      __registerFunction gstat
+   fi
+fi
+
+if command -v greadlink >/dev/null 2>&1; then
+   greadlink -f / 2>/dev/null 1>&2
+   if (( $? == 0 )); then
+      readlink() {
+         greadlink $@
+         return $?
+      }   
+      __registerFunction greadlink
+   fi
+fi
+
+###################
+###################
+##               ##
+##     CORE      ## 
+##               ##
+###################
+###################
+
+declare -A __OBJECTPOOL__
+__registerVar __OBJECTPOOL__
+
+declare -A __ATTRIBUTEPOOL__
+__registerVar __ATTRIBUTEPOOL__
+
+# if a command is not found (like all our object.method commands),
+# then this function will be called to handle the situation.  
+command_not_found_handle() {
+   local this=''
+   local str="$1" 
+   declare -i i=0
+   for ((i=0; i < ${#str}; i++))
+   do
+      local char="${str:i:1}"
+      case ${char} in
+         . )break;;
+         * )this="$this""$char";;
+      esac
+   done
+   local unsetAtEnd
+   # is extglob set ?
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean 
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd="$(Boolean.TRUE)"
+   fi 
+   local method="${str/"$this"./}"
+   if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
+      shopt -u extglob
+   fi
+   shift
+
+   local objectExists="$(Boolean.FALSE)"
+   local methodExists="$(Boolean.FALSE)"
+   
+   local key
+   for key in "${!__OBJECTPOOL__[@]}"
+   do 
+      if [[ "$this" == "$key" ]]; then
+         objectExists="$(Boolean.TRUE)"
+         break
+      fi
+   done
+
+   if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.TRUE) ]]; then 
+      local string="${__OBJECTPOOL__["$this"]}"
+      for ((i=0; i < ${#string}; i++))
+      do
+         local char="${string:i:1}"
+         if [[ "${char}" == "@" ]]; then
+            local class="${string:0:i}"
+         fi
+      done 
+      
+      local meth
+      for meth in $(eval echo \${!__${class}__[@]})
+      do 
+         if [[ "${method}" == "$(eval echo \${__${class}__[$meth]})" ]]; then
+            methodExists="$(Boolean.TRUE)"  
+            break
+         fi
+      done
+   fi
+
+   if [[ "$(Boolean.parseBoolean "$objectExists")" == "$(Boolean.FALSE)" || \
+         "$(Boolean.parseBoolean "$methodExists")" == "$(Boolean.FALSE)" ]]; then
+      I18n.err.println "bash: \$str: command not found."
+      return 127
+   fi
+
+   __$method "$this" "$class" "$@"
+}
+__registerFunction command_not_found_handle
+
+###########################
+###########################
+##                       ##
+##     STARTMESSAGE      ## 
+##                       ##
+###########################
+###########################
+
+if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z "$PS1" ]]; then
+   System.out.println 
+   I18n.out.println " oo-style framework for bash 4"
+   I18n.out.println " Version:      ${__VERSION__}"
+   I18n.out.println " Author:       andreas.gregor.frank@googlemail.com"
+   System.out.println 
+   I18n.out.println " Stop showing this message by setting __QUIET__=true"
+   System.out.println 
+   I18n.out.println " Try the developer tools: Class.generator Script.generator Man.generator"
+   System.out.println 
+   I18n.out.println " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level"
+   I18n.out.println " Constructors: String, File, Boolean, Process, Level"
+   I18n.out.println " Usage: String a teststring or File a testfile or Boolean a True"
+   System.out.println 
+   System.out.println " String:"
+   System.out.println "  -base64Decode -base64Encode -capitalize -center -charAt -concat -contains -count -endsWith"
+   System.out.println "  -equals -equalsIgnoreCase -hashCode -indexOf -isAlnum -isAlpha -isAscii -isDigit -isEmpty"
+   System.out.println "  -isHexDigit -isTitle -isLowerCase -isSpace -isPrintable -isUpperCase -isVisible -length"
+   System.out.println "  -lastIndexOf -matches -replaceAll -replaceFirst -reverse -startsWith -substring -swapCase"
+   System.out.println "  -title -toLowerCase -toString -toUpperCase -trim -lstrip -zfill -rstrip -compareTo"
+   System.out.println "  -compareToIgnoreCase -getClass"
+   System.out.println " File:"
+   System.out.println "  -canRead -canWrite -canExecute -toString -length -getName -isDirectory -exists -hashCode" 
+   System.out.println "  -isHidden -isFile -mkdir -mkdirs -getParent -getClass -equals -renameTo -isSymbolicLink"
+   System.out.println "  -isNamedPipe -hasStickyBit -isSocket -isCharacterSpecial -isBlockSpecial -compareTo"
+   System.out.println "  -setExecutable -setReadable -setWritable -getAbsolutePath -getCanonicalPath -getPath"
+   System.out.println "  -isAbsolute -delete -setReadOnly -createNewFile -lastModified -setLastModified -getInode"
+   System.out.println "  -linecount -linematch -append -clear -getText -setText -sha1sum -md5sum -getBase -getExtension"
+   System.out.println "  -getTotalSpace -getFreeSpace -getUsableSpace -getPosixFilePermissions -setPosixFilePermissions"
+   System.out.println "  -File.createTemporaryFile -File.createTempFile -File.createTemporaryDir -File.createTempDir"
+   System.out.println " Process:"
+   System.out.println "  -getPriority -setPriority -kill -isDaemon -getEffectiveUserId -getRealUserId -getMemorySize"
+   System.out.println "  -getClass -toString -equals -hashCode -getUser -getStatus -getCommand -getPid -getStartTime"
+   System.out.println "  -Process.create"
+   System.out.println " Boolean:"
+   System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"
+   I18n.out.println " Usage: a.toString"
+   System.out.println 
+   System.out.println " Math:"
+   System.out.println "  -Math.random -Math.cos -Math.sin -Math.tan -Math.sqrt -Math.exp -Math.abs -Math.acos"
+   System.out.println "  -Math.asin -Math.atan -Math.min -Math.max -Math.multiplier -Math.adder -Math.log10"
+   System.out.println "  -Math.log1p -Math.log -Math.expm1 -Math.cosh -Math.sinh -Math.tanh -Math.toDegrees"
+   System.out.println "  -Math.toRadians -Math.hypot -Math.ceil -Math.floor"
+   System.out.println " System:"
+   System.out.println "  -System.exit -System.currentTimeMillis -System.currentTimeNanos -System.out.println"
+   System.out.println "  -System.err.println -System.out.print System.err.print -System.runtime"
+   System.out.println 
+   I18n.out.println " Some String constants:"
+   System.out.println "  -String.digits -String.asciiLetters -String.asciiLettersLowerCase"
+   System.out.println "  -String.asciiLettersUpperCase -String.hexDigits -String.octDigits"
+   I18n.out.println " Some Math constants: -Math.E -Math.PI"
+   I18n.out.println " Some Boolean constants: -Boolean.TRUE -Boolean.FALSE"
+   System.out.println 
+   I18n.out.println " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help ..."
+   I18n.out.println " Usage: Classname.help methodname(s)|constructorname|constantname or keyword: all"
+   I18n.out.println " Example: String.help zfill"
+   System.out.println 
+   # Check for external commands --> NotInPathException if command not found
+   I18n.out.println " Doing dependency check..."
+   System.out.println
+   if __dependencyCheck; then
+      I18n.out.println " Everything ok!"
+   else
+      System.out.println
+      I18n.out.println " Please install the missing package(s) to have complete functionality"
+   fi
+fi
+
+##################################################
+##################################################
+##                                              ##
+##     LOGGING (coming in version 0.5)          ## 
+##                                              ##
+##################################################
+##################################################
+
+# Do we have logging propeties to use ?
+__lookForLoggingPropertiesFile "$(caller)"
+
+if [[ "${__LOGGERPROPS__}" == "$(Boolean.TRUE)" ]]; then
+   declare -a __LayoutMethods__=(getContentType getHeader getFooter)
+   __registerVar __LayoutMethods__
+
+   declare -a __LevelMethods__=(toInt getSyslogEquivalent isGreaterOrEqual)
+   declare -a __Level__=(${__LevelMethods__[@]} ${__ObjectMethods__[@]})
+
+   # import log4oobash classes
+   __import oobash.log4oobash.Layout
+   __import oobash.log4oobash.Level
+   
+   # Create loglevel objects 
+   Level OFF Infinity "OFF" 0          2>/dev/null
+   Level FATAL 50000 "FATAL" 0         2>/dev/null
+   Level ERROR 40000 "ERROR" 3         2>/dev/null
+   Level WARN  30000 "WARN"  4         2>/dev/null
+   Level INFO 20000 "INFO"  6          2>/dev/null
+   Level DEBUG 10000 "DEBUG" 7         2>/dev/null
+   Level TRACE 5000 "TRACE"  7         2>/dev/null
+   Level ALL -Infinity "ALL"  7        2>/dev/null
+fi
+
+return 0
