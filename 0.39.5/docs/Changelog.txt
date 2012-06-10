@@ -257,7 +257,9 @@
 #    -many fixes
 # Version:      0.39.5
 #    -File: added getLine, delLine, setLine
-#    -Ssh: added diff, diffIgnoreAllSpace, diffIgnoreBlankLines, copy
+#    -Ssh: added diff, diffIgnoreSpaceChange, diffIgnoreBlankLines, 
+#                diffIgnoreSpaceChangeAndBlankLines, copy,
+                 grep, grepIgnoreCase, grepInvertMatch
 #    -added Script.generator (skeleton):
 #     uses great idea to use pod docs in shell scripts from:
 #     http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
@@ -266,6 +268,7 @@
 #    -support for pseudo signal "0" with Process kill command
 #    -rollback for PATH and MANPATH during __cleanUp
 #    -set +errexit (should be default anyway - needed by some private functions) in oobash-0.39.5.source
+#    -removed version number from oobash filename
 #    -added Dependencies: diff
 #    -Fixes
 

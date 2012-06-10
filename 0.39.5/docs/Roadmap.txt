@@ -40,7 +40,6 @@ File: longestLine, shortestLine ?
 
 # 0.39.7
 # -Man.generator: bold methodnames
-# -better documentation for generators
 # -add static FileUtils
 # -chained return values
 

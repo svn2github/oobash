@@ -450,7 +450,7 @@ Script.generator() {
          System.out.println '#!'$SHELL > "${destination}"
          System.out.println "
 
-source "${__OODIR__}"/oobash-*.source
+source "${__OODIR__}"/oobash.source
 
 echo
 echo \"     This is a script skeleton for: \" 
