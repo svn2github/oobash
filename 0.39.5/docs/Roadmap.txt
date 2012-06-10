@@ -22,7 +22,7 @@
    ideas for remoteGrep:
    -grep, grepIgnoreCase, grepInvertMatch (all three methods: optional: lineNumber, default: true)
    -grep default options:
-   -rH --colour=never -n
+   -rH --colour=never [-n]
    -grepCount ?
 
 File: longestLine, shortestLine ?
