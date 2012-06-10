@@ -259,7 +259,7 @@
 #    -File: added getLine, delLine, setLine
 #    -Ssh: added diff, diffIgnoreSpaceChange, diffIgnoreBlankLines, 
 #                diffIgnoreSpaceChangeAndBlankLines, copy,
-                 grep, grepIgnoreCase, grepInvertMatch
+#                grep, grepIgnoreCase, grepInvertMatch
 #    -added Script.generator (skeleton):
 #     uses great idea to use pod docs in shell scripts from:
 #     http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html

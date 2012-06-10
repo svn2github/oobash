@@ -1,11 +1,10 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.5
-# -url decode/encode
 # -some more Process functions:__getThreads, __children
 # -setLine
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy
+# -Ssh: copy, -grepCount ?
 
    ########
    # DIFF #
@@ -16,17 +15,9 @@
    --> new diffFileTree method using find ?
    -ignoreCase should be implemented in diff methods.
 
-   ########
-   # GREP #
-   ########
-   ideas for remoteGrep:
-   -grepCount ?
-
 File: longestLine, shortestLine ?
 
 -some test with base64Decode/Encode again...
-
--use of __isInteger for integer args
 
 # 0.39.6
 # -analyze log4oobash.properties
@@ -36,7 +27,13 @@ File: longestLine, shortestLine ?
 # 0.39.7
 # -Man.generator: bold methodnames
 # -add static FileUtils
+
+# 0.39.8
 # -chained return values
+# -use of __isInteger for integer args
+
+# 0.39.9
+# -url decode/encode
 
 # 0.40
 # Assert 
