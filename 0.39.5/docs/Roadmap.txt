@@ -2,26 +2,24 @@
 
 # 0.39.5
 # -some more Process functions:__getThreads, __children
-# -setLine
+# -File: setLine
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy
 
-   ########
-   # DIFF #
-   ########
-   delete all the diff methods again and find better solutions !
-   if arg is directory:
-   -Recursively compare any subdirectories found, instead of diffing the results of two find commands ?
-   --> new diffFileTree method using find ?
-   -ignoreCase should be implemented in diff methods.
+diffFiletree only with directory --> else : Exception !
+diffFile only with file --> else Excepton !
+==> modify + rename command, modify exception throwing
+
+-check for remote dependencies (find,grep)?
 
 -some test with base64Decode/Encode again...
 -do not forget to complete all the man pages!
 
+-readme in script verzeichnis?
+
 # 0.39.6
 # -analyze log4oobash.properties
 # -some System functions
-# -colours ?
 
 # 0.39.7
 # -Man.generator: bold methodnames
@@ -30,6 +28,7 @@
 # 0.39.8
 # -chained return values
 # -use of __isInteger for integer args
+# (a simple 'declare -i' can cause unwanted surprises)
 
 # 0.39.9
 # -url decode/encode
@@ -37,6 +36,10 @@
 # 0.40
 # Assert 
 # + Tests (execute modules to test -- python style)
+
+# 0.41
+# -colours ?
+
 
 # 0.50
 # Logging (coproc ?)

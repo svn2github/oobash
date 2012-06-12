@@ -999,6 +999,120 @@ __grepIgnoreCase() {
    return $returnValue
 }
 
+__diffFiletree() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 4 )) || (( $# == 5 )); then
+      local this="$1"
+      local argobject="$4"
+      local argclass
+      argclass="$("${argobject}".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "$("$this".getClass)" == "$argclass" ]]; then
+            local host="$("$this".getSshHost)"
+            local user="$("$this".getSshUser)"
+            declare -i port="$("$this".getSshPort)"
+            local file="$(__stripPath "$3")"
+            local targethost="$("$argobject".getSshHost)"
+            local targetUser="$("$argobject".getSshUser)"
+            declare -i targetPort="$("$argobject".getSshPort)"
+            if (( $# == 5 )); then
+               local targetFile="$(__stripPath "$5")"
+            else
+               local targetFile="${file}"
+            fi
+            if command -v ssh >/dev/null 2>&1; then
+               local command="
+                  if [ -e "\${checkf}" ]; then
+                     if [ -d "\${checkf}" ]; then
+                        if [ -x "\${checkf}" ]; then
+                           echo directory
+                        else
+                           echo noSearchPermission
+                        fi
+                     else
+                        if [ -f "\${checkf}" ]; then
+                           if [ -r "\${checkf}" ]; then
+                              echo regular
+                           else
+                              echo noReadPermission
+                           fi
+                        else
+                           echo noRegular
+                        fi
+                     fi
+                  else
+                     echo notExisting
+                  fi
+                  "
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
+               declare -i counter=0
+               declare -a F=( $file $targetFile )
+               declare -a H=( $host $targethost )
+               local info
+               for info in "${fileinfo1}" "${fileinfo2}"
+               do
+                  case "${info}" in
+                     noSearchPermission)
+                        __throw "IllegalArgumentException" ": Illegal argument: no search permission for \"${F[counter]}\" on \"${H[counter]}\""
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                     notExisting)
+                        __throw "IllegalArgumentException" ": Illegal argument: \"${F[counter]}\" on \"${H[counter]}\" does not exist"
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                    regular|noRegular|noReadPermission|directory):;;
+                     *)
+                     __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     ;;
+                  esac
+                  ((counter++))
+               done
+               if [[ "${fileinfo1}" != "${fileinfo2}" ]]; then
+                     __throw "IllegalArgumentException" ": Illegal argument: diff of directory and file makes no sense"
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue
+               fi
+               if command -v diff >/dev/null 2>&1; then
+                  # if file... result is empty, if no notExisitingException is thrown
+                  if [[ "$fileinfo1" == "directory" ]]; then
+                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" "cd "${file}" && find . 2>/dev/null") \
+                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "cd "${targetFile}" && find . 2>/dev/null")
+                  fi         
+               else
+                  __throw "NotInPathException" ": diff not in path"
+                  returnValue=$?
+                  __stackOrHelp "${class}" "${FUNCNAME:2}"
+               fi
+            else
+               __throw "NotInPathException" ": ssh not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
 
 complete -W  "$(echo ${__Ssh__[@]}) all Ssh" Ssh.help
 
@@ -1018,6 +1132,7 @@ Ssh.help() {
                     -diffIgnoreBlankLines -copy -grep
                     -grepIgnoreCase -grepInvertMatch
                     -diffIgnoreSpaceAndBlank
+                    -diffFiletree
                     Constructor: 
                     -Ssh
       " 
@@ -1375,7 +1490,33 @@ Ssh.help() {
                   machine1.diffIgnoreSpaceAndBlank /opt machine2
                   machine1.diffIgnoreSpaceAndBlank /opt machine2 /usr/local/opt
             ";;&
-
+         diffFiletree|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               diffFiletree
+                  Compares the filetrees and returns the difference.
+                  Remote stderr is redirected to /dev/null
+               Parameters:
+                  directory on this Ssh object
+                  Ssh object
+                  [directory on argument Ssh object] Default: First argument
+               Returns:
+                  differences in the filetree
+               Throws:
+                  IllegalArgumentException: -if 2nd argument is no object
+                                            -if first and 3rd argument have different filetype
+                                             (e.g. file and directory)
+                                            -if file is not existing
+                                            -if filetype is directory, but search permission is missing
+                                            -if number of arguments != 2 AND !=3
+                  IOException; if remote recognition of filetype fails
+                  NotInPathException: -if diff is not in path
+                                      -if ssh is not in path
+                  WrongClassException: -if 2nd argument is an object but no Ssh object
+               Example:
+                  machine1.diffFiletree /etc machine2
+                  machine1.diffFiletree /opt machine2 /usr/local/opt
+            ";;&
          getClass|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "

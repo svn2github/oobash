@@ -256,9 +256,10 @@
 #    -changed return values for exceptions, added AuthException
 #    -many fixes
 # Version:      0.39.5
-#    -File: added getLine, delLine, setLine
+#    -File: added getLine, delLine
 #    -Ssh: added diff, diffIgnoreSpaceChange, diffIgnoreBlankLines, 
 #                diffIgnoreSpaceChangeAndBlankLines, copy,
+#                diffFiletree
 #                grep, grepIgnoreCase, grepInvertMatch
 #    -added Script.generator (skeleton):
 #     uses great idea to use pod docs in shell scripts from:
@@ -267,8 +268,8 @@
 #    -support for upper case sharp s for String
 #    -support for pseudo signal "0" with Process kill command
 #    -rollback for PATH and MANPATH during __cleanUp
-#    -set +errexit (should be default anyway - needed by some private functions) in oobash-0.39.5.source
 #    -removed version number from oobash filename
+#    -set +errexit (should be default anyway - needed by some private functions) in oobash.source
 #    -added Dependencies: diff
 #    -Fixes
 

@@ -1461,6 +1461,60 @@ __delLine() {
    return $returnValue
 }
 
+__setLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      (declare -i line=$3) 2>/dev/null ||  (return 1)
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local text="$("$argobject".toString)"
+                     2>/dev/null System.out.println "$text" >> "$("$this".toString)"
+                     if (( $? == 0 )); then
+                        Boolean.TRUE
+                     else
+                        Boolean.FALSE
+                     fi
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 # length
 # Masterfunction in the String.oobash file
 
@@ -1628,23 +1682,24 @@ File.help() {
       System.${printStream}.println "
       Usage: File.help all|methodname|constructor
       Available methods:
-      -isDirectory -exists -toString
-      -canRead -canWrite -canExecute
-      -getName -hashCode -length
+      -isDirectory -exists -toString -hashCode 
+      -canRead -canWrite -canExecute -getName
       -isHidden -isFile -mkdir -mkdirs -getParent
-      -getClass -equals -isSymbolicLink 
+      -getClass -equals -isSymbolicLink -length
       -isNamedPipe -hasStickyBit -isSocket
       -isCharacterSpecial -isBlockSpecial -compareTo
       -setExecutable -setReadable -setWritable
-      -setReadOnly -File.createTempFile -delete
-      -getAbsolutePath -getCanonicalPath -getPath -isAbsolute
-      -File.createTemporaryFile -createNewFile 
+      -setReadOnly -delete -isAbsolute
+      -getAbsolutePath -getCanonicalPath -getPath  
       -lastModified -setLastModified -getText 
       -setText -append -clear -linematch -linecount
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
       -getUsableSpace -getInode -getBase -getExtension
       -getPosixFilePermissions -setPosixFilePermissions
+      -getLine -delLine -setLine -createNewFile
+      Static utilities:
       -File.createTemporaryDir -File.createTempDir
+      -File.createTemporaryFile -File.createTempFile
       Constructor:
       -File
                  "
