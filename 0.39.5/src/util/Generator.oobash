@@ -452,18 +452,18 @@ Script.generator() {
 
 source "${__OODIR__}"/oobash.source
 
-echo
-echo \"     This is a script skeleton for: \" 
-echo \"     $1 \"
-echo \"     You can find it here: \"
-echo \"     "${__OODIR__}"/scripts/$1 \"
-echo
+System.out.println
+System.out.println \"     This is a script skeleton for: \" 
+System.out.println \"     $1 \"
+System.out.println \"     You can find it here: \"
+System.out.println \"     "${__OODIR__}"/scripts/$1 \"
+System.out.println
 
-# Please complete/customise the pod doc below,
-# then you can use the pod (Plain Old Documentation) tools 
+# Please complete/customise the pod doc below.
+# Then you can use the pod (Plain Old Documentation) tools 
 # for this script.
 # some pod tools: pod2man pod2html pod2latex pod2text pod2usage
-# http://perldoc.perl.org/perlpod.html
+# Info: http://perldoc.perl.org/perlpod.html
 
 # Create man page for $1:
 # pod2man "${__OODIR__}"/scripts/$1 > "${__OODIR__}"/man/man1/$1.1
