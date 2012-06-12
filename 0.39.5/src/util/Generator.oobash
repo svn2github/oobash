@@ -486,7 +486,7 @@ usage() {
 usage
 
 ############
-# POD Docs #
+# POD DOCS #
 ############
 : <<=cut =pod
 =head1 NAME
