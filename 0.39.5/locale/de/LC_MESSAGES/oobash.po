@@ -42,12 +42,12 @@ msgid " Try the developer tools: Class.generator Script.generator Man.generator"
 msgstr " Versuchen Sie die Entwicklerwerkzeuge: Class.generator Script.generator Man.generator"
 
 #: oobash/oobash-0.38.5.source:222
-msgid " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level"
-msgstr " Klassen: String, File, Boolean, System, Math, I18nMessage, Process, Level"
+msgid " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level, Ssh"
+msgstr " Klassen: String, File, Boolean, System, Math, I18nMessage, Process, Level, Ssh"
 
 #: oobash/oobash-0.38.5.source:223
-msgid " Constructors: String, File, Boolean, Process, Level"
-msgstr " Konstruktoren: String, File, Boolean, Process, Level"
+msgid " Constructors: String, File, Boolean, Process, Level, Ssh"
+msgstr " Konstruktoren: String, File, Boolean, Process, Level, Ssh"
 
 #: oobash/oobash-0.38.5.source:224
 msgid " Usage: String a teststring or File a testfile or Boolean a True"

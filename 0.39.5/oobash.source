@@ -394,8 +394,8 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println 
    I18n.out.println " Try the developer tools: Class.generator Script.generator Man.generator"
    System.out.println 
-   I18n.out.println " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level"
-   I18n.out.println " Constructors: String, File, Boolean, Process, Level"
+   I18n.out.println " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level, Ssh"
+   I18n.out.println " Constructors: String, File, Boolean, Process, Level, Ssh"
    I18n.out.println " Usage: String a teststring or File a testfile or Boolean a True"
    System.out.println 
    System.out.println " String:"
@@ -413,6 +413,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -isAbsolute -delete -setReadOnly -createNewFile -lastModified -setLastModified -getInode"
    System.out.println "  -linecount -linematch -append -clear -getText -setText -sha1sum -md5sum -getBase -getExtension"
    System.out.println "  -getTotalSpace -getFreeSpace -getUsableSpace -getPosixFilePermissions -setPosixFilePermissions"
+   System.out.println "  -getLine -delLine -setLine"
    System.out.println "  -File.createTemporaryFile -File.createTempFile -File.createTemporaryDir -File.createTempDir"
    System.out.println " Process:"
    System.out.println "  -getPriority -setPriority -kill -isDaemon -getEffectiveUserId -getRealUserId -getMemorySize"
@@ -426,7 +427,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -Math.random -Math.cos -Math.sin -Math.tan -Math.sqrt -Math.exp -Math.abs -Math.acos"
    System.out.println "  -Math.asin -Math.atan -Math.min -Math.max -Math.multiplier -Math.adder -Math.log10"
    System.out.println "  -Math.log1p -Math.log -Math.expm1 -Math.cosh -Math.sinh -Math.tanh -Math.toDegrees"
-   System.out.println "  -Math.toRadians -Math.hypot -Math.ceil -Math.floor"
+   System.out.println "  -Math.toRadians -Math.hypot -Math.ceil -Math.floor Math.cbrt"
    System.out.println " System:"
    System.out.println "  -System.exit -System.currentTimeMillis -System.currentTimeNanos -System.out.println"
    System.out.println "  -System.err.println -System.out.print System.err.print -System.runtime"
