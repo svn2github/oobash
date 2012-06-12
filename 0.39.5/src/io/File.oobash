@@ -1372,7 +1372,7 @@ __getLine() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       local this="$1"
-      (declare -i line=$3) 2>/dev/null ||  (return 1)
+      (declare -i line=$3) 2>/dev/null
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
@@ -1416,7 +1416,7 @@ __delLine() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       local this="$1"
-      (declare -i line=$3) 2>/dev/null ||  (return 1)
+      (declare -i line=$3) 2>/dev/null
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
@@ -1466,7 +1466,7 @@ __setLine() {
    declare -i returnValue=0
    if (( $# == 4 )); then
       local this="$1"
-      (declare -i line=$3) 2>/dev/null ||  (return 1)
+      (declare -i line=$3) 2>/dev/null
       if (( $? != 0 )); then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
@@ -1480,6 +1480,7 @@ __setLine() {
          if (( $? == 0 )); then
             if [[ "class String" == "$argclass" ]]; then
                if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  # try to avoid at least some problems...
                   if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                      local file="$("$this".toString)"
                      local text="$("$argobject".toString)"

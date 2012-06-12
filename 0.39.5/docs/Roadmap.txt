@@ -20,6 +20,7 @@ grep + diff: stderr not to /dev/null ?
 # 0.39.6
 # -analyze log4oobash.properties
 # -use of __isInteger for integer args
+# (a simple 'declare -i' can cause unwanted surprises)
 
 # 0.39.7
 # -Man.generator: bold methodnames
@@ -28,7 +29,6 @@ grep + diff: stderr not to /dev/null ?
 
 # 0.39.8
 # -chained return values
-# (a simple 'declare -i' can cause unwanted surprises)
 
 # 0.39.9
 # -url decode/encode
