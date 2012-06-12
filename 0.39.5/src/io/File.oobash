@@ -1437,10 +1437,11 @@ __delLine() {
                   > "$file" 1>/dev/null 2>/dev/null
                   for indx in "${!FILE[@]}"
                   do
-                  if (( $(($indx+1)) != $line)); then
-                     System.out.print "${FILE[indx]}" >> "$file"
-                  fi
+                     if (( $(($indx+1)) != $line)); then
+                        System.out.print "${FILE[indx]}" >> "$file"
+                     fi
                   done
+                  Boolean.TRUE
                fi
             else
                __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
@@ -1493,12 +1494,13 @@ __setLine() {
                         > "$file" 1>/dev/null 2>/dev/null
                         for indx in "${!FILE[@]}"
                         do
-                        if (( $(($indx+1)) != $line)); then
-                           System.out.print "${FILE[indx]}" >> "$file"
-                        else
-                           System.out.println "$("${argobject}".toString)" >> "$file"
-                        fi
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                           fi
                         done
+                        Boolean.TRUE
                      fi                     
                   else
                      __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
