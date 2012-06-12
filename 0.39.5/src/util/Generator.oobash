@@ -475,9 +475,9 @@ echo
 
 usage() {
    if command -v pod2usage >/dev/null 2>&1; then
-      pod2usage -verbose 1 \$0
+      pod2usage -verbose 1 -exit 0 \$0
+      System.exit \$?
    fi
-   return 0
 }
 
 ########

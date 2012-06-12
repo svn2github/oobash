@@ -15,6 +15,8 @@ diffFile only with file --> else Excepton !
 -some test with base64Decode/Encode again...
 -do not forget to complete all the man pages!
 
+-Startmessage: Math.cbrt missing, Ssh missing, getLine, delLine, setLine missing...
+
 # 0.39.6
 # -analyze log4oobash.properties
 # -some System functions
