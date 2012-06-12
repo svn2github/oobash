@@ -4,30 +4,31 @@
 # -some more Process functions:__getThreads, __children
 # -File: setLine
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy
+# -Ssh: copy diffIgnoreBlank 
 
 diffFiletree only with directory --> else : Exception !
-diffFile only with file --> else Excepton !
+diff only with file --> else Excepton !
 ==> modify + rename command, modify exception throwing
 
 -check for remote dependencies (find,grep)?
 
--some test with base64Decode/Encode again...
 -do not forget to complete all the man pages!
 
--Startmessage: Math.cbrt missing, Ssh missing, getLine, delLine, setLine missing...
+grep + diff: stderr not to /dev/null ?
+
+-grep: not ready :check list (dir) + access (dir)  + read (file) permissions 
 
 # 0.39.6
 # -analyze log4oobash.properties
-# -some System functions
+# -use of __isInteger for integer args
 
 # 0.39.7
 # -Man.generator: bold methodnames
 # -add static FileUtils
+# -add some System functions
 
 # 0.39.8
 # -chained return values
-# -use of __isInteger for integer args
 # (a simple 'declare -i' can cause unwanted surprises)
 
 # 0.39.9

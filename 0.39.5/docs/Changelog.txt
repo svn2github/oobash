@@ -257,9 +257,7 @@
 #    -many fixes
 # Version:      0.39.5
 #    -File: added getLine, delLine
-#    -Ssh: added diff, diffIgnoreSpaceChange, diffIgnoreBlankLines, 
-#                diffIgnoreSpaceChangeAndBlankLines, copy,
-#                diffFiletree
+#    -Ssh: added diff, diffFiletree
 #                grep, grepIgnoreCase, grepInvertMatch
 #    -added Script.generator (skeleton):
 #     uses great idea to use pod docs in shell scripts from:
