@@ -1472,6 +1472,8 @@ __setLine() {
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       else
+         declare -i line="$3"
+         declare -i index=$((line-1))
          local argobject="$4"
          local argclass
          argclass="$("$argobject".getClass 2>/dev/null)"
@@ -1479,13 +1481,24 @@ __setLine() {
             if [[ "class String" == "$argclass" ]]; then
                if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
                   if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
                      local text="$("$argobject".toString)"
-                     2>/dev/null System.out.println "$text" >> "$("$this".toString)"
-                     if (( $? == 0 )); then
-                        Boolean.TRUE
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __stackOrHelp "$2" "${FUNCNAME:2}"
                      else
-                        Boolean.FALSE
-                     fi
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                        if (( $(($indx+1)) != $line)); then
+                           System.out.print "${FILE[indx]}" >> "$file"
+                        else
+                           System.out.println "$("${argobject}".toString)" >> "$file"
+                        fi
+                        done
+                     fi                     
                   else
                      __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                      returnValue=$?

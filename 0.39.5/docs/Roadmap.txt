@@ -2,9 +2,8 @@
 
 # 0.39.5
 # -some more Process functions:__getThreads, __children
-# -File: setLine
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy diffIgnoreBlank 
+# -Ssh: copy diffIgnoreBlank
 
 diffFiletree only with directory --> else : Exception !
 diff only with file --> else Excepton !
