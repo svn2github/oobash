@@ -474,7 +474,9 @@ echo
 #############
 
 usage() {
-   pod2usage \$0
+   if command -v pod2usage >/dev/null 2>&1; then
+      pod2usage -verbose 1 \$0
+   fi
    return 0
 }
 
@@ -495,9 +497,13 @@ $1 - describe in few words
 
 $1 [OPTION]
 
+=head1 OPTIONS AND ARGUMENTS
+
+List here all possible options and arguments for $1 
+
 =head1 DESCRIPTION
 
-Your description of $1 and all the options
+Your description of $1
 
 =head1 EXAMPLES
 
@@ -505,7 +511,7 @@ $1
 
 =head1 SEE ALSO
 
-L<perlpod|pod::perlpod>, L<perlpodspec|pod::perlpodspec>
+oobash
 
 =head1 LICENSE
 
@@ -513,7 +519,7 @@ The MIT License
 
 =head1 AUTHOR
 
-$USER
+Written by $USER
 
 =cut
          ">> "${destination}"
