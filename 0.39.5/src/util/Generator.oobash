@@ -483,7 +483,9 @@ usage() {
 ########
 # MAIN #
 ########
-usage
+if (( \$# == 0 )); then
+   usage
+fi
 
 ############
 # POD DOCS #
