@@ -2,6 +2,7 @@
 
 # 0.39.5
 # -some more Process functions:__getThreads, __children
+
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
 # -Ssh: copy diffIgnoreBlank
 
@@ -17,8 +18,9 @@ grep + diff: stderr not to /dev/null, but to stdout ?
 
 -grep: not ready :check list (dir) + access (dir)  + read (file) permissions 
 
-File:
--something like: addStringAfter addStringBefore
+-osx check: COMMAND_MODE=unix2003 , what exactly does this ???
+
+-check getThreads and getChildren on OSX
 
 # 0.39.6
 # -analyze log4oobash.properties

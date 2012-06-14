@@ -156,7 +156,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute length getName isDirecto
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
 declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand getPriority setPriority kill isDaemon 
-                               getEffectiveUserId getRealUserId getMemorySize getStartTime)
+                               getEffectiveUserId getRealUserId getMemorySize getStartTime getChildren getThreads)
 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 
