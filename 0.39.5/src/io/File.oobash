@@ -1710,7 +1710,7 @@ File.help() {
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
       -getUsableSpace -getInode -getBase -getExtension
       -getPosixFilePermissions -setPosixFilePermissions
-      -getLine -delLine -setLine -createNewFile
+      -getLine -replaceLine -setLine -createNewFile
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile
@@ -1745,38 +1745,55 @@ File.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                replaceLine
-                  Replace line in this file with String.
+                  Replace line in this file with given String.
                Parameters:
                   integer that represents line number
                   String object
                Returns:
                   None
                Throws:
-                  WrongClassException  - if argument has the wrong class
-                  IllegalArgumentException - argument is no object
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if argument is no object
                                            - if number of arguments != 2
-                  IOException - if object does not represent a regular file
-                              - if cannot write file
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+                  WrongClassException - if argument is no String object
                Example:
-
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  String b \"i want to be line 2\"
+                  a.replaceLine 2 b
+                  a.getText
+                  >>>1
+                  >>>i want to be line 2
+                  >>>3
             ";;&
          getLine|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                getLine
-                  Gets line 
+                  Gets line with given number from this file. 
                Parameters:
                   integer that represents line number
                Returns:
-                  true if the setText operation was successful; false otherwise
-               Throws:
-                  WrongClassException  - if argument has the wrong class
-                  IllegalArgumentException - argument is no object
+                  string
+                Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
                                            - if number of arguments != 1
-                  IOException - if object does not represent a regular file
-                              - if cannot write file
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
                Example:
-
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  a.getLine 2
+                  >>>2
             ";;&
          delLine|all)
             match=$(Boolean.TRUE)
@@ -1788,13 +1805,21 @@ File.help() {
                Returns:
                   None
                Throws:
-                  WrongClassException  - if argument has the wrong class
-                  IllegalArgumentException - argument is no object
+                  IllegalArgumentException - if the parameter cannot be treated as a number
                                            - if number of arguments != 1
-                  IOException - if object does not represent a regular file
-                              - if cannot write file
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
                Example:
-                  
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  a.delLine 2
+                  a.getText
+                  >>>1
+                  >>>3                  
             ";;&
          getBase|all)
             match=$(Boolean.TRUE)
