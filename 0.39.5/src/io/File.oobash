@@ -1441,7 +1441,6 @@ __delLine() {
                         System.out.print "${FILE[indx]}" >> "$file"
                      fi
                   done
-                  Boolean.TRUE
                fi
             else
                __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
@@ -1462,7 +1461,7 @@ __delLine() {
    return $returnValue
 }
 
-__setLine() {
+__replaceLine() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 4 )); then
@@ -1500,7 +1499,6 @@ __setLine() {
                               System.out.println "$("${argobject}".toString)" >> "$file"
                            fi
                         done
-                        Boolean.TRUE
                      fi                     
                   else
                      __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
@@ -1742,6 +1740,61 @@ File.help() {
                                            - if objectname contains full stop character
                Example:
                   File a testfile
+            ";;&
+         replaceLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               replaceLine
+                  Replace line in this file with String.
+               Parameters:
+                  integer that represents line number
+                  String object
+               Returns:
+                  None
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 2
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+
+            ";;&
+         getLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getLine
+                  Gets line 
+               Parameters:
+                  integer that represents line number
+               Returns:
+                  true if the setText operation was successful; false otherwise
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+
+            ";;&
+         delLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               delLine
+                  Deletes line with given number in this file.
+               Parameters:
+                  integer that represents line number
+               Returns:
+                  None
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+                  
             ";;&
          getBase|all)
             match=$(Boolean.TRUE)

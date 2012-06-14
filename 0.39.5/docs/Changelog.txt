@@ -256,7 +256,7 @@
 #    -changed return values for exceptions, added AuthException
 #    -many fixes
 # Version:      0.39.5
-#    -File: added getLine, delLine, setLine
+#    -File: added getLine, delLine, replaceLine
 #    -Ssh: added diff, diffFiletree
 #                grep, grepIgnoreCase, grepInvertMatch
 #    -added Script.generator (skeleton):

@@ -13,9 +13,12 @@ diff only with file --> else Excepton !
 
 -do not forget to complete all the man pages!
 
-grep + diff: stderr not to /dev/null ?
+grep + diff: stderr not to /dev/null, but to stdout ?
 
 -grep: not ready :check list (dir) + access (dir)  + read (file) permissions 
+
+File:
+-something like: addStringAfter addStringBefore
 
 # 0.39.6
 # -analyze log4oobash.properties
