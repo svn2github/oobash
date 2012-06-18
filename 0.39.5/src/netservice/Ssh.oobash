@@ -329,118 +329,6 @@ __copy() {
    return $returnValue
 }
 
-__diffFile() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   local class="$2"
-   if (( $# == 4 )) || (( $# == 5 )); then
-      local this="$1"
-      local argobject="$4"
-      local argclass
-      argclass="$("${argobject}".getClass 2>/dev/null)"
-      if (( $? == 0 )); then
-         if [[ "$("$this".getClass)" == "$argclass" ]]; then
-            local host="$("$this".getSshHost)"
-            local user="$("$this".getSshUser)"
-            declare -i port="$("$this".getSshPort)"
-            local file="$3"
-            local targethost="$("$argobject".getSshHost)"
-            local targetUser="$("$argobject".getSshUser)"
-            declare -i targetPort="$("$argobject".getSshPort)"
-            local targetFile="${5:-"$file"}"
-            if command -v ssh >/dev/null 2>&1; then
-               local command="
-                  if [ -d "\${checkf}" ]; then
-                     if [ -x "\${checkf}" ]; then
-                        echo directory
-                     else
-                        echo noAccessPermission
-                     fi
-                  else
-                     if [ -f "\${checkf}" ]; then
-                        if [ -r "\${checkf}" ]; then
-                           echo regular
-                        else
-                           echo noReadPermission
-                        fi
-                     else
-                        echo noRegular
-                     fi
-                  fi
-                  "
-               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
-               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
-               declare -i counter=0
-               declare -a F=( $file $targetFile )
-               declare -a H=( $host $targethost )
-               local info
-               for info in "${fileinfo1}" "${fileinfo2}"
-               do
-                  case "${info}" in
-                     noAccessPermission)
-                        __throw "IllegalArgumentException" ": Illegal argument: no access permission for \"${F[counter]}\" on \"${H[counter]}\""
-                        returnValue=$?
-                        __stackOrHelp "${class}" "${FUNCNAME:2}"
-                        return $returnValue;;
-                     noReadPermission)
-                        __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${F[counter]}\" on \"${H[counter]}\""
-                        returnValue=$?
-                        __stackOrHelp "${class}" "${FUNCNAME:2}"
-                        return $returnValue;;
-                     noRegular)
-                        __throw "IllegalArgumentException" ": Illegal argument: \"${F[counter]}\" on \"${H[counter]}\" is no regular file"
-                        returnValue=$?
-                        __stackOrHelp "${class}" "${FUNCNAME:2}"
-                        return $returnValue;;
-                  esac
-                  ((counter++))
-               done
-               if [[ "${fileinfo1}" != "${fileinfo2}" ]]; then
-                     __throw "IllegalArgumentException" ": Illegal argument: diff of directory and regular file makes no sense"
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue
-               fi
-               if command -v diff >/dev/null 2>&1; then
-                  if [[ "$fileinfo1" = "regular" ]]; then
-                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
-                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}" 2>/dev/null)
-                  elif [[ "$fileinfo1" = "directory" ]]; then
-                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
-                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
-                  else
-                     __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                  fi
-               else
-                  __throw "NotInPathException" ": diff not in path"
-                  returnValue=$?
-                  __stackOrHelp "${class}" "${FUNCNAME:2}"
-               fi
-            else
-               __throw "NotInPathException" ": ssh not in path"
-               returnValue=$?
-               __stackOrHelp "${class}" "${FUNCNAME:2}"
-            fi
-         else
-            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
 __grep() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -654,6 +542,118 @@ __grepIgnoreCase() {
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
          __stackOrHelp "${class}" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__diffFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 4 )) || (( $# == 5 )); then
+      local this="$1"
+      local argobject="$4"
+      local argclass
+      argclass="$("${argobject}".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "$("$this".getClass)" == "$argclass" ]]; then
+            local host="$("$this".getSshHost)"
+            local user="$("$this".getSshUser)"
+            declare -i port="$("$this".getSshPort)"
+            local file="$3"
+            local targethost="$("$argobject".getSshHost)"
+            local targetUser="$("$argobject".getSshUser)"
+            declare -i targetPort="$("$argobject".getSshPort)"
+            local targetFile="${5:-"$file"}"
+            if command -v ssh >/dev/null 2>&1; then
+               local command="
+                  if [ -d "\${checkf}" ]; then
+                     if [ -x "\${checkf}" ]; then
+                        echo directory
+                     else
+                        echo noAccessPermission
+                     fi
+                  else
+                     if [ -f "\${checkf}" ]; then
+                        if [ -r "\${checkf}" ]; then
+                           echo regular
+                        else
+                           echo noReadPermission
+                        fi
+                     else
+                        echo noRegular
+                     fi
+                  fi
+                  "
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
+               declare -i counter=0
+               declare -a F=( $file $targetFile )
+               declare -a H=( $host $targethost )
+               local info
+               for info in "${fileinfo1}" "${fileinfo2}"
+               do
+                  case "${info}" in
+                     noAccessPermission)
+                        __throw "IllegalArgumentException" ": Illegal argument: no access permission for \"${F[counter]}\" on \"${H[counter]}\""
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                     noReadPermission)
+                        __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${F[counter]}\" on \"${H[counter]}\""
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                     noRegular)
+                        __throw "IllegalArgumentException" ": Illegal argument: \"${F[counter]}\" on \"${H[counter]}\" is no regular file"
+                        returnValue=$?
+                        __stackOrHelp "${class}" "${FUNCNAME:2}"
+                        return $returnValue;;
+                  esac
+                  ((counter++))
+               done
+               if [[ "${fileinfo1}" != "${fileinfo2}" ]]; then
+                     __throw "IllegalArgumentException" ": Illegal argument: diff of directory and regular file makes no sense"
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                     return $returnValue
+               fi
+               if command -v diff >/dev/null 2>&1; then
+                  if [[ "$fileinfo1" = "regular" ]]; then
+                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
+                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}" 2>/dev/null)
+                  elif [[ "$fileinfo1" = "directory" ]]; then
+                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
+                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
+                  else
+                     __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
+                     returnValue=$?
+                     __stackOrHelp "${class}" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "NotInPathException" ": diff not in path"
+                  returnValue=$?
+                  __stackOrHelp "${class}" "${FUNCNAME:2}"
+               fi
+            else
+               __throw "NotInPathException" ": ssh not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -1004,7 +1004,7 @@ Ssh.help() {
          diffFile|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               diff
+               diffFile
                   if the first [ optional: and 3rd argument] defines a regular file, then
                   the output is a diff of the two files.
                   if the first [ optional: and 3rd argument] defines a directory, then
@@ -1028,10 +1028,10 @@ Ssh.help() {
                                       -if ssh is not in path
                   WrongClassException: -if 2nd argument is an object but no Ssh object
                Example:
-                  machine1.diff /etc/shadow machine2
-                  machine1.diff /etc/shadow machine2 /etc/copy
-                  machine1.diff /opt machine2
-                  machine1.diff /opt machine2 /usr/local/opt
+                  machine1.diffFile /etc/shadow machine2
+                  machine1.diffFile /etc/shadow machine2 /etc/copy
+                  machine1.diffFile /opt machine2
+                  machine1.diffFile /opt machine2 /usr/local/opt
             ";;&
          diffFiletree|all)
             match=$(Boolean.TRUE)
