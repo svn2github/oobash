@@ -257,7 +257,7 @@
 #    -many fixes
 # Version:      0.39.5
 #    -File: added getLine, delLine, replaceLine
-#    -Process: added getChildren and (at the moment) only for Linux systems: getThreads, threadCount
+#    -Process: added getChildren, threadCount
 #    -Ssh: added diffFile, diffFiletree
 #                grep, grepIgnoreCase, grepInvertMatch
 #    -added Script.generator (skeleton):
