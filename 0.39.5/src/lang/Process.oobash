@@ -681,14 +681,20 @@ __threadCount() {
          local thcount
          if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
             thcount="$(ps -o thcount --no-header --pid "${pId}" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
          else
             thcount="$(ps -p "${pId}" -o wq 2>/dev/null)"
-         fi
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
          fi
          if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
             System.out.println ${thcount}
@@ -797,6 +803,24 @@ Process.help() {
                   ProcessException - if process can't be managed
                Example:
                   Process a <pid> 
+            ";;& 
+         threadCount|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               threadCount
+                  Returns the number of threads of this Process.
+               Parameters:
+                  None
+               Returns:
+                  Number of threads
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process a 2518
+                  threadCount
+                  >>>15
             ";;& 
          getStartTime|all)
             match=$(Boolean.TRUE)
