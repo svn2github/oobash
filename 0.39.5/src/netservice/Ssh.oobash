@@ -329,7 +329,7 @@ __copy() {
    return $returnValue
 }
 
-__diff() {
+__diffFile() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -772,7 +772,7 @@ Ssh.help() {
                     -getClass -toString -equals
                     -hashCode -getSshHost -getSshUser
                     -getSshPort -command -vimEdit 
-                    -connect -diff -diffFiletree  
+                    -connect -diffFile -diffFiletree  
                     -copy -grep
                     -grepIgnoreCase -grepInvertMatch
                     
@@ -1001,7 +1001,7 @@ Ssh.help() {
                   mymachine.grepInvertMatch : /etc/passwd
                   >>>
             ";;&
-         diff|all)
+         diffFile|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                diff

@@ -257,8 +257,8 @@
 #    -many fixes
 # Version:      0.39.5
 #    -File: added getLine, delLine, replaceLine
-#    -Process: added getThreads, getChildren
-#    -Ssh: added diff, diffFiletree
+#    -Process: added getChildren and (at the moment) only for Linux systems: getThreads, threadCount
+#    -Ssh: added diffFile, diffFiletree
 #                grep, grepIgnoreCase, grepInvertMatch
 #    -added Script.generator (skeleton):
 #     uses great idea to use pod docs in shell scripts from:

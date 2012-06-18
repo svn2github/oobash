@@ -1,26 +1,45 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.5
-# -some more Process functions:__getThreads, __children
-
 # -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy diffIgnoreBlank
+# -Ssh: copy
 
 diffFiletree only with directory --> else : Exception !
-diff only with file --> else Excepton !
+diffFile only with file --> else Excepton !
+
 ==> modify + rename command, modify exception throwing
 
 -check for remote dependencies (find,grep)?
 
 -do not forget to complete all the man pages!
 
-grep + diff: stderr not to /dev/null, but to stdout ?
-
 -grep: not ready :check list (dir) + access (dir)  + read (file) permissions 
 
 -osx check: COMMAND_MODE=unix2003 , what exactly does this ???
 
--check getThreads and getChildren on OSX
+-check getThreads and getChildren on OSX / start with only for linux + use --no-headers
+
+ps -Lf -p $pId --> NLWP e.g.:
+
+ps -Lf -p 2499
+UID        PID  PPID   LWP  C NLWP STIME TTY          TIME CMD
+franka    2499  2417  2499  0   16 Jun14 ?        00:08:11 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2584  0   16 Jun14 ?        00:00:05 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2741  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2742  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2747  0   16 Jun14 ?        00:00:40 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2748  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2749  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2750  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2755  0   16 Jun14 ?        00:00:08 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2756  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2757  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2758  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2760  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2789  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2798  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+franka    2499  2417  2866  0   16 Jun14 ?        00:00:00 skype -session 1028c1d320b210000133280452900000026930026_1339629014_820559
+
 
 # 0.39.6
 # -analyze log4oobash.properties
@@ -31,6 +50,7 @@ grep + diff: stderr not to /dev/null, but to stdout ?
 # -Man.generator: bold methodnames
 # -add static FileUtils
 # -add some System functions
+# -getThreads, threadCount for Darwin
 
 # 0.39.8
 # -chained return values

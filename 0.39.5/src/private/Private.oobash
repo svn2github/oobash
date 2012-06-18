@@ -190,7 +190,7 @@ if [[ ! -z "$PS1" ]]; then
       local method
       for method in $(eval echo \${__${lastClass}__[@]})
       do
-         unalias "${this}"."${method}"
+         unalias "${this}"."${method}" 2>/dev/null
       done 
    }
 else
