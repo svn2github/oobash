@@ -15,9 +15,6 @@ diffFile only with file --> else Excepton !
 
 -grep: not ready :check list (dir) + access (dir)  + read (file) permissions 
 
-osx :total number of workqueue threads
-linux : number of (threads)
-
 # 0.39.6
 # -analyze log4oobash.properties
 # -use of __isInteger for integer args
