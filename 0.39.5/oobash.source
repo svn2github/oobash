@@ -159,7 +159,6 @@ declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__Comparabl
 declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand getPriority setPriority kill 
                                isDaemon getEffectiveUserId getRealUserId getMemorySize getStartTime getChildren
                                threadCount)
-fi
 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 
