@@ -667,7 +667,7 @@ __kill() {
 }
 
 # At the moment: only for Linux OS
-if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+# if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
 
    __threadCount() {
       __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -682,14 +682,23 @@ if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
                return $returnValue
             fi
             local thcount
-            thcount="$(ps -o thcount --no-header --pid "${pId}" 2>/dev/null)"
+            if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+               thcount="$(ps -o thcount --no-header --pid "${pId}" 2>/dev/null)"
+            else
+               thcount="$(ps -p "${pId}" -o wq 2>/dev/null)"
+            fi
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
                return $returnValue
             fi
-            System.out.println ${thcount}
+            if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+               System.out.println ${thcount}
+            else
+               thcount="${thcount/*WC?/}"
+               System.out.println "${thcount}"
+            fi
          else
             __throw "NotInPathException" ": ps not in path"
             returnValue=$?
@@ -737,7 +746,7 @@ if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
       return $returnValue
    }
 
-fi
+#fi
 
 ##################
 #                #
