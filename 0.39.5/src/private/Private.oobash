@@ -43,7 +43,7 @@
 # __isAssocArray() checks if given parameter is an associative array
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
-# __isInteger check for integer input
+# __isInteger() check for integer input
 
 
 
@@ -957,7 +957,7 @@ __stripPath() {
 }
 __registerFunction __stripPath
 
-# extglob has to set, to beable to source __isInteger without errors
+# extglob has to be set, to be able to source __isInteger without errors
 declare unsetAtEnd
 shopt -q extglob
 # if extglob not set already --> set it now and change boolean 

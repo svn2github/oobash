@@ -16,8 +16,18 @@ Ssh() {
       local name="$2"
       local user="$3"
       # Default port for ssh: 22
-      local port="${4:-22}"
-      
+      local p="${4:-22}"
+
+      # catch eg "+" param
+      (declare -i port="$p") 2>/dev/null
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$p\" is no valid port number"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+      declare -i port="$p"
+
       if ! __visible "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
          returnValue=$?
@@ -44,7 +54,7 @@ Ssh() {
          ssh -p "${port}" -q -o "BatchMode yes" "${user}@${name}" : 1>/dev/null 2>&1
          returnValue=$?
          if (( $returnValue != 0 )); then
-            __throw "AuthException" ": no passwordless authentication possible with SshHost '${name}' and user '${user}'"
+            __throw "AuthException" ": no passwordless authentication possible with SshHost '${name}' and user '${user}' on port '${port}' "
             returnValue=$?
             __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue 
@@ -262,73 +272,6 @@ __connect() {
    return $returnValue
 }
 
-#Run cmds over ssh, without escaping quotes
-#ssh host -l user $(<cmd.txt)
-__copy() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   local class="$2"
-   if (( $# == 4 )) || (( $# == 5 )); then
-      local this="$1"
-      local argobject="$4"
-      local argclass
-      argclass="$("${argobject}".getClass 2>/dev/null)"
-      if (( $? == 0 )); then
-         if [[ "$("$this".getClass)" == "$argclass" ]]; then
-            # source
-            local machine="$("$this".getSshHost)"
-            local user="$("$this".getSshUser)"
-            declare -i port="$("$this".getSshPort)"
-            local file="$3"
-            # target 
-            local targetMachine="$("$argobject".getSshHost)"
-            local targetUser="$("$argobject".getSshUser)"
-            declare -i targetPort="$("$argobject".getSshPort)"
-            
-            local bool="$(Boolean.TRUE)"
-            local targetFile="${5:-"$(__dirname "$file")"}"
-           
-            cmd1="cd -- \"$(dirname "$file")\" 2>/dev/null && tar -cf - \"$(basename "$file")\" 2>/dev/null"
-            cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
-            if command -v ssh >/dev/null 2>&1; then
-               ssh -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" -q -o "BatchMode yes" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
-            else
-               __throw "NotInPathException" ": ssh not in path"
-               returnValue=$?
-               __stackOrHelp "${class}" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-
-            for status in ${PIPESTATUS[@]}; do
-               if (( "$status" != 0 )); then
-                  bool="$(Boolean.FALSE)"
-                  break
-               fi
-            done
-            
-            if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
-               Boolean.TRUE
-            else
-               Boolean.FALSE
-            fi
-         else
-            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
-         returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
 __grep() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -342,10 +285,14 @@ __grep() {
       local file="$4"
       local showLineNumbers=${5:-true}
       if command -v ssh >/dev/null 2>&1; then
-         local command="
+         local cmd="
             if [ -d "\${checkf}" ]; then
                if [ -x "\${checkf}" ]; then
-                  echo directory
+                  If [ -r "\${checkf}" ]; then
+                     echo directory
+                  else
+                     echo noListPermission
+                  fi
                else
                   echo noAccessPermission
                fi
@@ -361,10 +308,17 @@ __grep() {
                fi
             fi
             "
-         local fileinfo="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+         local fileinfo="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${cmd} 2>/dev/null")"
          case "${fileinfo}" in
+            directory|regular)
+               :;;
             noAccessPermission)
                __throw "IllegalArgumentException" ": Illegal argument: no access permission for \"${file}\" on \"${host}\""
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               return $returnValue;;
+            noListPermission)
+               __throw "IllegalArgumentException" ": Illegal argument: no list permission for \"${file}\" on \"${host}\""
                returnValue=$?
                __stackOrHelp "${class}" "${FUNCNAME:2}"
                return $returnValue;;
@@ -384,7 +338,7 @@ __grep() {
             showLines="-n"
          fi
          if [[ "$fileinfo" = "regular" || "$fileinfo" = "directory" ]]; then
-            ssh -n -p "${port}" "${user}"@"${host}" grep -rH --colour=never $showLines "${grepPattern}" "${file}" 2>/dev/null
+            ssh -n -p "${port}" "${user}"@"${host}" grep -rH --colour=never ${showLines} "${grepPattern}" "${file}" 2>/dev/null
          else
             __throw "IOException" ": Could not recognize type of \"${file}\" on \"${host}\""
             returnValue=$?
@@ -416,7 +370,7 @@ __grepInvertMatch() {
       local file="$4"
       local showLineNumbers=${5:-true}
       if command -v ssh >/dev/null 2>&1; then
-         local command="
+         local cmd="
             if [ -d "\${checkf}" ]; then
                if [ -x "\${checkf}" ]; then
                   echo directory
@@ -435,7 +389,7 @@ __grepInvertMatch() {
                fi
             fi
             "
-         local fileinfo="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+         local fileinfo="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${cmd} 2>/dev/null")"
          case "${fileinfo}" in
             noAccessPermission)
                __throw "IllegalArgumentException" ": Illegal argument: no access permission for \"${file}\" on \"${host}\""
@@ -458,7 +412,7 @@ __grepInvertMatch() {
             showLines="-n"
          fi
          if [[ "$fileinfo" = "regular" || "$fileinfo" = "directory" ]]; then
-            ssh -n -p "${port}" "${user}"@"${host}" grep -vrH --colour=never $showLines "${grepPattern}" "${file}" 2>/dev/null
+            ssh -n -p "${port}" "${user}"@"${host}" grep -rHv --colour=never ${showLines} "${grepPattern}" "${file}" 2>/dev/null
          else
             __throw "IOException" ": Could not recognize type of \"${file}\" on \"${host}\""
             returnValue=$?
@@ -490,7 +444,7 @@ __grepIgnoreCase() {
       local file="$4"
       local showLineNumbers=${5:-true}
       if command -v ssh >/dev/null 2>&1; then
-         local command="
+         local cmd="
             if [ -d "\${checkf}" ]; then
                if [ -x "\${checkf}" ]; then
                   echo directory
@@ -509,7 +463,7 @@ __grepIgnoreCase() {
                fi
             fi
             "
-         local fileinfo="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
+         local fileinfo="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${cmd} 2>/dev/null")"
          case "${fileinfo}" in
             noAccessPermission)
                __throw "IllegalArgumentException" ": Illegal argument: no access permission for \"${file}\" on \"${host}\""
@@ -532,7 +486,7 @@ __grepIgnoreCase() {
             showLines="-n"
          fi
          if [[ "$fileinfo" = "regular" || "$fileinfo" = "directory" ]]; then
-            ssh -n -p "${port}" "${user}"@"${host}" grep -rHi --colour=never $showLines "${grepPattern}" "${file}" 2>/dev/null
+            ssh -n -p "${port}" "${user}"@"${host}" grep -rHi --colour=never ${showLines} "${grepPattern}" "${file}" 2>/dev/null
          else
             __throw "IOException" ": Could not recognize type of \"${file}\" on \"${host}\""
             returnValue=$?
@@ -566,50 +520,37 @@ __diffFile() {
             local user="$("$this".getSshUser)"
             declare -i port="$("$this".getSshPort)"
             local file="$3"
-            local targethost="$("$argobject".getSshHost)"
+            local targetHost="$("$argobject".getSshHost)"
             local targetUser="$("$argobject".getSshUser)"
             declare -i targetPort="$("$argobject".getSshPort)"
             local targetFile="${5:-"$file"}"
             if command -v ssh >/dev/null 2>&1; then
-               local command="
-                  if [ -d "\${checkf}" ]; then
-                     if [ -x "\${checkf}" ]; then
-                        echo directory
-                     else
-                        echo noAccessPermission
-                     fi
-                  else
+               local cmd="
                      if [ -f "\${checkf}" ]; then
                         if [ -r "\${checkf}" ]; then
                            echo regular
                         else
                            echo noReadPermission
                         fi
-                     else
-                        echo noRegular
                      fi
-                  fi
-                  "
-               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
-               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
+                     "
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${cmd} 2>/dev/null")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targetHost}" "checkf="${targetFile}";${cmd} 2>/dev/null")"
                declare -i counter=0
                declare -a F=( $file $targetFile )
-               declare -a H=( $host $targethost )
+               declare -a H=( $host $targetHost )
                local info
                for info in "${fileinfo1}" "${fileinfo2}"
                do
                   case "${info}" in
-                     noAccessPermission)
-                        __throw "IllegalArgumentException" ": Illegal argument: no access permission for \"${F[counter]}\" on \"${H[counter]}\""
-                        returnValue=$?
-                        __stackOrHelp "${class}" "${FUNCNAME:2}"
-                        return $returnValue;;
+                     regular)
+                        :;;
                      noReadPermission)
                         __throw "IllegalArgumentException" ": Illegal argument: no read permission for \"${F[counter]}\" on \"${H[counter]}\""
                         returnValue=$?
                         __stackOrHelp "${class}" "${FUNCNAME:2}"
                         return $returnValue;;
-                     noRegular)
+                     *)
                         __throw "IllegalArgumentException" ": Illegal argument: \"${F[counter]}\" on \"${H[counter]}\" is no regular file"
                         returnValue=$?
                         __stackOrHelp "${class}" "${FUNCNAME:2}"
@@ -617,24 +558,9 @@ __diffFile() {
                   esac
                   ((counter++))
                done
-               if [[ "${fileinfo1}" != "${fileinfo2}" ]]; then
-                     __throw "IllegalArgumentException" ": Illegal argument: diff of directory and regular file makes no sense"
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                     return $returnValue
-               fi
                if command -v diff >/dev/null 2>&1; then
-                  if [[ "$fileinfo1" = "regular" ]]; then
-                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
-                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" cat "${targetFile}" 2>/dev/null)
-                  elif [[ "$fileinfo1" = "directory" ]]; then
-                     diff  <(ssh -n -p "${port}" "${user}"@"${host}" find "${file}"/ 2>/dev/null) \
-                           <(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" find "${targetFile}"/ 2>/dev/null)
-                  else
-                     __throw "IOException" ": Could not recognize type of \"${F[counter]}\" on \"${H[counter]}\""
-                     returnValue=$?
-                     __stackOrHelp "${class}" "${FUNCNAME:2}"
-                  fi
+                  diff  <(ssh -n -p "${port}" "${user}"@"${host}" cat "${file}" 2>/dev/null) \
+                        <(ssh -n -p "${targetPort}" "${targetUser}"@"${targetHost}" cat "${targetFile}" 2>/dev/null)
                else
                   __throw "NotInPathException" ": diff not in path"
                   returnValue=$?
@@ -687,7 +613,7 @@ __diffFiletree() {
                local targetFile="${file}"
             fi
             if command -v ssh >/dev/null 2>&1; then
-               local command="
+               local cmd="
                      if [ -d "\${checkf}" ]; then
                         if [ -x "\${checkf}" ]; then
                            If [ -r "\${checkf}" ]; then
@@ -700,8 +626,8 @@ __diffFiletree() {
                         fi
                      fi
                      "
-               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${command} 2>/dev/null")"
-               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${command} 2>/dev/null")"
+               local fileinfo1="$(ssh -n -p "${port}" "${user}"@"${host}" "checkf="${file}";${cmd} 2>/dev/null")"
+               local fileinfo2="$(ssh -n -p "${targetPort}" "${targetUser}"@"${targethost}" "checkf="${targetFile}";${cmd} 2>/dev/null")"
                declare -i counter=0
                declare -a F=( $file $targetFile )
                declare -a H=( $host $targethost )
@@ -709,6 +635,8 @@ __diffFiletree() {
                for info in "${fileinfo1}" "${fileinfo2}"
                do
                   case "${info}" in
+                     directory)
+                        :;;
                      noAccessPermission)
                         __throw "IllegalArgumentException" ": Illegal argument: no access permission for \"${F[counter]}\" on \"${H[counter]}\""
                         returnValue=$?
@@ -719,7 +647,7 @@ __diffFiletree() {
                         returnValue=$?
                         __stackOrHelp "${class}" "${FUNCNAME:2}"
                         return $returnValue;;
-                     "")
+                     *)
                         __throw "IllegalArgumentException" ": Illegal argument: \"${F[counter]}\" on \"${H[counter]}\" is no directory"
                         returnValue=$?
                         __stackOrHelp "${class}" "${FUNCNAME:2}"
@@ -773,9 +701,7 @@ Ssh.help() {
                     -hashCode -getSshHost -getSshUser
                     -getSshPort -command -vimEdit 
                     -connect -diffFile -diffFiletree  
-                    -copy -grep
-                    -grepIgnoreCase -grepInvertMatch
-                    
+                    -grep -grepIgnoreCase -grepInvertMatch
                     Constructor: 
                     -Ssh
       " 
@@ -904,21 +830,6 @@ Ssh.help() {
                Example:
                   Ssh mymachine mymachine.mydom.org mysshaccount
                   mymachine.connect
-            ";;&
-         copy|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               copy
-                  Blub
-               Parameters:
-                  Blub
-               Returns:
-                  Blub
-               Throws:
-                  Blub
-               Example:
-                  Blub
-                  Blub
             ";;&
          grep|all)
             match=$(Boolean.TRUE)

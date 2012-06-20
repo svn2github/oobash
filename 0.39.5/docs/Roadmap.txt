@@ -1,33 +1,50 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.5
-# -File.createTemporaryDir, File.createTempDir (without suffix...)
-# -Ssh: copy
-
-diffFiletree only with directory --> else : Exception !
-diffFile only with file --> else Excepton !
-
-==> modify + rename command, modify exception throwing
-
--check for remote dependencies (find,grep)?
-
 -do not forget to complete all the man pages!
 
--grep: not ready :check list (dir) + access (dir)  + read (file) permissions 
+TODO:
+Default cmd for the new Ssh methods is:
+
+         local cmd="
+            if [ -d "\${checkf}" ]; then
+               if [ -x "\${checkf}" ]; then
+                  If [ -r "\${checkf}" ]; then
+                     echo directory
+                  else
+                     echo noListPermission
+                  fi
+               else
+                  echo noAccessPermission
+               fi
+            else
+               if [ -f "\${checkf}" ]; then
+                  if [ -r "\${checkf}" ]; then
+                     echo regular
+                  else
+                     echo noReadPermission
+                  fi
+               else
+                  echo noRegular
+               fi
+            fi
+            "
 
 # 0.39.6
-# -analyze log4oobash.properties
-# -use of __isInteger for integer args
+# -Ssh: copy, refactoring ?
+# -File: insertAfterLine, insertBeforeLine
+# -Process: getChildren
+# -use of __isInteger for integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
 # 0.39.7
 # -Man.generator: bold methodnames
 # -add static FileUtils
 # -add some System functions
-# -getThreads, threadCount for Darwin
 
 # 0.39.8
 # -chained return values
+# -analyze log4oobash.properties
 
 # 0.39.9
 # -url decode/encode

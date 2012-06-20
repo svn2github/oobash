@@ -161,7 +161,7 @@ declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand 
 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 
-declare -a __SshMethods__=(getSshHost getSshUser getSshPort copy diffFile diffFiletree command vimEdit connect grep 
+declare -a __SshMethods__=(getSshHost getSshUser getSshPort diffFile diffFiletree command vimEdit connect grep 
                            grepIgnoreCase grepInvertMatch)
 
 declare -a __Ssh__=(${__SshMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
@@ -413,12 +413,12 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -isAbsolute -delete -setReadOnly -createNewFile -lastModified -setLastModified -getInode"
    System.out.println "  -linecount -linematch -append -clear -getText -setText -sha1sum -md5sum -getBase -getExtension"
    System.out.println "  -getTotalSpace -getFreeSpace -getUsableSpace -getPosixFilePermissions -setPosixFilePermissions"
-   System.out.println "  -getLine -delLine -setLine"
+   System.out.println "  -getLine -delLine -replaceLine"
    System.out.println "  -File.createTemporaryFile -File.createTempFile -File.createTemporaryDir -File.createTempDir"
    System.out.println " Process:"
    System.out.println "  -getPriority -setPriority -kill -isDaemon -getEffectiveUserId -getRealUserId -getMemorySize"
    System.out.println "  -getClass -toString -equals -hashCode -getUser -getStatus -getCommand -getPid -getStartTime"
-   System.out.println "  -Process.create"
+   System.out.println "  -threadCount -Process.create"
    System.out.println " Boolean:"
    System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"
    I18n.out.println " Usage: a.toString"
