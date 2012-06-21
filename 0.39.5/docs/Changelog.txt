@@ -263,7 +263,6 @@
 #    -added Script.generator (skeleton):
 #     uses great idea to use pod docs in shell scripts from:
 #     http://bahut.alma.ch/2007/08/embedding-documentation-in-shell-script_16.html
-#    -added private function:__isInteger
 #    -support for upper case sharp s for String
 #    -support for pseudo signal "0" with Process kill command
 #    -rollback for PATH and MANPATH during __cleanUp

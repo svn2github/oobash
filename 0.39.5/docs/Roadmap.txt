@@ -34,7 +34,7 @@ Default cmd for the new Ssh methods is:
 # -Ssh: copy, refactoring ?
 # -File: insertAfterLine, insertBeforeLine
 # -Process: getChildren
-# -use of __isInteger for integer args test
+# -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
 # 0.39.7
