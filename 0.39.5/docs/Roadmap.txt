@@ -1,37 +1,7 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.5
--do not forget to complete all the man pages!
-
-TODO:
-Default cmd for the new Ssh methods is:
-
-         local cmd="
-            if [ -d "\${checkf}" ]; then
-               if [ -x "\${checkf}" ]; then
-                  If [ -r "\${checkf}" ]; then
-                     echo directory
-                  else
-                     echo noListPermission
-                  fi
-               else
-                  echo noAccessPermission
-               fi
-            else
-               if [ -f "\${checkf}" ]; then
-                  if [ -r "\${checkf}" ]; then
-                     echo regular
-                  else
-                     echo noReadPermission
-                  fi
-               else
-                  echo noRegular
-               fi
-            fi
-            "
-
 # 0.39.6
-# -Ssh: copy, refactoring ?
+# -Ssh: copy
 # -File: insertAfterLine, insertBeforeLine
 # -Process: getChildren
 # -use of integer args test
