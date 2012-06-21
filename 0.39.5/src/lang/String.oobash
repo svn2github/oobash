@@ -721,11 +721,7 @@ __capitalize() {
       local this="$1"
       local str="$("$this".toLowerCase)"
       local firstchar="${str:0:1}"
-      if [[ "$firstchar" == "ß" ]]; then
-         firstchar=Ss
-      else
-         firstchar="$(__strUpper "$firstchar")"
-      fi
+      firstchar="$(__strUpper "$firstchar")"
       System.out.println "$firstchar""${str:1}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
