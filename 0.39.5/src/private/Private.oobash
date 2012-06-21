@@ -43,7 +43,6 @@
 # __isAssocArray() checks if given parameter is an associative array
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
-# __isInteger() check for integer input
 
 
 
