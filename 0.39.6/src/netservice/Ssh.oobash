@@ -694,13 +694,11 @@ Ssh.help() {
                diffFile
                   if the first [ optional: and 3rd argument] defines a regular file, then
                   the output is a diff of the two files.
-                  if the first [ optional: and 3rd argument] defines a directory, then
-                  the output is a diff of all filenames under given directory.
                   Remote stderr is not redirected.
                Parameters:
-                  primititve file or path on this Ssh object
+                  primititve file on this Ssh object
                   Ssh object
-                  [primititve file or path on argument Ssh object] Default: file or path of argument 1
+                  [primititve file on argument Ssh object] Default: file of argument 1
                Returns:
                   diff output
                Throws:
