@@ -1529,6 +1529,142 @@ __replaceLine() {
    return $returnValue
 }
 
+__insertBeforeLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      (declare -i line=$3) 2>/dev/null
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  # try to avoid at least some problems...
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
+                     local text="$("$argobject".toString)"
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                     else
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                           fi
+                        done
+                     fi                     
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__insertAfterLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      (declare -i line=$3) 2>/dev/null
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  # try to avoid at least some problems...
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
+                     local text="$("$argobject".toString)"
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                     else
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                           fi
+                        done
+                     fi                     
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 # length
 # Masterfunction in the String.oobash file
 
@@ -1711,6 +1847,7 @@ File.help() {
       -getUsableSpace -getInode -getBase -getExtension
       -getPosixFilePermissions -setPosixFilePermissions
       -getLine -replaceLine -setLine -createNewFile
+      -insertAfterLine -insertBeforeLine
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile
