@@ -270,6 +270,11 @@
 #    -set +errexit (should be default anyway - needed by some private functions) in oobash.source
 #    -added Dependencies: diff
 #    -Fixes
+# Version:      0.39.6
+#    -added File: insertAfterLine, insertBeforeLine
+#    -added Ssh: copy  
+#    -added private functions: __isInteger __isPosInteger __isNegInteger 
+#    -Fixes
 
 #################################################################
 # Features:
