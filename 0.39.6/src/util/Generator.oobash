@@ -449,15 +449,7 @@ Script.generator() {
       else
          System.out.println '#!'$SHELL > "${destination}"
          System.out.println "
-
 source "${__OODIR__}"/oobash.source
-
-System.out.println
-System.out.println \"     This is a script skeleton for: \" 
-System.out.println \"     $1 \"
-System.out.println \"     You can find it here: \"
-System.out.println \"     "${__OODIR__}"/scripts/$1 \"
-System.out.println
 
 # Please complete/customise the pod doc below.
 # Then you can use the pod (Plain Old Documentation) tools 
@@ -467,26 +459,6 @@ System.out.println
 
 # Create man page for $1:
 # pod2man "${__OODIR__}"/scripts/$1 > "${__OODIR__}"/man/man1/$1.1
-# gzip "${__OODIR__}"/man/man1/$1.1
-
-#############
-# FUNCTIONS #
-#############
-
-usage() {
-   if command -v pod2usage >/dev/null 2>&1; then
-      pod2usage -verbose 1 -exit 42 \$0
-      System.exit \$?
-   fi
-}
-
-########
-# MAIN #
-########
-
-if (( \$# == 0 )); then
-   usage
-fi
 
 ############
 # POD DOCS #
@@ -526,8 +498,30 @@ The MIT License
 Written by $USER
 
 =cut
+
+#############
+# FUNCTIONS #
+#############
+
+usage() {
+   if command -v pod2usage >/dev/null 2>&1; then
+      pod2usage -verbose 1 -exit 42 \$0
+      System.exit \$?
+   fi
+}
+
+########
+# MAIN #
+########
+
+if (( \$# == 0 )); then
+   usage
+fi
          ">> "${destination}"
          chmod 755 "${destination}" 2>/dev/null
+         System.out.println "     You can find the script skeleton here: "
+         System.out.println "     "${__OODIR__}"/scripts/$1 "
+         System.out.println
          $1
       fi
    else
