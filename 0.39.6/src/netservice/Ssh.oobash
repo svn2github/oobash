@@ -471,6 +471,71 @@ __diffFiletree() {
    return $returnValue
 }
 
+__copy() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 4 )) || (( $# == 5 )); then
+      local this="$1"
+      local argobject="$4"
+      local argclass
+      argclass="$("${argobject}".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "$("$this".getClass)" == "$argclass" ]]; then
+            # source
+            local machine="$("$this".getSshHost)"
+            local user="$("$this".getSshUser)"
+            declare -i port="$("$this".getSshPort)"
+            local file="$3"
+            # target 
+            local targetMachine="$("$argobject".getSshHost)"
+            local targetUser="$("$argobject".getSshUser)"
+            declare -i targetPort="$("$argobject".getSshPort)"
+            
+            local bool="$(Boolean.TRUE)"
+            local targetFile="${5:-"$(__dirname "$file")"}"
+           
+            cmd1="cd -- \"$(dirname "$file")\" 2>/dev/null && tar -cf - \"$(basename "$file")\" 2>/dev/null"
+            cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
+            if command -v ssh >/dev/null 2>&1; then
+               ssh -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" -q -o "BatchMode yes" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
+            else
+               __throw "NotInPathException" ": ssh not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+
+            for status in ${PIPESTATUS[@]}; do
+               if (( "$status" != 0 )); then
+                  bool="$(Boolean.FALSE)"
+                  break
+               fi
+            done
+            
+            if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 complete -W  "$(echo ${__Ssh__[@]}) all Ssh" Ssh.help
 
 #################
@@ -487,6 +552,7 @@ Ssh.help() {
                     -getSshPort -command -vimEdit 
                     -connect -diffFile -diffFiletree  
                     -grep -grepIgnoreCase -grepInvertMatch
+                    -copy
                     Constructor: 
                     -Ssh
       " 
