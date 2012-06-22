@@ -1,0 +1,23 @@
+bc
+chmod
+date/gdate (GNU!)
+mkdir
+mktemp
+mv
+readlink/greadlink (GNU!)
+rm
+rmdir
+stat/gstat (GNU!)
+touch
+wc
+sort
+tr
+pwd
+ps
+kill
+renice
+openssl
+ssh
+scp
+vim
+diff

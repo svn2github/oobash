@@ -1,0 +1,206 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: David Costa <david@zarel.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: oobash/oobash-0.38.5.source:194
+msgid "bash: $str: command not found."
+msgstr "bash: $str: comando non trovato."
+
+#: oobash/oobash-0.38.5.source:29
+msgid "Sorry, you should: source ${__FILENAME__} and not execute it..."
+msgstr "Spiacente, dovresti fare: 'source ${__FILENAME__}', non eseguirlo..."
+
+#: oobash/oobash-0.38.5.source:43
+msgid "Sorry, you need a bash version 4..."
+msgstr "Spiacente, ti serve bash versione 4..."
+
+#: oobash/oobash-0.38.5.source:214
+msgid " oo-style framework for bash 4"
+msgstr " Libreria oo-style per bash 4"
+
+#: oobash/oobash-0.38.5.source:215
+msgid " Version:      ${__VERSION__}"
+msgstr " Versione:       ${__VERSION__}"
+
+#: oobash/oobash-0.38.5.source:216
+msgid " Author:       andreas.gregor.frank@googlemail.com"
+msgstr " Autore:       andreas.gregor.frank@googlemail.com"
+
+#: oobash/oobash-0.38.5.source:218
+msgid " Stop showing this message by setting __QUIET__=true"
+msgstr " Imposta __QUIET__=true per non visualizzare questo messaggio."
+
+#: oobash/oobash-0.38.5.source:220
+msgid " Try the developer tools: Class.generator Script.generator Man.generator"
+msgstr " Prova gli strumenti per gli sviluppatori: Class.generator Script.generator Man.generator"
+
+#: oobash/oobash-0.38.5.source:222
+msgid " Classes: String, File, Boolean, System, Math, I18nMessage, Process, Level, Ssh"
+msgstr " Classi: String, File, Boolean, System, Math, I18nMessage, Process, Level, Ssh"
+
+#: oobash/oobash-0.38.5.source:223
+msgid " Constructors: String, File, Boolean, Process, Level, Ssh"
+msgstr " Costruttori: String, File, Boolean, Process, Level, Ssh"
+
+#: oobash/oobash-0.38.5.source:224
+msgid " Usage: String a teststring or File a testfile or Boolean a True"
+msgstr " Utilizzo: String a teststring oppure File a testfile oppure Boolean a True"
+
+#: oobash/oobash-0.38.5.source:242
+msgid " Usage: a.toString"
+msgstr " Utilizzo: a.toString"
+
+#: oobash/oobash-0.38.5.source:253
+msgid " Some String constants:"
+msgstr " Qualche costante di String:"
+
+#: oobash/oobash-0.38.5.source:256
+msgid " Some Math constants: -Math.E -Math.PI"
+msgstr " Qualche costante di Math: -Math.E -Math.PI"
+
+#: oobash/oobash-0.38.5.source:257
+msgid " Some Boolean constants: -Boolean.TRUE -Boolean.FALSE"
+msgstr " Qualche costante Boolean: -Boolean.TRUE -Boolean.FALSE"
+
+#: oobash/oobash-0.38.5.source:259
+msgid " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help ..."
+msgstr " Sistemi di aiuto disponibili: String.help, File.help, Math.help, System.help, Boolean.help ..."
+
+#: oobash/oobash-0.38.5.source:260
+msgid " Usage: Classname.help methodname(s)|constructorname|constantname or keyword: all"
+msgstr " Utilizzo: Classe.help metodo(i)|costruttore|costante o 'all'"
+
+#: oobash/oobash-0.38.5.source:261
+msgid " Example: String.help zfill"
+msgstr " Esempio: String.help zfill"
+
+#: oobash/src/util/Generator.oobash:27
+msgid "Sorry, no valid classname: '$userClass'"
+msgstr "Spiacente, nome di classe non valido: '$userClass'."
+
+#: oobash/src/util/Generator.oobash:46
+msgid "Sorry, no valid attribute name: '$attribute'"
+msgstr "Spiacente, nome attributo non valido: '$attribute'."
+
+#: oobash/src/util/Generator.oobash:263
+msgid "   Please enter one class name and the attributes"
+msgstr "   Inserire il nome della classe e gli attributi"
+
+#: oobash/src/util/Generator.oobash
+msgid "   Please enter one class name"
+msgstr "   Inserire il nome della classe"
+
+#: oobash/src/util/Generator.oobash:264
+msgid "   Example:"
+msgstr "   Esempio:"
+
+#: oobash/src/util/Generator.oobash:265
+msgid "   Class.generator Person name age city > Person.oobash"
+msgstr "   Class.generator Persona nome anni paese > Persona.oobash"
+
+#: oobash/src/util/Generator.oobash
+msgid "   Man.generator Person"
+msgstr "   Man.generator Persona"
+
+#: oobash/src/util/Generator.oobash:266
+msgid "   source Person.oobash"
+msgstr "   source Persona.oobash"
+
+#: oobash/src/util/Generator.oobash:267
+msgid "   Person a john 22 london"
+msgstr "   Persona a john 22 londra "
+
+#: oobash/src/util/Generator.oobash:268
+msgid "   a.getPersonAge"
+msgstr "   a.getPersonaAnni"
+
+#: oobash/src/util/Generator.oobash:269
+msgid "   >>>22"
+msgstr ""
+
+#: oobash/src/util/Generator.oobash:270
+msgid "   a.getClass"
+msgstr ""
+
+#: oobash/src/util/Generator.oobash:271
+msgid "   >>>class Person"
+msgstr "   >>>class Persona"
+
+#: oobash/src/util/Generator.oobash:272
+msgid "   a.getPersonName"
+msgstr "   a.getPersonaNome"
+
+#: oobash/src/util/Generator.oobash:273
+msgid "   >>>john"
+msgstr ""
+
+#: oobash/src/util/Generator.oobash:274
+msgid "   a.getPersonCity"
+msgstr "   a.getPersonaPaese"
+
+#: oobash/src/util/Generator.oobash:275
+msgid "   >>>london"
+msgstr "   >>>londra"
+
+#: oobash/src/util/Generator.oobash:277
+msgid "   If you develop something useful or funny, please"
+msgstr "   Se sviluppi qualcosa di utile o divertente, per favore"
+
+#: oobash/src/util/Generator.oobash:278
+msgid "   send it to me and i will publish it on sourceforge."
+msgstr "   per favore mandamelo e lo pubblicherò su sourceforge."
+
+#: oobash/src/util/Generator.oobash:279
+msgid "   Happy bashing !"
+msgstr ""
+
+#: oobash/src/lang/String.oobash:40
+msgid "Sorry, objectname '$this' is not valid"
+msgstr "Spiacente, l'oggetto '$this' non è valido"
+
+#: oobash/src/lang/String.oobash:46
+msgid "Sorry, objectname '$this' is a keyword"
+msgstr "Spiacente, il nome oggetto '$this' è una parola riservata"
+
+#: oobash/src/lang/String.oobash:59
+msgid "Sorry, no full stop character allowed in objectname"
+msgstr "Spiacente, il carattere '.' punto non è permesso nel nome oggetto"
+
+#: oobash/src/lang/String.oobash
+msgid  "Sorry, could not create object '$this'"
+msgstr ""
+
+#: oobash/oobash-0.38.5.source
+msgid " Doing depedency check..."
+msgstr ""
+
+#: oobash/oobash-0.38.5.source
+msgid " Everything ok!"
+msgstr ""
+
+#: oobash/oobash-0.38.5.source
+msgid " Please install the missing package(s) to have complete functionality"
+msgstr ""
+
+#: oobash/oobash-0.38.5.source
+msgid " Could not change MANPATH!"
+msgstr ""
+
+#: oobash/src/admin/SshHost.oobash
+# msgid "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
+# msgstr ""
+
+#: oobash/src/util/Generator.oobash:
+msgid "   Please enter one script name"
+msgstr "   Inserire il nome della script"
+
+#: oobash/src/util/Generator.oobash:
+msgid "   Crash! Script already exists."
+msgstr "   Crash! Il script esiste già."

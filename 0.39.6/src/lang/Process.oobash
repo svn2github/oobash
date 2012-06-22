@@ -1,0 +1,1127 @@
+#############################################################
+# Author:  andreas.gregor.frank@googlemail.com
+# Date:    2012-05-11
+# License: The MIT License
+# Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
+#############################################################
+
+#########################
+# constructor  function #
+#########################
+
+Process() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+
+      # catch eg "+" param
+      (declare -i pid="$2") 2>/dev/null
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+      declare -i pid="$2"
+      
+      if ! __visible "$this"; then
+         __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      if ! __checkForKeywords "$this"; then
+         __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi 
+
+      if ! __periodCheck "$this"; then
+         __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      # try to validate pid
+      if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+         declare -i maxpid
+         maxpid=$(</proc/sys/kernel/pid_max)
+         if (( ${pid} < 1 || ${pid} > ${maxpid} )); then
+            __throw "IllegalArgumentException" ": Pid \"$pid\" is not valid"
+            returnValue=$?
+            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            return $returnValue
+         fi
+         if [[ ! -d /proc/${pid} ]]; then
+            __throw "ProcessException" ": Process with pid: \"$pid\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            return $returnValue
+         fi
+      else
+         if command -v ps >/dev/null 2>&1; then
+            ps  -p "${pid}" -o stat 2>/dev/null 1>&2
+            if (( $? != 0 ));then
+               __throw "ProcessException" ": Process with pid: \"$pid\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+               return $returnValue
+            fi
+         fi
+      fi
+      
+      local pointer="$(__getPointer)"
+
+      local class="${FUNCNAME}"
+
+      __destructor "${this}"
+
+      __alias "$this" "${FUNCNAME}"
+      
+      __attribute pid "${pid}"
+
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerClass Process
+
+###########
+# Methods #
+###########
+
+__getPid() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local this="$1"
+      local key
+      for key in "${!__OBJECTPOOL__[@]}"
+      do 
+         if [[ "$this" == "$key" ]]; then
+            local str="${__OBJECTPOOL__["$this"]}"
+            declare -i i=0
+            for ((i=0; i < ${#str}; i++))
+            do
+               local char="${str:i:1}"
+               if [[ ${char} == "@" ]]; then
+                  local j=$(($i+1))
+                  local pointer="${str:j}"
+               fi
+            done              
+         fi
+      done
+      if command -v ps >/dev/null 2>&1; then
+         local pId
+         pId="$(ps  -p "${__ATTRIBUTEPOOL__[${pointer}@pid]}" -o pid="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"${__ATTRIBUTEPOOL__[${pointer}@pid]}\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         System.out.println ${pId}
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"        
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getParentPid() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue == 0 )); then
+            local ppid
+            ppid="$(ps  -p "${pId}" -o ppid="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println ${ppid}
+            fi
+         fi
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getRealUserId() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local ruid
+         ruid="$(ps  -p "${pId}" -o ruid="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         else
+            System.out.println ${ruid}
+         fi
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getEffectiveUserId() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local euid
+         euid="$(ps  -p "${pId}" -o uid="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         System.out.println ${euid}
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getUser() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local owner
+         owner="$(ps  -p "${pId}" -o user="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         System.out.println ${owner}
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"        
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getMemorySize() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local mem
+         mem="$(ps  -p "${pId}" -o rss="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         System.out.println ${mem}
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"        
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getStartTime() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local start
+         start="$(ps  -p "${pId}" -o lstart="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         System.out.println "${start}"
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"        
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getCommand() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local cmd
+         cmd="$(ps  -p "${pId}" -o command="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         System.out.println "${cmd}"
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"      
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getStatus() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local stat
+         stat="$(ps -p "$pId" -o state="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         case "${stat:0:1}" in
+            U|D)stat="Uninterruptible";;
+            R)stat="Runnable";;
+            S)stat="Sleeping";;
+            T)stat="Stopped";;
+            # W not valid since the 2.6.xx linux kernel
+            W)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
+                  stat="Waiting"
+               else
+                  stat="Paging"
+               fi;;
+            Z)stat="Defunct";;
+            # only SunOS (letter O)
+            O)stat="Running";;
+            # only HP-UX -- no idea what this means
+            X)stat="Growing";;
+            # only HP-UX: Null
+            0)stat="NotExisting";;
+            I)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
+                  # no idea what this means
+                  stat="Intermediate"
+               else
+                  stat="Idle"
+               fi;;
+            *)__throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue;;
+         esac
+         System.out.println "${stat}"
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+
+__getPriority() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local prio
+         prio="$(ps  -p "${pId}" -o ni="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         System.out.println ${prio}
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setPriority() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      if command -v renice >/dev/null 2>&1; then
+         local this="$1"
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         # catch eg "+" param
+         (declare -i priority="$3") 2>/dev/null
+         if (( $? != 0 )); then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i priority="$3"    
+         if (( ${priority} >= -20 && ${priority} <= 19 )); then
+            renice "${priority}" -p "${pId}" 1>/dev/null 2>&1
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"${priority}\" - has to be between -20 and 19"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi   
+      else
+         __throw "NotInPathException" ": renice not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isDaemon() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v ps >/dev/null 2>&1; then
+         local this="$1"
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local tty
+         tty="$(ps  -p "${pId}" -o tty="" 2>/dev/null)"
+         if (( $? != 0 )); then
+            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         if [[ "${tty}" =~ "?" ]] ; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__kill() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )) || (( $# == 2 )) ; then
+      if command -v kill >/dev/null 2>&1; then
+         local this="$1"
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local signal
+         if (( $# == 3 )); then
+            local signalValid="$(Boolean.FALSE)"
+            local key
+            declare -u signal="$3"
+            if [[ "${signal}" != 0 ]]; then
+               for key in "${!__Signals__[@]}"
+               do 
+                  if [[ "${signal}" == "${__Signals__[key]}" ]]; then
+                     signalValid=$(Boolean.TRUE)  
+                     break
+                  fi
+               done
+               if [[ "${signalValid}" != "$(Boolean.TRUE)" ]]; then
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
+            fi           
+         else
+            signal="TERM"
+         fi       
+         kill -s "${signal}" "${pId}" 1>/dev/null 2>&1
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": kill not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__threadCount() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v ps >/dev/null 2>&1; then
+         declare -i pId
+         pId="$("$this".getPid)"
+         returnValue=$?
+         if (( $returnValue != 0 )); then
+            return $returnValue
+         fi
+         local thcount
+         if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+            thcount="$(ps -o thcount --no-header --pid "${pId}" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+         else
+            thcount="$(ps -p "${pId}" -o wq="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+         fi
+         if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+            System.out.println ${thcount}
+         else
+            (declare -i tc=$thcount) 2>/dev/null
+            if (( $? != 0 )); then
+               declare -i tc=0
+            else
+               declare -i tc=$thcount
+            fi
+            System.out.println ${tc}
+         fi
+      else
+         __throw "NotInPathException" ": ps not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+##################
+#                #
+#     STATICS    # 
+#                #
+##################
+
+Process.create() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local processCommand="$2"
+      if command -v  $processCommand >/dev/null 2>&1; then
+         declare -i processPid
+         processPid=$(
+         $processCommand 2>/dev/null 1>&2 &
+         System.out.println $!
+         )
+         Process "$this" "${processPid}" 2>/dev/null
+         returnValue=$?
+         if (( $returnValue == 0 )); then
+            Boolean.TRUE
+            return $returnValue
+         fi
+         Boolean.FALSE
+      else
+         __throw "NotInPathException" ": ${processCommand} not in path"
+         returnValue=$?
+         __stackOrHelp "Process" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "Process" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction Process.create
+
+complete -W  "$(echo ${__Process__[@]}) create all Process" Process.help
+
+#################
+# help function #
+#################
+Process.help() {  
+   local printStream=${printStream:-out}  
+   if (( $# == 0 )); then
+      System.${printStream}.println "
+                    Usage: Process.help all|methodname
+                    Available methods:
+                    -getClass -toString -equals -hashCode 
+                    -getUser -getStatus -getCommand -getPid
+                    -getPriority -setPriority -kill -isDaemon
+                    -getEffectiveUserId -getRealUserId -threadCount
+                    -Process.create
+                    Constructor: 
+                    -Process
+      " 
+      return 0
+   fi
+   while (($#))
+   do
+      local match=$(Boolean.FALSE)
+      case $1 in
+         Process|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Process
+                  Constructor for the Process objects.
+               Parameters:
+                  objectname
+                  <pid>
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if objectname contains full stop character
+                  ProcessException - if process can't be managed
+               Example:
+                  Process a <pid> 
+            ";;& 
+         threadCount|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               threadCount
+                  Returns the number of threads of this Process.
+               Parameters:
+                  None
+               Returns:
+                  Number of threads
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process a 2518
+                  threadCount
+                  >>>15
+            ";;& 
+         getStartTime|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getStartTime
+                  Returns the time the command started.
+                  Format: \"+%a %b %d %H:%M:%S %Y\"
+               Parameters:
+                  None
+               Returns:
+                  Returns the time the command started
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process initProc 1
+                  initProc.getStartTime
+                  >>>Wed May 23 12:56:32 2012
+            ";;& 
+         getMemorySize|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getMemorySize
+                  Returns the resident set size, the non-swapped physical memory 
+                  that a task has used (in kiloBytes).
+               Parameters:
+                  None
+               Returns:
+                  The value of the resident set size in kilobytes.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process initProc 1
+                  initProc.getMemorySize
+                  >>>0.0
+            ";;& 
+         getParentPid|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getParentPid
+                  Returns the pid of the parent process. If there is no parent pid
+                  0 is returned.
+               Parameters:
+                  None
+               Returns:
+                  The value of parent pid or 0, if there is no parent pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process initProc 1
+                  initProc.getParentPid
+                  >>>0
+            ";;& 
+         getUser|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getUser
+                  Returns the username of this process
+               Parameters:
+                  None
+               Returns:
+                  Username
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.getUser
+                  >>>root
+            ";;& 
+         getStatus|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getStatus
+                  Returns the status of this procss
+                  Possible values (depends on operating system):
+                  -Uninterruptible
+                  -Runnable -Sleeping
+                  -Stopped -Waiting
+                  -Paging -Defunct
+                  -Running -Growing
+                  -NotExisting -Intermediate
+                  -Idle
+               Parameters:
+                  None
+               Returns:
+                  The status of this process.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.getStatus
+                  >>>Sleeping
+            ";;& 
+         getCommand|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getCommand
+                  Returns the executable name of this process
+               Parameters:
+                  None
+               Returns:
+                  Executable name
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.getCommand
+                  >>>/sbin/init
+            ";;& 
+         getPriority|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getPriority
+                  Returns nice value. This ranges from 19 (nicest) 
+                  to -20 (not nice to other processes)
+               Parameters:
+                  None
+               Returns:
+                  nice value (19 to -20)
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.getPriority
+                  >>>0
+            ";;& 
+         setPriority|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setPriority
+                  Alters the scheduling priority of this running process.
+                  Users other than the super-user may only alter the priority of processes they own,
+                  and can only monotonically increase their \"nice value\" within the range 0 to 19.  
+                  The super-user may alter the priority of any process and set the priority to any value 
+                  in the range -20 to 19.
+               Parameters:
+                  None
+               Returns:
+                  True if priority is altered successfully. False otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                                           - if priority is not between -20 and 19
+                  NotInPathException - if renice not in path
+               Example:
+                  Process.create a \"sleep 500\"
+                  >>>true
+                  a.setPriority 5
+                  >>>true
+            ";;& 
+         getEffectiveUserId|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getEffectiveUser
+                  Returns effective user id
+               Parameters:
+                  None
+               Returns:
+                  The effective user id.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.getEffectiveUserId
+                  >>>0
+            ";;& 
+         getRealUserId|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getRealUser
+                  Returns real user id
+               Parameters:
+                  None
+               Returns:
+                  The real user id.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.getRealUserId
+                  >>>0
+            ";;& 
+         kill|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               kill
+                  Sends signal to process.
+                  You can see all valid signals, if you use the command
+                  'kill -l' in your shell.
+                  If signal is '0', then no signal is sent, but error
+                  checking is still performed.
+               Parameters:
+                  signal is optional [default: TERM]
+               Returns:
+                  Treu if kill could send the signal to the processs successfully.
+                  False otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if kill not in path
+               Example:
+                  Process b 1
+                  b.kill
+                  >>>false
+            ";;& 
+         isDaemon|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isDaemon
+                  Checks if there is any controlling terminal. If yes,
+                  false is returned otherwise true.
+               Parameters:
+                  None
+               Returns:
+                  Returns true if proces is a daemon, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.isDaemon
+                  >>>true
+            ";;& 
+         Process.create|create|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Process.create
+                  Processbuilder using the given command. Stdin and stderr
+                  of the command go to /dev/null.
+               Parameters:
+                  objectname
+                  command
+               Returns:
+                  true if a Process object is constructed, else false.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if given command not in path
+               Example:
+                  Process.create a \"sleep 500\"
+                  >>>true
+            ";;& 
+         getPid|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getPid
+                  Returns the value of pid
+               Parameters:
+                  None
+               Returns:
+                  The value of pid.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if ps not in path
+                  ProcessException - if process can't be managed
+               Example:
+                  Process b 1
+                  b.getPid
+                  >>>1
+            ";;& 
+         getClass|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getClass
+                  Returns the runtime class of this Object.
+               Parameters:
+                  None
+               Returns:
+                  The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.getClass
+                  >>>class Process
+            ";;&
+         toString|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toString
+                  Returns a String object representing this Process object in sorted order. 
+               Parameters:
+                  None
+               Throws:
+                  NotInPathException - if sort not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.toString
+                  >>>1
+            ";;&
+         hashCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hashCode
+                  Returns a hash code for this Process object.
+               Parameters:
+                  None
+               Returns:
+                  a hash code for this Process.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Process b 1
+                  b.hashCode
+                  >>>49
+            ";;&
+         equals|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               equals
+                  Returns true if and only if the argument is a Process object that 
+                  represents the same Process value as this object. 
+               Parameters:
+                  anObject - The object to compare this Process against
+               Returns:
+                  true if the Process objects represent the same value; false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if arguent is no object
+               Example:
+                  Process b 1
+                  Process c 1
+                  b.equals c
+                  >>>true
+            ";;&
+         *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
+                 System.${printStream}.println "                                  
+                       No help found for $1
+                    "   
+              fi
+              ;;& 
+      esac               
+      shift
+   done 
+}
+
+

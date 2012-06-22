@@ -1,0 +1,334 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+###################
+###################
+##               ##
+##     SYSTEM    ## 
+##               ##
+###################
+###################
+
+
+##################
+#                #
+#     STATICS    # 
+#                #
+##################
+
+System.currentTimeMillis() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      if __gnudateCheck; then
+         local dat=$(date +%s%N)
+         System.out.println ${dat:0:13}
+      else
+         __throw "NotInPathException" ": GNU date not in path"
+         returnValue=$?
+         __stackOrHelp "System" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.currentTimeMillis
+
+System.currentTimeNanos() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      if __gnudateCheck; then
+         date "+%s%N"
+      else
+         __throw "NotInPathException" ": GNU date not in path"
+         returnValue=$?
+         __stackOrHelp "System" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.currentTimeNanos
+
+System.exit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      # catch eg "+" param
+      (declare -i status=$1) 2>/dev/null
+      if (( $? != 0 )); then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         returnValue=$?
+         __stackOrHelp "System" "${FUNCNAME}"
+      else
+         declare -i status="$1"
+         if (( ${status} >= 0 && ${status} <= 255 )); then
+            exit $status
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
+            returnValue=$?
+            __stackOrHelp "System" "${FUNCNAME}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.exit
+
+System.err.println() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# <= 1  )); then
+      local message="$1"
+      printf "%s\n" "${message}" >&2
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.err.println
+
+System.out.println() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# <= 1  )); then
+      local message="$1"
+      printf "%s\n" "${message}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.out.println
+
+System.err.print() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# <= 1  )); then
+      local message="$1"
+      printf "%s" "${message}" >&2
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.err.print
+
+System.out.print() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# <= 1  )); then
+      local message="$1"
+      printf "%s" "${message}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.out.print
+
+System.runtime() { 
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      if __gnudateCheck && command -v bc >/dev/null 2>&1; then
+         local time="$(printf "%s\n" "$(date +"%s.%N")-$__STARTTIME__" | bc -l)"
+         if [[ "${time:0:1}" == "." ]]; then
+            time=0"${time}"
+         fi
+         System.out.println "Runtime: ${time} [seconds.nanoseconds]"
+     else
+        System.out.println "Runtime: ${SECONDS} [seconds]"
+     fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "System" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction System.runtime
+
+#################
+#               #
+#     HELP      # 
+#               #
+#################
+
+complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println out.print err.print runtime all" System.help
+
+System.help() {  
+   local printStream=${printStream:-out}
+   if (( $# == 0 )); then
+      System.${printStream}.println "
+      Usage: System.help all|methodname
+      Available methods:
+      -System.exit -System.currentTimeMillis
+      -System.err.println -System.out.println
+      -System.err.print -System.out.print
+      -System.runtime -System.currentTimeNanos
+      Constructor: 
+      None
+                 "
+      return 0
+   fi
+   while (($#))
+   do
+      local match=$(Boolean.FALSE)  
+      case $1 in 
+         System.exit|exit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.exit
+               Terminates the currently running bash. 
+               The argument serves as a status code; by convention, a 
+               nonzero status code indicates abnormal termination.
+            Parameters:
+               status - exit status (0-255)
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+                                          if argument can not be defined as integer
+                                          if argument not between 0 and 255
+            ";;&
+         System.currentTimeNanos|currentTimeNanos|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.currentTimeNanos
+               Returns the current time in nanoseconds. Note that while 
+               the unit of time of the return value is a nanosecond, the 
+               granularity of the value depends on the underlying operating 
+               system.
+            Parameters:
+               None
+            Throws:
+               NotInPathException - if GNU date is not in path
+               IllegalArgumentException - if number of arguments != 0
+            Returns:
+               the difference, measured in nanoseconds, between the current 
+               time and midnight, January 1, 1970 UTC.
+            Example:
+               System.currentTimeNanos
+               >>>1295883747179966215
+            ";;&
+         System.runtime|runtime|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.runtime
+               Returns the current runtime in nanosecond precision (if GNU date and bc exists).
+               If bc or GNU date is missing the current runtime is returned in seconds.
+            Parameters:
+               None
+            Throws:
+               IllegalArgumentException - if number of arguments != 0
+            Returns:
+               Runtime
+            Example:
+               System.runtime
+               >>>Runtime: 1.536150153 [seconds.nanoseconds]
+            ";;&
+         System.out.println|out.println|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.out.println
+               Print a String and then terminate the line to \"standard\" output 
+            Parameters:
+               x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.println "hello"
+               >>>hello
+            ";;&
+         System.err.println|err.println|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.err.println
+               Print a String and then terminate the line to \"standard\" error output
+            Parameters:
+               x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.println "hello"
+               >>>hello
+            ";;&      
+         System.out.print|out.print|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.out.print
+               Print a String to \"standard\" output 
+            Parameters:
+               x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.print "hello"
+               >>>hello>>>
+            ";;&
+         System.err.print|err.print|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.err.print
+               Print a String to \"standard\" error output
+            Parameters:
+               x - The String to be printed.
+            Throws:
+               IllegalArgumentException - if number of arguments != 1
+            Example:
+               System.out.print "hello"
+               >>>hello>>>
+            ";;&
+         System.currentTimeMillis|currentTimeMillis|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+            System.currentTimeMillis
+               Returns the current time in milliseconds. Note that while 
+               the unit of time of the return value is a millisecond, the 
+               granularity of the value depends on the underlying operating 
+               system.
+            Parameters:
+               None
+            Throws:
+               NotInPathException - if GNU date is not in path
+               IllegalArgumentException - if number of arguments != 0
+            Returns:
+               the difference, measured in milliseconds, between the current 
+               time and midnight, January 1, 1970 UTC.
+            Example:
+               System.currentTimeMillis
+               >>>1292145813665
+            ";;&
+         *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
+                 System.${printStream}.println "                                  
+                       No help found for $1
+                    "   
+              fi
+              ;;& 
+      esac    
+      shift
+   done            
+}
+__registerFunction System.help
