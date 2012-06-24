@@ -488,19 +488,24 @@ $1
 =head1 AUTHOR
 
 Written by $USER
-
-=head1 HISTORY
 ">> "${destination}"
-         case $LANG in
-            en_US*)
-               System.out.println "-Version 1.0:  $(date "+%m/%d/%Y")">> "${destination}";;
-            zh_CN*)
-               System.out.println "-Version 1.0:  $(date "+%Y-%m-%d")">> "${destination}";;
-            *)
-               System.out.println "-Version 1.0:  $(date "+%d.%m.%Y")">> "${destination}";;
+
+         if command -v date >/dev/null 2>&1; then
+            System.out.println "=head1 HISTORY" >> "${destination}"
+            System.out.println "" >> "${destination}"
+            case $LANG in
+               en_US*)
+                  System.out.println "-Version 1.0:  $(date "+%m/%d/%Y")
+                  ">> "${destination}";;
+               zh_CN*)
+                  System.out.println "-Version 1.0:  $(date "+%Y-%m-%d")
+                  ">> "${destination}";;
+               *)
+                  System.out.println "-Version 1.0:  $(date "+%d.%m.%Y")
+                  ">> "${destination}";;
             esac
-         System.out.println "
-=head1 SEE ALSO
+         fi
+         System.out.println "=head1 SEE ALSO
 
 oobash
 
