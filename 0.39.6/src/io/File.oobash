@@ -1846,7 +1846,7 @@ File.help() {
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
       -getUsableSpace -getInode -getBase -getExtension
       -getPosixFilePermissions -setPosixFilePermissions
-      -getLine -replaceLine -setLine -createNewFile
+      -getLine -replaceLine -delLine -createNewFile
       -insertAfterLine -insertBeforeLine
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
@@ -1883,6 +1883,7 @@ File.help() {
             System.${printStream}.println "
                replaceLine
                   Replace line in this file with given String.
+                  Caution! This method can corrupt the file. 
                Parameters:
                   integer that represents line number
                   String object
@@ -1937,6 +1938,7 @@ File.help() {
             System.${printStream}.println "
                delLine
                   Deletes line with given number in this file.
+                  Caution! This method can corrupt the file. 
                Parameters:
                   integer that represents line number
                Returns:

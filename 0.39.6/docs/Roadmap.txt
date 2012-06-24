@@ -1,14 +1,12 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.6
-# -Ssh: copy, doScript
+# -Ssh: copy
 # -File: insertAfterLine, insertBeforeLine
 # -Process: getChildren
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
-# File docs: warnings for the "dangerous" file functions
-# check for correct implemented __command
 
 # 0.39.7
 # -Man.generator: bold methodnames
