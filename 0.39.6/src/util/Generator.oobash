@@ -485,6 +485,21 @@ Your description of $1
 
 $1
 
+=head1 AUTHOR
+
+Written by $USER
+
+=head1 HISTORY
+">> "${destination}"
+         case $LANG in
+            en_US*)
+               System.out.println "-Version 1.0:  $(date "+%m/%d/%Y")">> "${destination}";;
+            zh_CN*)
+               System.out.println "-Version 1.0:  $(date "+%Y-%m-%d")">> "${destination}";;
+            *)
+               System.out.println "-Version 1.0:  $(date "+%d.%m.%Y")">> "${destination}";;
+            esac
+         System.out.println "
 =head1 SEE ALSO
 
 oobash
@@ -492,10 +507,6 @@ oobash
 =head1 LICENSE
 
 The MIT License
-
-=head1 AUTHOR
-
-Written by $USER
 
 =cut
 
