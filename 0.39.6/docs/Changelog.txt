@@ -274,6 +274,7 @@
 #    -added File: insertAfterLine, insertBeforeLine
 #    -added Ssh: copy  
 #    -added private functions: __isInteger __isPosInteger __isNegInteger 
+#    -small modifications for Script.generator
 #    -Fixes
 
 #################################################################
