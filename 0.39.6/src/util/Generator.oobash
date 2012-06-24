@@ -494,10 +494,10 @@ Written by $USER
             System.out.println "=head1 HISTORY" >> "${destination}"
             System.out.println "" >> "${destination}"
             case $LANG in
-               en_US*)
+               en_US*|en_BZ*)
                   System.out.println "-Version 1.0:  $(date "+%m/%d/%Y")
                   ">> "${destination}";;
-               zh_CN*)
+               zh_CN*|ko_KR*|fa_IR*|ja_JP*|hu_HU*|lt_LT*)
                   System.out.println "-Version 1.0:  $(date "+%Y-%m-%d")
                   ">> "${destination}";;
                *)
