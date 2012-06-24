@@ -640,11 +640,12 @@ Ssh.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                command
-                  Calls command on remote host 
+                  Calls command on remote host.
+                  Remote stderr is reditrected to /dev/null.
                Parameters:
                   command
                Returns:
-                  command echo output
+                  command stdout output
                Throws:
                   IllegalArgumentException - if number of arguments != 1
                Example:
