@@ -47,8 +47,7 @@ File() {
          return $returnValue
       fi
 
-      local pointer="$(__getPointer)"
-
+      local pointer=$((__COUNTER__++))
       local pathname="$2"
       local class=${FUNCNAME}
 

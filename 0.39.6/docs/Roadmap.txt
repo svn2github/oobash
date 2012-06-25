@@ -7,7 +7,6 @@
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
-
 # 0.39.7
 # -Man.generator: bold methodnames
 # -add static FileUtils
@@ -28,6 +27,8 @@
 # 0.41
 # -colours ?
 
+# 0.42
+# -Date
 
 # 0.50
 # Logging (coproc ?)

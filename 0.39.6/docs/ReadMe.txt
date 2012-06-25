@@ -54,12 +54,12 @@ echo ${!__OBJECTPOOL__[@]}
 a (key is a, this is the object name)
 
 echo ${__OBJECTPOOL__[@]}
-String@1322347553143967167 (value is class@timestamp)
+String@1 (value is class@counter)
 
 * __ATTRIBUTEPOOL__
 ---------------------
 echo ${!__ATTRIBUTEPOOL__[@]}
-1322347553143967167@string (key is timestamp@attribute)
+1@string (key is counter@attribute)
 
 echo ${__ATTRIBUTEPOOL__[@]}
 abc (value of attribute)

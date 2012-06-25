@@ -37,7 +37,6 @@
 # __gnustatCheck() checks for gnu stat
 # __stackOrHelp() decision: call stacktrace or help
 # __tracebackHeader() prints the traceback header to stderr
-# __getPointer() creates an object pointer (unique identifier)
 # __stacktrace() generates stacktrace
 # __isArray() checks if given parameter is an array
 # __isAssocArray() checks if given parameter is an associative array
@@ -164,7 +163,7 @@ __destructor() {
       local key
       for key in "${!__ATTRIBUTEPOOL__[@]}"
       do
-         if [[ "${key}" == "${pointer}"* ]]; then
+         if [[ "${key}" == "${pointer}"@* ]]; then
             unset __ATTRIBUTEPOOL__["${key}"]
          fi      
       done
@@ -354,6 +353,7 @@ __registerFunction __strLower
 # -Math.ceil
 # -Math.floor
 # -Math.hypot
+# -Math.cbrt
 __mathConverter() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local input="$1"
@@ -784,27 +784,6 @@ __tracebackHeader() {
    return 0
 }
 __registerFunction __tracebackHeader
-
-# private
-# creates an object pointer (unique identifier)
-# called by:
-# all constructors
-__getPointer() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   if __gnudateCheck; then
-      # real nanoseconds are not available on every system --> + random
-      System.out.println $(System.currentTimeNanos)${RANDOM}${RANDOM}
-   else
-      if command -v date 2>&1 1>/dev/null; then    
-         System.out.println $(date "+%Y%m%d%H%M%S")${RANDOM}${RANDOM}${RANDOM}
-      else    
-         # not my problem...
-         System.out.println ${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM} 
-      fi
-   fi
-   return 0
-}
-__registerFunction __getPointer
 
 # private 
 # generates stacktrace

@@ -47,7 +47,7 @@ Boolean() {
          return $returnValue
       fi
 
-      local pointer="$(__getPointer)"
+      local pointer=$((__COUNTER__++))
 
       local bool="$2"
       bool=$(Boolean.parseBoolean "$bool")
