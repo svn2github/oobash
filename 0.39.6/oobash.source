@@ -164,7 +164,7 @@ declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 declare -a __SshMethods__=(getSshHost getSshUser getSshPort diffFile diffFiletree command vimEdit connect grep 
                            grepIgnoreCase grepInvertMatch copy)
 
-declare -a __Ssh__=(${__SshMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+declare -a __Ssh__=(${__SshMethods__[@]} ${__ObjectMethods__[@]})
 
 # register function:
 ####################
