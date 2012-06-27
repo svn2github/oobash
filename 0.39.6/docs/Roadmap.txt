@@ -1,34 +1,39 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.6
-# -Ssh: copy
+# -Ssh: copy, doScript
 # -File: insertAfterLine, insertBeforeLine
 # -Process: getChildren
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
 # 0.39.7
-# -Man.generator: bold methodnames
+# -Man.generator: bold methodnames ?
 # -add static FileUtils
-# -add some System functions
+# -not only command -v, but also test if executable ?
+
 
 # 0.39.8
 # -chained return values
 # -analyze log4oobash.properties
 
 # 0.39.9
-# -url decode/encode
 # -File: getOwner, getGroup, setOwner, setGroup
+# -add some System functions
 
 # 0.40
 # Assert 
 # + Tests (execute modules to test -- python style)
 
-# 0.41
+# 0.40.1
 # -colours ?
+# -rename all private functions (to avoid name clashes)
+
+# 0.41
+# -Date
 
 # 0.42
-# -Date
+# -url decode/encode
 
 # 0.50
 # Logging (coproc ?)
