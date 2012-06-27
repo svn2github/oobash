@@ -263,7 +263,12 @@ __getName() {
    if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      System.out.println "${file##*/}"
+      local result="${file##*/}"
+      if [[ -n "${file}" && -z "${result}" ]]; then
+         System.out.println /
+      else
+         System.out.println "$result"
+      fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
