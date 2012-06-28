@@ -127,7 +127,6 @@ __base64Encode() {
          local input
          input="$("$this".toString)"
          output="$(System.out.print "${input}" | openssl enc -base64 2>/dev/null)"
-         returnValue=$?
          System.out.println "${output}"
       else
          __throw "NotInPathException" ": openssl not in path"
