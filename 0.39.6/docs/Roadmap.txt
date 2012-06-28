@@ -6,12 +6,12 @@
 # -Process: getChildren
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
+# -abstract Host class --> isAlive...?
 
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
 # -not only command -v, but also test if executable ?
-
 
 # 0.39.8
 # -chained return values
