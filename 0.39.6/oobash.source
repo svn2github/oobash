@@ -269,7 +269,7 @@ if command -v gdate >/dev/null 2>&1; then
          gdate $@
          return $?
       }
-      __registerFunction gdate
+      __registerFunction date
    fi
    __registerVar testtimestamp
 fi
@@ -281,7 +281,7 @@ if command -v gstat >/dev/null 2>&1; then
          gstat $@
          return $?
       }
-      __registerFunction gstat
+      __registerFunction stat
    fi
 fi
 
@@ -292,7 +292,7 @@ if command -v greadlink >/dev/null 2>&1; then
          greadlink $@
          return $?
       }   
-      __registerFunction greadlink
+      __registerFunction readlink
    fi
 fi
 
