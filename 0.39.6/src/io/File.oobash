@@ -688,11 +688,11 @@ __getCanonicalPath() {
                __stackOrHelp "$2" "${FUNCNAME:2}"
             fi
          fi
-         return $returnValue
+      else
+         __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
-      __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
-      returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
