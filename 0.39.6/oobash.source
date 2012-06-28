@@ -324,18 +324,7 @@ command_not_found_handle() {
          * )this="$this""$char";;
       esac
    done
-   local unsetAtEnd
-   # is extglob set ?
-   shopt -q extglob
-   # if extglob not set already --> set it now and change boolean 
-   if (( $? == 1 )); then
-      shopt -s extglob
-      unsetAtEnd="$(Boolean.TRUE)"
-   fi 
    local method="${str/"$this"./}"
-   if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
-      shopt -u extglob
-   fi
    shift
 
    local objectExists="$(Boolean.FALSE)"
