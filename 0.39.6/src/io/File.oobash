@@ -1562,6 +1562,7 @@ __insertBeforeLine() {
                               System.out.print "${FILE[indx]}" >> "$file"
                            else
                               System.out.println "$("${argobject}".toString)" >> "$file"
+                              System.out.print "${FILE[indx]}" >> "$file"
                            fi
                         done
                      fi                     
@@ -1629,6 +1630,7 @@ __insertAfterLine() {
                            if (( $(($indx+1)) != $line)); then
                               System.out.print "${FILE[indx]}" >> "$file"
                            else
+                              System.out.print "${FILE[indx]}" >> "$file"
                               System.out.println "$("${argobject}".toString)" >> "$file"
                            fi
                         done
@@ -1874,6 +1876,72 @@ File.help() {
                                            - if objectname contains full stop character
                Example:
                   File a testfile
+            ";;&
+         insertAfterLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               insertAfterLine
+                  Inserts given String after given line in this file.
+                  Caution! This method can corrupt the file. 
+               Parameters:
+                  integer that represents line number
+                  String object
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if argument is no object
+                                           - if number of arguments != 2
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+                  WrongClassException - if argument is no String object
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  String b \"after line 2\"
+                  a.insertAfterLine 2 b
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>after line 2
+                  >>>3
+            ";;&
+         insertBeforeLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               insertBeforeLine
+                  Inserts given String before given line in this file.
+                  Caution! This method can corrupt the file. 
+               Parameters:
+                  integer that represents line number
+                  String object
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if argument is no object
+                                           - if number of arguments != 2
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+                  WrongClassException - if argument is no String object
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  String b \"before line 2\"
+                  a.insertAfterLine 2 b
+                  a.getText
+                  >>>1
+                  >>>before line 2
+                  >>>2
+                  >>>3
             ";;&
          replaceLine|all)
             match=$(Boolean.TRUE)

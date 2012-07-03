@@ -2,7 +2,6 @@
 
 # 0.39.6
 # -Ssh: copy, doScript
-# -File: insertAfterLine, insertBeforeLine
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
