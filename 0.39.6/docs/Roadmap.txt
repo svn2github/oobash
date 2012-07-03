@@ -3,10 +3,8 @@
 # 0.39.6
 # -Ssh: copy, doScript
 # -File: insertAfterLine, insertBeforeLine
-# -Process: getChildren
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
-# -abstract Host class --> isAlive...?
 
 # 0.39.7
 # -Man.generator: bold methodnames ?
@@ -23,7 +21,7 @@
 
 # 0.40
 # Assert 
-# + Tests (execute modules to test -- python style)
+# + Tests (execute modules to test -- python style, use doc-examples ?)
 
 # 0.40.1
 # -colours ?
@@ -34,6 +32,9 @@
 
 # 0.42
 # -url decode/encode
+
+# 0.43
+# Sets ?
 
 # 0.50
 # Logging (coproc ?)
