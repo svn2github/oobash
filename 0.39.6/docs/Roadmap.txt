@@ -32,9 +32,6 @@
 # 0.42
 # -url decode/encode
 
-# 0.43
-# Sets ?
-
 # 0.50
 # Logging (coproc ?)
 

@@ -1936,7 +1936,7 @@ File.help() {
                   >>>2
                   >>>3
                   String b \"before line 2\"
-                  a.insertAfterLine 2 b
+                  a.insertBeforeLine 2 b
                   a.getText
                   >>>1
                   >>>before line 2
