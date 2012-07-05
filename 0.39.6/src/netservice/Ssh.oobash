@@ -196,7 +196,6 @@ __command() {
       local port="$("$this".getSshPort)"
       local command="$3"
       if command -v ssh >/dev/null 2>&1; then
-         local returnValue
          ssh -p "${port}" -q -o "BatchMode yes" "${user}@${machine}" "${command} 2>/dev/null"
          retValue=$?
          if (( $retValue != 0 )) && [[ -n "$PS1" ]]; then
@@ -206,6 +205,43 @@ __command() {
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
          __stackOrHelp "${class}" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "${class}" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__doScript() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 3 )); then
+      local this="$1"
+      local machine="$("$this".getSshHost)"
+      local user="$("$this".getSshUser)"
+      local port="$("$this".getSshPort)"
+      local file="$3"
+      if [[ -r "${file}" ]]; then
+         if [[ -f "${file}" ]]; then
+            if command -v ssh >/dev/null 2>&1; then
+               ssh -p "${port}" -q -o "BatchMode yes" "${user}@${machine}" $(<"${file}")
+            else
+               __throw "NotInPathException" ": ssh not in path"
+               returnValue=$?
+               __stackOrHelp "${class}" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"

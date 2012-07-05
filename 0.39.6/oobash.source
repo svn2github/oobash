@@ -162,7 +162,7 @@ declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand 
 declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
 
 declare -a __SshMethods__=(getSshHost getSshUser getSshPort diffFile diffFiletree command vimEdit connect grep 
-                           grepIgnoreCase grepInvertMatch copy)
+                           grepIgnoreCase grepInvertMatch copy doScript)
 
 declare -a __Ssh__=(${__SshMethods__[@]} ${__ObjectMethods__[@]})
 

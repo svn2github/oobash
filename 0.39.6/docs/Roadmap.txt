@@ -1,7 +1,6 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.6
-# -Ssh: copy, doScript
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
