@@ -214,7 +214,7 @@ __command() {
    return $returnValue
 }
 
-__doScript() {
+__doFile() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -588,7 +588,7 @@ Ssh.help() {
                     -getSshPort -command -vimEdit 
                     -connect -diffFile -diffFiletree  
                     -grep -grepIgnoreCase -grepInvertMatch
-                    -copy
+                    -copy -doFile
                     Constructor: 
                     -Ssh
       " 
@@ -688,6 +688,34 @@ Ssh.help() {
                   Ssh mymachine mymachine.mydom.org mysshaccount
                   mymachine.command \"date\"
                   >>>Fr 1. Jun 14:35:36 CEST 2012
+            ";;&
+         copy|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               copy
+
+               Parameters:
+
+               Returns:
+
+               Throws:
+
+               Example:
+
+            ";;&
+         doFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               doFile
+
+               Parameters:
+
+               Returns:
+
+               Throws:
+
+               Example:
+
             ";;&
          vimEdit|all)
             match=$(Boolean.TRUE)
