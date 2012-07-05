@@ -991,31 +991,6 @@ __isPosInteger()
 }
 __registerFunction __isPosInteger
 
-# private
-# check for neg. integer input
-# called by:
-
-__isNegInteger()
-{
-   local unsetAtEnd
-   shopt -q extglob
-   # if extglob not set already --> set it now and change boolean 
-   if (( $? == 1 )); then
-      shopt -s extglob
-      unsetAtEnd="$(Boolean.TRUE)"
-   fi 
-   case "$1" in
-      ?([-])+([[:digit:]]) )
-         return 0;;
-      *) return 1;;
-   esac
-   if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
-      shopt -u extglob
-   fi
-}
-__registerFunction __isNegInteger
-
-
 if [[ "${unsetAtEnd}" == "true" ]]; then
    shopt -u extglob
 fi
