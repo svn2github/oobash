@@ -81,7 +81,7 @@ __toString() {
       fi         
       for key in $keys
       do
-         if [[ "${key}" == "${pointer}"* ]]; then
+         if [[ "${key}" == "${pointer}"@* ]]; then
             if [[ ${first} == $(Boolean.TRUE) ]]; then
                str="$str""${__ATTRIBUTEPOOL__["$key"]}"
                first="$(Boolean.FALSE)"
