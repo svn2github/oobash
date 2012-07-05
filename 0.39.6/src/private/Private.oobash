@@ -42,7 +42,8 @@
 # __isAssocArray() checks if given parameter is an associative array
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
-
+# __isPosInteger() check for pos. integer input
+# __isInteger() check for integer input
 
 
 # private
@@ -892,8 +893,9 @@ __registerFunction __isWriteable
 # __basename
 # File constructor
 __stripPath() {
-   local path="$1"
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
 
+   local path="$1"
    # empty --> nothing to do
    if [[ -z "${path}" ]]; then
       System.out.println ""
@@ -946,9 +948,9 @@ fi
 # private
 # check for integer input
 # called by:
-
 __isInteger()
 {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local unsetAtEnd
    shopt -q extglob
    # if extglob not set already --> set it now and change boolean 
@@ -970,9 +972,9 @@ __registerFunction __isInteger
 # private
 # check for pos. integer input
 # called by:
-
 __isPosInteger()
 {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local unsetAtEnd
    shopt -q extglob
    # if extglob not set already --> set it now and change boolean 
