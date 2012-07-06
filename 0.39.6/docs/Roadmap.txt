@@ -10,6 +10,9 @@
 
 # docs for doFile and copy
 
+# doFile --> rename to execMod + modules directory + example.mod ?
+--> all modules have to be in the modules directory (or subdirectory).
+
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
