@@ -4,14 +4,12 @@
 # -use of integer args test
 # (a simple 'declare -i' can cause unwanted surprises)
 
-# -test for integer limit !
+# -test for integer limit ! (declare == declare -i )
+# --> isBashInteger and isBashPosInteger ?
 
 # doc for command --> pseudo-tty allocation
 
-# docs for doFile and copy
-
-# doFile --> rename to execMod + modules directory + example.mod ?
---> all modules have to be in the modules directory (or subdirectory).
+# docs for execModule and copy
 
 # 0.39.7
 # -Man.generator: bold methodnames ?

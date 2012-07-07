@@ -272,7 +272,7 @@
 #    -Fixes
 # Version:      0.39.6
 #    -added File: insertAfterLine, insertBeforeLine
-#    -added Ssh: copy, doFile
+#    -added Ssh: copy, execModule + module directory + example.mod
 #    -added private functions: __isInteger __isPosInteger
 #    -small modifications for Script.generator
 #    -replaced private __getPointer by a simple __COUNTER__ variable

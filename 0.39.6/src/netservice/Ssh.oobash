@@ -214,7 +214,7 @@ __command() {
    return $returnValue
 }
 
-__doFile() {
+__execModule() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local class="$2"
@@ -223,7 +223,8 @@ __doFile() {
       local machine="$("$this".getSshHost)"
       local user="$("$this".getSshUser)"
       local port="$("$this".getSshPort)"
-      local file="$3"
+      local module="$3"
+      local file="${__OODIR__}"/src/netservice/modules/"${module}"
       if [[ -r "${file}" ]]; then
          if [[ -f "${file}" ]]; then
             if command -v ssh >/dev/null 2>&1; then
@@ -588,7 +589,7 @@ Ssh.help() {
                     -getSshPort -command -vimEdit 
                     -connect -diffFile -diffFiletree  
                     -grep -grepIgnoreCase -grepInvertMatch
-                    -copy -doFile
+                    -copy -execModule
                     Constructor: 
                     -Ssh
       " 
@@ -703,10 +704,10 @@ Ssh.help() {
                Example:
 
             ";;&
-         doFile|all)
+         execModule|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               doFile
+               execModule
 
                Parameters:
 
