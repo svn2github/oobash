@@ -235,12 +235,12 @@ __execModule() {
                __stackOrHelp "${class}" "${FUNCNAME:2}"
             fi
          else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            __throw "IOException" ":\"${file}\" is not a regular file"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
          fi
       else
-         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         __throw "IOException" ": Cannot read file \"${file}\""
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}"
       fi
