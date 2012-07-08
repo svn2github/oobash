@@ -11,6 +11,8 @@
 
 # docs for execModule and copy
 
+# check the code lines with String in compareTo (old bullshit ?)
+
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
