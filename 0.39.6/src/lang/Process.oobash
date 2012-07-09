@@ -486,31 +486,29 @@ __setPriority() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
-         fi
-         # catch eg "+" param
-         (declare -i priority="$3") 2>/dev/null
-         if (( $? != 0 )); then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         declare -i priority="$3"    
-         if (( ${priority} >= -20 && ${priority} <= 19 )); then
-            renice "${priority}" -p "${pId}" 1>/dev/null 2>&1
-            if (( $? == 0 )); then
-               Boolean.TRUE
+         if (( $returnValue == 0 )); then
+            # catch eg "+" param
+            (declare -i priority="$3") 2>/dev/null
+            if (( $? != 0 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
             else
-               Boolean.FALSE
+               declare -i priority="$3"    
+               if (( ${priority} >= -20 && ${priority} <= 19 )); then
+                  renice "${priority}" -p "${pId}" 1>/dev/null 2>&1
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "IllegalArgumentException" ": Illegal argument: \"${priority}\" - has to be between -20 and 19"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+               fi
             fi
-         else
-            __throw "IllegalArgumentException" ": Illegal argument: \"${priority}\" - has to be between -20 and 19"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi   
+         fi
       else
          __throw "NotInPathException" ": renice not in path"
          returnValue=$?
