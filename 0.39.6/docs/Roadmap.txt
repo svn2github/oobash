@@ -1,15 +1,13 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.6
-# -use of integer args test
-# (a simple 'declare -i' can cause unwanted surprises)
-
-# -test for integer limit ! (declare == declare -i )
-# --> isBashInteger and isBashPosInteger ?
+# -use of integer args test (__isBashInteger __isPosBashInteger)
 
 # doc for command --> pseudo-tty allocation
 
 # docs for execModule and copy
+
+# check if copy really works
 
 # check the code lines with String in compareTo (old bullshit ?)
 
@@ -40,6 +38,9 @@
 
 # 0.42
 # -url decode/encode
+
+# 0.43
+# -Grouping for Ssh ?
 
 # 0.50
 # Logging (coproc ?)

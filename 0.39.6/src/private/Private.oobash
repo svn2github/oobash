@@ -948,7 +948,7 @@ fi
 # private
 # check for integer input
 # called by:
-__isInteger()
+__isBashInteger()
 {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local unsetAtEnd
@@ -960,19 +960,27 @@ __isInteger()
    fi 
    case "$1" in
       ?([+-])+([[:digit:]]) )
-         return 0;;
+         declare value1="$1"
+         declare -i value2="$1"
+         # check for max int size
+         if [[ "${value1}" == "${value2}" || "${value1}" == "+""${value2}" ]]; then
+            return 0
+         else
+            return 1
+         fi
+         ;;
       *) return 1;;
    esac
    if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
 }
-__registerFunction __isInteger
+__registerFunction __isBashInteger
 
 # private
 # check for pos. integer input
 # called by:
-__isPosInteger()
+__isPosBashInteger()
 {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local unsetAtEnd
@@ -984,14 +992,22 @@ __isPosInteger()
    fi 
    case "$1" in
       ?([+])+([[:digit:]]) )
-         return 0;;
+         declare value1="$1"
+         declare -i value2="$1"
+         # check for max int size
+         if [[ "${value1}" == "${value2}" || "${value1}" == "+""${value2}" ]]; then
+            return 0
+         else
+            return 1
+         fi
+         ;;
       *) return 1;;
    esac
    if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
 }
-__registerFunction __isPosInteger
+__registerFunction __isPosBashInteger
 
 if [[ "${unsetAtEnd}" == "true" ]]; then
    shopt -u extglob
