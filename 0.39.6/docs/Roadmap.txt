@@ -23,11 +23,6 @@ to
          ...
          return $returnValue
 
-# File:
-Caution! This method can corrupt the file.
-to
-Caution! This method can corrupt this file.
-
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
