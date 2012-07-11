@@ -677,8 +677,11 @@ Ssh.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                command
-                  Calls command on remote host.
-                  Remote stderr is reditrected to /dev/null.
+                  Calls given command on remote host.
+                  If shell is interactive and the given command fails,
+                  then this method tries the same command again, but
+                  uses pseudo-tty allocation.
+                  Remote stderr is reditrected to /dev/null, if shell is not interactive.
                Parameters:
                   command
                Returns:

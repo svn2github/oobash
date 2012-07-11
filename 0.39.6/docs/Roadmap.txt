@@ -4,8 +4,6 @@
 # -use of integer args test (__isBashInteger __isPosBashInteger)
 # + "used by" doc in Private.oobash for __isBashInteger __isPosBashInteger
 
-# doc for command --> pseudo-tty allocation
-
 # docs for execModule and copy
 
 # check if copy really works
