@@ -126,9 +126,9 @@ __getPid() {
             __throw "ProcessException" ": Process with pid: \"${__ATTRIBUTEPOOL__[${pointer}@pid]}\" can't be managed"
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
+         else
+            System.out.println ${pId}
          fi
-         System.out.println ${pId}
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -184,17 +184,16 @@ __getRealUserId() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
-         fi
-         local ruid
-         ruid="$(ps  -p "${pId}" -o ruid="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-         else
-            System.out.println ${ruid}
+         if (( $returnValue == 0 )); then
+            local ruid
+            ruid="$(ps  -p "${pId}" -o ruid="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println ${ruid}
+            fi
          fi
       else
          __throw "NotInPathException" ": ps not in path"
@@ -218,18 +217,17 @@ __getEffectiveUserId() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
+         if (( $returnValue == 0 )); then
+            local euid
+            euid="$(ps  -p "${pId}" -o uid="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println ${euid}
+            fi
          fi
-         local euid
-         euid="$(ps  -p "${pId}" -o uid="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         System.out.println ${euid}
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -252,18 +250,17 @@ __getUser() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
+         if (( $returnValue == 0 )); then
+            local owner
+            owner="$(ps  -p "${pId}" -o user="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println ${owner}
+            fi
          fi
-         local owner
-         owner="$(ps  -p "${pId}" -o user="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         System.out.println ${owner}
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -286,18 +283,17 @@ __getMemorySize() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
+         if (( $returnValue == 0 )); then
+            local mem
+            mem="$(ps  -p "${pId}" -o rss="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println ${mem}
+            fi
          fi
-         local mem
-         mem="$(ps  -p "${pId}" -o rss="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         System.out.println ${mem}
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -320,18 +316,17 @@ __getStartTime() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
+         if (( $returnValue == 0 )); then
+            local start
+            start="$(ps  -p "${pId}" -o lstart="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println "${start}"
+            fi
          fi
-         local start
-         start="$(ps  -p "${pId}" -o lstart="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         System.out.println "${start}"
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -354,18 +349,17 @@ __getCommand() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
+         if (( $returnValue == 0 )); then
+            local cmd
+            cmd="$(ps  -p "${pId}" -o command="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println "${cmd}"
+            fi
          fi
-         local cmd
-         cmd="$(ps  -p "${pId}" -o command="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         System.out.println "${cmd}"
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -388,47 +382,46 @@ __getStatus() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
-         fi
-         local stat
-         stat="$(ps -p "$pId" -o state="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         case "${stat:0:1}" in
-            U|D)stat="Uninterruptible";;
-            R)stat="Runnable";;
-            S)stat="Sleeping";;
-            T)stat="Stopped";;
-            # W not valid since the 2.6.xx linux kernel
-            W)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
-                  stat="Waiting"
-               else
-                  stat="Paging"
-               fi;;
-            Z)stat="Defunct";;
-            # only SunOS (letter O)
-            O)stat="Running";;
-            # only HP-UX -- no idea what this means
-            X)stat="Growing";;
-            # only HP-UX: Null
-            0)stat="NotExisting";;
-            I)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
-                  # no idea what this means
-                  stat="Intermediate"
-               else
-                  stat="Idle"
-               fi;;
-            *)__throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+         if (( $returnValue == 0 )); then
+            local stat
+            stat="$(ps -p "$pId" -o state="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
                __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue;;
-         esac
-         System.out.println "${stat}"
+            else
+               case "${stat:0:1}" in
+                  U|D)stat="Uninterruptible";;
+                  R)stat="Runnable";;
+                  S)stat="Sleeping";;
+                  T)stat="Stopped";;
+                  # W not valid since the 2.6.xx linux kernel
+                  W)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
+                        stat="Waiting"
+                     else
+                        stat="Paging"
+                     fi;;
+                  Z)stat="Defunct";;
+                  # only SunOS (letter O)
+                  O)stat="Running";;
+                  # only HP-UX -- no idea what this means
+                  X)stat="Growing";;
+                  # only HP-UX: Null
+                  0)stat="NotExisting";;
+                  I)if [[ "$(uname -s 2>/dev/null)" == "HP-UX" ]]; then
+                        # no idea what this means
+                        stat="Intermediate"
+                     else
+                        stat="Idle"
+                     fi;;
+                  *)__throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     return $returnValue;;
+               esac
+               System.out.println "${stat}"
+            fi
+         fi
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -452,18 +445,17 @@ __getPriority() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
+         if (( $returnValue == 0 )); then
+            local prio
+            prio="$(ps  -p "${pId}" -o ni="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println ${prio}
+            fi
          fi
-         local prio
-         prio="$(ps  -p "${pId}" -o ni="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         System.out.println ${prio}
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
@@ -531,21 +523,20 @@ __isDaemon() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
-         fi
-         local tty
-         tty="$(ps  -p "${pId}" -o tty="" 2>/dev/null)"
-         if (( $? != 0 )); then
-            __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-            returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         if [[ "${tty}" =~ "?" ]] ; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
+         if (( $returnValue == 0 )); then
+            local tty
+            tty="$(ps  -p "${pId}" -o tty="" 2>/dev/null)"
+            if (( $? != 0 )); then
+               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               if [[ "${tty}" =~ "?" ]] ; then
+                  Boolean.TRUE
+               else
+                  Boolean.FALSE
+               fi
+            fi
          fi
       else
          __throw "NotInPathException" ": ps not in path"
@@ -569,37 +560,36 @@ __kill() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
-         fi
-         local signal
-         if (( $# == 3 )); then
-            local signalValid="$(Boolean.FALSE)"
-            local key
-            declare -u signal="$3"
-            if [[ "${signal}" != 0 ]]; then
-               for key in "${!__Signals__[@]}"
-               do 
-                  if [[ "${signal}" == "${__Signals__[key]}" ]]; then
-                     signalValid=$(Boolean.TRUE)  
-                     break
+         if (( $returnValue == 0 )); then
+            local signal
+            if (( $# == 3 )); then
+               local signalValid="$(Boolean.FALSE)"
+               local key
+               declare -u signal="$3"
+               if [[ "${signal}" != 0 ]]; then
+                  for key in "${!__Signals__[@]}"
+                  do 
+                     if [[ "${signal}" == "${__Signals__[key]}" ]]; then
+                        signalValid=$(Boolean.TRUE)  
+                        break
+                     fi
+                  done
+                  if [[ "${signalValid}" != "$(Boolean.TRUE)" ]]; then
+                     __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     return $returnValue
                   fi
-               done
-               if [[ "${signalValid}" != "$(Boolean.TRUE)" ]]; then
-                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-                  returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
-                  return $returnValue
-               fi
-            fi           
-         else
-            signal="TERM"
-         fi       
-         kill -s "${signal}" "${pId}" 1>/dev/null 2>&1
-         if (( $? == 0 )); then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
+               fi           
+            else
+               signal="TERM"
+            fi       
+            kill -s "${signal}" "${pId}" 1>/dev/null 2>&1
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
          fi
       else
          __throw "NotInPathException" ": kill not in path"
@@ -623,37 +613,36 @@ __threadCount() {
          declare -i pId
          pId="$("$this".getPid)"
          returnValue=$?
-         if (( $returnValue != 0 )); then
-            return $returnValue
-         fi
-         local thcount
-         if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
-            thcount="$(ps -o thcount --no-header --pid "${pId}" 2>/dev/null)"
-            if (( $? != 0 )); then
-               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-         else
-            thcount="$(ps -p "${pId}" -o wq="" 2>/dev/null)"
-            if (( $? != 0 )); then
-               __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-         fi
-         if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
-            System.out.println ${thcount}
-         else
-            (declare -i tc=$thcount) 2>/dev/null
-            if (( $? != 0 )); then
-               declare -i tc=0
+         if (( $returnValue == 0 )); then
+            local thcount
+            if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+               thcount="$(ps -o thcount --no-header --pid "${pId}" 2>/dev/null)"
+               if (( $? != 0 )); then
+                  __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
             else
-               declare -i tc=$thcount
+               thcount="$(ps -p "${pId}" -o wq="" 2>/dev/null)"
+               if (( $? != 0 )); then
+                  __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  return $returnValue
+               fi
             fi
-            System.out.println ${tc}
+            if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+               System.out.println ${thcount}
+            else
+               (declare -i tc=$thcount) 2>/dev/null
+               if (( $? != 0 )); then
+                  declare -i tc=0
+               else
+                  declare -i tc=$thcount
+               fi
+               System.out.println ${tc}
+            fi
          fi
       else
          __throw "NotInPathException" ": ps not in path"

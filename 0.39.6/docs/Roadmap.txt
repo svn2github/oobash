@@ -13,15 +13,7 @@
 # check the code lines with String in compareTo (old bullshit ?)
 
 # Process:
-         if (( $returnValue != 0 )); then
-            return $returnValue
-         fi
-to
-         if (( $returnValue == 0 )); then
-            ...all
-         fi
-         ...
-         return $returnValue
+# check for gnu ps ?
 
 # 0.39.7
 # -Man.generator: bold methodnames ?
