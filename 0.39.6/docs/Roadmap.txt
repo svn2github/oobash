@@ -8,11 +8,6 @@
 
 # check if copy really works
 
-# check the code lines with String in compareTo (old bullshit ?)
-
-# Process:
-# check for gnu ps ?
-
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
@@ -26,6 +21,7 @@
 # 0.39.9
 # -File: getOwner, getGroup, setOwner, setGroup
 # -add some System functions
+# -check for gnu ps ?
 
 # 0.40
 # Assert 
