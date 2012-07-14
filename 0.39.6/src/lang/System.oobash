@@ -65,9 +65,7 @@ System.exit() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 1 )); then
-      # catch eg "+" param
-      (declare -i status=$1) 2>/dev/null
-      if (( $? != 0 )); then
+      if ! __isBashInteger "$1"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
          __stackOrHelp "System" "${FUNCNAME}"

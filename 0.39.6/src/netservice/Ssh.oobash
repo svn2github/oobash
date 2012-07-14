@@ -18,15 +18,21 @@ Ssh() {
       # Default port for ssh: 22
       local p="${4:-22}"
 
-      # catch eg "+" param
-      (declare -i port="$p") 2>/dev/null
-      if (( $? != 0 )); then
+      if ! __isPosBashInteger "$p"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$p\" is no valid port number"
          returnValue=$?
          __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
+      else
+         declare -i port="$p"
+         if (( $port >  65536 )); then     
+            __throw "IllegalArgumentException" ": Illegal argument: \"$p\" is no valid port number"
+            returnValue=$?
+            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            return $returnValue
+         fi
       fi
-      declare -i port="$p"
+
 
       if ! __visible "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
@@ -618,6 +624,7 @@ Ssh.help() {
                                            - if objectname is not valid
                                            - if objectname is a keyword
                                            - if objectname contains full stop character
+                                           - if port number is not valid
                   AuthException - if passwordless auth is not possible
                Example:
                   Ssh a <hostname> <user> [<port>]

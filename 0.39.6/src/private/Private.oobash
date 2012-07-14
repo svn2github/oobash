@@ -42,8 +42,8 @@
 # __isAssocArray() checks if given parameter is an associative array
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
-# __isPosInteger() check for pos. integer input
-# __isInteger() check for integer input
+# __isPosBashInteger check for pos. integer input and size of int
+# __isBashInteger check for integer input and size of int
 
 
 # private
@@ -948,6 +948,21 @@ fi
 # private
 # check for integer input
 # called by:
+# __setLastModified
+# __setPriority
+# __zfill
+# __center
+# __lastIndexOf
+# __indexOf
+# __charAt
+# __substring
+# __getLine
+# __delLine
+# __replaceLine
+# __insertBeforeLine
+# __insertAfterLine
+# __startsWith
+# System.exit
 __isBashInteger()
 {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -980,6 +995,8 @@ __registerFunction __isBashInteger
 # private
 # check for pos. integer input
 # called by:
+# Ssh
+# Process
 __isPosBashInteger()
 {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"

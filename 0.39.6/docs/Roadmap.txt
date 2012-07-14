@@ -1,8 +1,6 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.6
-# -use of integer args test (__isBashInteger __isPosBashInteger)
-# + "used by" doc in Private.oobash for __isBashInteger __isPosBashInteger
 
 # docs for execModule and copy
 
