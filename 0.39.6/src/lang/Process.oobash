@@ -15,7 +15,7 @@ Process() {
    if (( $# == 2 )); then
       local this="$1"
 
-      if ! __isPosBashInteger "$2"; then
+      if ! __isBashInteger "$2"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
          returnValue=$?
          __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
@@ -432,7 +432,6 @@ __getStatus() {
    fi
    return $returnValue
 }
-
 
 __getPriority() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"

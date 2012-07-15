@@ -18,7 +18,7 @@ Ssh() {
       # Default port for ssh: 22
       local p="${4:-22}"
 
-      if ! __isPosBashInteger "$p"; then
+      if ! __isBashInteger "$p"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$p\" is no valid port number"
          returnValue=$?
          __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"

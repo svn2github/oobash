@@ -273,8 +273,8 @@
 # Version:      0.39.6
 #    -added File: insertAfterLine, insertBeforeLine
 #    -added Ssh: copy, execModule + module directory + example.mod
-#    -added private functions: __isBashInteger __isPosBashInteger
-#    + use of __isBashInteger __isPosBashInteger where convenient
+#    -added private functions: __isBashInteger
+#    + use of __isBashInteger where convenient
 #    -small modifications for Script.generator
 #    -replaced private __getPointer by a simple __COUNTER__ variable
 #    -Fixes

@@ -42,7 +42,6 @@
 # __isAssocArray() checks if given parameter is an associative array
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
-# __isPosBashInteger check for pos. integer input and size of int
 # __isBashInteger check for integer input and size of int
 
 
@@ -937,7 +936,7 @@ __stripPath() {
 }
 __registerFunction __stripPath
 
-# extglob has to be set, to be able to source __isInteger __isNegInteger __isPosInteger without errors
+# extglob has to be set, to be able to source __isBashInteger without errors
 declare unsetAtEnd
 shopt -q extglob
 # if extglob not set already --> set it now and change boolean 
@@ -945,6 +944,7 @@ if (( $? == 1 )); then
    shopt -s extglob
    unsetAtEnd="true"
 fi
+
 # private
 # check for integer input
 # called by:
@@ -963,6 +963,8 @@ fi
 # __insertAfterLine
 # __startsWith
 # System.exit
+# Ssh
+# Process
 __isBashInteger()
 {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -978,7 +980,7 @@ __isBashInteger()
          declare value1="$1"
          declare -i value2="$1"
          # check for max int size
-         if [[ "${value1}" == "${value2}" || "${value1}" == "+""${value2}" ]]; then
+         if [[ "${value1}" == "${value2}" || "${value1}" == "+""${value2}" || "${value1}"="-0" ]]; then
             return 0
          else
             return 1
@@ -991,40 +993,6 @@ __isBashInteger()
    fi
 }
 __registerFunction __isBashInteger
-
-# private
-# check for pos. integer input
-# called by:
-# Ssh
-# Process
-__isPosBashInteger()
-{
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local unsetAtEnd
-   shopt -q extglob
-   # if extglob not set already --> set it now and change boolean 
-   if (( $? == 1 )); then
-      shopt -s extglob
-      unsetAtEnd="$(Boolean.TRUE)"
-   fi 
-   case "$1" in
-      ?([+])+([[:digit:]]) )
-         declare value1="$1"
-         declare -i value2="$1"
-         # check for max int size
-         if [[ "${value1}" == "${value2}" || "${value1}" == "+""${value2}" ]]; then
-            return 0
-         else
-            return 1
-         fi
-         ;;
-      *) return 1;;
-   esac
-   if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
-      shopt -u extglob
-   fi
-}
-__registerFunction __isPosBashInteger
 
 if [[ "${unsetAtEnd}" == "true" ]]; then
    shopt -u extglob
