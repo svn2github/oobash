@@ -20,8 +20,15 @@ Process() {
          returnValue=$?
          __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
+      else
+         declare -i pid="$2"
+         if (( $pid < 1 )); then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$pid\" is no valid pid"
+            returnValue=$?
+            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            return $returnValue
+         fi
       fi
-      declare -i pid="$2"
       
       if ! __visible "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
@@ -728,7 +735,7 @@ Process.help() {
                   None
                Throws:
                   IllegalArgumentException - if number of arguments != 2
-                                           - if pid is not a positive integer
+                                           - if pid < 1
                                            - if objectname is not valid
                                            - if objectname is a keyword
                                            - if objectname contains full stop character

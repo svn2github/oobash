@@ -25,7 +25,7 @@ Ssh() {
          return $returnValue
       else
          declare -i port="$p"
-         if (( $port >  65536 )); then     
+         if (( $port < 0 )) || (( $port >  65536 )); then     
             __throw "IllegalArgumentException" ": Illegal argument: \"$p\" is no valid port number"
             returnValue=$?
             __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"

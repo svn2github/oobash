@@ -8,8 +8,6 @@
 
 # stderr remote to where for copy ?
 
-# removed __isPosBashInteger --> modify docs Ssh Process again + fix Ssh Process
-
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
