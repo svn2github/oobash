@@ -8,6 +8,12 @@
 
 # stderr remote to where for copy ?
 
+# check copy: "$(echo $cmd1)" + cd -- (osx ?)
+
+# check for http://mywiki.wooledge.org/BashPitfalls#local_varname.3D.24.28command.29 Point 37)
+# + http://mywiki.wooledge.org/BashFAQ/028
+
+
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
