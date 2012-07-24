@@ -1,11 +1,5 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.6
-
-# docs for copy
-# check if copy really works
-# stderr remote to where for copy ?
-
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils

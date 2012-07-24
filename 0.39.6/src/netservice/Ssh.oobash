@@ -705,15 +705,26 @@ Ssh.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                copy
-
+                  Copies file or directory from this Ssh object to another.
+                  All remote errors are redirected to /dev/null.
                Parameters:
-
+                  File or directory
+                  Destination Ssh object
+                  [Destination directory] Default: First argument
                Returns:
-
+                  true if successful, false otherwise.
                Throws:
-
+                  IllegalArgumentException - if number of arguments != 2 AND != 3
+                                           - if argument is no object
+                  NotInPathException -if ssh not in path
+                  WrongClassException - if argument is no Ssh object
                Example:
-
+                  Ssh mymachine1 mymachine1 $USER
+                  Ssh mymachine2 mymachine2 $USER
+                  mymachine1.copy /etc/passwd mymachine2
+                  >>>true
+                  mymachine1.copy /opt/testdirectory mymachine2 /tmp
+                  >>>true
             ";;&
          execModule|all)
             match=$(Boolean.TRUE)
