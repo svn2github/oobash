@@ -452,12 +452,12 @@ Script.generator() {
 source "${__OODIR__}"/oobash.source
 
 # Please complete/customise the pod doc below.
-# Then you can use the pod (Plain Old Documentation) tools 
-# for this script.
-# some pod tools: pod2man pod2html pod2latex pod2text pod2usage
+# Then you can use the pod (Plain Old Documentation) tools. 
+
+# Some pod tools: pod2man pod2html pod2latex pod2text pod2usage
 # Info: http://perldoc.perl.org/perlpod.html
 
-# Create man page for $1:
+# Example: Create man page for $1:
 # pod2man "${__OODIR__}"/scripts/$1 > "${__OODIR__}"/man/man1/$1.1
 
 ############

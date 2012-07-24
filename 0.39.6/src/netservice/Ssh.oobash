@@ -541,7 +541,8 @@ __copy() {
             cmd1="cd -- \"$(dirname "$file")\" 2>/dev/null && tar -cf - \"$(basename "$file")\" 2>/dev/null"
             cmd2="cd -- \"$targetFile\" 2>/dev/null && tar -xf - 2>/dev/null"
             if command -v ssh >/dev/null 2>&1; then
-               ssh -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}"  "$(echo $cmd1)" | ssh -p "${targetPort}" -q -o "BatchMode yes" "${targetUser}"@"${targetMachine}" "$(echo $cmd2)"
+               ssh -p "${port}" -q -o "BatchMode yes" "${user}"@"${machine}"  "$cmd1" | \
+               ssh -p "${targetPort}" -q -o "BatchMode yes" "${targetUser}"@"${targetMachine}" "$cmd2"
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
@@ -718,15 +719,22 @@ Ssh.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                execModule
-
+                  Executes given module on this Ssh object.
+                  The module has to be readable and you do not have to
+                  escape anything in the module.
                Parameters:
-
+                  modulename
                Returns:
-
+                  module output
                Throws:
-
+                  IllegalArgumentException - if number of arguments != 1
+                  NotInPathException -if ssh not in path
+                  IOException -if module is not a regular file
+                              -if module is not readable
                Example:
-
+                  Ssh mymachine mymachine $USER
+                  mymachine.execModule example.mod
+                  >>>$USER on mymachine
             ";;&
          vimEdit|all)
             match=$(Boolean.TRUE)
@@ -754,6 +762,7 @@ Ssh.help() {
                   None.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
+                  NotInPathException -if ssh not in path
                Example:
                   Ssh mymachine mymachine.mydom.org mysshaccount
                   mymachine.connect
