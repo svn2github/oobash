@@ -974,22 +974,29 @@ __isBashInteger()
    if (( $? == 1 )); then
       shopt -s extglob
       unsetAtEnd="$(Boolean.TRUE)"
-   fi 
+   fi
+
+   local bool="$(Boolean.FALSE)"
+
    case "$1" in
       ?([+-])+([[:digit:]]) )
          declare value1="$1"
          declare -i value2="$1"
          # check for max int size
-         if [[ "${value1}" == "${value2}" || "${value1}" == "+""${value2}" || "${value1}"="-0" ]]; then
-            return 0
-         else
-            return 1
+         if [[ "${value1}" == "${value2}" || "${value1}" == "+""${value2}" || "${value1}" == "-0" ]]; then
+            bool="$(Boolean.TRUE)"
          fi
          ;;
-      *) return 1;;
    esac
+
    if [[ "$(Boolean.parseBoolean "$unsetAtEnd")" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
+   fi
+
+   if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
+      return 0
+   else
+      return 1
    fi
 }
 __registerFunction __isBashInteger
