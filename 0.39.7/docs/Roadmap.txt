@@ -3,7 +3,7 @@
 # 0.39.7
 # -Man.generator: bold methodnames ?
 # -add static FileUtils
-# -not only command -v, but test if executable ?
+# -fix isBashInteger --> bool after return...
 
 # 0.39.8
 # -chained return values
