@@ -1,8 +1,17 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.7
-# -Man.generator: bold methodnames ?
+# -Man.generator: bold methodnames
+--> every *.help function
+   local call=$(caller 0)
+   call=${call/[[:digit:]]/}
+   call=${call/\/*/}
+   echo caller is $call
+
 # -add static FileUtils
+http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html
+http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
+http://commons.apache.org/io/api-release/index.html
 
 # 0.39.8
 # -chained return values
