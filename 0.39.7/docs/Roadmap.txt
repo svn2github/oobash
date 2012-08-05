@@ -7,13 +7,29 @@ http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/comm
 http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
 http://commons.apache.org/io/api-release/index.html
 
+http://commons.apache.org/io/api-release/index.html
+indexOfExtension ?
+indexOfLastSeparator ?
+separatorsToWindows ?
+separatorsToUnix ?
+
+http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
+copy ?
+createSymbolicLink ?
+getOwner ?
+setOwner ?
+
+http://commons.apache.org/io/api-release/index.html
+touch ?
+
+move
+
 # 0.39.8
 # -chained return values
 # -analyze log4oobash.properties
 # -very primitive logging ?
 
 # 0.39.9
-# -File: getOwner, getGroup, setOwner, setGroup
 # -add some System functions
 # -check for gnu ps ?
 
