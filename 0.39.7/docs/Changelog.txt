@@ -278,6 +278,9 @@
 #    -small modifications for Script.generator
 #    -replaced private __getPointer by a simple __COUNTER__ variable
 #    -Fixes
+# Version:      0.39.7
+#    -modified Man.generator: now bold methodnames in manpages
+
 
 #################################################################
 # Features:

@@ -417,7 +417,22 @@ Man.generator() {
       System.out.println ".SH DESCRIPTION" >> "${destination}"
       System.out.println "The ${class}.oobash file is part of the oobash framework." >> "${destination}"
       System.out.println ".SH EXAMPLES" >> "${destination}"
-      System.out.println "$("${class}".help all)" >> "${destination}"
+
+      local empty
+      "${class}".help all | while IFS='' read -r line
+      do                                                        
+         if [[ "${line}" == "" ]]; then
+            empty="true"
+            System.out.println "" >> "${destination}"
+         else
+            if [[ "${empty}" == "true" ]]; then
+               System.out.println ".B" >> "${destination}"           
+            fi
+            System.out.println "${line}" >> "${destination}"
+            empty="false"
+         fi        
+      done
+
       System.out.println ".SH AUTHOR">>"${destination}"
       System.out.println "$USER" >> "${destination}"
       if command -v gzip >/dev/null 2>&1; then 
@@ -553,3 +568,8 @@ System.exit 0
    return $returnValue
 }
 __registerFunction Script.generator
+
+ttt()
+{
+Boolean.help
+}
