@@ -552,15 +552,13 @@ __i18nMessage() {
    # msgid "" can be mapped to meta informations 
    if [[ "${message}" == "" ]]; then
        System.${printStream}.${print} ""
-       return 0
-   fi
-   if command -v eval_gettext >/dev/null 2>&1; then
-      System.${printStream}.${print} "$(eval_gettext "$message")"
-      return 0
    else
-      # fall back to old school bash i18n
-      System.${printStream}.${print} "$(eval System.out.println \$"\"${message}\"")"
-      return 0
+      if command -v eval_gettext >/dev/null 2>&1; then
+         System.${printStream}.${print} "$(eval_gettext "$message")"
+      else
+         # fall back to old school bash i18n
+         System.${printStream}.${print} "$(eval System.out.println \$"\"${message}\"")"
+      fi
    fi
    return 0
 }
@@ -944,6 +942,51 @@ if (( $? == 1 )); then
    shopt -s extglob
    unsetAtEnd="true"
 fi
+
+__stripZeros() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+
+   local path="$1"
+   # empty --> nothing to do
+   if [[ -z "${path}" ]]; then
+      System.out.println ""
+      return 0
+   fi
+
+   # Strip trailing '/' characters from path
+   local tmppath=''
+   while [[ "${tmppath}" != "${path}" ]]
+   do
+      tmppath="${path}"
+      path="${tmppath%/}"
+   done
+
+   # now empty --> only "/" characters --> path is "/"
+   if [[ -z "${path}" ]]; then
+      System.out.println "/"
+      return 0
+   fi
+
+   # Strip double '/' characters from path
+   tmppath=''
+   local lastchar=''
+   for ((i=0; i < ${#path}; i++))
+   do
+      local char="${path:i:1}"
+      if [[ "${lastchar}" != "/" ]]; then
+         tmppath="${tmppath}""${char}"
+      else
+         if [[ "${char}" != "${lastchar}" ]]; then
+            tmppath="${tmppath}""${char}"
+         fi
+      fi
+      lastchar=${char}
+   done
+   path="${tmppath}"
+   System.out.println "${path}"
+   return 0
+}
+__registerFunction __stripZeros
 
 # private
 # check for integer input
