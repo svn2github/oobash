@@ -2,27 +2,38 @@
 
 # 0.39.7
 
-# -add static FileUtils
+# -add static FileUtils:
+========================
 http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html
 http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
 http://commons.apache.org/io/api-release/index.html
 
 http://commons.apache.org/io/api-release/index.html
-indexOfExtension ?
-indexOfLastSeparator ?
-separatorsToWindows ?
-separatorsToUnix ?
+indexOfExtension ? M
+indexOfLastSeparator ? M
+separatorsToWindows ? M
+separatorsToUnix ? M
+toUNC ?
 
 http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
-copy ?
+copy ? M
 createSymbolicLink ?
-getOwner ?
-setOwner ?
+getOwner ? M
+setOwner ? M
 
 http://commons.apache.org/io/api-release/index.html
-touch ?
+touch ? M
 
-move
+move S
+
+# -Script skeleton:
+====================
+__refreshMan
+__usage
+
+special script man page directory ?
+Docs for Script.generator
+dependencies: pod2man pod2usage
 
 # 0.39.8
 # -chained return values
