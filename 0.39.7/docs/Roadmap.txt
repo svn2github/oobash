@@ -35,6 +35,15 @@ special script man page directory ?
 Docs for Script.generator
 dependencies: pod2man pod2usage
 
+# -Class.generator + Man.generator: ?
+=====================================
+--> Class.generator --> to File instead of stdout
+--> automatically modify oobash.source file
+--> automatically source new class
+--> automatically create man page
+-special own class man page directory ?
+-__refreshMan for class files ?
+
 # 0.39.8
 # -chained return values
 # -analyze log4oobash.properties
