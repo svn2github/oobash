@@ -2,18 +2,15 @@
 
 # 0.39.7
 
-# -add static FileUtils:
-========================
-http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html
-http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
-http://commons.apache.org/io/api-release/index.html
+# -add static FileUtils / File methods:
+=======================================
 
 http://commons.apache.org/io/api-release/index.html
 indexOfExtension ? M
 indexOfLastSeparator ? M
 separatorsToWindows ? M
 separatorsToUnix ? M
-toUNC ?
+
 
 http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
 copy ? M
@@ -25,6 +22,7 @@ http://commons.apache.org/io/api-release/index.html
 touch ? M
 
 move S
+toUNC M ?
 
 # -Script skeleton:
 ====================
