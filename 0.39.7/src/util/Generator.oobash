@@ -549,8 +549,7 @@ if (( \$# == 0 )); then
    usage
 fi
 
-System.exit 0
-         ">> "${destination}"
+System.exit 0" >> "${destination}"
          chmod 755 "${destination}" 2>/dev/null
          System.out.println "     You can find the script skeleton here: "
          System.out.println "     "${__OODIR__}"/scripts/$1 "
@@ -568,8 +567,3 @@ System.exit 0
    return $returnValue
 }
 __registerFunction Script.generator
-
-ttt()
-{
-Boolean.help
-}
