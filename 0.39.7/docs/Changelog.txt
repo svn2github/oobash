@@ -280,6 +280,7 @@
 #    -Fixes
 # Version:      0.39.7
 #    -modified Man.generator: now bold methodnames in manpages
+#    -added private function: __dateFormat
 
 
 #################################################################
