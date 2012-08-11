@@ -1441,7 +1441,7 @@ __registerFunction Math.hypot
 #               #
 #################
 
-complete -W  "random cos sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
+complete -W  "random cos cbrt sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
 
 Math.help() {  
    local printStream=${printStream:-out}
@@ -1452,7 +1452,7 @@ Math.help() {
       -Math.random -Math.cos -Math.sin -Math.tan -Math.atan
       -Math.asin -Math.acos -Math.min -Math.max -Math.abs
       -Math.sqrt -Math.exp -Math.adder -Math.multiplier
-      -Math.log -Math.log10 -Math.log1p
+      -Math.log -Math.log10 -Math.log1p -Math.cbrt
       Constructor: 
       None
       Constants:
