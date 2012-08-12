@@ -94,8 +94,8 @@ msgid "   Please enter one class name and the attributes"
 msgstr "   Bitte geben Sie einen Klassennamen und die Attribute ein."
 
 #: oobash/src/util/Generator.oobash:263
-msgid "   Please enter one class name"
-msgstr "   Bitte geben Sie einen Klassennamen ein."
+msgid "   Please enter one class name or scriptname"
+msgstr "   Bitte geben Sie einen Klassennamen oder einen Skriptnamen ein."
 
 #: oobash/src/util/Generator.oobash:264
 msgid "   Example:"
@@ -104,6 +104,10 @@ msgstr "   Beispiel:"
 #: oobash/src/util/Generator.oobash:265
 msgid "   Man.generator Person"
 msgstr "   Man.generator Person"
+
+#: oobash/src/util/Generator.oobash:265
+msgid "   or"
+msgstr "   oder"
 
 #: oobash/src/util/Generator.oobash:265
 msgid "   Class.generator Person name age city > Person.oobash"

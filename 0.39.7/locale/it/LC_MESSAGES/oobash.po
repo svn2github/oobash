@@ -95,7 +95,7 @@ msgstr "   Inserire il nome della classe e gli attributi"
 
 #: oobash/src/util/Generator.oobash
 msgid "   Please enter one class name"
-msgstr "   Inserire il nome della classe"
+msgstr "   Inserire il nome della classe o scriptname"
 
 #: oobash/src/util/Generator.oobash:264
 msgid "   Example:"
@@ -108,6 +108,10 @@ msgstr "   Class.generator Persona nome anni paese > Persona.oobash"
 #: oobash/src/util/Generator.oobash
 msgid "   Man.generator Person"
 msgstr "   Man.generator Persona"
+
+#: oobash/src/util/Generator.oobash
+msgid "   or"
+msgstr "   o"
 
 #: oobash/src/util/Generator.oobash:266
 msgid "   source Person.oobash"
