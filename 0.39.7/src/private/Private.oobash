@@ -43,7 +43,7 @@
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
 # __isBashInteger check for integer input and size of int
-# __dateFormat returns the local date format
+# __localDateFormat returns the local date format (depends on LANG setting)
 
 
 # private
@@ -1009,7 +1009,7 @@ unset unsetAtEnd
 # returns the local date format
 # called by:
 # Script.generator
-__dateFormat()
+__localDateFormat()
 {
    local format
    case $LANG in
@@ -1026,4 +1026,4 @@ __dateFormat()
    System.out.println "${format}"
    return 0
 }
-__registerFunction __dateFormat
+__registerFunction __localDateFormat

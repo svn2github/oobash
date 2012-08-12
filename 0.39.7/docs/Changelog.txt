@@ -280,7 +280,11 @@
 #    -Fixes
 # Version:      0.39.7
 #    -modified Man.generator: now bold methodnames in manpages
-#    -added private function: __dateFormat
+#    -added private function: __localDateFormat
+#    -small modifications for Script.generator
+#    -oobash manpages moved to man3
+#    -script manpages go to man1
+#    -Fixes
 
 
 #################################################################
