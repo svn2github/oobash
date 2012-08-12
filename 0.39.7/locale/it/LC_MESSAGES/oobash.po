@@ -94,7 +94,7 @@ msgid "   Please enter one class name and the attributes"
 msgstr "   Inserire il nome della classe e gli attributi"
 
 #: oobash/src/util/Generator.oobash
-msgid "   Please enter one class name"
+msgid "   Please enter one class name or scriptname"
 msgstr "   Inserire il nome della classe o scriptname"
 
 #: oobash/src/util/Generator.oobash:264
