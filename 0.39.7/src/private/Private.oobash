@@ -1009,6 +1009,7 @@ unset unsetAtEnd
 # returns the local date format
 # called by:
 # Script.generator
+# Class.generator
 __localDateFormat()
 {
    local format
