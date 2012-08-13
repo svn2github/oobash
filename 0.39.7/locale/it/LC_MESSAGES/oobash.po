@@ -197,9 +197,9 @@ msgstr ""
 msgid " Could not change MANPATH!"
 msgstr ""
 
-#: oobash/src/admin/SshHost.oobash
-# msgid "Sorry, no passwordless authentication possible with SshHost '$name' and user '$user'"
-# msgstr ""
+#: oobash/src/util/Generator.oobash
+msgid "     You can find the script skeleton here:"
+msgstr ""
 
 #: oobash/src/util/Generator.oobash:
 msgid "   Please enter one script name"
