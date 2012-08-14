@@ -231,6 +231,13 @@ if [[ ! -z "${__QUIET__}" ]]; then
    __registerVar __QUIET__
 fi
 
+# source all your class files
+for class in ${__OODIR__}/src/myClassFiles/*.oobash
+do
+   source ${class} 2>/dev/null
+done
+unset class
+
 # Export scriptpath + scriptname if oobash is sourced by script
 if [[ -z "$PS1" ]]; then
    call="$(caller)"
