@@ -14,13 +14,6 @@ setOwner ? M
 touch ? M
 move ? S
 
-DOCS:
-------
-
--I18N --> readme.txt + oobash.3.gz --> PAth misses LC_MESSAGE
-
--correct docs for all generators
-
 # 0.39.8
 # -chained return values
 # -analyze log4oobash.properties
