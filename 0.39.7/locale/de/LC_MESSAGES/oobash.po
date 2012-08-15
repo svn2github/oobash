@@ -110,11 +110,11 @@ msgid "   or"
 msgstr "   oder"
 
 #: oobash/src/util/Generator.oobash:265
-msgid "   Class.generator Person name age city > Person.oobash"
-msgstr "   Class.generator Person name alter stadt > Person.oobash"
+msgid "   Class.generator Person name age city"
+msgstr "   Class.generator Person name alter stadt"
 
 #: oobash/src/util/Generator.oobash:266
-msgid "   source Person.oobash"
+msgid "   source ${__OODIR__}/src/myClassFiles/Person.oobash"
 msgstr ""
 
 #: oobash/src/util/Generator.oobash:267
@@ -153,34 +153,6 @@ msgstr "   a.getPersonStadt"
 msgid "   >>>london"
 msgstr ""
 
-#: oobash/src/util/Generator.oobash:277
-msgid "   If you develop something useful or funny, please"
-msgstr "   Wenn Sie etwas brauchbares oder lustiges entwickeln, bitte"
-
-#: oobash/src/util/Generator.oobash:278
-msgid "   send it to me and i will publish it on sourceforge."
-msgstr "   senden Sie es mir zu und ich werde es auf sourceforge veroeffentlichen."
-
-#: oobash/src/util/Generator.oobash:279
-msgid "   Happy bashing !"
-msgstr ""
-
-#: oobash/src/lang/String.oobash:40
-msgid "Sorry, objectname '$this' is not valid"
-msgstr "Tut mir leid, aber der Objektname '$this' ist nicht gültig"
-
-#: oobash/src/lang/String.oobash:46
-msgid "Sorry, objectname '$this' is a keyword"
-msgstr "Tut mir leid, aber der Objektname '$this' ist ein Schlüsselwort."
-
-#: oobash/src/lang/String.oobash:59
-msgid "Sorry, no full stop character allowed in objectname"
-msgstr "Tut mir leid, aber das Zeichen '.' ist in Objektnamen nicht erlaubt."
-
-#: oobash/src/lang/String.oobash
-msgid  "Sorry, could not create object '$this'"
-msgstr "Tut mir leid, konnte das Object '$this' nicht erstellen"
-
 #: oobash/oobash-0.38.5.source
 msgid " Doing dependency check..."
 msgstr " Test auf Abhängigkeiten..."
@@ -198,13 +170,9 @@ msgid " Could not change MANPATH!"
 msgstr " Konnte MANPATH nicht anpassen!"
 
 #: oobash/src/util/Generator.oobash:
-msgid "   Please enter one script name"
+msgid "   Please enter one scriptname"
 msgstr "   Bitte geben Sie einen Skriptnamen ein"
 
 #: oobash/src/util/Generator.oobash:
 msgid "   Crash! Script already exists."
 msgstr "   Abbruch ! Skript existiert bereits."
-
-#: oobash/src/util/Generator.oobash
-msgid "     You can find the script skeleton here:"
-msgstr "     Sie können die Skriptvorlage hier finden:"

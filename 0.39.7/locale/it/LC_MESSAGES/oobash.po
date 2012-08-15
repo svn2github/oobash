@@ -102,8 +102,8 @@ msgid "   Example:"
 msgstr "   Esempio:"
 
 #: oobash/src/util/Generator.oobash:265
-msgid "   Class.generator Person name age city > Person.oobash"
-msgstr "   Class.generator Persona nome anni paese > Persona.oobash"
+msgid "   Class.generator Person name age city"
+msgstr "   Class.generator Persona nome anni paese"
 
 #: oobash/src/util/Generator.oobash
 msgid "   Man.generator Person"
@@ -114,8 +114,8 @@ msgid "   or"
 msgstr "   o"
 
 #: oobash/src/util/Generator.oobash:266
-msgid "   source Person.oobash"
-msgstr "   source Persona.oobash"
+msgid "   source ${__OODIR__}/src/myClassFiles/Person.oobash"
+msgstr "   source ${__OODIR__}/src/myClassFiles/Persona.oobash"
 
 #: oobash/src/util/Generator.oobash:267
 msgid "   Person a john 22 london"
@@ -153,57 +153,25 @@ msgstr "   a.getPersonaPaese"
 msgid "   >>>london"
 msgstr "   >>>londra"
 
-#: oobash/src/util/Generator.oobash:277
-msgid "   If you develop something useful or funny, please"
-msgstr "   Se sviluppi qualcosa di utile o divertente, per favore"
-
-#: oobash/src/util/Generator.oobash:278
-msgid "   send it to me and i will publish it on sourceforge."
-msgstr "   per favore mandamelo e lo pubblicherò su sourceforge."
-
-#: oobash/src/util/Generator.oobash:279
-msgid "   Happy bashing !"
-msgstr ""
-
-#: oobash/src/lang/String.oobash:40
-msgid "Sorry, objectname '$this' is not valid"
-msgstr "Spiacente, l'oggetto '$this' non è valido"
-
-#: oobash/src/lang/String.oobash:46
-msgid "Sorry, objectname '$this' is a keyword"
-msgstr "Spiacente, il nome oggetto '$this' è una parola riservata"
-
-#: oobash/src/lang/String.oobash:59
-msgid "Sorry, no full stop character allowed in objectname"
-msgstr "Spiacente, il carattere '.' punto non è permesso nel nome oggetto"
-
-#: oobash/src/lang/String.oobash
-msgid  "Sorry, could not create object '$this'"
-msgstr ""
-
 #: oobash/oobash-0.38.5.source
 msgid " Doing depedency check..."
-msgstr ""
+msgstr " Fare controllo di dipendenze..."
 
 #: oobash/oobash-0.38.5.source
 msgid " Everything ok!"
-msgstr ""
+msgstr " Tutto ok!"
 
 #: oobash/oobash-0.38.5.source
 msgid " Please install the missing package(s) to have complete functionality"
-msgstr ""
+msgstr " Si prega di installare il pacchetto/pacchetti mancante di avere una completa funzionalità"
 
 #: oobash/oobash-0.38.5.source
 msgid " Could not change MANPATH!"
-msgstr ""
-
-#: oobash/src/util/Generator.oobash
-msgid "     You can find the script skeleton here:"
-msgstr ""
+msgstr " Impossibile modificare MANPATH!"
 
 #: oobash/src/util/Generator.oobash:
-msgid "   Please enter one script name"
-msgstr "   Inserire il nome della script"
+msgid "   Please enter one scriptname"
+msgstr "   Inserire il nome della nomescript"
 
 #: oobash/src/util/Generator.oobash:
 msgid "   Crash! Script already exists."

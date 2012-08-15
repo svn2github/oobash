@@ -279,11 +279,15 @@
 #    -replaced private __getPointer by a simple __COUNTER__ variable
 #    -Fixes
 # Version:      0.39.7
-#    -modified Man.generator: now bold methodnames in manpages
+#    -modified Man.generator to have bold methodnames in class manpages
+#     and to be able to create script manpages
+#    -small cleanup for Script.generator
+#    -modified Class.generator to write a file in the myClassFiles directory
+#    -oobash.source now tries to source all oobash files in the myClassFiles directory
 #    -added private function: __localDateFormat
-#    -small modifications for Script.generator
-#    -oobash manpages moved to man3
+#    -oobash manpages moved/go to man3
 #    -script manpages go to man1
+#    -new dependencies: -pod2man, -pod2usage
 #    -Fixes
 
 

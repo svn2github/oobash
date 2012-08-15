@@ -21,3 +21,5 @@ ssh
 scp
 vim
 diff
+pod2man
+pod2usage

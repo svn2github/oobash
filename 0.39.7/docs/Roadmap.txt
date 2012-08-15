@@ -5,42 +5,21 @@
 # -add static FileUtils / File methods:
 =======================================
 
-http://commons.apache.org/io/api-release/index.html
 indexOfExtension ? M
 indexOfLastSeparator ? M
-separatorsToWindows ? M
-separatorsToUnix ? M
-
-
-http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html
 copy ? M
 createSymbolicLink ?
 getOwner ? M
 setOwner ? M
-
-http://commons.apache.org/io/api-release/index.html
 touch ? M
+move ? S
 
-move S
-toUNC M ?
+DOCS:
+------
 
-# -Script skeleton:
-====================
-__refreshMan
-__usage
+-I18N --> readme.txt + oobash.3.gz --> PAth misses LC_MESSAGE
 
-special script man page directory ?
-Docs for Script.generator
-dependencies: pod2man pod2usage
-
-# -Class.generator + Man.generator: ?
-=====================================
---> Class.generator --> to File instead of stdout
---> automatically modify oobash.source file
---> automatically source new class
---> automatically create man page
--special own class man page directory ?
--__refreshMan for class files ?
+-correct docs for all generators
 
 # 0.39.8
 # -chained return values
@@ -57,7 +36,7 @@ dependencies: pod2man pod2usage
 
 # 0.40.1
 # -colours ?
-# -rename all private functions (to avoid name clashes)
+# -rename all private functions (to avoid name clashes) ?
 
 # 0.41
 # -Date functions

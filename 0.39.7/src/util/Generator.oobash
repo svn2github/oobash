@@ -41,10 +41,10 @@ Class.generator() {
             getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
          fi             
       done
-
-System.out.println "#############################################################
+      local destination=""${__OODIR__}"/src/myClassFiles/${userClass}.oobash"
+      System.out.println "#############################################################
 # Author:  $USER
-# Date:    $(date +%Y-%m-%d 2>/dev/null)
+# Date:    $(date $(__localDateFormat) 2>/dev/null)
 # License: The MIT License
 # Copyright (c) <$(date +%Y 2>/dev/null)> <$USER>
 #############################################################
@@ -55,7 +55,7 @@ declare -a __${userClass}Methods__=($(echo ${getters[@]}))
 
 # Definition of ${userClass} method array:
 declare -a __${userClass}__=(\${__${userClass}Methods__[@]} \${__ObjectMethods__[@]})
-"
+" > "${destination}"
 
 ###############################
 # Create constructor function:#
@@ -69,10 +69,10 @@ $userClass() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i returnValue=0
    if (( \$# == $((${#attributes[@]} + 1 )) )); then
-      local this=\"\$1\""
+      local this=\"\$1\"" >> "${destination}"
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "      local ${attributes[$i]}=\"\$$(( i + 2 ))\""
+         System.out.println "      local ${attributes[$i]}=\"\$$(( i + 2 ))\"" >> "${destination}"
       done
       System.out.println "      
       if ! __visible \"\$this\"; then
@@ -104,10 +104,10 @@ $userClass() {
 
       __alias \"\$this\" \"\$FUNCNAME\"
 
-      "
+      " >> "${destination}"
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "      __attribute ${attributes[$i]} \"\$${attributes[$i]}\""
+         System.out.println "      __attribute ${attributes[$i]} \"\$${attributes[$i]}\"" >> "${destination}"
       done
       System.out.println "
    else
@@ -118,7 +118,7 @@ $userClass() {
    return \$returnValue
 }
 __registerClass $userClass
-"
+" >> "${destination}"
 
 ###########################
 # Create getter functions:#
@@ -128,7 +128,7 @@ System.out.println "
 ######################
 # getter function(s) #
 ######################
-"
+" >> "${destination}"
 declare -i j
 for (( j=0; j < ${#attributes[@]}; j++))
 do
@@ -162,7 +162,7 @@ do
    fi
    return \$returnValue
 }
-"
+" >> "${destination}"
 done
 
 ########################
@@ -184,10 +184,10 @@ ${userClass}.help() {
                     -getClass
                     -toString
                     -equals
-                    -hashCode"
+                    -hashCode" >> "${destination}"
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "                    -get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}"
+         System.out.println "                    -get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}" >> "${destination}" 
       done
       System.out.println "                    Constructor: 
                     -${userClass}
@@ -204,11 +204,11 @@ ${userClass}.help() {
                ${userClass}
                   Constructor for the ${userClass} objects.
                Parameters:
-                  objectname" 
+                  objectname" >> "${destination}"
 
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "                  <${attributes[$i]}>"
+         System.out.println "                  <${attributes[$i]}>" >> "${destination}"
       done
    System.out.println "              Returns:
                   None
@@ -217,14 +217,14 @@ ${userClass}.help() {
                                            - if objectname is not valid
                                            - if objectname is a keyword
                                            - if objectname contains full stop character
-               Example:"
-   System.out.print "                  ${userClass} a "
+               Example:" >> "${destination}"
+   System.out.print "                  ${userClass} a " >> "${destination}"
    for (( i=0; i < ${#attributes[@]}; i++))
    do
-      System.out.print  "<${attributes[$i]}> "
+      System.out.print  "<${attributes[$i]}> " >> "${destination}"
    done
    System.out.println "
-            \";;& "
+            \";;& " >> "${destination}"
    declare -i count=0
    declare -a values=($(eval echo {1..${#attributes[@]}}))
    for (( i=0; i < ${#attributes[@]}; i++))
@@ -244,7 +244,7 @@ ${userClass}.help() {
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
                   >>>$(echo ${values[$count]})
-            \";;& "
+            \";;& " >> "${destination}"
       ((count++))
    done
    System.out.println "         getClass|all)
@@ -276,25 +276,27 @@ ${userClass}.help() {
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
-                  b.toString"
+                  b.toString" >> "${destination}"
       if command -v tr >/dev/null 2>&1; then
          if command -v sort  >/dev/null 2>&1; then
             declare -a special=($(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " ))
          else
+            > "${destination}"
             __throw "NotInPathException" ": sort not in path"
             return $?
          fi
       else
+         > "${destination}"
          __throw "NotInPathException" ": tr not in path"
          return $?
       fi
-      System.out.print "                  >>>"
+      System.out.print "                  >>>" >> "${destination}"
       for (( i=0; i < ${#special[@]}; i++))
       do
          if (( $i != 0 )); then
-            System.out.print                 \|\<"${special[$i]}"\>
+            System.out.print                 \|\<"${special[$i]}"\> >> "${destination}"
          else
-            System.out.print                 \<"${special[$i]}"\>
+            System.out.print                 \<"${special[$i]}"\> >> "${destination}"
          fi
       done
    System.out.println "
@@ -343,16 +345,15 @@ ${userClass}.help() {
       esac               
       shift
    done 
-}
-
-"      
+}" >> "${destination}" 
+      System.out.println "${destination}" 
       return 0       
    fi
    System.err.println
    I18n.err.println "   Please enter one class name and the attributes"
    I18n.err.println "   Example:" 
    I18n.err.println "   Class.generator Person name age city > Person.oobash" 
-   I18n.err.println "   source Person.oobash" 
+   I18n.err.println "   source ${__OODIR__}/src/myClassFiles/Person.oobash" 
    I18n.err.println "   Person a john 22 london"
    I18n.err.println "   a.getPersonAge"
    I18n.err.println "   >>>22" 
@@ -363,20 +364,20 @@ ${userClass}.help() {
    I18n.err.println "   a.getPersonCity"
    I18n.err.println "   >>>london"
    System.err.println 
-   I18n.err.println "   If you develop something useful or funny, please" 
-   I18n.err.println "   send it to me and i will publish it on sourceforge."
-   I18n.err.println "   Happy bashing !"
-   System.err.println 
+   #I18n.err.println "   If you develop something useful or funny, please" 
+   #I18n.err.println "   send it to me and i will publish it on sourceforge."
+   #I18n.err.println "   Happy bashing !"
+   #System.err.println 
    return 1   
 }
 __registerFunction Class.generator
 
 Man.generator() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
    if (( $# == 1 )) && [[ ! -z $($1.help 2>/dev/null) ]]; then
-      declare -i returnValue=0
       local class="$1"
-      local destination=""${__OODIR__}"/man/man1/$class.1"
+      local destination=""${__OODIR__}"/man/man3/$class.3"
       System.out.println "
 .\\\" Copyright (c) <$(date +%Y 2>/dev/null)> $USER
 .\\\"
@@ -399,8 +400,8 @@ Man.generator() {
 .\\\" THE SOFTWARE.
       " > "${destination}"
 
-      System.out.print ".TH oobash 1" >>"${destination}"
-      System.out.print " \"$(date "+%d %b %Y" 2>/dev/null)\" bash4-Environment User Manuals" >> "${destination}"
+      System.out.print ".TH oobash 3" >>"${destination}"
+      System.out.print " \"$(date "+%d %b %Y" 2>/dev/null)\" bash4-Environment Framework Manuals" >> "${destination}"
       System.out.print " \""${__FILENAME__}"\"" >> "${destination}"
       System.out.println >> "${destination}"
       System.out.println ".SH NAME" >> "${destination}"
@@ -435,18 +436,36 @@ Man.generator() {
 
       System.out.println ".SH AUTHOR">>"${destination}"
       System.out.println "$USER" >> "${destination}"
-      if command -v gzip >/dev/null 2>&1; then 
-         gzip -f "${destination}"
+   elif (( $# != 0 )) && [[ -r ""${__OODIR__}"/scripts/$1" ]]; then
+      if command -v pod2man  >/dev/null 2>&1; then
+         local script="$1"
+         local destination=""${__OODIR__}"/man/man1/${script}.1"
+         pod2man -r "oobash ${__VERSION__}" -c "OOBASH Script" -d $(date $(__localDateFormat)) \
+                 ""${__OODIR__}"/scripts/${script}" > ""${__OODIR__}"/man/man1/${script}.1"
+      else
+         __throw "NotInPathException" ": pod2man not in path"
+         return $?
       fi
    else
       System.err.println
-      I18n.err.println "   Please enter one class name"
+      I18n.err.println "   Please enter one class name or scriptname"
       I18n.err.println "   Example:" 
-      I18n.err.println "   Class.generator Person name age city > Person.oobash" 
-      I18n.err.println "   source Person.oobash"
+      I18n.err.println "   Class.generator Person name age city" 
+      I18n.err.println "   source ${__OODIR__}/src/myClassFiles/Person.oobash"
       I18n.err.println "   Man.generator Person"
+      I18n.err.println "   or"
+      System.err.println "   Script.generator test.sh"
+      System.err.println "   Man.generator test.sh"
       System.err.println 
       returnValue=1 
+   fi
+   if (( $returnValue == 0 )); then
+      if command -v gzip >/dev/null 2>&1; then 
+         gzip -f "${destination}"
+         System.out.println "${destination}.gz"
+      else
+         System.out.println "${destination}"
+      fi
    fi
    return $returnValue
 }
@@ -467,13 +486,6 @@ Script.generator() {
 source "${__OODIR__}"/oobash.source
 
 # Please complete/customise the pod doc below.
-# Then you can use the pod (Plain Old Documentation) tools. 
-
-# Some pod tools: pod2man pod2html pod2latex pod2text pod2usage
-# Info: http://perldoc.perl.org/perlpod.html
-
-# Example: Create man page for $1:
-# pod2man "${__OODIR__}"/scripts/$1 > "${__OODIR__}"/man/man1/$1.1
 
 ############
 # POD DOCS #
@@ -504,21 +516,11 @@ $1
 
 Written by $USER
 ">> "${destination}"
-
          if command -v date >/dev/null 2>&1; then
             System.out.println "=head1 HISTORY" >> "${destination}"
             System.out.println "" >> "${destination}"
-            case $LANG in
-               en_US*|en_BZ*)
-                  System.out.println "-Version 1.0:  $(date "+%m/%d/%Y")
-                  ">> "${destination}";;
-               zh_CN*|ko_KR*|fa_IR*|ja_JP*|hu_HU*|lt_LT*)
-                  System.out.println "-Version 1.0:  $(date "+%Y-%m-%d")
-                  ">> "${destination}";;
-               *)
-                  System.out.println "-Version 1.0:  $(date "+%d.%m.%Y")
-                  ">> "${destination}";;
-            esac
+                  System.out.println "-Version 1.0:  $(date $(__localDateFormat))
+                  ">> "${destination}"
          fi
          System.out.println "=head1 SEE ALSO
 
@@ -544,21 +546,25 @@ usage() {
 ########
 # MAIN #
 ########
-
+ 
+# To avoid accidents: no arguments, then show usage.
 if (( \$# == 0 )); then
    usage
 fi
 
+# Now your code...
+
 System.exit 0" >> "${destination}"
          chmod 755 "${destination}" 2>/dev/null
-         System.out.println "     You can find the script skeleton here: "
-         System.out.println "     "${__OODIR__}"/scripts/$1 "
-         System.out.println
-         $1
+         #System.out.println
+         #I18n.out.println "     You can find the script skeleton here:"
+         System.out.println "${__OODIR__}/scripts/$1"
+         #System.out.println
+         #$1
       fi
    else
       System.err.println
-      I18n.err.println "   Please enter one script name"
+      I18n.err.println "   Please enter one scriptname"
       I18n.err.println "   Example:" 
       System.err.println "   Script.generator script.sh" 
       System.err.println 
