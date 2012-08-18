@@ -1657,6 +1657,29 @@ __insertAfterLine() {
    return $returnValue
 }
 
+__indexOfExtension() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      String "${this}" "$("${this}".toString)"
+      declare -i sep
+      declare -i dot
+      sep=$("${this}".lastIndexOf "/")
+      dot=$("${this}".lastIndexOf ".")
+      if (( $dot > $sep )); then
+         System.out.println $dot
+      else
+         System.out.println -1
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 # length
 # Masterfunction in the String.oobash file
 
@@ -1839,7 +1862,7 @@ File.help() {
       -getUsableSpace -getInode -getBase -getExtension
       -getPosixFilePermissions -setPosixFilePermissions
       -getLine -replaceLine -delLine -createNewFile
-      -insertAfterLine -insertBeforeLine
+      -insertAfterLine -insertBeforeLine -indexOfExtension
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile
@@ -1869,6 +1892,24 @@ File.help() {
                                            - if objectname contains full stop character
                Example:
                   File a testfile
+            ";;&
+         indexOfExtension|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               indexOfExtension
+                  Returns the index of the last extension separator character, which is a dot.
+                  This method also checks that there is no directory separator, which is a /
+                  after the last dot.
+               Parameters:
+                  None 
+               Returns:
+                  the index of the last separator character, or -1 if there is no such character
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x /abc/def/Readme.txt
+                  x.indexOfExtension
+                  >>>15
             ";;&
          insertAfterLine|all)
             match=$(Boolean.TRUE)

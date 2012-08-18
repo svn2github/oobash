@@ -284,6 +284,7 @@
 #    -small cleanup for Script.generator
 #    -modified Class.generator to write a file in the myClassFiles directory
 #    -oobash.source now tries to source all oobash files in the myClassFiles directory
+#    -File: added methods: -indexOfExtension
 #    -added private function: __localDateFormat
 #    -oobash manpages moved/go to man3
 #    -script manpages go to man1
