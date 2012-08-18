@@ -189,6 +189,8 @@ I18n.err.print
 I18n.out.println
 I18n.err.println
 
+You can see a i18n example script in the docs/examples directory.
+
 J) "Decorators"
 ################
 Will only work if shell is used in script.
