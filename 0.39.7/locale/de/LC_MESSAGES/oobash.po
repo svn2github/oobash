@@ -172,7 +172,3 @@ msgstr " Konnte MANPATH nicht anpassen!"
 #: oobash/src/util/Generator.oobash:
 msgid "   Please enter one scriptname"
 msgstr "   Bitte geben Sie einen Skriptnamen ein"
-
-#: oobash/src/util/Generator.oobash:
-msgid "   Crash! Script already exists."
-msgstr "   Abbruch ! Skript existiert bereits."

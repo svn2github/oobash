@@ -14,6 +14,24 @@ setOwner ? M
 touch ? M
 move ? S
 
+Docs:
+---------
+Help.txt file:
+
+
+i18n: more po files for locales
+ide: some addon to support oobash in an IDE
+
+
+
+
+Class.generator:
+-----------------
+# -check if file already exists 
+--> i18n change
+
+# -remove clean file line
+
 # 0.39.8
 # -chained return values
 # -analyze log4oobash.properties
