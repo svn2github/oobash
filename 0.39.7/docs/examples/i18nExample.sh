@@ -4,7 +4,7 @@ if (( $? != 0 )); then
    exit 0
 fi
 
-I18n.out.println
+System.out.println
 
 LANG=en_GB.utf8
 System.out.println "   My locale is $LANG (english)"
@@ -20,6 +20,6 @@ LANG=it_IT.utf8
 System.out.println "   My locale is $LANG (italian)"
 I18n.out.println "   Example:"
 
-I18n.out.println
+System.out.println
 
 System.exit 0
