@@ -182,7 +182,7 @@ then:
 4) cd into oobash /locale/<yourLocaleDir>/LC_MESSAGES/
 5) create your mo file: msgfmt -o oobash.mo oobash.po
 
-If you have some text output that should be translated, there are four functions available, that try to use the locale translations:
+If you have some text output that should be translated in your scripts, there are four functions available:
 
 I18n.out.print
 I18n.err.print

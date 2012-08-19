@@ -289,6 +289,7 @@
 #    -oobash manpages moved/go to man3
 #    -script manpages go to man1
 #    -new dependencies: -pod2man, -pod2usage
+#    -i18n example script in docs/examples
 #    -Fixes
 
 
