@@ -113,15 +113,17 @@ __equals() {
             Level)
                if [[ "$("$argobject".toInt)" == "$("$this".toInt)" ]]; then
                   Boolean.TRUE
+               else
+                  Boolean.FALSE
                fi;;            
             *)
                if [[ "$("$argobject".toString)" == "$("$this".toString)" ]]; then
                   Boolean.TRUE
+               else
+                  Boolean.FALSE
                fi;;
             esac
-            return $returnValue
          fi
-         Boolean.FALSE
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
