@@ -957,8 +957,8 @@ Ssh.help() {
                   IllegalArgumentException - if number of arguments != 1
                                            - if arguent is no object
                Example:
+                  Ssh a 1 2 3
                   Ssh b 1 2 3
-                  Ssh c 1 2 3
                   a.equals b
                   >>>true
             ";;&
