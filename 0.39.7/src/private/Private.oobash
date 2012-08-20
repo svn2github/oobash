@@ -964,8 +964,7 @@ fi
 # System.exit
 # Ssh
 # Process
-__isBashInteger()
-{
+__isBashInteger() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local unsetAtEnd
    shopt -q extglob
@@ -1010,8 +1009,7 @@ unset unsetAtEnd
 # called by:
 # Script.generator
 # Class.generator
-__localDateFormat()
-{
+__localDateFormat() {
    local format
    case $LANG in
       en_US*|en_BZ*)
