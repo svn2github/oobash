@@ -1697,8 +1697,35 @@ __indexOfLastSeparator() {
    return $returnValue
 }
 
-# length
-# Masterfunction in the String.oobash file
+__fileLength() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      if command -v wc >/dev/null 2>&1; then
+         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+            result="$(wc -c -- < "${str}")"
+            shopt -s extglob
+            # trimming...
+            local result="${result##+([[:space:]])}"
+            System.out.println "$result"
+         else
+            System.out.println 0
+         fi
+      else
+         __throw "NotInPathException" ": wc not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
 
 ##################
 #                #
@@ -1867,7 +1894,7 @@ File.help() {
       -isDirectory -exists -toString -hashCode 
       -canRead -canWrite -canExecute -getName
       -isHidden -isFile -mkdir -mkdirs -getParent
-      -getClass -equals -isSymbolicLink -length
+      -getClass -equals -isSymbolicLink -fileLength
       -isNamedPipe -hasStickyBit -isSocket
       -isCharacterSpecial -isBlockSpecial -compareTo
       -setExecutable -setReadable -setWritable
@@ -2542,10 +2569,10 @@ File.help() {
                   a.canWrite
                   >>>false
                ";;&
-         length|all)
+         fileLength|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               length
+               fileLength
                   Returns the length of the file denoted by this abstract pathname. 
                   The return value is unspecified if this pathname denotes a directory.
                Parameters:
@@ -2557,7 +2584,7 @@ File.help() {
                Example:
                   File a /tmp/abc
                   echo abc > /tmp/abc
-                  a.length
+                  a.fileLength
                   >>>4
                ";;&
          toString|all)

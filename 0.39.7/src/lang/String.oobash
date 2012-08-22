@@ -1128,30 +1128,7 @@ __length() {
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
-      case "${class}" in
-         File)
-            if command -v wc >/dev/null 2>&1; then
-               if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
-                  result="$(wc -c -- < "${str}")"
-                  shopt -s extglob
-                  # trimming...
-                  local result="${result##+([[:space:]])}"
-                  System.out.println "$result"
-               else
-                  System.out.println 0
-               fi
-            else
-               __throw "NotInPathException" ": wc not in path"
-               returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}" 
-            fi
-            ;;
-         String)
-            System.out.println ${#str};;  
-         # Default for user created classes         
-         *)
-            System.out.println ${#str};;
-      esac
+      System.out.println ${#str};;  
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
