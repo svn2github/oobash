@@ -1128,7 +1128,7 @@ __length() {
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
-      System.out.println ${#str};;  
+      System.out.println ${#str} 
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?

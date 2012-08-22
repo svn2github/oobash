@@ -4,13 +4,16 @@
 
 # -add static FileUtils / File methods:
 =======================================
-
+touch ? M
 copy ? M
 createSymbolicLink ?
-getOwner ? M
 setOwner ? M
-touch ? M
+
 move ? S
+
+missing docs for getOwner, getGroup
+check on osx
+naming: getGroup --> getGroupOfOwner ?
 
 # 0.39.8
 # -chained return values
