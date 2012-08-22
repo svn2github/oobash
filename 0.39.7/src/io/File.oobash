@@ -1680,6 +1680,23 @@ __indexOfExtension() {
    return $returnValue
 }
 
+__indexOfLastSeparator() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      String "${this}" "$("${this}".toString)"
+      declare -i sep
+      sep=$("${this}".lastIndexOf "/")
+      System.out.println $sep
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 # length
 # Masterfunction in the String.oobash file
 
@@ -1910,6 +1927,24 @@ File.help() {
                   File x /abc/def/Readme.txt
                   x.indexOfExtension
                   >>>15
+            ";;&
+         indexOfLastSeparator|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               indexOfLastSeparator
+                  Returns the index of the last directory separator character, which is a /.
+                  This method will handle a file in either Unix or Windows format. The position 
+                  of the last forward is returned.
+               Parameters:
+                  None 
+               Returns:
+                  the index of the last separator character, or -1 if there is no such character
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x /234/67
+                  x.indexOfLastSeparator
+                  >>>5
             ";;&
          insertAfterLine|all)
             match=$(Boolean.TRUE)

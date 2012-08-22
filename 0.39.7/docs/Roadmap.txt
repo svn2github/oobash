@@ -5,13 +5,16 @@
 # -add static FileUtils / File methods:
 =======================================
 
-indexOfLastSeparator ? M
 copy ? M
 createSymbolicLink ?
 getOwner ? M
 setOwner ? M
 touch ? M
 move ? S
+
+File:
+------
+rename length function in File
 
 # 0.39.8
 # -chained return values
