@@ -9,12 +9,14 @@ System.out.println
 LANG=en_GB.utf8
 System.out.println "   My locale is $LANG (english)"
 I18n.out.println "   Example:"
-I18n.out.println
+
+System.out.println
 
 LANG=de_DE.utf8
 System.out.println "   My locale is $LANG (german)"
 I18n.out.println "   Example:"
-I18n.out.println
+
+System.out.println
 
 LANG=it_IT.utf8
 System.out.println "   My locale is $LANG (italian)"
