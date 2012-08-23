@@ -1974,6 +1974,7 @@ File.help() {
       -getPosixFilePermissions -setPosixFilePermissions
       -getLine -replaceLine -delLine -createNewFile
       -insertAfterLine -insertBeforeLine -indexOfExtension
+      -indexOfLastSeparator -getUser -getGroup
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile
@@ -2018,9 +2019,9 @@ File.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  File x /abc/def/Readme.txt
+                  File x /123/56.89
                   x.indexOfExtension
-                  >>>15
+                  >>>7
             ";;&
          indexOfLastSeparator|all)
             match=$(Boolean.TRUE)
@@ -2036,9 +2037,45 @@ File.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  File x /234/67
+                  File x /123/56
                   x.indexOfLastSeparator
-                  >>>5
+                  >>>4
+            ";;&
+         getGroup|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getGroup
+                  Returns the group of the owner of this file.
+               Parameters:
+                  None 
+               Returns:
+                  Name of group
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/oratab
+                  x.getGroup
+                  >>>dba
+            ";;&
+         getOwner|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getOwner
+                  Returns the name of the owner of this file.
+               Parameters:
+                  None 
+               Returns:
+                  Name of owner
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/oratab
+                  x.getOwner
+                  >>>oracle
             ";;&
          insertAfterLine|all)
             match=$(Boolean.TRUE)

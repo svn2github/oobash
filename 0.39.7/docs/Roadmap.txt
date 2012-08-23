@@ -11,8 +11,7 @@ setOwner ? M
 
 move ? S
 
-missing docs for getOwner, getGroup
-check on osx
+check on osx: getOwner, getGroup
 naming: getGroup --> getGroupOfOwner ?
 
 # 0.39.8
