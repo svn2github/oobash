@@ -191,18 +191,6 @@ I18n.err.println
 
 You can see a i18n example script in the docs/examples directory.
 
-Known i18n Problem:
-The translation does not work if the string, that should be translated contains shell variables and you want to use
-this variable in the oobash.po file.
-You can see one example string with this problem in the startmessage of the oobash.source file:
-" Version:      ${__VERSION__}".
-The italian oobash.po file for example contains:
-msgid " Version:      ${__VERSION__}"
-msgstr " Versione:       ${__VERSION__}".
-Solution is the $"..." syntax.
-to check the example you have to set LANG=it_IT.utf8 in your shell and then:
-System.out.println $" Version:      ${__VERSION__}"
-
 J) "Decorators"
 ################
 Will only work if shell is used in script.

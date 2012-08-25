@@ -388,7 +388,7 @@ __registerFunction command_not_found_handle
 if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z "$PS1" ]]; then
    System.out.println 
    I18n.out.println " oo-style framework for bash 4"
-   System.out.println $" Version:      ${__VERSION__}"
+   I18n.out.println ' Version:      ${__VERSION__}'
    I18n.out.println " Author:       andreas.gregor.frank@googlemail.com"
    System.out.println 
    I18n.out.println " Stop showing this message by setting __QUIET__=true"

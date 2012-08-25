@@ -351,7 +351,7 @@ ${userClass}.help() {
    I18n.err.println "   Please enter one class name and the attributes"
    I18n.err.println "   Example:" 
    I18n.err.println "   Class.generator Person name age city" 
-   System.err.println $"   source ${__OODIR__}/src/myClassFiles/Person.oobash" 
+   I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash' 
    I18n.err.println "   Person a john 22 london"
    I18n.err.println "   a.getPersonAge"
    I18n.err.println "   >>>22" 
@@ -445,7 +445,7 @@ Man.generator() {
       I18n.err.println "   Please enter one class name or scriptname"
       I18n.err.println "   Example:" 
       I18n.err.println "   Class.generator Person name age city" 
-      System.err.println $"   source ${__OODIR__}/src/myClassFiles/Person.oobash"
+      I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash'
       I18n.err.println "   Man.generator Person"
       I18n.err.println "   or"
       System.err.println "   Script.generator test.sh"
