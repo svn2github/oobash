@@ -170,5 +170,5 @@ msgid " Could not change MANPATH!"
 msgstr " Konnte MANPATH nicht anpassen!"
 
 #: oobash/src/util/Generator.oobash:
-msgid "   Please enter one scriptname"
-msgstr "   Bitte geben Sie einen Skriptnamen ein"
+msgid "   Please enter one scriptname."
+msgstr "   Bitte geben Sie einen Skriptnamen ein."

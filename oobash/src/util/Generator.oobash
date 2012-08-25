@@ -549,7 +549,7 @@ System.exit 0" >> "${destination}"
       System.out.println "${__OODIR__}/scripts/$1"
    else
       System.err.println
-      I18n.err.println "   Please enter one scriptname"
+      I18n.err.println "   Please enter one scriptname."
       I18n.err.println "   Example:" 
       System.err.println "   Script.generator script.sh" 
       System.err.println 
