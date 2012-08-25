@@ -1,19 +1,5 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.7
-
-# -add static FileUtils / File methods:
-=======================================
-touch ? M
-copy ? M
-createSymbolicLink ?
-setOwner ? M
-
-move ? S
-
-check on osx: getOwner, getGroup
-naming: getGroup --> getGroupOfOwner ?
-
 # 0.39.8
 # -chained return values
 # -analyze log4oobash.properties
@@ -22,10 +8,11 @@ naming: getGroup --> getGroupOfOwner ?
 # 0.39.9
 # -add some System functions
 # -check for gnu ps ?
+# -add to File:
+# -touch -copy -createSymbolicLink -move -setOwner
 
 # 0.40
 # Assert 
-# + Tests (execute modules to test -- python style, use doc-examples ?)
 
 # 0.40.1
 # -colours ?
@@ -46,6 +33,9 @@ naming: getGroup --> getGroupOfOwner ?
 # 0.60
 # Use of /dev/tcp and /dev/udp
 # for network sockets
+
+# 0.61
+# Support for Rest
 
 # 0.70
 # -pimp getopts/or create an alternative ? 
