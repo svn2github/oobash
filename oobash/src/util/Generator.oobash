@@ -527,10 +527,10 @@ The MIT License
 #############
 
 usage() {
-if command -v pod2usage >/dev/null 2>&1; then
-   pod2usage -verbose 1 -exit 42 \$0
-   System.exit \$?
-fi
+   if command -v pod2usage >/dev/null 2>&1; then
+      pod2usage -verbose 1 -exit 42 \$0
+      System.exit \$?
+   fi
 }
 
 ########
