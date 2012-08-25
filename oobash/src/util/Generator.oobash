@@ -539,7 +539,7 @@ fi
 
 # To avoid accidents: no arguments, then show usage.
 if (( \$# == 0 )); then
-usage
+   usage
 fi
 
 # Now your code...
