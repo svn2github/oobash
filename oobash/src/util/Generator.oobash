@@ -1,0 +1,560 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
+
+#########################
+#########################
+##                     ##
+##      GENERATOR      ## 
+##                     ##
+#########################
+#########################
+
+Class.generator() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   if (( $# >= 2 )); then
+      # check for valid class name
+      local userClass="$1"
+      shift
+      eval local \'"$userClass"\'=test 2>/dev/null
+      if (( $? != 0 )); then
+         I18n.err.println "Sorry, no valid classname: '\$userClass'"
+         return 1
+      fi         
+
+      declare -a  attributes=("$@")
+
+      declare -a getters
+
+      # check for valid attribute name + generate array of getters
+      declare -i i
+      for ((i=0; i < ${#attributes[@]}; i++))
+      do
+         eval local \'"${attributes[$i]}"\'=test 2>/dev/null
+         if (( $? != 0 )); then
+            I18n.err.println "Sorry, no valid attribute name: '\${attributes[$i]}'"
+            return 1
+         else
+            getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
+         fi             
+      done
+      local destination=""${__OODIR__}"/src/myClassFiles/${userClass}.oobash"
+      System.out.println "#############################################################
+# Author:  $USER
+# Date:    $(date $(__localDateFormat) 2>/dev/null)
+# License: The MIT License
+# Copyright (c) <$(date +%Y 2>/dev/null)> <$USER>
+#############################################################
+
+ 
+# Definition of ${userClass} method array for inheritance actions
+declare -a __${userClass}Methods__=($(echo ${getters[@]}))
+
+# Definition of ${userClass} method array:
+declare -a __${userClass}__=(\${__${userClass}Methods__[@]} \${__ObjectMethods__[@]})
+" > "${destination}"
+
+###############################
+# Create constructor function:#
+###############################
+
+System.out.println "
+#########################
+# constructor  function #
+#########################
+$userClass() {
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   declare -i returnValue=0
+   if (( \$# == $((${#attributes[@]} + 1 )) )); then
+      local this=\"\$1\"" >> "${destination}"
+      for (( i=0; i < ${#attributes[@]}; i++))
+      do
+         System.out.println "      local ${attributes[$i]}=\"\$$(( i + 2 ))\"" >> "${destination}"
+      done
+      System.out.println "      
+      if ! __visible \"\$this\"; then
+         __throw \"IllegalArgumentException\" \": Objectname '\$this' is not valid\"
+         returnValue=\$?
+         __stackOrHelp \"\${FUNCNAME}\" \"\${FUNCNAME}\"
+         return \$returnValue
+      fi
+
+      if ! __checkForKeywords \"\$this\"; then
+         __throw \"IllegalArgumentException\" \": Objectname '\$this' is a keyword\"
+         returnValue=\$?
+         __stackOrHelp \"\${FUNCNAME}\" \"\${FUNCNAME}\"
+         return \$returnValue
+      fi
+
+      if ! __periodCheck \"\$this\"; then
+         __throw \"IllegalArgumentException\" \": No full stop character allowed in objectname\"
+         returnValue=\$?
+         __stackOrHelp \"\${FUNCNAME}\" \"\${FUNCNAME}\"
+         return \$returnValue
+      fi
+
+      local pointer=\$((__COUNTER__++))
+
+      local class=\$FUNCNAME
+
+      __destructor \"\$this\"
+
+      __alias \"\$this\" \"\$FUNCNAME\"
+
+      " >> "${destination}"
+      for (( i=0; i < ${#attributes[@]}; i++))
+      do
+         System.out.println "      __attribute ${attributes[$i]} \"\$${attributes[$i]}\"" >> "${destination}"
+      done
+      System.out.println "
+   else
+      __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+      returnValue=\$?
+      __stackOrHelp \"\${FUNCNAME}\" \"\${FUNCNAME}\"
+   fi
+   return \$returnValue
+}
+__registerClass $userClass
+" >> "${destination}"
+
+###########################
+# Create getter functions:#
+###########################
+
+System.out.println "
+######################
+# getter function(s) #
+######################
+" >> "${destination}"
+declare -i j
+for (( j=0; j < ${#attributes[@]}; j++))
+do
+   System.out.println "__get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$j]:0:1})${attributes[$j]:1}() {
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   declare -i returnValue=0
+   local class=\"\$2\"
+   if (( \$# == 2 )); then
+      local this=\"\$1\"
+      local key
+      for key in \"\${!__OBJECTPOOL__[@]}\"
+      do 
+         if [[ \"\$this\" == \"\$key\" ]]; then
+            local str=\"\${__OBJECTPOOL__[\"\$this\"]}\"
+            declare -i i=0
+            for ((i=0; i < \${#str}; i++))
+            do
+               local char=\"\${str:i:1}\"
+               if [[ \$char == \"@\" ]]; then
+                  local j=\$((\$i+1))
+                  local pointer=\"\${str:j}\"
+               fi
+            done              
+         fi
+      done
+      System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${attributes[$j]}]}\" 
+   else
+      __throw \"IllegalArgumentException\" \": Wrong number of arguments \$((\$#-2))\"
+      returnValue=\$?
+      __stackOrHelp \"\${class}\" \"\${FUNCNAME:2}\"
+   fi
+   return \$returnValue
+}
+" >> "${destination}"
+done
+
+########################
+# Create help function:#
+########################
+
+System.out.println "
+complete -W  \"\$(echo \${__${userClass}__[@]}) all ${userClass}\" ${userClass}.help
+
+#################
+# help function #
+#################
+${userClass}.help() {  
+   local printStream=\${printStream:-out}  
+   if (( \$# == 0 )); then
+      System.\${printStream}.println \"
+                    Usage: ${userClass}.help all|methodname
+                    Available methods:
+                    -getClass
+                    -toString
+                    -equals
+                    -hashCode" >> "${destination}"
+      for (( i=0; i < ${#attributes[@]}; i++))
+      do
+         System.out.println "                    -get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}" >> "${destination}" 
+      done
+      System.out.println "                    Constructor: 
+                    -${userClass}
+      \" 
+      return 0
+   fi
+   while ((\$#))
+   do
+      local match=\$(Boolean.FALSE)
+      case \$1 in
+         ${userClass}|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               ${userClass}
+                  Constructor for the ${userClass} objects.
+               Parameters:
+                  objectname" >> "${destination}"
+
+      for (( i=0; i < ${#attributes[@]}; i++))
+      do
+         System.out.println "                  <${attributes[$i]}>" >> "${destination}"
+      done
+   System.out.println "              Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != $((${#attributes[@]}+1))
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if objectname contains full stop character
+               Example:" >> "${destination}"
+   System.out.print "                  ${userClass} a " >> "${destination}"
+   for (( i=0; i < ${#attributes[@]}; i++))
+   do
+      System.out.print  "<${attributes[$i]}> " >> "${destination}"
+   done
+   System.out.println "
+            \";;& " >> "${destination}"
+   declare -i count=0
+   declare -a values=($(eval echo {1..${#attributes[@]}}))
+   for (( i=0; i < ${#attributes[@]}; i++))
+   do
+      System.out.println "         get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
+                  Returns the value of ${attributes[$i]}
+               Parameters:
+                  None
+               Returns:
+                  The value of ${attributes[$i]}.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
+                  >>>$(echo ${values[$count]})
+            \";;& " >> "${destination}"
+      ((count++))
+   done
+   System.out.println "         getClass|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               getClass
+                  Returns the runtime class of this Object.
+               Parameters:
+                  None
+               Returns:
+                  The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.getClass
+                  >>>class ${userClass}
+            \";;&
+         toString|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               toString
+                  Returns a String object representing this ${userClass} object in sorted order. 
+               Parameters:
+                  None
+               Throws:
+                  NotInPathException - if sort not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.toString" >> "${destination}"
+      if command -v tr >/dev/null 2>&1; then
+         if command -v sort  >/dev/null 2>&1; then
+            declare -a special=($(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " ))
+         else
+            __throw "NotInPathException" ": sort not in path"
+            return $?
+         fi
+      else
+         __throw "NotInPathException" ": tr not in path"
+         return $?
+      fi
+      System.out.print "                  >>>" >> "${destination}"
+      for (( i=0; i < ${#special[@]}; i++))
+      do
+         if (( $i != 0 )); then
+            System.out.print                 \|\<"${special[$i]}"\> >> "${destination}"
+         else
+            System.out.print                 \<"${special[$i]}"\> >> "${destination}"
+         fi
+      done
+   System.out.println "
+            \";;&
+         hashCode|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               hashCode
+                  Returns a hash code for this ${userClass} object.
+               Parameters:
+                  None
+               Returns:
+                  a hash code for this ${userClass}.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.hashCode
+            \";;&
+         equals|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               equals
+                  Returns true if and only if the argument is a ${userClass} object that 
+                  represents the same ${userClass} value as this object. 
+               Parameters:
+                  anObject - The object to compare this ${userClass} against
+               Returns:
+                  true if the ${userClass} objects represent the same value; false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if arguent is no object
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  ${userClass} c $(eval echo {1..${#attributes[@]}})
+                  b.equals c
+                  >>>true
+            \";;&
+         *)   if [[ \"\${match}\" == \"\$(Boolean.FALSE)\" ]]; then
+                 System.\${printStream}.println \"                                  
+                       No help found for \$1
+                    \"   
+              fi
+              ;;& 
+      esac               
+      shift
+   done 
+}" >> "${destination}" 
+      System.out.println "${destination}" 
+      return 0       
+   fi
+   System.err.println
+   I18n.err.println "   Please enter one class name and the attributes"
+   I18n.err.println "   Example:" 
+   I18n.err.println "   Class.generator Person name age city > Person.oobash" 
+   I18n.err.println "   source ${__OODIR__}/src/myClassFiles/Person.oobash" 
+   I18n.err.println "   Person a john 22 london"
+   I18n.err.println "   a.getPersonAge"
+   I18n.err.println "   >>>22" 
+   I18n.err.println "   a.getClass"
+   I18n.err.println "   >>>class Person"
+   I18n.err.println "   a.getPersonName"
+   I18n.err.println "   >>>john"
+   I18n.err.println "   a.getPersonCity"
+   I18n.err.println "   >>>london"
+   System.err.println 
+   return 1   
+}
+__registerFunction Class.generator
+
+Man.generator() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )) && [[ ! -z $($1.help 2>/dev/null) ]]; then
+      local class="$1"
+      local destination=""${__OODIR__}"/man/man3/$class.3"
+      System.out.println "
+.\\\" Copyright (c) <$(date +%Y 2>/dev/null)> $USER
+.\\\"
+.\\\" Permission is hereby granted, free of charge, to any person obtaining a copy
+.\\\" of this software and associated documentation files (the \"Software\"), to deal
+.\\\" in the Software without restriction, including without limitation the rights
+.\\\" to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+.\\\" copies of the Software, and to permit persons to whom the Software is
+.\\\" furnished to do so, subject to the following conditions:
+.\\\"
+.\\\" The above copyright notice and this permission notice shall be included in
+.\\\" all copies or substantial portions of the Software.
+.\\\"
+.\\\" THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+.\\\" IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+.\\\" FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+.\\\" AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+.\\\" LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISIN110G FROM,
+.\\\" OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+.\\\" THE SOFTWARE.
+      " > "${destination}"
+
+      System.out.print ".TH oobash 3" >>"${destination}"
+      System.out.print " \"$(date "+%d %b %Y" 2>/dev/null)\" bash4-Environment Framework Manuals" >> "${destination}"
+      System.out.print " \""${__FILENAME__}"\"" >> "${destination}"
+      System.out.println >> "${destination}"
+      System.out.println ".SH NAME" >> "${destination}"
+      for line in $($class.help)
+      do
+         if [[ "$line" =~ ^.*-.*$ ]]; then
+            for funcname in $line
+            do 
+               System.out.print "${funcname//-/} " >> "${destination}"
+            done
+         fi
+      done
+      System.out.println >>"${destination}"
+      System.out.println ".SH DESCRIPTION" >> "${destination}"
+      System.out.println "The ${class}.oobash file is part of the oobash framework." >> "${destination}"
+      System.out.println ".SH EXAMPLES" >> "${destination}"
+
+      local empty
+      "${class}".help all | while IFS='' read -r line
+      do                                                        
+         if [[ "${line}" == "" ]]; then
+            empty="true"
+            System.out.println "" >> "${destination}"
+         else
+            if [[ "${empty}" == "true" ]]; then
+               System.out.println ".B" >> "${destination}"           
+            fi
+            System.out.println "${line}" >> "${destination}"
+            empty="false"
+         fi        
+      done
+
+      System.out.println ".SH AUTHOR">>"${destination}"
+      System.out.println "$USER" >> "${destination}"
+   elif (( $# != 0 )) && [[ -r ""${__OODIR__}"/scripts/$1" ]]; then
+      if command -v pod2man  >/dev/null 2>&1; then
+         local script="$1"
+         local destination=""${__OODIR__}"/man/man1/${script}.1"
+         pod2man -r "oobash ${__VERSION__}" -c "OOBASH Script" -d $(date $(__localDateFormat)) \
+                 ""${__OODIR__}"/scripts/${script}" > ""${__OODIR__}"/man/man1/${script}.1"
+      else
+         __throw "NotInPathException" ": pod2man not in path"
+         return $?
+      fi
+   else
+      System.err.println
+      I18n.err.println "   Please enter one class name or scriptname"
+      I18n.err.println "   Example:" 
+      I18n.err.println "   Class.generator Person name age city" 
+      I18n.err.println "   source ${__OODIR__}/src/myClassFiles/Person.oobash"
+      I18n.err.println "   Man.generator Person"
+      I18n.err.println "   or"
+      System.err.println "   Script.generator test.sh"
+      System.err.println "   Man.generator test.sh"
+      System.err.println 
+      returnValue=1 
+   fi
+   if (( $returnValue == 0 )); then
+      if command -v gzip >/dev/null 2>&1; then 
+         gzip -f "${destination}"
+         System.out.println "${destination}.gz"
+      else
+         System.out.println "${destination}"
+      fi
+   fi
+   return $returnValue
+}
+__registerFunction Man.generator
+
+Script.generator() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      local scriptname="$1"
+      local destination="${__OODIR__}"/scripts/"${scriptname}"
+      System.out.println '#!'$SHELL > "${destination}"
+      System.out.println "
+source "${__OODIR__}"/oobash.source
+
+# Please complete/customise the pod doc below.
+
+############
+# POD DOCS #
+############
+
+: <<=cut =pod
+=head1 NAME
+
+$1 - describe in few words 
+
+=head1 SYNOPSIS
+
+$1 [OPTION]
+
+=head1 OPTIONS AND ARGUMENTS
+
+List here all possible options and arguments for $1 
+
+=head1 DESCRIPTION
+
+Your description of $1
+
+=head1 EXAMPLES
+
+$1
+
+=head1 AUTHOR
+
+Written by $USER
+">> "${destination}"
+      if command -v date >/dev/null 2>&1; then
+         System.out.println "=head1 HISTORY" >> "${destination}"
+         System.out.println "" >> "${destination}"
+               System.out.println "-Version 1.0:  $(date $(__localDateFormat))
+               ">> "${destination}"
+      fi
+      System.out.println "=head1 SEE ALSO
+
+oobash
+
+=head1 LICENSE
+
+The MIT License
+
+=cut
+
+#############
+# FUNCTIONS #
+#############
+
+usage() {
+if command -v pod2usage >/dev/null 2>&1; then
+   pod2usage -verbose 1 -exit 42 \$0
+   System.exit \$?
+fi
+}
+
+########
+# MAIN #
+########
+
+# To avoid accidents: no arguments, then show usage.
+if (( \$# == 0 )); then
+usage
+fi
+
+# Now your code...
+
+System.exit 0" >> "${destination}"
+      chmod 755 "${destination}" 2>/dev/null
+      System.out.println "${__OODIR__}/scripts/$1"
+   else
+      System.err.println
+      I18n.err.println "   Please enter one scriptname"
+      I18n.err.println "   Example:" 
+      System.err.println "   Script.generator script.sh" 
+      System.err.println 
+      returnValue=1 
+   fi
+   return $returnValue
+}
+__registerFunction Script.generator

@@ -1,0 +1,2251 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+###################
+###################
+##               ##
+##     STRING    ## 
+##               ##
+###################
+###################
+
+
+#########################
+#                       #
+#      CONSTRUCTOR      # 
+#                       #
+#########################
+
+String() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+
+      if ! __visible "$this"; then
+         __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      if ! __checkForKeywords "$this"; then
+         __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      if ! __periodCheck "$this"; then
+         __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      local pointer=$((__COUNTER__++))
+
+      local string="$2"
+      local class=$FUNCNAME
+
+      __destructor "$this"
+
+      __alias "$this" $FUNCNAME
+
+      __attribute string "$string"        
+
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerClass String
+
+#####################
+#                   #
+#      METHODS      # 
+#                   #
+#####################
+
+__compareToIgnoreCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local str1="$("$this".toUpperCase)"
+      local str2="$(__strUpper "$3")"
+      declare -i length=-1
+      if (( ${#str1} == ${#str2} )); then
+         length=${#str2}
+         if [[ "$str1" == "$str2" ]]; then
+            System.out.println 0
+            return $returnValue
+         fi
+      fi
+      if (( $length == -1 )); then
+         declare -i result=$((${#str1}-${#str2}))
+         if (( ${#str1} < ${#str} )); then
+            length=${#str1}
+         else
+            length=${#str2}
+         fi
+      fi	
+      declare -i i=0
+      for ((i=0; i < $length; i++))
+      do    
+         local charStr2="${str2:i:1}"
+         declare -i valueStr2=$(printf '%d\n' "'$charStr2")
+         local charStr1="${str1:i:1}"
+         declare -i valueStr1=$(printf '%d\n' "'$charStr1")
+         if (( $valueStr1 != $valueStr2 )); then
+            System.out.println $(($valueStr1-$valueStr2))
+            return $returnValue
+         fi		
+      done
+      System.out.println $result
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__base64Encode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v openssl >/dev/null 2>&1; then
+         local output
+         local input
+         input="$("$this".toString)"
+         output="$(System.out.print "${input}" | openssl enc -base64 2>/dev/null)"
+         System.out.println "${output}"
+      else
+         __throw "NotInPathException" ": openssl not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__base64Decode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if command -v openssl >/dev/null 2>&1; then       
+         declare -i returnValue
+         local output
+         local input
+         input="$("$this".toString)"
+         output="$(System.out.println "${input}" | openssl enc -base64 -d 2>/dev/null)"
+         if (( "${#input}" != 0 && "${#output}" == 0 )); then
+            __throw "DecoderException" ": Decoding problem with: ""'${input}'"" "
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+         else
+            System.out.println "$output"
+         fi
+      else
+         __throw "NotInPathException" ": openssl not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__rstrip() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      # trimming...
+      result="${str%%+([[:space:]])}"
+      System.out.println "$result"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__lstrip() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      # trimming...
+      local result="${str##+([[:space:]])}"    
+      System.out.println "$result"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__title() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toLowerCase)"
+      local output="${str~}"
+      # "${str~}" does not work with big sharp s --> let's loop ;-(
+      local next="$(Boolean.TRUE)"
+      local result=''
+      for ((i=0; i < ${#output}; i++))
+      do
+         local char="${output:i:1}"
+         if [[ "${next}" == "$(Boolean.TRUE)" && "${char}" == "ß" ]]; then
+            char="ẞ"
+         fi
+         if [[ "$(__strUpper  "${char}")" == "$(__strLower  "${char}")" ]]; then
+            next="$(Boolean.TRUE)"
+         else
+            next="$(Boolean.FALSE)"
+         fi
+         result="${result}""${char}"
+      done
+      System.out.println "${result}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isTitle() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"   
+      if [[ "$("$this".toLowerCase)" == "$("$this".toUpperCase)" ]]; then
+         Boolean.FALSE
+      else
+         if [[ "$("$this".title)" == "$("$this".toString)" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAscii() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      shopt -s extglob
+      local str="$("$this".toString)"
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:ascii:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi   
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isHexDigit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:xdigit:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi      
+      else
+         Boolean.FALSE
+      fi       
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isPrintable() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:print:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi      
+      else
+         Boolean.FALSE
+      fi       
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isVisible() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      __visible "$str"
+      if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+      fi        
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__count() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local pattern="$3"
+      local replaced="$("$this".replaceAll "$pattern" "")"
+      declare -i pattern_length=${#pattern}
+      declare -i replaced_length=${#replaced}
+      declare -i string_length=$("$this".length)
+      if (( $pattern_length == 0 )); then
+         System.out.println $(( $("$this".length) + 1 ))
+      else
+         if command -v bc >/dev/null 2>&1; then 
+            declare -i count=$(System.out.println "($string_length-$replaced_length)/$pattern_length" | bc)
+            System.out.println $count            
+         else
+            __throw "NotInPathException" ": bc not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)" 
+      local cased=$(Boolean.FALSE)
+      declare -i i=0
+      for ((i=0; i < ${#str}; i++))
+      do
+         local char="${str:i:1}"
+         local valueOf=$(printf '%d\n' "'$char")
+         case $valueOf in
+            # upper case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
+            65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|196|214|220|140|192|194|198|199|200|201|202|203|206|207|212|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|350|354|536|538|381|352|344|340|327|313|268|221|366|282|270|356|216|197|336|368|204|210|208|222|7838 )
+               Boolean.FALSE
+               return $returnValue;;
+            # lower case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + nowegian + scottish gaelic + catalan + hungarian + icelandic special characters 
+            97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|223|228|246|252|156|224|226|230|231|232|233|234|235|238|239|244|249|251|261|281|243|263|322|324|347|378|380|225|237|241|250|259|351|355|537|539|382|353|345|341|328|314|269|253|367|283|271|357|248|229|337|369|236|242|240|254 )    
+               cased=$(Boolean.TRUE);;
+         esac
+      done
+      System.out.println "$cased"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi 
+   return $returnValue
+}
+
+__isUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)" 
+      local cased=$(Boolean.FALSE)
+      declare -i i=0
+      for ((i=0; i < ${#str}; i++))
+      do
+         local char="${str:i:1}"
+         local valueOf=$(printf '%d\n' "'$char")
+         case $valueOf in
+            # upper case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
+            65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|196|214|220|140|192|194|198|199|200|201|202|203|206|207|212|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|350|354|536|538|381|352|344|340|327|313|268|221|366|282|270|356|216|197|336|368|204|210|208|222|7838 )
+               cased=$(Boolean.TRUE);;
+            # lower case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
+            97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|223|228|246|252|156|224|226|230|231|232|233|234|235|238|239|244|249|251|261|281|243|263|322|324|347|378|380|225|237|241|250|259|351|355|537|539|382|353|345|341|328|314|269|253|367|283|271|357|248|229|337|369|236|242|240|254 )    
+               Boolean.FALSE
+               return $returnValue;;
+         esac
+      done
+      System.out.println "$cased"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAlnum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:alnum:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi 
+      else
+         Boolean.FALSE
+      fi      
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAlpha() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      shopt -s extglob
+      local str="$("$this".toString)"
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:alpha:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi   
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isDigit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:digit:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi      
+      else
+         Boolean.FALSE
+      fi       
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:space:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi      
+      else
+         Boolean.FALSE
+      fi       
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi 
+   return $returnValue
+}
+
+__zfill() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
+      fi
+      declare -i width=$3
+      length=$("$this".length)
+      if (( $length < $width )); then
+         local left=$(($width-$("$this".length)))
+         printf -v pad "%."$left"d"
+         System.out.println "$pad""$("$this".toString)"
+      else
+         System.out.println "$("$this".toString)"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__swapCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local swaped=''
+      declare -i i=0
+      for ((i=0; i < ${#str}; i++))
+      do
+         local char="${str:i:1}"
+         case $char in
+            # small sharp s
+            ß)                  
+            swaped="$swaped""ẞ";;
+            # big sharp s
+            ẞ)
+            swaped="$swaped""ß";;
+            # ignore case 
+            *) 
+            swaped="$swaped""${char~}" ;;
+         esac
+      done
+      System.out.println "$swaped"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__center() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue
+      fi
+      declare -i width=$3
+      if (( $("$this".length) < $width )); then
+         declare -i spaces=$width-$("$this".length)
+         declare -i lspaces=$spaces/2
+         declare -i rspaces=$spaces-$lspaces
+         declare -i lruns=0
+         declare -i rruns=0
+         declare left=''
+         declare right=''
+         while (( $lruns < $lspaces ))
+         do
+            left+=' '
+            lruns+=1
+         done
+         while (( $rruns < $rspaces ))
+         do
+            right+=' '
+            rruns+=1
+         done
+         System.out.println  "$left""$("$this".toString)""$right"
+      else
+         System.out.println "$("$this".toString)"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__equalsIgnoreCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)" 
+      if (( $? == 0 )); then
+         if [[ "$("$this".getClass)" == "$argclass" ]]; then
+            if [[ "$("$argobject".toUpperCase)" == "$("$this".toUpperCase)" ]]; then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__toUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local upper="$(__strUpper "$str")" 
+      System.out.println "$upper"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__toLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local lower="$(__strLower "$str")"
+      System.out.println "$lower"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__capitalize() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toLowerCase)"
+      local firstchar="${str:0:1}"
+      firstchar="$(__strUpper "$firstchar")"
+      System.out.println "$firstchar""${str:1}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__concat() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      System.out.println "$str""$3"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+} 
+
+__trim() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      # trimming...
+      local result="${str##+([[:space:]])}"    
+      result="${result%%+([[:space:]])}"
+      System.out.println "$result"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__contains() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local var="$3"
+      local str="$("$this".toString)"
+      if [[ "$str" != "${str/"$var"/}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__matches() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"   
+      local regex="$3"
+      shopt -s extglob
+      if [[ "$("$this".toString)" =~ $regex ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isEmpty() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      declare -i length=$("$this".length)
+      if (( $length == 0 )); then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__startsWith() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   case $# in 
+      3) declare -i toffset=0;;
+      4) if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+         fi
+         declare -i toffset=$4;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}";;
+   esac
+   if (( $returnValue == 0 )); then
+      local this="$1"
+      declare -i length=$("$this".length)
+      local sub
+      sub="$("$this".substring $toffset $(($length-1)))"
+      returnValue=$?
+      if (( $returnValue == 0 )); then
+         if [[ "${sub}" == "$3"* ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      fi
+   fi
+   return $returnValue
+}
+
+__lastIndexOf() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local this="$1"
+   case $# in
+      3) local pattern="$3"
+         declare -i to=$("$this".length);;
+      4) local pattern="$3"
+         if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
+         fi
+         declare -i to=$(($4+1))
+         # negative index ?
+         if (( 0 > $4 )); then
+            System.out.println -1
+            return $returnValue
+         fi;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue;;
+   esac
+   local str="$("$this".toString)"
+   str="${str:0:$to}"
+   shopt -s extglob
+   local replaced="${str//*$pattern/}"
+   declare -i pattern_length=${#pattern}
+   declare -i replaced_length=${#replaced}
+   declare -i string_length=${#str}
+   declare -i lastindex=$(($string_length-$replaced_length))
+   # nothing modified --> no match --> no index
+   if (( $replaced_length == $string_length )); then
+      System.out.println -1
+      return $returnValue
+   fi   
+   if (( $pattern_length == 0 )) && (( $string_length < $("$this".length) )); then
+      pattern_length=$pattern_length+1
+   fi 
+   # ok if match is existing and if no substring neccessary
+   System.out.println $(($lastindex-$pattern_length))
+   return $returnValue
+}
+
+__indexOf() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   case $# in
+      3) local pattern="$3"
+         declare -i from=0;;
+      4) local pattern="$3"
+         if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
+         fi
+         declare -i from=$4
+         # negative index ?
+         if (( 0 > $4 )); then
+            from=0
+         fi;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue;;
+   esac
+   local this="$1" 
+   declare -i pattern_length=${#pattern}
+   local str="$("$this".toString)"
+   str="${str:$from}"
+   declare -i strlength=${#str}
+   local newstr="${str%%$pattern*}"
+   declare -i newstrlength=${#newstr}
+   # Java API:  
+   # k >= Math.min(fromIndex, str.length()) && this.startsWith(str, k)
+   # --> looking for empty string '' out of index returns sringlength instead of -1 
+   if (( $pattern_length == 0 )); then 
+      if (( $from <= $("$this".length) )); then
+         System.out.println $from
+      else
+         System.out.println $("$this".length)
+      fi  
+      return $returnValue 
+   fi 
+   if (( $strlength == $newstrlength )); then
+      System.out.println -1
+   else
+      System.out.println $(($newstrlength+$from))
+   fi
+   return $returnValue
+}
+
+__charAt() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      this="$1"
+         if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+      else
+         declare -i pos="$3"
+         if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
+            local str="$("$this".toString)"
+            local char=${str:$pos:1}
+            System.out.println $char
+         else
+            __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__endsWith() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local endstring="$3"
+      local str="$("$this".toString)"
+      if [[ "$str" == *"$endstring" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__replaceFirst() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      local substring="$3"
+      local replacement="$4"
+      local str="$("$this".toString)"
+      if [[ -z "${substring}" ]]; then
+         System.out.println "${replacement}""${str}"
+      else
+         shopt -s extglob
+         System.out.println "${str/$substring/$replacement}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__replaceAll() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      local substring="$3"
+      local replacement="$4"
+      local str="$("$this".toString)"
+      if [[ -z "${substring}" ]]; then
+         declare -i i=0
+         local result="${replacement}"
+         for ((i=0; i < ${#str}; i++))
+         do
+            local char="${str:i:1}"
+            result="$result""$char""${replacement}"
+         done
+         System.out.println "${result}"
+      else
+         shopt -s extglob
+         System.out.println "${str//$substring/$replacement}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__substring() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local this="$1" 
+   declare -i count=$("$this".length)
+   case $# in
+      3) declare -i endIndex=$count;;
+      4) if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            return $returnValue
+         fi
+         declare -i endIndex=$4;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         return $returnValue;;
+   esac
+   # catch eg "+" param
+   (declare -i beginIndex=$3) 2>/dev/null
+   if (( $? != 0 )); then
+      __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
+   fi
+   declare -i beginIndex=$3
+   if (( $beginIndex < 0 )); then
+      __throw "IndexOutOfBoundsException" ": String index out of range: $beginIndex"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
+   fi
+   if (( $endIndex > $count )); then
+      __throw "IndexOutOfBoundsException" ": String index out of range: $endIndex"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
+   fi       
+   if (( $beginIndex > $endIndex )); then
+      __throw "IndexOutOfBoundsException" ": String index out of range: $(($endIndex-$beginIndex))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      return $returnValue
+   fi  
+   local str="$("$this".toString)"
+   declare -i length=$(($endIndex-beginIndex))
+   System.out.println "${str:$beginIndex:$length}"
+   return $returnValue
+}
+
+__reverse() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local result=""
+      declare -i index=$(($("$this".length)-1))
+      declare -i i
+      for ((i=$index; i >= 0; i--))
+      do
+         local char="${str:i:1}"
+         result="$result""$char"
+      done
+      System.out.println "$result"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__length() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      System.out.println ${#str} 
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+##################
+#                #
+#     STATICS    # 
+#                #
+##################
+
+String.digits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println '0123456789'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.digits
+
+String.asciiLetters() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.asciiLetters
+
+String.asciiLettersLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println 'abcdefghijklmnopqrstuvwxyz'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "String" "${FUNCNAME}"
+   fi 
+   return $returnValue
+}
+__registerFunction String.asciiLettersLowerCase
+
+String.asciiLettersUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.asciiLettersUpperCase
+
+String.hexDigits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println '0123456789abcdefABCDEF'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.hexDigits
+
+String.octDigits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println '01234567'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "String" "${FUNCNAME}"
+   fi 
+   return $returnValue
+}
+__registerFunction String.octDigits
+
+#################
+#               #
+#     HELP      # 
+#               #
+#################
+
+complete -W  "$(echo ${__String__[@]}) all String digits asciiLetters asciiLettersLowerCase asciiLettersUpperCase hexDigits octDigits" String.help
+
+String.help() {    
+   local printStream=${printStream:-out}
+   if (( $# == 0 )); then
+      System.${printStream}.println "
+      Usage: String.help all|methodname|constructor|constant
+      Available methods:
+      -base64Decode      -base64Encode  -capitalize        -center                
+      -charAt            -concat        -contains          -count      
+      -endsWith          -equals        -equalsIgnoreCase  -reverse                                  
+      -hashCode          -indexOf       -isAlnum           -isAlpha      
+      -isAscii           -isDigit       -isEmpty           -isHexDigit                
+      -isLowerCase       -isSpace       -isPrintable       -isUpperCase    
+      -isVisible         -lastIndexOf   -length            -matches       
+      -replaceAll        -replaceFirst  -startsWith        -substring
+      -swapCase          -toLowerCase   -toString          -toUpperCase       
+      -trim              -title         -zfill             -compareTo
+      -compareToIgnoreCase              -getClass  
+      Constructor: 
+      -String
+      Constants:
+      -String.digits                  -String.asciiLetters  
+      -String.asciiLettersLowerCase   -String.asciiLettersUpperCase 
+      -String.hexDigits               -String.octDigits
+               "
+      return 0
+   fi
+   while (($#))
+   do
+      local match=$(Boolean.FALSE)  
+      case $1 in 
+         base64Decode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               base64Decode
+                  Decodes this base 64 encoded string. 
+                  Only works if maximum encoded line length is 64.
+               Parameters:
+                  None 
+               Returns:
+                  base64 decoded data
+               Throws:
+                  NotInPathException - if openssl not in path
+                  DecoderException - if problem with decoding
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a YWJj
+                  a.base64Decode
+                  >>>abc  
+            ";;&
+         base64Encode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               base64Encode
+                  Encodes this string with base64.
+                  Maximum encoded line length is 64.
+               Parameters:
+                  None
+               Returns:
+                  base64 encoded data
+               Throws:
+                  NotInPathException - if openssl not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abc
+                  a.base64Encode
+                  >>>YWJj
+            ";;&
+         capitalize|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               capitalize
+                  Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+               Parameters:
+                  None  
+               Returns:
+                  It returns a copy of the string with only its first character capitalized   
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abC
+                  a.capitalize
+                  >>>Abc
+            ";;&
+         center|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               center  
+                  This function centers a string in a field of given width. It returns a string 
+                  that is at least width characters wide, created by padding the string with the 
+                  space character until the given width on the right, left or both sides.
+               Parameters:
+                  width - integer
+               Returns:
+                  centered string
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+               Example:
+                  String a abc
+                  a.center 5
+                  >>> abc 
+                  echo \"'\$(a.center 5)'\"
+                  >>>' abc '
+            ";;&   
+         charAt|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               charAt
+                  Returns the char value at the specified index. An index ranges from 
+                  0 to length - 1. The first char value of the sequence is at index 0, 
+                  the next at index 1, and so on, as for array indexing.
+               Parameters:
+                  index - the index of the char value (integer)
+               Returns:
+                  the char value at the specified index of this string. The first char 
+                  value is at index 0.
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+                  IndexOutOfBoundsException - if the index argument is negative or not less than the length of this string.
+               Example:
+                  String a abc
+                  a.charAt 2
+                  >>>c
+            ";;&
+         compareTo|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               compareTo
+                  Compares two strings lexicographically. The comparison is based on the value of each character 
+                  in the strings. The character sequence represented by this String object is compared lexicographically 
+                  to the character sequence represented by the argument string. The result is a negative integer if this 
+                  String object lexicographically precedes the argument string. The result is a positive integer if this 
+                  String object lexicographically follows the argument string. The result is zero if the strings are equal; 
+                  compareTo returns 0 exactly when the equals(Object) method would return true. 
+                  This is the definition of lexicographic ordering. If two strings are different, then either they have 
+                  different characters at some index that is a valid index for both strings, or their lengths are different, 
+                  or both. If they have different characters at one or more index positions, let k be the smallest such index; 
+                  then the string whose character at position k has the smaller value, as determined by using the < operator, 
+                  lexicographically precedes the other string. In this case, compareTo returns the difference of the two character 
+                  values at position k in the two string -- that is, the value: 
+                  this.charAt(k)-anotherString.charAt(k)
+                  If there is no index position at which they differ, then the shorter string lexicographically precedes the 
+                  longer string. In this case, compareTo returns the difference of the lengths of the strings -- that is, the value: 
+                  this.length()-anotherString.length()
+               Parameters:
+                  anotherString - the primitive string to be compared.
+               Returns:
+                  the value 0 if the argument String is equal to this String; a value less than 0 
+                  if this String is lexicographically less than the string argument;
+                  and a value greater than 0 if this String is lexicographically greater than the String argument.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a abcd
+                  a.compareTo abcd
+                  >>>0
+                  a.compareTo ab
+                  >>>2
+                  a.compareTo abcde
+                  >>>-1
+                  a.compareTo \"\"
+                  >>>4
+                  a.compareTo x
+                  >>>-23
+                  a.compareTo \"ab c\"
+                  >>>67
+               ";;&
+         compareToIgnoreCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               compareToIgnoreCase
+                  Compares two String objects lexicographically, ignoring case differences. 
+                  This method returns an integer whose sign is that of calling 
+                  compareTo with normalized versions of the String objects where case differences 
+                  have been eliminated.
+               Parameters:
+                  str - the String to be compared.
+               Returns:
+                  a negative integer, zero, or a positive integer as the specified String 
+                  is greater than, equal to, or less than this String, 
+                  ignoring case considerations.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a abc
+                  x.compareToIgnoreCase abc
+                  >>>-1
+                  x.compareToIgnoreCase aY
+                  >>>-23
+                  x.compareToIgnoreCase ay
+                  >>>-23
+            ";;&
+         concat|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               concat
+                  Concatenates the specified string to the end of this String.
+                  If the length of the argument string is 0, then this String object is returned. 
+                  Otherwise, a new String object is returned, 
+                  representing a character sequence that is the concatenation of the character 
+                  sequence represented by this String object and the character sequence represented 
+                  by the argument string.
+               Parameters:
+                  str - the primitive string that is concatenated to the end of this string.
+               Returns:
+                  a string that represents the concatenation of this object's characters followed 
+                  by the string argument's characters
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a fff
+                  a.concat abc
+                  >>>fffabc  
+            ";;&
+         contains|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               contains
+                  Returns true if and only if this String contains the specified sequence of char values.
+               Parameters:
+                  s - the primitive string to search for
+               Returns:
+                  true if this String contains s, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a \"abc cd\"
+                  a.contains \" c\"
+                  >>>true
+                  a.contains \"x\"
+                  >>>false
+            ";;&
+         count|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               count
+               Parameters:
+                  a primitive string
+               Returns:
+                  the number of non-overlapping occurrences of parameter in string.  
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a acdccde
+                  a.count c
+                  >>>3
+                  a.count cd
+                  >>>2
+            ";;&
+         endsWith|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               endsWith suffix
+                  Tests if this string ends with the specified suffix.
+               Parameters:
+                  suffix - the suffix (a primitive string).
+               Returns:
+                  true if the character sequence represented by the argument is a suffix of the 
+                  character sequence represented by this object; false otherwise. 
+                  Note that the result will be true if the argument is the empty string or is equal 
+                  to this String object as determined by the equals Object method.  
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a xyz
+                  a.endsWith z
+                  >>>true
+                  a.endsWith yz
+                  >>>true
+            ";;&
+         equals|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               equals
+                  Compares this string to the specified object. 
+                  The result is true if and only if the argument 
+                  is a String object that represents the same sequence of 
+                  characters as this object.
+               Parameters:
+                  anObject - The object to compare this String against
+               Returns:
+                  true if the given object represents a String equivalent 
+                  to this string, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a abc
+                  String b abc
+                  String c ddd
+                  a.equals b
+                  >>>true
+                  a.equals c
+                  >>>false
+            ";;&
+         equalsIgnoreCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               equalsIgnoreCase
+                  Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+                  Compares this String to another String, ignoring case considerations. Two strings 
+                  are considered equal ignoring case if they are of the same length and corresponding 
+                  characters in the two strings are equal ignoring case.
+                  Two characters c1 and c2 are considered the same ignoring case if at least one of 
+                  the following is true:
+                     * The two characters are the same (as compared by the == operator)
+                     * Applying the method Character.toUpperCase(char) to each character produces the same result
+                     * Applying the method Character.toLowerCase(char) to each character produces the same result 
+               Parameters:
+                  aString - The String object to compare this String against
+               Returns:
+                  true if the argument is not null and it represents an equivalent String ignoring case; 
+                  false otherwise
+               Throws:
+                  WrongClassException - if argument has the wrong class  
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if argument is no object
+               Example:
+                  String a abc
+                  String b AbC
+                  String c ddd
+                  File d abc
+                  a.equalsIgnoreCase b
+                  >>>true
+                  a.equalsIgnoreCase c
+                  >>>false 
+                  a.equalsIgnoreCase d
+                  >>>WrongClassException d: class File
+            ";;&
+         String|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String
+                  Constructor for the String objects.
+               Parameters:
+                  objectname 
+                  string
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if objectname contains full stop character
+               Example:
+                  String a teststring
+            ";;& 
+         getClass|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getClass
+                  Returns the runtime class of this Object.
+               Parameters:
+                 None
+               Returns:
+                  The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String b xxx
+                  b.getClass
+                  >>>class String
+            ";;& 
+         hashCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hashCode
+               Parameters:
+                  None 
+               Returns 
+                  a hash code for this string. The hash code for a String object is computed as
+                       s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]         
+                  using int arithmetic, where s[i] is the ith character of the string, 
+                  n is the length of the string, and ^ indicates exponentiation. 
+                  (The hash value of the empty string is zero.)  
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abcdef
+                  a.hashCode
+                  >>>-1424385949
+            ";;&
+         indexOf|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               indexOf
+                  Returns the index within this string of the first occurrence of the specified substring, 
+                  starting at the specified index. 
+                  If no such value exists, then -1 is returned.
+                  Simulation of following java behavior:  
+                  k >= Math.min(fromIndex, str.length()) && this.startsWith(str, k)
+               Parameters:
+                  str - the substring to search for.
+                  [fromIndex - the index to start the search from.]
+               Returns:
+                  the index within this string of the first occurrence of the specified substring.
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1 AND != 2
+               Examples:
+                  String a abc
+                  a.indexOf a 
+                  >>>0
+            ";;&
+         isAlnum|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isAlnum
+                  based on POSIX standard character class: alnum
+               Parameters:
+                  None
+               Returns:
+                  true if all characters in the String are alphanumeric and there is at least one character, 
+                  false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a a1
+                  a.isAlnum
+                  >>>true
+            ";;&
+         isAlpha|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isAlpha
+                  based on POSIX standard character class: alpha
+               Parameters:
+                  None
+               Returns:
+                  true if all characters in the String are alphabetic and there is at least one character, 
+                  false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abc
+                  a.isAlpha
+                  >>>true
+            ";;&
+         isAscii|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isAscii
+                  based on POSIX standard character class: ascii 
+               Parameters:
+                  None
+               Returns:
+                  true if all characters in the String are ascii and there is at least one character, 
+                  false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a \E4\F6\FC
+                  a.isAscii
+                  >>>false
+            ";;&
+         isDigit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isDigit
+                  based on POSIX standard character class: digit
+               Parameters:
+                  None
+               Returns:
+                  true if all characters in the String are digits and there is at least one character, 
+                  false otherwise.    
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0 
+               Example:
+                  String a 23424
+                  a.isDigit
+                  >>>true
+            ";;&
+         isEmpty|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isEmpty
+                  Returns true if, and only if, length is 0.
+               Parameters:
+                  None
+               Returns:
+                  true if length is 0, otherwise false
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a ""
+                  a.isEmpty
+                  >>>true
+            ";;&
+         isHexDigit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isHexDigit
+                  based on POSIX standard character class: xdigit
+               Parameters:
+                  None
+               Returns:
+                  true if all characters in the String are hexdigits and there is at least one character, 
+                  false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a "a01"
+                  a.isHexDigit
+                  >>>true 
+            ";;&
+         isLowerCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isLowerCase
+                  Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+               Parameters:
+                  None
+               Returns:
+                  true if all cased characters in the String are lowercase and there is at least one cased character, 
+                  false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a aBc
+                  a.isLowerCase
+                  >>>false
+            ";;&
+         isPrintable|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isPrintable
+                  based on POSIX standard character class: print
+               Parameters:
+                  None
+               Returns:
+                  true if all characters in the String are printable and there is at least one character, 
+                  false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abc
+                  a.isPrintable
+                  >>>true 
+            ";;&          
+         isSpace|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isSpace
+                  based on POSIX standard character class: space
+               Parameters:
+                  None 
+               Returns:
+                  true if there are only whitespace characters in the String and there is at least one character, 
+                  false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a \"   \"
+                  a.isSpace
+                  >>>true
+            ";;&
+         isTitle|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isTitle
+                  This method checks whether all the case-based characters in the string following non-
+                  casebased letters are uppercase and all other case-based characters are lowercase.
+               Parameters:
+                  None
+               Returns:
+                  It returns true if the String is a titlecased string and there is at least one character, 
+                  for example uppercase characters may only follow uncased characters and lowercase characters 
+                  only cased ones. Returns false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a 'This Is String Example...Wow!!!'
+                  a.isTitle
+                  >>>true
+            ";;&
+         isUpperCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isUpperCase
+                  Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+               Parameters:
+                  None
+               Returns:
+                  true if all cased characters in the String are uppercase and there is at least one cased character,
+                  false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a ABC
+                  a.isUpperCase
+                  >>>true
+            ";;&
+         isVisible|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isVisible
+                  based on POSIX standard character class: graph
+               Parameters:
+                  None
+               Returns:
+                  true if all characters in the String are visible and there is at least one character, 
+                  false otherwise.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a \"a c\"
+                  a.isVisible
+                  >>>false
+            ";;&
+         lastIndexOf|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               lastIndexOf
+                  Returns the index within this String of the last occurrence of the specified substring, 
+                  searching backward starting at the specified index. 
+                  If no such value exists, then -1 is returned.
+               Parameters:
+                  str - the substring to search for.
+                  [fromIndex - the index to start the search from. 
+                  There is no restriction on the value of fromIndex. 
+                  If it is greater than or equal to the length of this string, it has the same effect 
+                  as if it were equal to one less than the length of this string: this entire string 
+                  may be searched. If it is negative, it has the same effect as if it were -1: -1 is returned.]
+               Returns:
+                  the index within this String of the last occurrence of the specified substring.
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments !=1 AND !=2
+               Examples:
+                  String a \"eacc eadee\"
+                  a.lastIndexOf \" e\" 2
+                  >>>-1
+                  a.lastIndexOf \" e\" 20
+                  >>>4
+                  a.lastIndexOf e
+                  >>>9
+            ";;&
+         length|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               length
+                  Returns the length of this string.
+               Parameters:
+                  None  
+               Returns:
+                  the length of the sequence of characters.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abc
+                  a.length
+                  >>>3
+            ";;&
+         lstrip|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               lstrip
+               Parameters:
+                  None
+               Returns:
+                  It returns a copy of the String in which all chars have been stripped 
+                  from the beginning of the string (whitespace characters).     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a \"   abc    \"
+                  echo \"'\$(a.lstrip)'\"
+                  >>>'abc    '
+            ";;&
+         matches|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               matches
+                  Tells whether or not this String matches the given regular expression.
+               Parameters:
+                  regex - the regular expression to which this string is to be matched
+               Returns:
+                  true if, and only if, this String matches the given regular expression,
+                  false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a abc
+                  a.matches ^[[:alnum:]]*$
+                  >>>true
+            ";;&
+         replaceAll|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               replaceAll
+               Parameters:
+                  oldSub
+                  newSub
+               Returns:
+                  Returns a new string resulting from replacing all occurrences
+                  of oldSub in this string with newSub.  
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+               Example:
+                  String a abca
+                  a.replaceAll a X
+                  >>>XbcX
+           ";;&
+         replaceFirst|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               replaceFirst
+               Parameters:
+                  oldSub
+                  newSub
+               Returns:
+                  Returns a new string resulting from replacing the first occurrence 
+                  of oldSub in this string with newSub.  
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+               Example:
+                  String a abca
+                  a.replaceFirst a X
+                  >>>Xbca 
+            ";;& 
+         reverse|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               reverse
+               Parameters:
+                  None
+               Returns:
+                  a reversed version of the string 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a AbC
+                  a.reverse
+                  >>>CbA  
+            ";;&
+         rstrip|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               rstrip
+               Parameters:
+                  None
+               Returns:
+                  It returns a copy of the string in which all chars have been stripped 
+                  from the end of the string (whitespace characters).
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a \"   abc    \"
+                  echo \"'\$(a.rstrip)'\"
+                  >>>'   abc'
+            ";;&
+         startsWith|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               startsWith
+               Parameters:
+                  prefix - the prefix string.
+                  toffset - where to begin looking in this string. Default: 0
+               Returns:
+                  true if string starts with parameter string, false otherwise.
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+               Example:
+                  String a abcdef
+                  a.startsWith ab
+                  >>>true
+                  a.startsWith d 3
+                  >>>true
+            ";;&
+         substring|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               substring 
+               Parameters:
+                  beginIndex - the beginning index, inclusive.
+                  [endIndex - the ending index, exclusive. Default: end of string]
+               Returns:
+                  Returns a new string that is a substring of this string. 
+                  The substring begins at the specified beginIndex and extends to 
+                  the character at index endIndex - 1. 
+                  Thus the length of the substring is endIndex-beginIndex.
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1 AND != 2
+                  IndexOutOfBoundsException - if the beginIndex is negative, or endIndex is larger than the length of this String object, 
+                                              or beginIndex is larger than endIndex.   
+               Example:
+                  String a abcdef
+                  a.substring 2 4
+                  >>>cd
+            ";;&
+         swapCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               swapCase
+               Parameters:
+                  None
+               Returns:
+                  a copy of s, but with lower case letters converted to upper case and vice versa. 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a AbC
+                  a.swapCase
+                  >>>aBc     
+            ";;&
+         title|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               title
+               Parameters:
+                  None
+               Returns:
+                  Return a titlecased version of the string: words start with uppercase characters, 
+                  all remaining cased characters are lowercase.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a \"AbC...y aber\"
+                  a.title
+                  >>>Abc...Y Aber  
+            ";;&    
+         toLowerCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toLowerCase
+                  Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+               Parameters:
+                  None
+               Returns:
+                  A copy of the string with all cased characters in lower case.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a AbC
+                  a.toLowerCase
+                  >>>abc      
+            ";;&
+         toString|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toString
+                  This object (which is already a string!) is itself returned.
+               Parameters:
+                  None
+               Returns:
+                  the string itself.
+               Throws:
+                  NotInPathException - if sort not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abc
+                  a.toString
+                  >>>abc
+            ";;&
+         toUpperCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toUpperCase
+                  Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+               Parameters:
+                  None
+               Returns:
+                  A copy of the string with all cased characters in upper case.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a abc
+                  a.toUpperCase
+                  >>>ABC     
+            ";;&
+         trim|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               trim
+               Parameters:
+                  None
+               Returns:
+                  A copy of this string with leading and trailing white space removed, or this 
+                  string if it has no leading or trailing white space.     
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String a \"   abc\"
+                  a.toString
+                  >>>   abc
+                  a.trim
+                  >>>abc
+            ";;&
+         zfill|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               zfill
+               Parameters:
+                  an integer  - The width of the return String
+               Returns:
+                  Pad a numeric string on the left with zero digits until the given width is reached. 
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+               Example:
+                  String a abc
+                  a.zfill 5
+                  >>>00abc
+            ";;&
+          String.digits|digits|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.digits
+               Parameters:
+                  None
+               Returns:
+                  The string '0123456789'
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example
+                  String.digits
+                  >>>0123456789
+               ";;&
+         String.asciiLetters|asciiLetters|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.asciiLetters
+               Parameters:
+                  None
+               Returns:
+                  The concatenation of the String.asciiLettersLowerCase and 
+                  String.asciiLettersUpperCase. 
+                  This value is not locale-dependent.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.asciiLetters
+                  >>>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ  
+               ";;&
+         String.asciiLettersLowerCase|asciiLettersLowerCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.asciiLettersLowerCase
+               Parameters:
+                  None
+               Returns:
+                  The lowercase letters 'abcdefghijklmnopqrstuvwxyz'. 
+                  This value is not locale-dependent and will not change.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.asciiLettersLowerCase
+                  >>>abcdefghijklmnopqrstuvwxyz    
+               ";;&
+         String.asciiLettersUpperCase|asciiLettersUpperCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.asciiLettersUpperCase
+               Parameters:
+                  None
+               Returns:
+                  The uppercase letters 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'. 
+                  This value is not locale-dependent and will not change.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.asciiLettersUpperCase
+                  >>>ABCDEFGHIJKLMNOPQRSTUVWXYZ
+               ";;&
+         String.hexDigits|hexDigits|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.hexDigits
+               Parameters:
+                  None
+               Returns:
+                  The string '0123456789abcdefABCDEF' 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.hexDigits
+                  >>>0123456789abcdefABCDEF 
+               ";;&
+         String.octDigits|octDigits|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.octDigits
+               Parameters:
+                  None
+               Returns:
+                  The string '01234567'
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.octDigits
+                  >>>01234567
+               ";;&
+         *)   
+            if [[ "${match}" == "$(Boolean.FALSE)" ]]; then   
+               System.${printStream}.println "                                  
+                     No help found for $1
+                  "   
+            fi         
+            ;;&
+      esac                
+      shift
+   done
+}

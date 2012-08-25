@@ -1,0 +1,3401 @@
+##################################################################
+# Author:  andreas.gregor.frank@googlemail.com                                
+#     
+# License: The MIT License
+#
+# Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
+
+#################
+#################
+##             ##
+##     FILE    ## 
+##             ##
+#################
+#################
+
+
+#########################
+#                       #
+#      CONSTRUCTOR      # 
+#                       #
+#########################
+
+File() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+
+      if ! __visible "$this"; then
+         __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      if ! __checkForKeywords "$this"; then
+         __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      if ! __periodCheck "$this"; then
+         __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
+      local pointer=$((__COUNTER__++))
+      local pathname="$2"
+      local class=${FUNCNAME}
+
+      __destructor "${this}"
+
+      __alias "$this" ${FUNCNAME}
+
+      __attribute pathname "$(__stripPath "${pathname}")"
+
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+   fi
+   return $returnValue 	
+}
+__registerClass File
+
+#####################
+#                   #
+#      METHODS      # 
+#                   #
+#####################
+
+__getBase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$(__basename "$("$this".toString)")"
+      local path="$(__dirname "$("$this".toString)")"
+      # test for hidden file
+      if [[ ! -z "${file%.*}" ]]; then
+         System.out.println "$(__stripPath "${path}"/"${file%.*}")"
+      else
+         System.out.println "$(__stripPath "${path}"/"${file}")"
+      fi 
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getExtension() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$(__basename "$("$this".toString)")"
+      local extension="${file##*.}"
+      local output=""
+      if [[ ."${extension}" != "${file}" && "${extension}" != "${file}" ]]; then
+         output="${extension}"  
+      fi 
+      System.out.println "${output}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getTotalSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if __gnustatCheck; then
+            set -f
+            local totalFormula
+            totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" -- "${file}" 2>/dev/null)
+            set + f
+            System.out.println "$(eval System.out.print "${totalFormula}")"
+         else
+            __throw "NotInPathException" ": GNU stat not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         System.out.println "0"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getUsableSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if __gnustatCheck; then
+            set -f
+            local usableFormula
+            usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" -- "${file}" 2>/dev/null)
+            set + f
+            System.out.println "$(eval System.out.print "${usableFormula}")"
+         else
+            __throw "NotInPathException" ": GNU stat not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         System.out.println "0"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getFreeSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if __gnustatCheck; then
+            set -f
+            local freeFormula
+            freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" -- "${file}" 2>/dev/null)
+            set + f
+            System.out.println "$(eval System.out.print "${freeFormula}")"
+         else
+            __throw "NotInPathException" ": GNU stat not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         System.out.println "0"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__canRead() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -r "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__canWrite() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -w "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__canExecute() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -x "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getName() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      __basename "$("$this".toString)"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isDirectory() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -d "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__exists() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -f "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isHidden() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      file=${file##*/}
+      if [[ "${file:0:1}" == "." ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__mkdir() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if command -v mkdir >/dev/null 2>&1; then 
+         mkdir -- "${file}" >/dev/null 2>&1
+         returnValue=$?
+         if (( $returnValue == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": mkdir not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__mkdirs() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if command -v mkdir >/dev/null 2>&1; then 
+         mkdir -p -- "${file}" >/dev/null 2>&1
+         returnValue=$?
+         if (( $returnValue == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": mkdir not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getParent() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      __dirname "$("$this".toString)"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isSymbolicLink() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -L "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isNamedPipe() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -p "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__hasStickyBit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -k "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isSocket() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -S "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isCharacterSpecial() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -c "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isBlockSpecial() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -b "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setReadable() {   
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   case $# in
+      3) local readable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.TRUE)
+         ;;
+      4) local readable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.parseBoolean "$4")
+         ;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+         ;;
+   esac
+   if command -v chmod >/dev/null 2>&1; then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ "${readable}" == $(Boolean.TRUE) ]]; then
+         local setOrDenyPermission="+"
+      else
+         local setOrDenyPermission="-"   
+      fi
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
+         # owner
+         local ownerOrAll="u"
+      else
+         # all
+         local ownerOrAll="a"
+      fi
+      chmod ${ownerOrAll}${setOrDenyPermission}r "${file}" 2>/dev/null
+      if (( $? == 0 )); then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setWritable() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   case $# in
+      3) local writable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.TRUE)
+         ;;
+      4) local writable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.parseBoolean "$4")
+         ;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+         ;;
+   esac
+   if command -v chmod >/dev/null 2>&1; then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ "$writable" == $(Boolean.TRUE) ]]; then
+         local setOrDenyPermission="+"
+      else
+         local setOrDenyPermission="-"   
+      fi
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
+         # owner
+         local ownerOrAll="u"
+      else
+         # all
+         local ownerOrAll="a"
+      fi
+      chmod ${ownerOrAll}${setOrDenyPermission}w "${file}" 2>/dev/null
+      if (( $? == 0 )); then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setExecutable() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   case $# in
+      3) local executable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.TRUE)
+         ;;
+      4) local executable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.parseBoolean "$4")
+         ;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+         return $returnValue
+         ;;
+   esac
+   if command -v chmod >/dev/null 2>&1; then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ "$executable" == $(Boolean.TRUE) ]]; then
+         local setOrDenyPermission="+"
+      else
+         local setOrDenyPermission="-"   
+      fi
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
+         # owner
+         local ownerOrAll="u"
+      else
+         # all
+         local ownerOrAll="a"
+      fi
+      chmod ${ownerOrAll}${setOrDenyPermission}x "${file}" 2>/dev/null
+      if (( $? == 0 )); then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getCanonicalPath() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".getAbsolutePath)"
+      if __gnureadlinkCheck; then 
+         local result=''
+         result=$(readlink -e -- "${file}" 2>/dev/null)
+         if (( $? == 0 )); then
+            System.out.println "$result"
+         else
+            if command -v pwd >/dev/null 2>&1; then
+               cd -P -- "$(__dirname "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(__basename "${file}")"
+               if (( $? != 0 )); then
+                  readlink -m -- "${file}" 2>/dev/null
+               fi
+            else
+               __throw "NotInPathException" ": pwd not in path"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         fi
+      else
+         __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getAbsolutePath() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ ${file:0:1} == "/" ]]; then
+         System.out.println "${file}"
+      else
+         System.out.println "${PWD}"/"${file}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getPath() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      System.out.println "${file}" 
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAbsolute() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ ${file:0:1} == "/" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__delete() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v rm >/dev/null 2>&1; then
+         if command -v rmdir >/dev/null 2>&1; then
+            local this="$1"
+            local file="$("$this".toString)"
+            if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
+               rm -f -- "${file}" 2>/dev/null || rmdir -- "${file}" 2>/dev/null
+               if (( $? == 0 )); then
+                  Boolean.TRUE
+               else
+                  Boolean.FALSE
+               fi
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "NotInPathException" ": rmdir not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "NotInPathException" ": rm not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__createNewFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v touch >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         if [[ $("$this".exists) == $(Boolean.FALSE) ]]; then 
+            touch -- "${file}" 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__lastModified() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v stat >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         local result
+         if __gnustatCheck; then
+            result=$(stat -L -c  "+%Y" -- "${file}" 2>/dev/null)
+            if (( $? == 0 )); then
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
+            else
+               System.out.println "0"
+            fi
+         else
+            result=$(stat -L -f '%m' -t '+%Y' -- "${file}" 2>/dev/null)
+            if (( $? == 0 )); then
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
+            else
+               System.out.println "0"
+            fi
+         fi
+      else
+         __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"        
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setLastModified() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      if command -v touch >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         if ! __isBashInteger "$3"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i milliSeconds="$3"
+         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+            declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
+            declare -i epochSeconds=${milliSeconds:0:secondsLength}
+         else
+            declare -i epochSeconds=0
+         fi
+         local timestamp
+         if command -v date >/dev/null 2>&1; then
+            if __gnudateCheck; then
+               timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
+               # check if this gnu date is too old to the -d @.... job
+               if (( $? != 0 )); then
+                  # better than a TooOldGnuDateException ;-)
+                  Boolean.FALSE
+                  return $returnValue
+               fi
+            else
+               # bsd date
+               timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
+            fi
+         else
+            __throw "NotInPathException" ": date not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         touch -m -t ${timestamp} -- ${file} 2>/dev/null
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setReadOnly() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v chmod >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         chmod 444 "$file" >/dev/null 2>&1
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getText() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local text
+            local file="$("$this".toString)"
+            text="$(<"$file")"
+            System.out.println "$text"
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setText() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class String" == "$argclass" ]]; then
+            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+               if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                  local text="$("$argobject".toString)"
+                  2>/dev/null System.out.println "$text" > "$("$this".toString)"
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"                  
+               fi
+            else
+               __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else 
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"           
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__append() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class String" == "$argclass" ]]; then
+            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+               if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                  local text="$("$argobject".toString)"
+                  2>/dev/null System.out.println "$text" >> "$("$this".toString)"
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+               fi
+            else
+               __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"               
+            fi            
+         else 
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__clear() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            2>/dev/null > "$("$this".toString)"
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
+         fi
+      else
+         __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__linecount() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local file="$("$this".toString)"
+            mapfile FILE < "$file"
+            System.out.println "${#FILE[@]}"
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__linematch() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local regex="$3"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local file="$("$this".toString)"
+            mapfile FILE < "$file"
+            for ((index=0;index<"${#FILE[@]}";index++))
+            do
+               if [[ "${FILE[index]}" =~ $regex ]]; then
+                  System.out.print "${FILE[index]}"
+               fi
+            done
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"   
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__md5sum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local result
+            local file="$("$this".getAbsolutePath)"
+            if command -v openssl >/dev/null 2>&1; then
+               result=$(openssl dgst -md5 "$file" 2>/dev/null)
+               System.out.println "${result/* /}"
+            else
+               __throw "NotInPathException" ": openssl not in path"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__sha1sum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         # try to avoid at least some problems...
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local result
+            local file="$("$this".getAbsolutePath)"
+            if command -v openssl >/dev/null 2>&1; then
+               result=$(openssl dgst -sha1 "$file" 2>/dev/null)
+               System.out.println "${result/* /}"
+            else
+               __throw "NotInPathException" ": openssl not in path"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"            
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+__getInode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         local result
+         local file="$("$this".toString)"
+         if command -v stat >/dev/null 2>&1; then
+            if __gnustatCheck; then
+               stat -c '%i' "$file" 2>/dev/null
+            else
+               stat -f '%i' "$file" 2>/dev/null
+            fi
+         else
+            __throw "NotInPathException" ": stat not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getPosixFilePermissions() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         local result
+         local file="$("$this".toString)"
+         if command -v stat >/dev/null 2>&1; then
+            local output
+            if __gnustatCheck; then
+               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
+            else
+               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
+            fi
+            System.out.println "${output: -9}"
+         else
+            __throw "NotInPathException" ": stat not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setPosixFilePermissions() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         local result
+         local file="$("$this".toString)"
+         if command -v chmod >/dev/null 2>&1; then
+            local permissions=''
+            permissions=$(__posixFilePermissionsConverter "$3")
+            if (( $? != 0 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            chmod "${permissions}" "${file}" 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+            # try to avoid at least some problems...
+            if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+               local file="$("$this".toString)"
+               mapfile FILE < "$file"
+               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                  __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+               else
+                  System.out.print "${FILE[index]}"
+               fi
+            else
+               __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__delLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+            # try to avoid at least some problems...
+            if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+               local file="$("$this".toString)"
+               mapfile FILE < "$file"
+               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                  __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"
+               else
+                  > "$file" 1>/dev/null 2>/dev/null
+                  for indx in "${!FILE[@]}"
+                  do
+                     if (( $(($indx+1)) != $line)); then
+                        System.out.print "${FILE[indx]}" >> "$file"
+                     fi
+                  done
+               fi
+            else
+               __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__replaceLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  # try to avoid at least some problems...
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
+                     local text="$("$argobject".toString)"
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                     else
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                           fi
+                        done
+                     fi                     
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__insertBeforeLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  # try to avoid at least some problems...
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
+                     local text="$("$argobject".toString)"
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                     else
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           fi
+                        done
+                     fi                     
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__insertAfterLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  # try to avoid at least some problems...
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
+                     local text="$("$argobject".toString)"
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                     else
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.print "${FILE[indx]}" >> "$file"
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                           fi
+                        done
+                     fi                     
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__indexOfExtension() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      String "${this}" "$("${this}".toString)"
+      declare -i sep
+      declare -i dot
+      sep=$("${this}".lastIndexOf "/")
+      dot=$("${this}".lastIndexOf ".")
+      if (( $dot > $sep )); then
+         System.out.println $dot
+      else
+         System.out.println -1
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__indexOfLastSeparator() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      String "${this}" "$("${this}".toString)"
+      declare -i sep
+      sep=$("${this}".lastIndexOf "/")
+      System.out.println $sep
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__fileLength() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      if command -v wc >/dev/null 2>&1; then
+         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+            result="$(wc -c -- < "${str}")"
+            shopt -s extglob
+            # trimming...
+            local result="${result##+([[:space:]])}"
+            System.out.println "$result"
+         else
+            System.out.println 0
+         fi
+      else
+         __throw "NotInPathException" ": wc not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}" 
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getOwner() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         if command -v stat >/dev/null 2>&1; then
+            local file="$("$this".toString)"
+            local owner
+            if __gnustatCheck; then
+               owner=$(stat -L -c  "%U" -- "${file}" 2>/dev/null)
+            else
+               owner=$(stat -L -f '%Su' -- "${file}" 2>/dev/null)
+            fi
+            System.out.println "${owner}"
+         else
+            __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"        
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getGroup() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         if command -v stat >/dev/null 2>&1; then
+            local file="$("$this".toString)"
+            local group
+            if __gnustatCheck; then
+               group=$(stat -L -c  "%G" -- "${file}" 2>/dev/null)
+            else
+               group=$(stat -L -f '%Sg' -- "${file}" 2>/dev/null)
+            fi
+            System.out.println "${group}"
+         else
+            __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"        
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+
+##################
+#                #
+#     STATICS    # 
+#                #
+##################
+
+File.createTemporaryFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )) || (( $# == 3 )); then
+      if command -v mktemp >/dev/null 2>&1; then
+         if command -v chmod >/dev/null 2>&1; then
+            local tempdir=${TMPDIR:-/tmp};
+            local prefix="$1"
+            if (( ${#prefix} < 3 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            local suffix="$2"
+            if (( $# == 3 )); then
+               local permissions=''
+               permissions=$(__posixFilePermissionsConverter "$3")
+               if (( $? != 0 )); then
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+                  returnValue=$?
+                  __stackOrHelp "File" "${FUNCNAME}"
+                  return $returnValue
+               fi
+            fi
+            local temporaryFile
+            temporaryFile=$(mktemp --tmpdir="${tempdir}" --suffix="${suffix}" "${prefix}"XXXXXXXXXXXXXXXXXX 2>/dev/null)
+            if (( $? != 0 )); then
+               __throw "IOException" ": File could not be created"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            if [[ -n "${permissions}" ]]; then
+               chmod "${permissions}" "${temporaryFile}"
+            fi
+            System.out.println "${temporaryFile}"
+         else
+            __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __stackOrHelp "File" "${FUNCNAME}"            
+         fi
+      else
+         __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "File" "${FUNCNAME}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTemporaryFile
+
+File.createTempFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )) || (( $# == 2 )); then
+      local prefix="$1"
+      local suffix=${2:-.tmp}
+      File.createTemporaryFile "${prefix}" "${suffix}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTempFile
+
+File.createTemporaryDir() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )) || (( $# == 3 )); then
+      if command -v mktemp >/dev/null 2>&1; then
+         if command -v chmod >/dev/null 2>&1; then
+            local tempdir=${TMPDIR:-/tmp};
+            local prefix="$1"
+            if (( ${#prefix} < 3 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            local suffix="$2"
+            if (( $# == 3 )); then
+               local permissions=''
+               permissions=$(__posixFilePermissionsConverter "$3")
+               if (( $? != 0 )); then
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+                  returnValue=$?
+                  __stackOrHelp "File" "${FUNCNAME}"
+                  return $returnValue
+               fi
+            fi
+            local temporaryFile
+            temporaryFile=$(mktemp -d --tmpdir="${tempdir}" --suffix="${suffix}" "${prefix}"XXXXXXXXXXXXXXXXXX 2>/dev/null)
+            if (( $? != 0 )); then
+               __throw "IOException" ": Directory could not be created"
+               returnValue=$?
+               __stackOrHelp "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            if [[ -n ${permissions} ]]; then
+               chmod ${permissions} "${temporaryFile}"
+            fi
+            System.out.println "${temporaryFile}"
+         else
+            __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __stackOrHelp "File" "${FUNCNAME}"
+         fi
+      else
+         __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "File" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTemporaryDir
+
+File.createTempDir() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )) || (( $# == 2 )); then
+      local prefix="$1"
+      local suffix=${2:-.tmp}
+      File.createTemporaryDir "${prefix}" "${suffix}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __stackOrHelp "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTempDir
+
+#################
+#               #
+#     HELP      # 
+#               #
+#################
+
+complete -W  "$(echo ${__File__[@]}) all File createTempFile createTemporaryFile createTempDir createTemporaryDir" File.help
+
+File.help() {  
+   local printStream=${printStream:-out}
+   if (( $# == 0 )); then
+      System.${printStream}.println "
+      Usage: File.help all|methodname|constructor
+      Available methods:
+      -isDirectory -exists -toString -hashCode 
+      -canRead -canWrite -canExecute -getName
+      -isHidden -isFile -mkdir -mkdirs -getParent
+      -getClass -equals -isSymbolicLink -fileLength
+      -isNamedPipe -hasStickyBit -isSocket
+      -isCharacterSpecial -isBlockSpecial -compareTo
+      -setExecutable -setReadable -setWritable
+      -setReadOnly -delete -isAbsolute
+      -getAbsolutePath -getCanonicalPath -getPath  
+      -lastModified -setLastModified -getText 
+      -setText -append -clear -linematch -linecount
+      -sha1sum -md5sum -getFreeSpace -getTotalSpace
+      -getUsableSpace -getInode -getBase -getExtension
+      -getPosixFilePermissions -setPosixFilePermissions
+      -getLine -replaceLine -delLine -createNewFile
+      -insertAfterLine -insertBeforeLine -indexOfExtension
+      -indexOfLastSeparator -getUser -getGroup
+      Static utilities:
+      -File.createTemporaryDir -File.createTempDir
+      -File.createTemporaryFile -File.createTempFile
+      Constructor:
+      -File
+                 "
+      return 0
+   fi  
+   while (($#))
+   do
+      local match=$(Boolean.FALSE)
+      case $1 in
+         File|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               File
+                  Constructor for the File objects.
+               Parameters:
+                  objectname
+                  filename
+               Returns
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if objectname contains full stop character
+               Example:
+                  File a testfile
+            ";;&
+         indexOfExtension|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               indexOfExtension
+                  Returns the index of the last extension separator character, which is a dot.
+                  This method also checks that there is no directory separator, which is a /
+                  after the last dot.
+               Parameters:
+                  None 
+               Returns:
+                  the index of the last separator character, or -1 if there is no such character
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x /123/56.89
+                  x.indexOfExtension
+                  >>>7
+            ";;&
+         indexOfLastSeparator|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               indexOfLastSeparator
+                  Returns the index of the last directory separator character, which is a /.
+                  This method will handle a file in either Unix or Windows format. The position 
+                  of the last forward is returned.
+               Parameters:
+                  None 
+               Returns:
+                  the index of the last separator character, or -1 if there is no such character
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x /123/56
+                  x.indexOfLastSeparator
+                  >>>4
+            ";;&
+         getGroup|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getGroup
+                  Returns the group of the owner of this file.
+               Parameters:
+                  None 
+               Returns:
+                  Name of group
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/oratab
+                  x.getGroup
+                  >>>dba
+            ";;&
+         getOwner|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getOwner
+                  Returns the name of the owner of this file.
+               Parameters:
+                  None 
+               Returns:
+                  Name of owner
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/oratab
+                  x.getOwner
+                  >>>oracle
+            ";;&
+         insertAfterLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               insertAfterLine
+                  Inserts given String after given line in this file.
+                  Caution! This method can corrupt this file. 
+               Parameters:
+                  integer that represents line number
+                  String object
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if argument is no object
+                                           - if number of arguments != 2
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+                  WrongClassException - if argument is no String object
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  String b \"after line 2\"
+                  a.insertAfterLine 2 b
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>after line 2
+                  >>>3
+            ";;&
+         insertBeforeLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               insertBeforeLine
+                  Inserts given String before given line in this file.
+                  Caution! This method can corrupt this file. 
+               Parameters:
+                  integer that represents line number
+                  String object
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if argument is no object
+                                           - if number of arguments != 2
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+                  WrongClassException - if argument is no String object
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  String b \"before line 2\"
+                  a.insertBeforeLine 2 b
+                  a.getText
+                  >>>1
+                  >>>before line 2
+                  >>>2
+                  >>>3
+            ";;&
+         replaceLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               replaceLine
+                  Replace line in this file with given String.
+                  Caution! This method can corrupt this file. 
+               Parameters:
+                  integer that represents line number
+                  String object
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if argument is no object
+                                           - if number of arguments != 2
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+                  WrongClassException - if argument is no String object
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  String b \"i want to be line 2\"
+                  a.replaceLine 2 b
+                  a.getText
+                  >>>1
+                  >>>i want to be line 2
+                  >>>3
+            ";;&
+         getLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getLine
+                  Gets line with given number from this file. 
+               Parameters:
+                  integer that represents line number
+               Returns:
+                  string
+                Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  a.getLine 2
+                  >>>2
+            ";;&
+         delLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               delLine
+                  Deletes line with given number in this file.
+                  Caution! This method can corrupt this file. 
+               Parameters:
+                  integer that represents line number
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  a.delLine 2
+                  a.getText
+                  >>>1
+                  >>>3                  
+            ";;&
+         getBase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getBase
+                  Returns the basename and path of this file, without extension suffix 
+                  and without the splitting \".\" character.
+               Parameters:
+                  None
+               Returns:
+                  Returns the baename of this file
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x docs/Readme.txt
+                  x.getBase
+                  >>>docs/Readme
+            ";;&
+         getExtension|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getExtension
+                  Returns the extension suffix of this file.
+               Parameters:
+                  None
+               Returns:
+                  Returns suffix
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x docs/Readme.txt
+                  x.getExtension
+                  >>>txt
+            ";;&
+         getInode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getInode
+                  Returns the inode number.
+                  getInode does not follow links.
+               Parameters:
+                  None
+               Returns:
+                  Returns the inode number
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat is not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/passwd
+                  x.getInode
+                  >>>2499132
+            ";;&
+         getTotalSpace|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getTotalSpace
+                  Returns the size of the partition named by this abstract pathname.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
+               Parameters:
+                  None
+               Returns:
+                  The size, in bytes, of the partition or 0 if this abstract pathname
+                  does not name a partition
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if GNU stat is not in path
+               Example:
+                  File x /etc/passwd
+                  x.getTotalSpace
+                  >>>52844687360
+                  File x /iDoNotExist
+                  x.getTotalSpace
+                  >>>0
+            ";;&
+         getFreeSpace|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getFreeSpace
+                  Returns the number of unallocated bytes in the partition named by this 
+                  abstract path name.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
+               Parameters:
+                  None
+               Returns:
+                  The number of unallocated bytes on the partition 0 if the abstract pathname 
+                  does not name a partition. This value will be less than or equal to the total 
+                  file system size returned by getTotalSpace.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if GNU stat is not in path
+               Example:
+                  File x /etc/passwd
+                  x.getFreeSpace
+                  >>>41473142784
+                  File x /iDoNotExist
+                  x.getFreeSpace
+                  >>>0
+            ";;&
+         getUsableSpace|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getUsableSpace
+                  Returns the number of bytes available to this virtual machine on the partition 
+                  named by this abstract pathname. When possible, this method checks for write 
+                  permissions and other operating system restrictions and will therefore usually 
+                  provide a more accurate estimate of how much new data can actually be written 
+                  than getFreeSpace.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
+               Parameters:
+                  None
+               Returns:
+                  The number of available bytes on the partition or 0 if the abstract pathname 
+                  does not name a partition. On systems where this information is not available, 
+                  this method will be equivalent to a call to getFreeSpace.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if GNU stat is not in path
+               Example:
+                  File x /etc/passwd
+                  x.getUsableSpace
+                  >>>38788788224
+                  File x /iDoNotExist
+                  x.getUsableSpace
+                  >>>0
+            ";;&
+         md5sum|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               md5sum
+                  Print MD5 (128-bit) checksum
+               Parameters:
+                  None
+               Returns:
+                  md5sum checksum.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+                  NotInPathException - if openssl is not in path
+               Example:
+                  File x /etc/passwd
+                  x.md5sum
+                  >>>02ee96097be33fdba99700e68a8c0365
+            ";;&
+         sha1sum|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               sha1sum
+                  Print SHA1 (160-bit) checksum.
+               Parameters:
+                  None
+               Returns:
+                  sha1sum checksum.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+                  NotInPathException - if openssl is not in path
+               Example:
+                  File x /etc/passwd
+                  x.sha1sum
+                  >>>848a8bd73c5d0a95a8bd860402e45c4a62046f10
+            ";;&
+         linematch|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               linematch
+                  Looks for matching lines.
+               Parameters:
+                  regex - the regular expression to which every line of file is to be matched
+               Returns:
+                  All matching lines.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.linematch \"^root.*$\"
+                  >>>root:x:0:0:root:/root:/bin/bash
+            ";;&
+         linecount|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               linecount
+                  Counts the number of lines in file.
+               Parameters:
+                  None
+               Returns:
+                  Number of lines in file
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.linecount
+                  >>>40
+            ";;&
+         getText|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getText
+                  Returns string that is the content of file.successful.
+               Parameters:
+                  None
+               Returns:
+                  Content of file as string
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File b /etc/passwd
+                  b.getText | head -2
+                  >>>root:x:0:0:root:/root:/bin/bash
+                  >>>bin:x:1:1:bin:/bin:/sbin/nologin
+            ";;&
+         setText|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setText
+                  Sets string as content of file.
+               Parameters:
+                  String object
+               Returns:
+                  true if the setText operation was successful; false otherwise
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+                  File a /tmp/iExist
+                  File b /etc/passwd
+                  String x \$\"(b.getText)\"
+                  a.setText x
+                  >>>true
+            ";;&
+         append|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               append
+                  Appends string to content of file.
+               Parameters:
+                  String object
+               Returns:
+                  true if the append operation was successful; false otherwise
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+                  File a /tmp/iExist
+                  String x \"Hello, i am a last line\"
+                  a.append x
+                  >>>true
+            ";;&
+         clear|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               clear
+                  Deletes content of file.
+               Parameters:
+                  None
+               Returns:
+                  true if the clear operation was successful; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+                  File a /tmp/xxx
+                  a.clear
+                  >>>true
+            ";;&
+         compareTo|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               compareTo
+                  Compares two abstract pathnames lexicographically. 
+                  The ordering defined by this method depends upon the underlying system. 
+                  Alphabetic case is significant in comparing pathnames.
+               Parameters:
+                  f - a File object
+               Returns:
+                  Zero if the argument is equal to this abstract pathname, a value less 
+                  than zero if this abstract pathname is lexicographically less than the 
+                  argument, or a value greater than zero if this abstract pathname is 
+                  lexicographically greater than the argument
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
+               Example:
+                  File a abcd
+                  File b abcd
+                  a.compareTo b
+                  >>>0
+                  File b ab
+                  a.compareTo b
+                  >>>2
+                  File b abcde
+                  a.compareTo b
+                  >>>-1
+                  File b ""
+                  a.compareTo b
+                  >>>4
+                  File b x
+                  a.compareTo b
+                  >>>-23
+                  File b \"ab c\"
+                  a.compareTo b
+                  >>>67
+            ";;&
+         exists|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               exists
+                  Tests whether the file or directory denoted by this abstract pathname exists. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file or directory denoted by this abstract pathname 
+                  exists; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.exists
+                  >>>false
+            ";;&
+         equals|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               equals
+                  Tests this abstract pathname for equality with the given object. 
+                  Returns true if and only if the argument is an 
+                  abstract pathname that denotes the same file or directory as this 
+                  abstract pathname.
+               Parameters:
+                  anObject - The object to be compared with
+               Returns:
+                  true if and only if the objects are the same; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  File a yyy
+                  File b yyy
+                  File c xxx
+                  a.equals c
+                  >>>false
+                  a.equals b
+                  >>>true
+            ";;&
+         getClass|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getClass
+                  Returns the runtime class of this Object.
+               Parameters:
+                 None
+               Returns:
+                  The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a xxx
+                  a.getClass
+                  >>>class File
+            ";;& 
+         isDirectory|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isDirectory
+                  Tests whether the file denoted by this abstract pathname is a directory. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a directory; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.isDirectory
+                  >>>false
+            ";;&
+         canRead|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               canRead
+                  Tests whether the application can read the file 
+                  denoted by this abstract pathname.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file specified by this abstract pathname exists
+                  and can be read by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.canRead
+                  >>>false
+            ";;&
+         canExecute|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               canExecute
+                  Tests whether the application can execute the file 
+                  denoted by this abstract pathname.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file specified by this abstract pathname exists
+                  and can be executed by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.canExecute
+                  >>>false
+            ";;&
+         canWrite|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               canWrite
+                  Tests whether the application can write the file 
+                  denoted by this abstract pathname.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file specified by this abstract pathname exists
+                  and can be written by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.canWrite
+                  >>>false
+               ";;&
+         fileLength|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               fileLength
+                  Returns the length of the file denoted by this abstract pathname. 
+                  The return value is unspecified if this pathname denotes a directory.
+               Parameters:
+                  None  
+               Returns:
+                  The length, in bytes, of the file denoted by this abstract pathname. 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  echo abc > /tmp/abc
+                  a.fileLength
+                  >>>4
+               ";;&
+         toString|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toString
+                  Returns the pathname string of this abstract pathname. 
+               Parameters:
+                  None
+               Returns:
+                  The string form of this abstract pathname
+               Throws:
+                  NotInPathException - if sort not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.toString
+                  >>>/tmp/abc
+               ";;&
+         hashCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hashCode
+                  Computes a hash code for this abstract pathname. Because 
+                  equality of abstract pathnames is inherently system-dependent, 
+                  so is the computation of their hash codes. On UNIX systems, the 
+                  hash code of an abstract pathname is equal to the exclusive or of 
+                  the hash code of its pathname string and the decimal value 1234321.
+               Parameters:
+                  None 
+               Returns:
+                  A hash code for this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.hashCode
+                  >>>-889608758
+            ";;&
+         getParent|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getParent
+                  Returns the pathname string of this abstract pathname's parent, 
+                  or "." if this pathname does not name a parent directory.
+                  The parent of an abstract pathname consists of the pathname's prefix, 
+                  if any, and each name in the pathname's name sequence except for the last. 
+                  If the name sequence is empty then the pathname does not name a parent directory.
+               Parameters:
+                  None
+               Returns:
+                  The pathname string of the parent directory named by this abstract pathname, 
+                  or "." if this pathname does not name a parent
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x dfve
+                  x.getParent
+                  >>>.
+                  File x /tmp/ee/ergr
+                  x.getParent
+                  >>>/tmp/ee
+            ";;&
+         mkdirs|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               mkdirs
+                  Creates the directory named by this abstract pathname, including 
+                  any necessary but nonexistent parent directories.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the directory was created, along with all 
+                  necessary parent directories; false otherwise
+               Throws:
+                  NotInPathException - if mkdir is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/a/b/c
+                  a.mkdirs
+                  >>>true
+            ";;&
+         mkdir|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               mkdir
+                  Creates the directory named by this abstract pathname.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the directory was created; false otherwise
+               Throws:
+                  NotInPathException - if mkdir is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/a/b/c
+                  a.mkdir
+                  >>>false
+                  File a /tmp/a
+                  a.mkdir
+                  >>>true
+            ";;&
+         isHidden|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isHidden
+                  Tests whether the file named by this abstract pathname is a hidden file. 
+                  The exact definition of hidden is system-dependent. On UNIX systems, a file 
+                  is considered to be hidden if its name begins with a period character ('.').
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname is hidden 
+                  according to the conventions of the underlying platform.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.isHidden
+                  >>>false
+                  File a /tmp/.abc
+                  >>>true
+            ";;&
+         isFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isFile
+                  Tests whether the file denoted by this abstract pathname is a normal file. 
+                  A file is normal if it is not a directory and, in addition, satisfies other 
+                  system-dependent criteria.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a normal file; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isFile
+                  >>>false 
+            ";;&
+         isSymbolicLink|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isSymbolicLink
+                  Tests whether the file denoted by this abstract pathname is a symbolic link. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a symbolic link; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isSymbolicLink
+                  >>>false 
+            ";;&
+         isNamedPipe|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isNamedPipe
+                  Tests whether the file denoted by this abstract pathname is a named pipe. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a named pipe; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isNamedPipe
+                  >>>false 
+            ";;&
+         hasStickyBit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hasStickyBit
+                  Tests whether the stick bit is set on the file denoted by this abstract pathname. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the stick bit is set on the file denoted by this abstract pathname; 
+                  false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.hasStickyBit
+                  >>>false 
+            ";;&
+         isSocket|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isSocket
+                  Tests whether the file denoted by this abstract pathname is a socket. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a socket; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isSocket
+                  >>>false 
+            ";;&
+         isCharacterSpecial|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isCharacterSpecial
+                  Tests whether the file denoted by this abstract pathname is a character 
+                  special. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a character special; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isCharacterSpecial
+                  >>>false 
+            ";;&
+         isBlockSpecial|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isBlockSpecial
+                  Tests whether the file denoted by this abstract pathname is a block special. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a block special; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isBlockSpecial
+                  >>>false 
+            ";;&
+         setWritable|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               setWritable
+                  Sets the owner's or everybody's write permission for this abstract pathname.
+               Parameters:
+                  writable - If true, sets the access permission to allow write operations; 
+                  if false to disallow write operations
+                  [ownerOnly - If true, the write permission applies only to the owner's write permission; 
+                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
+                  write permission from that of others, then the permission will apply to everybody, regardless 
+                  of this value.
+                  Default: true]
+               Returns:
+                  true if and only if the operation succeeded. The operation will fail if the user does not have 
+                  permission to change the access permissions of this abstract pathname.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
+               Example:
+                  File a /tmp/iExist
+                  a.setWritable true
+                  >>>true
+                  a.setWritable true false
+                  >>>true               
+            ";;&
+         setReadable|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               setReadable
+                  Sets the owner's or everybody's read permission for this abstract pathname.
+               Parameters:
+                  readable - If true, sets the access permission to allow read operations; 
+                  if false to disallow read operations
+                  [ownerOnly - If true, the read permission applies only to the owner's read permission; 
+                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
+                  read permission from that of others, then the permission will apply to everybody, regardless of this value.
+                  Default: true]               
+               Returns:
+                  true if and only if the operation succeeded. The operation will fail if the user does not have permission
+                  to change the access permissions of this abstract pathname. If readable is false and the underlying file 
+                  system does not implement a read permission, then the operation will fail.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
+               Example:
+                  File a /tmp/iExist
+                  a.setReadable true
+                  >>>true
+                  a.setReadable true false
+                  >>>true               
+            ";;&
+         setExecutable|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               setExecutable
+                  Sets the owner's or everybody's execute permission for this abstract pathname.
+               Parameters:
+                  executable - If true, sets the access permission to allow execute operations; if false to disallow 
+                  execute operations
+                  [ownerOnly - If true, the execute permission applies only to the owner's execute permission; 
+                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
+                  execute permission from that of others, then the permission will apply to everybody, 
+                  regardless of this value.
+                  Default: true]                
+               Returns:
+                  true if and only if the operation succeeded. The operation will fail if the user does not have 
+                  permission to change the access permissions of this abstract pathname. If executable is false 
+                  and the underlying file system does not implement an execute permission, then the operation will fail.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
+               Example:
+                  File a /tmp/iExist
+                  a.setExecutable true
+                  >>>true
+                  a.setExecutable true false
+                  >>>true               
+            ";;&
+         getCanonicalPath|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               getCanonicalPath
+                  Returns the canonical pathname string of this abstract pathname.
+
+                  A canonical pathname is both absolute and unique. This method first converts this pathname to absolute 
+                  form if necessary, as if by invoking the getAbsolutePath() method, and then maps it to its unique form 
+                  in a system-dependent way. This typically involves removing redundant names such as "." and ".." from 
+                  the pathname, resolving symbolic links on UNIX platforms.
+
+                  Every pathname that denotes an existing file or directory has a unique canonical form. Every pathname 
+                  that denotes a nonexistent file or directory also has a unique canonical form. The canonical form of 
+                  the pathname of a nonexistent file or directory may be different from the canonical form of the same 
+                  pathname after the file or directory is created. Similarly, the canonical form of the pathname of an 
+                  existing file or directory may be different from the canonical form of the same pathname after the file 
+                  or directory is deleted.
+               Parameters:
+                  None
+               Returns:
+                  The canonical pathname string denoting the same file or directory as this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if pwd is not in path
+                                     - if readlink is not in path
+               Example:
+                  File a /xxx/s
+                  a.getCanonicalPath
+                  >>>/xxx/s              
+            ";;&        
+         setReadOnly|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               setReadOnly
+                  Marks the file or directory named by this abstract pathname so that only read operations are allowed. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the operation succeeded; false otherwise
+               Throws:
+                  NotInPathException - if chmod is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/iExist
+                  a.setReadOnly
+                  >>>true           
+            ";;&      
+         lastModified|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               lastModified
+                  Returns the time that the file denoted by this abstract pathname was last modified.
+               Parameters:
+                  None
+               Returns:
+                  A long value representing the time the file was last modified, measured in milliseconds 
+                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if 
+                  an I/O error occurs
+               Throws:
+                  NotInPathException - if GNU stat is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.lastModified
+                  >>>1297000
+            ";;& 
+         setLastModified|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               setLastModified
+                  Sets the last-modified time of the file or directory named by this abstract pathname.
+                  All platforms support file-modification times to the nearest second, but some provide 
+                  more precision. The argument will be truncated to fit the supported precision. If the 
+                  operation succeeds and no intervening operations on the file take place, then the next 
+                  invocation of the lastModified() method will return the (possibly truncated) time 
+                  argument that was passed to this method.
+               Parameters:
+                  time - The new last-modified time, measured in milliseconds since the 
+                  epoch (00:00:00 GMT, January 1, 1970)
+               Returns:
+                  true if and only if the operation succeeded; false otherwise
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 3
+                  NotInPathException - if GNU date is not in path
+                                     - if touch is not in path
+               Example:
+                  File a /tmp/abc
+                  a.setLastModified 1297632
+                  >>>true
+                  a.lastModified
+                  >>>1297000
+            ";;& 
+         delete|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               delete
+                  Deletes the file or directory denoted by this abstract pathname. If this pathname 
+                  denotes a directory, then the directory must be empty in order to be deleted.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file or directory is successfully deleted; false otherwise
+               Throws:
+                  NotInPathException - if rm is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.delete
+                  >>>true
+            ";;& 
+         isAbsolute|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               isAbsolute
+                  Tests whether this abstract pathname is absolute. The definition of absolute 
+                  pathname is system dependent. On UNIX systems, a pathname is absolute if its prefix is "/".
+               Parameters:
+                  None
+               Returns:
+                  true if this abstract pathname is absolute, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.isAbsolute
+                  >>>true
+            ";;& 
+         getAbsolutePath|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               getAbsolutePath            
+                  Returns the absolute pathname string of this abstract pathname.
+                  If this abstract pathname is already absolute, then the pathname string is simply 
+                  returned as if by the getPath() method. If this abstract pathname is the empty 
+                  abstract pathname then the pathname string of the current user directory is returned. 
+                  Otherwise this pathname is resolved in a system-dependent way. On UNIX systems, a 
+                  relative pathname is made absolute by resolving it against the current user directory.
+               Parameters:
+                  None
+               Returns:
+                  The absolute pathname string denoting the same file or directory as this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.getAbsolutePath
+                  >>>/tmp/abc
+            ";;& 
+         getPath|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "          
+               getPath
+                  Converts this abstract pathname into a pathname string. 
+               Parameters:
+                  None
+               Returns:
+                  The string form of this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.getPath
+                  >>>/tmp/abc
+            ";;& 
+         createNewFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "          
+               createNewFile  
+                  Creates a new, empty file named by this abstract pathname if and only if a file with 
+                  this name does not yet exist. 
+               Parameters:
+                  None
+               Returns:
+                  true if the named file does not exist and was successfully created; false if the 
+                  named file already exists
+               Throws:
+                  NotInPathException - if touch is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.createNewFile
+                  >>>true
+            ";;&
+         getName|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getName
+                  This is just the last name in the pathname's name sequence.
+               Parameters:
+                  None
+               Returns:
+                  The name of the file or directory denoted by this abstract
+                  pathname. This is just the last name in the pathname's name
+                  sequence. If the pathname's name sequence is empty, then the
+                  empty string is returned.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.getName
+                  >>>abc
+               ";;&
+         getPosixFilePermissions|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getPosixFilePermissions
+                  Returns primitive string of permission attributes.
+                  By default, symbolic links are followed and the file attribute
+                  of the final target of the link is read.
+               Parameters:
+                  None
+               Returns:
+                  Returns primitive string of permission attributes
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat is not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/passwd
+                  x.getPosixFilePermissions
+                  >>>-rw-r--r--
+            ";;&
+         setPosixFilePermissions|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setPosixFilePermissions
+                  Sets a file's POSIX permissions.
+               Parameters:
+                  attrs - A list of file attributes to set
+               Returns:
+                  Returns true, if the permissions are set successfully, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if attrs is given, but is no posixFilePermission 
+                  NotInPathException - if chmod is not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/passwd
+                  x.setPosixFilePermissions \"-rw-r--r--\"
+                  >>>false
+            ";;&
+         File.createTempFile|createTempFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "   
+               File.createTempFile
+                  Creates an empty file in the default temporary-file directory, using the given prefix 
+                  and suffix to generate its name. Invoking this method is equivalent to invoking 
+                  createTempFile.
+
+                  The createTemporaryFile method provides an alternative method to create an empty file 
+                  in the temporary-file directory. Files created by that method may have more restrictive 
+                  access permissions to files created by this method and so may be more suited to 
+                  security-sensitive applications.
+               Parameters:
+                  prefix - The prefix string to be used in generating the file's name; must be at least 
+                  three characters long
+                  suffix - The suffix string to be used in generating the file's name is optional. If 
+                  missing the suffix ".tmp" will be used
+               Returns:
+                  An abstract pathname denoting a newly-created empty file
+               Throws:
+                  IllegalArgumentException - if number of arguments !=1 AND !=2
+               Example:
+                  File.createTempFile fff
+                  >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
+                  File.createTempFile fff xxx
+                  >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
+            ";;&    
+         File.createTemporaryFile|createTemporaryFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "   
+               File.createTemporaryFile
+                  Creates an empty file in the default temporary-file directory, using the given prefix and 
+                  suffix to generate its name.
+
+                  The attrs parameter is an optional primitive string of attributes to set when creating 
+                  the file. 
+
+                  When using the attrs parameter the resulting file may have more restrictive access 
+                  permissions than files created by the createTempFile method.
+                  The attrs parameter is a String representing the permissions. It has 9 characters that 
+                  are interpreted as three sets of three. The first set refers to the owner's permissions; 
+                  the next to the group permissions and the last to others. Within each set, the first 
+                  character is 'r' to indicate permission to read, the second character is 'w' to indicate 
+                  permission to write, and the third character is 'x' for execute permission. Where a 
+                  permission is not set then the corresponding character is set to '-'. 
+
+               Parameters:
+                  prefix - The prefix string to be used in generating the file's name; must be at least three characters long
+                  suffix - The suffix string to be used in generating the file's name
+                  attrs - An optional list of file attributes to set when creating the file
+               Returns:
+                  An abstract pathname denoting a newly-created empty file
+               Throws:
+                  IllegalArgumentException - if the prefix argument contains fewer than three characters
+                                           - if number of arguments !=2 AND !=3
+                                           - if attrs is given, but is no posixFilePermission
+                  IOException - if file could not be created 
+                  NotInPathException - if mktemp is not in path
+                                     - if chmod is not in path
+               Example:
+                  File.createTemporaryFile xxx .tmp rwxrwxrwx
+                  >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  ll /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  >>>-rwxrwxrwx 1 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  TMPDIR=/
+                  File.createTemporaryFile xxx .tmp
+                  >>>IOException: File could not be created
+            ";;&
+         File.createTemporaryDir|createTemporaryDir|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               File.createTemporaryDir
+                  Creates an empty directory in the default temporary-file directory, using the given prefix and
+                  suffix to generate its name.
+
+                  The attrs parameter is an optional primitive string of attributes to set when creating
+                  the file.
+
+                  When using the attrs parameter the resulting directory may have more restrictive access
+                  permissions than directories created by the createTempDir method.
+                  The attrs parameter is a String representing the permissions. It has 9 characters that
+                  are interpreted as three sets of three. The first set refers to the owner's permissions;
+                  the next to the group permissions and the last to others. Within each set, the first
+                  character is 'r' to indicate permission to read ( view the directory's contents), the second
+                  character is 'w' to indicate permission to write (create new files or delete file(s) in the directory),
+                  and the third character is 'x' for execute permission (user can cd into the directory). Where a
+                  permission is not set then the corresponding character is set to '-'.
+               Parameters:
+                  prefix - The prefix string to be used in generating the file's name; must be at least three characters long
+                  suffix - The suffix string to be used in generating the file's name
+                  attrs - An optional list of file attributes to set when creating the file
+               Returns:
+                  An abstract pathname denoting a newly-created empty directory
+               Throws:
+                  IllegalArgumentException - if the prefix argument contains fewer than three characters
+                                           - if number of arguments !=2 AND !=3
+                                           - if attrs is given, but is no posixFilePermission
+                  IOException - if directory could not be created
+                  NotInPathException - if mktemp is not in path
+                                     - if chmod is not in path
+               Example:
+                  File.createTemporaryDir xxx .tmp rwxrwxrwx
+                  >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  ll /tmp
+                  >>>drwxrwxrwx    2 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  TMPDIR=/
+                  File.createTemporaryDir xxx .tmp
+                  >>>IOException: File could not be created
+            ";;&
+         File.createTempDir|createTempDir|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               File.createTempDir
+                  Creates an empty directory in the default temporary-file directory, using the given prefix
+                  and suffix to generate its name. Invoking this method is equivalent to invoking
+                  createTempFile.
+
+                  The createTemporaryDir method provides an alternative method to create an empty file
+                  in the temporary-file directory. Files created by that method may have more restrictive
+                  access permissions to directories created by this method and so may be more suited to
+                  security-sensitive applications.
+               Parameters:
+                  prefix - The prefix string to be used in generating the directory's name; must be at least
+                  three characters long
+                  suffix - The suffix string to be used in generating the directory's name is optional. If
+                  missing the suffix ".tmp" will be used
+               Returns:
+                  An abstract pathname denoting a newly-created empty directory
+               Throws:
+                  IllegalArgumentException - if number of arguments !=1 AND !=2
+               Example:
+                  File.createTempDir fff
+                  >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
+                  File.createTempDir fff xxx
+                  >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
+            ";;&    
+         *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
+                 System.${printStream}.println "                                  
+                       No help found for $1
+                    "   
+              fi
+              ;;&
+      esac       
+      shift
+   done         
+}
