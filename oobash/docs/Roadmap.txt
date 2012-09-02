@@ -4,7 +4,7 @@
 # -analyze log4oobash.properties
 # -very primitive logging ?
 # -add to File:
-# -http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html#createTempDir%28%29:
+# -http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html:
 # -touch -copy -createSymbolicLink -move -setOwner -deleteRecursively -deleteDirectoryContents
 # -readFirstLine
 

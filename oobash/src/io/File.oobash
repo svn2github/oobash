@@ -1950,28 +1950,30 @@ File.move() {
    declare -i returnValue=0
    local class="$2"
    if (( $# == 2 )); then
+      #  check if file1 exists ?
       local file1="$1"
       local file2="$2"
       # check "a" "b c" !
       for file in "${file1}" "${file2}"; do
-         argclass="$("$argobject".getClass 2>/dev/null)" 
-         if (( $? != 0 )); then
-            if [[ "class File" != "$argclass" ]]; then
-               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)" 
+         argclass="$("${file}".getClass 2>/dev/null)" 
+         if (( $? == 0 )); then
+            if [[ "${argclass}" != "class File" ]]; then
+               __throw "WrongClassException" ": Illegal argument: \"${file}\": $("$file".getClass)" 
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __stackOrHelp "File" "${FUNCNAME}"
                return $returnValue
             fi
          else
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            __throw "IllegalArgumentException" ": Illegal argument: \"${file}\" is no object"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __stackOrHelp "File" "${FUNCNAME}"
             return $returnValue
          fi       
       done       
-      # Does file have to exist ???      
-      mv "$("${file1}".toString)" "$("${file2}".toString)"
-      if (( $? != 0 )); then
+      #  !!!!  mv /tmp/xxx/yes /tmp/ !!!
+      #  check for mv command 
+      mv -fT -- "$("${file1}".toString)" "$("${file2}".toString)" 2>/dev/null
+      if (( $? == 0 )); then
          File "${file1}" "$("${file2}".toString)"
          Boolean.TRUE
       else
@@ -1980,7 +1982,7 @@ File.move() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __stackOrHelp "File" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -3432,6 +3434,25 @@ File.help() {
                   File.createTempDir fff xxx
                   >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
             ";;&    
+         File.move|move|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               File.move
+                  Moves the file from one path to another. This method can rename a file or move it to a 
+                  different directory, like the Unix mv command.
+               Parameters:
+                  from - the source file
+                  to - the destination file 
+               Returns:
+                  Returns true, if the move is successfully, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments !=2
+               Example:
+                  File a /tmp/iExist
+                  File b /tmp/test
+                  File.move a b
+                  >>>true
+            ";;&  
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
