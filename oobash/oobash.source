@@ -18,7 +18,7 @@ if command -v gdate >/dev/null 2>&1; then
    __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
 fi
 SECONDS=0
-__VERSION__="0.39.7"
+__VERSION__="0.39.8"
 __FILENAME__="oobash.source"
 __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
@@ -255,19 +255,22 @@ if [[ -z "$PS1" ]]; then
    __registerVar __SCRIPT__
 fi
 
-# Add oobash man pages to manpath
-__OLDMANPATH__="$MANPATH"
-__registerVar __OLDMANPATH__
-export MANPATH=$MANPATH:"${__OODIR__}"/man
+# check if oobash is already active 
+if ! __isAssocArray __OBJECTPOOL__ ; then
+   # Add oobash man pages to manpath
+   __OLDMANPATH__="$MANPATH"
+   __registerVar __OLDMANPATH__
+   export MANPATH=$MANPATH:"${__OODIR__}"/man
 
-# Add scripts directory to path
-__OLDPATH__="$PATH"
-__registerVar __OLDPATH__
-export PATH=$PATH:"${__OODIR__}"/scripts
+   # Add scripts directory to path
+   __OLDPATH__="$PATH"
+   __registerVar __OLDPATH__
+   export PATH=$PATH:"${__OODIR__}"/scripts
+fi
 
 # used as uniq object identifier 
-declare -i __COUNTER__
-__registerVar __COUNTER__
+declare -i __OBJCOUNTER__
+__registerVar __OBJCOUNTER__
 
 # for bsd systems: if there are any gnu tools, try to use them...
 if command -v gdate >/dev/null 2>&1; then

@@ -47,7 +47,7 @@ String() {
          return $returnValue
       fi
 
-      local pointer=$((__COUNTER__++))
+      local pointer=$((__OBJCOUNTER__++))
 
       local string="$2"
       local class=$FUNCNAME

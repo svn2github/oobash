@@ -1,22 +1,23 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.8
-# -chained return values
 # -analyze log4oobash.properties
 # -very primitive logging ?
+# -add to File:
+# -http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html#createTempDir%28%29:
+# -touch -copy -createSymbolicLink -move -setOwner -deleteRecursively -deleteDirectoryContents
+# -readFirstLine
 
 # 0.39.9
 # -add some System functions
 # -check for gnu ps ?
-# -add to File:
-# -touch -copy -createSymbolicLink -move -setOwner
+# -chained return values
+# -Generators can use arg with path
+# -rename all private functions (to avoid name clashes) ?
 
 # 0.40
-# Assert 
-
-# 0.40.1
-# -colours ?
-# -rename all private functions (to avoid name clashes) ?
+# -class Assert 
+# -colours ? and if yes where and when
 
 # 0.41
 # -Date functions

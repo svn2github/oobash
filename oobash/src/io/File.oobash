@@ -47,7 +47,7 @@ File() {
          return $returnValue
       fi
 
-      local pointer=$((__COUNTER__++))
+      local pointer=$((__OBJCOUNTER__++))
       local pathname="$2"
       local class=${FUNCNAME}
 
@@ -904,7 +904,7 @@ __setLastModified() {
          if command -v date >/dev/null 2>&1; then
             if __gnudateCheck; then
                timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
-               # check if this gnu date is too old to the -d @.... job
+               # check if this gnu date is too old to do the -d @.... job
                if (( $? != 0 )); then
                   # better than a TooOldGnuDateException ;-)
                   Boolean.FALSE
@@ -920,7 +920,7 @@ __setLastModified() {
             __stackOrHelp "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
-         touch -m -t ${timestamp} -- ${file} 2>/dev/null
+         touch -m -t ${timestamp} -- "${file}" 2>/dev/null
          if (( $? == 0 )); then
             Boolean.TRUE
          else
@@ -1255,6 +1255,7 @@ __sha1sum() {
    fi
    return $returnValue
 }
+
 __getInode() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1943,6 +1944,48 @@ File.createTempDir() {
    return $returnValue
 }
 __registerFunction File.createTempDir
+
+File.move() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local file1="$1"
+      local file2="$2"
+      # check "a" "b c" !
+      for file in "${file1}" "${file2}"; do
+         argclass="$("$argobject".getClass 2>/dev/null)" 
+         if (( $? != 0 )); then
+            if [[ "class File" != "$argclass" ]]; then
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)" 
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi       
+      done       
+      # Does file have to exist ???      
+      mv "$("${file1}".toString)" "$("${file2}".toString)"
+      if (( $? != 0 )); then
+         File "${file1}" "$("${file2}".toString)"
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+__registerFunction File.move
+
 
 #################
 #               #

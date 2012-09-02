@@ -96,7 +96,7 @@ $userClass() {
          return \$returnValue
       fi
 
-      local pointer=\$((__COUNTER__++))
+      local pointer=\$((__OBJCOUNTER__++))
 
       local class=\$FUNCNAME
 
