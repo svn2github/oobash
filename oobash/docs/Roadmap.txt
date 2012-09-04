@@ -9,8 +9,6 @@
 # -readFirstLine
 
 - Ssh docs: show links to howto for passwordless login
- 
--repair stacktrace
 
 # 0.39.9
 # -add some System functions
