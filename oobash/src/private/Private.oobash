@@ -791,11 +791,14 @@ __registerFunction __tracebackHeader
 __stacktrace() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   # no __throw and no __stacktrace -> i=2
-   declare -i i=2
+   declare -i i=1
    until [[ "${FUNCNAME[$i]}" = "main" ]]
    do
-      System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line ${BASH_LINENO[$i]}, in ${FUNCNAME[$i+1]}"
+      if (( $i == 1 )); then
+         System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line $((${BASH_LINENO[$i]}-2)), in ${FUNCNAME[$i+1]}"
+      else
+         System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line ${BASH_LINENO[$i]}, in ${FUNCNAME[$i+1]}, calling ${FUNCNAME[$i]}"
+      fi
       ((i++))
    done
    declare -i pid=${BASHPID}
