@@ -8,8 +8,6 @@
 # -touch -copy -createSymbolicLink -move -setOwner -deleteRecursively -deleteDirectoryContents
 # -readFirstLine
 
-- Ssh docs: show links to howto for passwordless login
-
 # 0.39.9
 # -add some System functions
 # -check for gnu ps ?
