@@ -1065,15 +1065,15 @@ __substring() {
          __stackOrHelp "$2" "${FUNCNAME:2}" 
          return $returnValue;;
    esac
-   # catch eg "+" param
-   (declare -i beginIndex=$3) 2>/dev/null
-   if (( $? != 0 )); then
+
+   if ! __isBashInteger "$3"; then
       __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
       returnValue=$?
       __stackOrHelp "$2" "${FUNCNAME:2}" 
       return $returnValue
    fi
    declare -i beginIndex=$3
+
    if (( $beginIndex < 0 )); then
       __throw "IndexOutOfBoundsException" ": String index out of range: $beginIndex"
       returnValue=$?
