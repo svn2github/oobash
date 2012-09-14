@@ -951,7 +951,7 @@ __charAt() {
    declare -i returnValue=0
    if (( $# == 3 )); then
       this="$1"
-         if ! __isBashInteger "$3"; then
+      if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
          __stackOrHelp "$2" "${FUNCNAME:2}" 
