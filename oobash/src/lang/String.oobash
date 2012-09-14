@@ -929,7 +929,7 @@ __indexOf() {
    declare -i newstrlength=${#newstr}
    # Java API:  
    # k >= Math.min(fromIndex, str.length()) && this.startsWith(str, k)
-   # --> looking for empty string '' out of index returns sringlength instead of -1 
+   # --> looking for empty string '' out of index returns stringlength instead of -1 
    if (( $pattern_length == 0 )); then 
       if (( $from <= $("$this".length) )); then
          System.out.println $from
