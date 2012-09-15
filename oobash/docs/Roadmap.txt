@@ -1,12 +1,33 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.8
+
 # -analyze log4oobash.properties
 # -very primitive logging ?
+
 # -add to File:
-# -http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html:
+################
+# -http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html
+# -http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html :
 # -touch -copy -createSymbolicLink -move -setOwner -deleteRecursively -deleteDirectoryContents
 # -readFirstLine
+
+# -add toScript.generator:
+###########################
+# -https://github.com/hemantborole/skeleton/blob/master/starter.sh 
+# -http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options?rq=1
+# for Script.generator: -h / --help defualt ?
+
+# -add to String:
+##################
+# http://stackoverflow.com/questions/2071602/how-to-reverse-string-fromcharcode
+# String.fromCharCode
+# chr.charCodeAt(0);
+
+# -add to Math:
+################
+# https://datacollective.org/sparkblocks/
+# Math.histogram
 
 # 0.39.9
 # -add some System functions
@@ -15,33 +36,53 @@
 # -Generators can use arg with path
 # -rename all private functions (to avoid name clashes) ?
 
-# 0.40
-# -class Assert 
-# -colours ? and if yes where and when
-
-# 0.41
-# -Date functions
-
-# 0.42
-# -url decode/encode
-
-# 0.43
-# -Grouping for Ssh ?
-
-# 0.50
+# 0.4
 # Logging (coproc ?)
+
+# 0.45
+# Visualization package
+
+# 0.46
+# Facade for some GUI libs ?
+
+# 0.47
+# colours ? and if yes where and when
+
+# 0.5
+# class Assert 
 
 # 0.60
 # Use of /dev/tcp and /dev/udp
 # for network sockets
 
 # 0.61
-# Support for Rest
+# Support for JSON
+
+# 0.62
+# Support for HTTP
+
+# 0.63
+# Translation services 
+
+# 0.64
+# Social networks
+
+# 0.65
+# -url decode/encode
+
+# 0.66
+# -Grouping for Ssh ?
+
+# 0.67
+# -sudo decorator for Ssh ?
+
+# 0.68
+# -oobash.onlineUpdate
 
 # 0.70
 # -pimp getopts/or create an alternative ? 
 # -oobash.freeze --> conservation of the status quo
-# -oobash.onlineUpdate
+# -Date functions
 
 # 0.80
 # Facade for some version control systems ?
@@ -53,5 +94,4 @@
 # -xslt with http://xml.apache.org/xalan-j/commandline.html ?
 
 # 1.0
-# Facade for some GUI libs ?
 # HAL 9000 integration
