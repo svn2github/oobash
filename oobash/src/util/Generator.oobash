@@ -471,7 +471,13 @@ Script.generator() {
    if (( $# == 1 )); then
       local scriptname="$1"
       local destination="${__OODIR__}"/scripts/"${scriptname}"
-      System.out.println '#!'$0 > "${destination}"
+      local interpreter
+      if [[ ${0:0:1} == "-" ]]; then
+         interpreter=${SHELL}
+      else
+         interpreter=${0}
+      fi
+      System.out.println '#!'${interpreter} > "${destination}"
       System.out.println "
 source "${__OODIR__}"/oobash.source
 
