@@ -472,7 +472,7 @@ Script.generator() {
       local scriptname="$1"
       local destination="${__OODIR__}"/scripts/"${scriptname}"
       local interpreter
-      if [[ ${0:0:1} == "-" ]]; then
+      if [[ ${0:0:1} != "/" ]]; then
          interpreter=${SHELL}
       else
          interpreter=${0}
@@ -481,11 +481,11 @@ Script.generator() {
       System.out.println "
 source "${__OODIR__}"/oobash.source
 
-# Please complete/customise the pod doc below.
+# Please complete/customise the Plain Old Documentation below.
 
-############
-# POD DOCS #
-############
+###########
+# POD DOC #
+###########
 
 : <<=cut =pod
 =head1 NAME
@@ -498,7 +498,11 @@ $1 [OPTION]
 
 =head1 OPTIONS AND ARGUMENTS
 
-List here all possible options and arguments for $1 
+-h, --help 
+   :display this help and exit
+
+-v, --version
+   :output version information and exit
 
 =head1 DESCRIPTION
 
@@ -534,10 +538,66 @@ The MIT License
 
 usage() {
    if command -v pod2usage >/dev/null 2>&1; then
-      pod2usage -verbose 1 -exit 42 \$0
+      pod2usage -verbose 1 \$0
       System.exit \$?
    fi
 }
+
+version() {
+   if command -v podselect >/dev/null 2>&1; then
+      podselect -section HISTORY \$0
+      System.exit \$?
+   fi
+}
+
+##################
+# OPTION PARSING #
+##################
+
+# Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
+
+# disable the verbose error handling by preceeding the whole option string with a colon (:): 
+optspec=\":hv-:\"
+while getopts \"\$optspec\" optchar
+do
+   case \"\${optchar}\" in
+      -)
+         # long options:
+         case \"\${OPTARG}\" in
+            help)
+               usage
+            ;;
+            version)
+               version
+            ;;
+            *)
+               # Disable error handling by setting OPTERR=0
+               if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
+                  System.err.println
+                  I18n.err.println \"Unknown option --\${OPTARG}\"
+                  System.err.println
+                  usage >&2
+               fi
+            ;;
+         esac;;
+      # short options:
+      h)
+         usage
+      ;;
+      v)
+         version
+      ;;
+      *)
+         # Disable error handling by setting OPTERR=0
+         if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
+            System.err.println
+            I18n.err.println \"Non-option argument: '-\${OPTARG}'\"
+            System.err.println
+            usage >&2
+         fi
+      ;;
+   esac   
+done
 
 ########
 # MAIN #

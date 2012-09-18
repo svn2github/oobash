@@ -12,22 +12,13 @@
 # -touch -copy -createSymbolicLink -move -setOwner -deleteRecursively -deleteDirectoryContents
 # -readFirstLine
 
-# -add toScript.generator:
-###########################
-# -https://github.com/hemantborole/skeleton/blob/master/starter.sh 
-# -http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options?rq=1
-# for Script.generator: -h / --help defualt ?
+# check for bash 4.2 (printf unicode support):
 
 # -add to String:
 ##################
 # http://stackoverflow.com/questions/2071602/how-to-reverse-string-fromcharcode
 # String.fromCharCode
 # chr.charCodeAt(0);
-
-# -add to Math:
-################
-# https://datacollective.org/sparkblocks/
-# Math.histogram
 
 # 0.39.9
 # -add some System functions
@@ -62,7 +53,7 @@
 # Support for HTTP
 
 # 0.63
-# Translation services 
+# Translation services (google...)
 
 # 0.64
 # Social networks
