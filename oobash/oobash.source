@@ -125,7 +125,7 @@ unset signal sig counter unsetAtEnd
 
 # All external commands used in this framework:
 declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill 
-                             renice openssl ssh scp vim diff pod2man pod2usage)
+                             renice openssl ssh scp vim diff pod2man pod2usage podselect)
 
 
 # Arrays for framework methods and inheritance happens here:
