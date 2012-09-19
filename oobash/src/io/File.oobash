@@ -790,6 +790,36 @@ __delete() {
    return $returnValue
 }
 
+__deleteRecursively() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v rm >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
+            rm -rf -- "${file}" 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": rm not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 __createNewFile() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1966,7 +1996,7 @@ File.help() {
       -isNamedPipe -hasStickyBit -isSocket
       -isCharacterSpecial -isBlockSpecial -compareTo
       -setExecutable -setReadable -setWritable
-      -setReadOnly -delete -isAbsolute
+      -setReadOnly -delete -deleteRecursively -isAbsolute
       -getAbsolutePath -getCanonicalPath -getPath  
       -lastModified -setLastModified -getText 
       -setText -append -clear -linematch -linecount
@@ -3117,10 +3147,31 @@ File.help() {
                   true if and only if the file or directory is successfully deleted; false otherwise
                Throws:
                   NotInPathException - if rm is not in path
+                  NotInPathException - if rmdir is not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
                   a.delete
+                  >>>true
+            ";;& 
+         deleteRecursively|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               deleteRecursively
+                  Deletes a file or directory and all contents recursively.
+                  If the file argument is a symbolic link the link will be deleted 
+                  but not the target of the link. If the argument is a directory, 
+                  symbolic links within the directory will not be followed. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file or directory is successfully recursively deleted; false otherwise
+               Throws:
+                  NotInPathException - if rm is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.deleteRecursively
                   >>>true
             ";;& 
          isAbsolute|all)

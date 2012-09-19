@@ -5,21 +5,6 @@
 # -analyze log4oobash.properties
 # -very primitive logging ?
 
-# -add to File:
-################
-# -http://guava-libraries.googlecode.com/svn/tags/release08/javadoc/com/google/common/io/Files.html
-# -http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html :
-# -touch -copy -createSymbolicLink -move -setOwner -deleteRecursively -deleteDirectoryContents
-# -readFirstLine
-
-# check for bash 4.2 (printf unicode support):
-
-# -add to String:
-##################
-# http://stackoverflow.com/questions/2071602/how-to-reverse-string-fromcharcode
-# String.fromCharCode
-
-
 # 0.39.9
 # -add some System functions
 # -check for gnu ps ?

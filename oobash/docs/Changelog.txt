@@ -294,6 +294,7 @@
 #    -Fixes
 # Version:      0.39.8
 #    -added to String: charCodeAt
+#    -added to File: deleteRecursively
 #    -Script.generator now delivers a version() function for the scripts
 #     and uses an idea to parse long options from:
 #     http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options/7680682#7680682
