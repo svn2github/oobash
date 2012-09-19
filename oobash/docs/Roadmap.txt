@@ -18,7 +18,7 @@
 ##################
 # http://stackoverflow.com/questions/2071602/how-to-reverse-string-fromcharcode
 # String.fromCharCode
-# chr.charCodeAt(0);
+
 
 # 0.39.9
 # -add some System functions

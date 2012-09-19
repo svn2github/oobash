@@ -140,7 +140,7 @@ declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__Com
 declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUpperCase isAlnum isAlpha
                               isAscii isDigit isHexDigit isPrintable isSpace isVisible zfill capitalize
                               center swapCase title   toUpperCase toLowerCase length concat trim contains
-                              isEmpty startsWith lastIndexOf indexOf charAt endsWith replaceFirst replaceAll
+                              isEmpty startsWith lastIndexOf indexOf charAt charCodeAt endsWith replaceFirst replaceAll
                               reverse substring equalsIgnoreCase matches rstrip lstrip isTitle compareToIgnoreCase) 
 
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 

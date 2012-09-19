@@ -975,6 +975,36 @@ __charAt() {
    return $returnValue
 }
 
+__charCodeAt() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      else
+         declare -i pos="$3"
+         if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
+            local str="$("$this".toString)"
+            local char=${str:$pos:1}
+            local code=$(printf '%d\n' "'$char")
+            System.out.println $code
+         else
+            __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 __endsWith() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1251,7 +1281,7 @@ String.help() {
       -replaceAll        -replaceFirst  -startsWith        -substring
       -swapCase          -toLowerCase   -toString          -toUpperCase       
       -trim              -title         -zfill             -compareTo
-      -compareToIgnoreCase              -getClass  
+      -compareToIgnoreCase              -getClass          -charCodeAt 
       Constructor: 
       -String
       Constants:
@@ -1360,6 +1390,27 @@ String.help() {
                   String a abc
                   a.charAt 2
                   >>>c
+            ";;&
+         charCodeAt|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               charCodeAt
+                  Returns the char code value at the specified index. An index ranges from
+                  0 to length - 1. The first char value of the sequence is at index 0,
+                  the next at index 1, and so on, as for array indexing.
+               Parameters:
+                  index - the index of the char value (integer)
+               Returns:
+                  the char code value at the specified index of this string. The first char
+                  value is at index 0.
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+                  IndexOutOfBoundsException - if the index argument is negative or not less than the length of this string.
+               Example:
+                  String a abc
+                  a.charCodeAt 2
+                  >>>99
             ";;&
          compareTo|all)
             match=$(Boolean.TRUE)
