@@ -5,12 +5,6 @@
 # -analyze log4oobash.properties
 # -very primitive logging ?
 
-# add to File:
-# -readFirstLine ?
-
-# Script.generator:
-# avoid -version/-help without error
-
 # 0.39.9
 # -add some System functions
 # -check for gnu ps ?
