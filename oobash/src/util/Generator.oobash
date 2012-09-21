@@ -537,17 +537,26 @@ The MIT License
 #############
 
 usage() {
-   if command -v pod2usage >/dev/null 2>&1; then
-      pod2usage -verbose 1 \$0
-      System.exit \$?
+   declare -i exitValue=\$1
+
+   local out
+   if (( \$exitValue == 0 )); then
+      out='>&STDOUT'
+   else
+      out='>&STDERR'
    fi
+
+   if command -v pod2usage >/dev/null 2>&1; then
+      pod2usage -verbose 1 -output \$out \$0
+   fi
+   System.exit \$exitValue
 }
 
 version() {
    if command -v podselect >/dev/null 2>&1; then
       podselect -section HISTORY \$0
-      System.exit \$?
    fi
+   System.exit 0
 }
 
 ##################
@@ -576,7 +585,7 @@ do
                   System.err.println
                   I18n.err.println \"Unknown option --\${OPTARG}\"
                   System.err.println
-                  usage >&2
+                  usage 1
                fi
             ;;
          esac;;
@@ -593,7 +602,7 @@ do
             System.err.println
             I18n.err.println \"Non-option argument: '-\${OPTARG}'\"
             System.err.println
-            usage >&2
+            usage 1
          fi
       ;;
    esac   
