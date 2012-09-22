@@ -275,7 +275,7 @@ __registerVar __OBJCOUNTER__
 # for bsd systems: if there are any gnu tools, try to use them...
 if command -v gdate >/dev/null 2>&1; then
    testtimestamp="$(gdate "+%N" 2>/dev/null)"
-   if [[ "${testtimestamp: -1}" != "N" ]]; then
+   if [[ "${testtimestamp: -1}" != "N" ]] && [[ -n "${testtimestamp}" ]]; then
       date() {
          gdate $@
          return $?
@@ -459,7 +459,7 @@ fi
 ##################################################
 ##################################################
 ##                                              ##
-##     LOGGING (coming in version 0.5)          ## 
+##     LOGGING (coming in version 0.4)          ## 
 ##                                              ##
 ##################################################
 ##################################################
