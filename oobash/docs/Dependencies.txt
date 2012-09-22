@@ -1,26 +1,26 @@
 bc
 chmod
 date/gdate (GNU!)
+diff
+kill
 mkdir
 mktemp
 mv
-readlink/greadlink (GNU!)
-rm
-rmdir
-stat/gstat (GNU!)
-touch
-wc
-sort
-tr
-pwd
-ps
-kill
-renice
 openssl
-ssh
-scp
-vim
-diff
 pod2man
 pod2usage
 podselect
+ps
+pwd
+readlink/greadlink (GNU!)
+renice
+rm
+rmdir
+scp
+sort
+ssh
+stat/gstat (GNU!)
+touch
+tr
+vim
+wc
