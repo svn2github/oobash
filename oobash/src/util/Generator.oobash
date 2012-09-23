@@ -536,7 +536,7 @@ The MIT License
 # FUNCTIONS #
 #############
 
-usage() {
+help() {
    declare -i exitValue=\$1
 
    local out
@@ -574,7 +574,7 @@ do
          # long options:
          case \"\${OPTARG}\" in
             help)
-               usage
+               help
             ;;
             version)
                version
@@ -585,13 +585,13 @@ do
                   System.err.println
                   I18n.err.println \"Unknown option --\${OPTARG}\"
                   System.err.println
-                  usage 1
+                  help 1
                fi
             ;;
          esac;;
       # short options:
       h)
-         usage
+         help
       ;;
       v)
          version
@@ -602,7 +602,7 @@ do
             System.err.println
             I18n.err.println \"Non-option argument: '-\${OPTARG}'\"
             System.err.println
-            usage 1
+            help 1
          fi
       ;;
    esac   
@@ -614,7 +614,7 @@ done
 
 # To avoid accidents: no arguments, then show usage.
 if (( \$# == 0 )); then
-   usage
+   help
 fi
 
 # Now your code...
