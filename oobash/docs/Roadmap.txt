@@ -30,7 +30,13 @@
 # Facade for some GUI libs ?
 
 # 0.47
-# colours ? and if yes where and when
+# tput: terminal info
+
+# 0.48
+# tput: colour management
+
+# 0.49
+# tput: cursor
 
 # 0.5
 # class Assert 
