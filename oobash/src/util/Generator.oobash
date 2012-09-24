@@ -435,7 +435,7 @@ Man.generator() {
          local script="$1"
          local destination=""${__OODIR__}"/man/man1/${script}.1"
          pod2man -r "oobash ${__VERSION__}" -c "OOBASH Script" -d $(date $(__localDateFormat)) \
-                 ""${__OODIR__}"/scripts/${script}" > ""${__OODIR__}"/man/man1/${script}.1"
+                 ""${__OODIR__}"/scripts/${script}" > "${destination}"
       else
          __throw "NotInPathException" ": pod2man not in path"
          return $?
@@ -483,9 +483,9 @@ source "${__OODIR__}"/oobash.source
 
 # Please complete/customise the Plain Old Documentation below.
 
-###########
-# POD DOC #
-###########
+#######
+# POD #
+#######
 
 : <<=cut =pod
 =head1 NAME
@@ -537,26 +537,57 @@ The MIT License
 #############
 
 help() {
-   declare -i exitValue=\$1
-
-   local out
-   if (( \$exitValue == 0 )); then
-      out='>&STDOUT'
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   declare -i exitValue=0
+   if (( \$# <= 1 )); then
+      if (( \$# == 1 )); then
+         if ! __isBashInteger \"\$1\"; then
+            __throw \"IllegalArgumentException\" \": Illegal argument: \"\$1\"\"
+            exitValue=\$?
+            __stack
+            System.exit \$exitValue
+         else
+            exitValue=\$1
+         fi
+      fi
+      if command -v pod2usage >/dev/null 2>&1; then
+         local out
+         if (( \$exitValue == 0 )); then
+            out='>&STDOUT'
+         else
+            out='>&STDERR'
+         fi
+         pod2usage -verbose 1 -output \$out \"\$0\"
+      else
+         __throw \"NotInPathException\" \": pod2usage not in path\"
+         exitValue=\$?
+         __stack
+      fi
    else
-      out='>&STDERR'
+      __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+      returnValue=\$?
+      __stack
    fi
-
-   if command -v pod2usage >/dev/null 2>&1; then
-      pod2usage -verbose 1 -output \$out \$0
-   fi
-   System.exit \$exitValue
+   System.exit \$exitValue || System.exit \$?
 }
 
 version() {
-   if command -v podselect >/dev/null 2>&1; then
-      podselect -section HISTORY \$0
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   declare -i exitValue=0
+   if (( \$# == 0 )); then
+      if command -v podselect >/dev/null 2>&1; then
+         podselect -section HISTORY \"\$0\"
+      else
+         __throw \"NotInPathException\" \": podselect not in path\"
+         exitValue=\$?
+         __stack
+      fi
+   else
+      __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+      exitValue=\$?
+      __stack
    fi
-   System.exit 0
+   System.exit \$exitValue
 }
 
 ##################
