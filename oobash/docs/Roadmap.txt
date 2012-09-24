@@ -2,10 +2,6 @@
 
 # 0.39.8
 
-# I18n.err.println \"Non-option argument: '-\${OPTARG}'\"
-# I18n.err.println \"Unknown option --\${OPTARG}\"
-# --> po/mo files ! 
-
 # -analyze log4oobash.properties
 # -very primitive logging ?
 
