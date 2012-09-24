@@ -774,7 +774,7 @@ __registerFunction __stackOrHelp
 
 
 # private
-# decision: call stacktrace or not
+# decision: call stacktrace or nothing
 # called by:
 # every script function that throws an exception
 __stack() {
