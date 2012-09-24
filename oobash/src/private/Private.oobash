@@ -35,7 +35,8 @@
 # __dependencyCheck() check for external commands (element of __Dependencies__ array) that are used in this framework
 # __gnudateCheck() check for gnu date
 # __gnustatCheck() checks for gnu stat
-# __stackOrHelp() decision: call stacktrace or help
+# __stackOrHelp() decision: call stacktrace or help or nothing
+# __stack() every script function that throws an exception
 # __tracebackHeader() prints the traceback header to stderr
 # __stacktrace() generates stacktrace
 # __isArray() checks if given parameter is an array
@@ -748,7 +749,7 @@ __gnureadlinkCheck() {
 __registerFunction __gnureadlinkCheck
 
 # private
-# decision: call stacktrace or help
+# decision: call stacktrace or help or nothing
 # called by:
 # every funtion that throws an exception
 __stackOrHelp() {
@@ -770,6 +771,20 @@ __stackOrHelp() {
    return 0
 }
 __registerFunction __stackOrHelp
+
+
+# private
+# decision: call stacktrace or not
+# called by:
+# every script function that throws an exception
+__stack() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   if [[ "$(Boolean.parseBoolean ${__STACKTRACE__})" == "$(Boolean.TRUE)" ]]; then
+      __stacktrace
+   fi
+   return 0
+}
+__registerFunction __stack
 
 # private
 # prints or prints not the traceback header to stderr
