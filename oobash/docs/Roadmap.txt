@@ -5,6 +5,9 @@
 # -analyze log4oobash.properties
 # -very primitive logging ?
 
+# __LOGGINGPROPERTIESFILE__='log4oobash.properties'
+# --> Scriptbasename.properties ?
+
 # http://commons.apache.org/lang/api-2.3/org/apache/commons/lang/StringUtils.html
 # -containsOnly(String str, String validChars) 
 # -containsNone(String str, String invalidChars) 
