@@ -565,7 +565,7 @@ help() {
       fi
    else
       __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
-      returnValue=\$?
+      exitValue=\$?
       __stack
    fi
    System.exit \$exitValue || System.exit \$?
@@ -614,7 +614,7 @@ do
                # Disable error handling by setting OPTERR=0
                if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
                   System.err.println
-                  System.err.println \"Unknown option --\${OPTARG}\"
+                  I18n.err.println 'Unknown option: --\${OPTARG}'
                   System.err.println
                   help 1
                fi
@@ -631,7 +631,7 @@ do
          # Disable error handling by setting OPTERR=0
          if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
             System.err.println
-            System.err.println \"Non-option argument: '-\${OPTARG}'\"
+            I18n.err.println 'Non-option argument: -\${OPTARG}'
             System.err.println
             help 1
          fi
