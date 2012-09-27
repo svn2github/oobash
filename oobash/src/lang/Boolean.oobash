@@ -115,7 +115,7 @@ Boolean.parseBoolean() {
    declare -i returnValue=0
    if (( $# == 1 )); then
       declare -l bool="$1"
-      if [[ "${bool}" == $(Boolean.TRUE) ]]; then
+      if [[ "${bool}" == "$(Boolean.TRUE)" ]]; then
          Boolean.TRUE
       else
          Boolean.FALSE
@@ -209,7 +209,7 @@ Boolean.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                Boolean.parseBoolean
-                  Parses the string argument as a boolean. The boolean 
+                  Parses the primitive string argument as a boolean. The boolean 
                   returned represents the value true if the string argument 
                   is not null and is equal, ignoring case, to the string "true".
                Parameters:
