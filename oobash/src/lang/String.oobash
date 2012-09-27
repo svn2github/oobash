@@ -1373,7 +1373,8 @@ String.help() {
       -replaceAll        -replaceFirst  -startsWith        -substring
       -swapCase          -toLowerCase   -toString          -toUpperCase       
       -trim              -title         -zfill             -compareTo
-      -compareToIgnoreCase              -getClass          -charCodeAt 
+      -containsOnly      -containsNone  -indexOfDifference -charCodeAt
+      -compareToIgnoreCase              -getClass          
       Constructor: 
       -String
       Constants:
