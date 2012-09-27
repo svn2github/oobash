@@ -8,9 +8,6 @@
 # __LOGGINGPROPERTIESFILE__='log4oobash.properties'
 # --> Scriptbasename.properties ?
 
-# http://commons.apache.org/lang/api-2.3/org/apache/commons/lang/StringUtils.html
-# -indexOfDifference(String str1, String str2)
-
 # 0.39.9
 # -add some System functions
 # -chained return values

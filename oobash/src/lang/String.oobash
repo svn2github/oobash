@@ -838,6 +838,39 @@ __containsNone() {
    return $returnValue
 }
 
+__indexOfDifference() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local str1="$("$this".toString)"
+      local str2="$3"
+      declare -i maxindex
+      if (( ${#str1} < ${#str2} )); then
+         maxindex=${#str2}
+      else
+         maxindex=${#str1}         
+      fi
+      local char1 char2
+      declare -i index=-1
+      for ((i=0; i < $maxindex; i++))
+      do
+         char1="${str1:i:1}"
+         char2="${str2:i:1}"
+         if [[ "$char1" != "${char2}" ]]; then
+            index=$i
+            break
+         fi
+      done
+      System.out.println $index
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 __matches() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1784,12 +1817,30 @@ String.help() {
                Returns:
                   the index within this string of the first occurrence of the specified substring.
                Throws:
-                  IllegalArgumentException - if the parameter cannot be treated as a number
+                  IllegalArgumentException - if the index parameter cannot be treated as a number
                                            - if number of arguments != 1 AND != 2
                Examples:
                   String a abc
                   a.indexOf a 
                   >>>0
+            ";;&
+         indexOfDifference|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               indexOfDifference
+                  Compares this String with the given primitive string, and returns the index at which the Strings begin to differ.
+               Parameters:
+                  str - the primitive string to compare with.
+               Returns:
+                  the index where str and this String begin to differ; -1 if they are equal
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Examples:
+                  String a ab
+                  a.indexOfDifference abxyz
+                  >>>2
+                  a.indexOfDifference ab
+                  >>>-1
             ";;&
          isAlnum|all)
             match=$(Boolean.TRUE)

@@ -142,7 +142,7 @@ declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUppe
                               center swapCase title   toUpperCase toLowerCase length concat trim contains
                               isEmpty startsWith lastIndexOf indexOf charAt charCodeAt endsWith replaceFirst replaceAll
                               reverse substring equalsIgnoreCase matches rstrip lstrip isTitle compareToIgnoreCase
-                              containsOnly containsNone) 
+                              containsOnly containsNone indexOfDifference) 
 
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
 
@@ -410,7 +410,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -isHexDigit -isTitle -isLowerCase -isSpace -isPrintable -isUpperCase -isVisible -length"
    System.out.println "  -lastIndexOf -matches -replaceAll -replaceFirst -reverse -startsWith -substring -swapCase"
    System.out.println "  -title -toLowerCase -toString -toUpperCase -trim -lstrip -zfill -rstrip -compareTo"
-   System.out.println "  -compareToIgnoreCase -getClass charCodeAt"
+   System.out.println "  -compareToIgnoreCase -getClass -charCodeAt -containsOnly -containsNone -indexOfDifference"
    I18n.out.println " Some String constants:"
    System.out.println "  -String.digits -String.asciiLetters -String.asciiLettersLowerCase"
    System.out.println "  -String.asciiLettersUpperCase -String.hexDigits -String.octDigits"
