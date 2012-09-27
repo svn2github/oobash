@@ -567,7 +567,7 @@ __i18nMessage() {
 __registerFunction __i18nMessage
 
 # private  
-# destroys all objects
+# destroys all objects.
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
@@ -582,8 +582,8 @@ __cleanUpObjectsPool() {
 }
 
 # private  
-# unsets all functions
-# does not need registration. unset action in __cleanUp function
+# unsets all functions.
+# does not need registration. unset action in __cleanUp function.
 # called by:
 # __cleanUp
 __cleanUpFunctions() {
@@ -599,7 +599,7 @@ __cleanUpFunctions() {
 }
 
 # private  
-# unsets all class constructors, class arrays, class help functions, class methods
+# unsets all class constructors, class arrays, class help functions, class methods.
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
@@ -622,7 +622,7 @@ __cleanUpClasses() {
 }
 
 # private  
-# unsets the registered variables
+# unsets the registered variables.
 # does not need registration. unset action in __cleanUp function
 # called by:
 # __cleanUp
