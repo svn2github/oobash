@@ -141,7 +141,8 @@ declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUppe
                               isAscii isDigit isHexDigit isPrintable isSpace isVisible zfill capitalize
                               center swapCase title   toUpperCase toLowerCase length concat trim contains
                               isEmpty startsWith lastIndexOf indexOf charAt charCodeAt endsWith replaceFirst replaceAll
-                              reverse substring equalsIgnoreCase matches rstrip lstrip isTitle compareToIgnoreCase) 
+                              reverse substring equalsIgnoreCase matches rstrip lstrip isTitle compareToIgnoreCase
+                              containsOnly containsNone) 
 
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
 

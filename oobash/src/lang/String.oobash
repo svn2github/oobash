@@ -97,14 +97,16 @@ __compareToIgnoreCase() {
          fi
       fi	
       declare -i i=0
+      local charStr1 charStr2
+      declare -i valueStr1 valueStr2
       for ((i=0; i < $length; i++))
-      do    
-         local charStr2="${str2:i:1}"
-         declare -i valueStr2=$(printf '%d\n' "'$charStr2")
-         local charStr1="${str1:i:1}"
-         declare -i valueStr1=$(printf '%d\n' "'$charStr1")
+      do
+         charStr1="${str1:i:1}"
+         valueStr1=$(printf '%d\n' "'$charStr1")
+         charStr2="${str2:i:1}"
+         valueStr2=$(printf '%d\n' "'$charStr2")
          if (( $valueStr1 != $valueStr2 )); then
-            System.out.println $(($valueStr1-$valueStr2))
+            System.out.println $((valueStr1-valueStr2))
             return $returnValue
          fi		
       done
@@ -218,9 +220,10 @@ __title() {
       # "${str~}" does not work with big sharp s --> let's loop ;-(
       local next="$(Boolean.TRUE)"
       local result=''
+      local char
       for ((i=0; i < ${#output}; i++))
       do
-         local char="${output:i:1}"
+         char="${output:i:1}"
          if [[ "${next}" == "$(Boolean.TRUE)" && "${char}" == "ß" ]]; then
             char="ẞ"
          fi
@@ -392,10 +395,11 @@ __isLowerCase() {
       local str="$("$this".toString)" 
       local cased=$(Boolean.FALSE)
       declare -i i=0
+      local char valueOf
       for ((i=0; i < ${#str}; i++))
       do
-         local char="${str:i:1}"
-         local valueOf=$(printf '%d\n' "'$char")
+         char="${str:i:1}"
+         valueOf=$(printf '%d\n' "'$char")
          case $valueOf in
             # upper case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
             65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|196|214|220|140|192|194|198|199|200|201|202|203|206|207|212|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|350|354|536|538|381|352|344|340|327|313|268|221|366|282|270|356|216|197|336|368|204|210|208|222|7838 )
@@ -423,10 +427,11 @@ __isUpperCase() {
       local str="$("$this".toString)" 
       local cased=$(Boolean.FALSE)
       declare -i i=0
+      local char valueOf
       for ((i=0; i < ${#str}; i++))
       do
-         local char="${str:i:1}"
-         local valueOf=$(printf '%d\n' "'$char")
+         char="${str:i:1}"
+         valueOf=$(printf '%d\n' "'$char")
          case $valueOf in
             # upper case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
             65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|196|214|220|140|192|194|198|199|200|201|202|203|206|207|212|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|350|354|536|538|381|352|344|340|327|313|268|221|366|282|270|356|216|197|336|368|204|210|208|222|7838 )
@@ -578,9 +583,10 @@ __swapCase() {
       local str="$("$this".toString)"
       local swaped=''
       declare -i i=0
+      local char
       for ((i=0; i < ${#str}; i++))
       do
-         local char="${str:i:1}"
+         char="${str:i:1}"
          case $char in
             # small sharp s
             ß)                  
@@ -772,6 +778,58 @@ __contains() {
       else
          Boolean.FALSE
       fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__containsOnly() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local var="$3"
+      local str="$("$this".toString)"
+      local char
+      local bool="$(Boolean.TRUE)"
+      for ((i=0; i < ${#var}; i++))
+      do
+         char="${var:i:1}"
+         if [[ "$str" == "${str/"$char"/}" ]]; then
+            bool="$(Boolean.FALSE)"
+            break
+         fi
+      done
+      Boolean.parseBoolean "$bool"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__containsNone() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local var="$3"
+      local str="$("$this".toString)"
+      local char
+      local bool="$(Boolean.TRUE)"
+      for ((i=0; i < ${#var}; i++))
+      do
+         char="${var:i:1}"
+         if [[ "$str" != "${str/"$char"/}" ]]; then
+            bool="$(Boolean.FALSE)"
+            break
+         fi
+      done
+      Boolean.parseBoolean "$bool"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -1137,9 +1195,10 @@ __reverse() {
       local result=""
       declare -i index=$(($("$this".length)-1))
       declare -i i
+      local char
       for ((i=$index; i >= 0; i--))
       do
-         local char="${str:i:1}"
+         char="${str:i:1}"
          result="$result""$char"
       done
       System.out.println "$result"
@@ -1472,9 +1531,9 @@ String.help() {
                Throws:
                   IllegalArgumentException - if number of arguments != 1
                Example:
-                  String a abc
+                  String x abc
                   x.compareToIgnoreCase abc
-                  >>>-1
+                  >>>0
                   x.compareToIgnoreCase aY
                   >>>-23
                   x.compareToIgnoreCase ay
@@ -1518,6 +1577,44 @@ String.help() {
                   a.contains \" c\"
                   >>>true
                   a.contains \"x\"
+                  >>>false
+            ";;&
+         containsOnly|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               containsOnly
+                  Checks if the String contains only certain characters.
+                  An empty String (\"\") always returns true.
+               Parameters:
+                  validChars - a primitive string of valid chars.
+               Returns:
+                  true if it only contains valid chars, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a \"abc\"
+                  a.containsOnly \"cab\"
+                  >>>true
+                  a.containsOnly \"xab\"
+                  >>>false
+            ";;&
+         containsNone|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               containsNone
+                  Checks that the String does not contain certain characters.
+                  An empty String (\"\") always returns true.
+               Parameters:
+                  invalidChars - a String of invalid chars
+               Returns:
+                  true if it contains none of the invalid chars, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  String a \"abc\"
+                  a.containsNone \"xyz\"
+                  >>>true
+                  a.containsNone \"xya\"
                   >>>false
             ";;&
          count|all)
