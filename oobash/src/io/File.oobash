@@ -77,14 +77,7 @@ __getBase() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local file="$(__basename "$("$this".toString)")"
-      local path="$(__dirname "$("$this".toString)")"
-      # test for hidden file
-      if [[ ! -z "${file%.*}" ]]; then
-         System.out.println "$(__stripPath "${path}"/"${file%.*}")"
-      else
-         System.out.println "$(__stripPath "${path}"/"${file}")"
-      fi 
+      __getFileBase "$("$this".toString)"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?

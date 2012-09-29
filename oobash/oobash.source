@@ -20,7 +20,6 @@ fi
 SECONDS=0
 __VERSION__="0.39.8"
 __FILENAME__="oobash.source"
-__LOGGINGPROPERTIESFILE__='log4oobash.properties'
 __STACKTRACE__="true"
 __HELP__="true"
 
@@ -35,7 +34,6 @@ if [ "${0##*/}" = "${__FILENAME__}" ]; then
    echo $"Sorry, you should: source ${__FILENAME__} and not execute it..."
    unset __FILENAME__
    unset __VERSION__
-   unset __LOGGINGPROPERTIESFILE__
    unset __STACKTRACE__
    unset __HELP__
    unset __STARTTIME__
@@ -52,7 +50,6 @@ if [ $BASH_VERSINFO -lt 4 ]; then
    echo $"Sorry, you need a bash version 4..."
    unset __FILENAME__
    unset __VERSION__
-   unset __LOGGINGPROPERTIESFILE__
    unset __OODIR__
    unset __STACKTRACE__
    unset __HELP__
@@ -467,8 +464,7 @@ fi
 
 # Do we have logging propeties to use ?
 __lookForLoggingPropertiesFile "$(caller)"
-
-if [[ "${__LOGGERPROPS__}" == "$(Boolean.TRUE)" ]]; then
+if (( $? == 0 )); then
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
    __registerVar __LayoutMethods__
 

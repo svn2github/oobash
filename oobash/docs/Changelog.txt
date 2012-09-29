@@ -295,12 +295,15 @@
 # Version:      0.39.8
 #    -added to String: charCodeAt, containsOnly, containsNone, indexOfDifference
 #    -added to File: deleteRecursively
-#    -added private function: __stack
+#    -added private function: __stack, __getLoggingPropertiesFileNameByCaller, __getFileBase
 #    -Script.generator now delivers a version() function for the scripts
 #     and uses an idea to parse long/short options from:
 #     http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options/7680682#7680682
 #    -new dependency: -podselect
 #    -renamed __COUNTER__ to __OBJCOUNTER__ (better naming i think)
+#    -removed global __LOGGINGPROPERTIESFILE__ var and removed log4oobash.properties file:
+#    if logging is active (soon), then eg /tmp/myScript.sh needs a log4-myScript.properties file in /tmp
+#    for an active logging.
 #    -Fixes
 
 #################################################################
