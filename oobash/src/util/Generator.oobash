@@ -347,21 +347,23 @@ ${userClass}.help() {
       System.out.println "${destination}" 
       return 0       
    fi
-   System.err.println
-   I18n.err.println "   Please enter one class name and the attributes"
-   I18n.err.println "   Example:" 
-   I18n.err.println "   Class.generator Person name age city" 
-   I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash' 
-   I18n.err.println "   Person a john 22 london"
-   I18n.err.println "   a.getPersonAge"
-   I18n.err.println "   >>>22" 
-   I18n.err.println "   a.getClass"
-   I18n.err.println "   >>>class Person"
-   I18n.err.println "   a.getPersonName"
-   I18n.err.println "   >>>john"
-   I18n.err.println "   a.getPersonCity"
-   I18n.err.println "   >>>london"
-   System.err.println 
+   if [[ -t 2 ]]; then
+      System.err.println
+      I18n.err.println "   Please enter one class name and the attributes"
+      I18n.err.println "   Example:" 
+      I18n.err.println "   Class.generator Person name age city" 
+      I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash' 
+      I18n.err.println "   Person a john 22 london"
+      I18n.err.println "   a.getPersonAge"
+      I18n.err.println "   >>>22" 
+      I18n.err.println "   a.getClass"
+      I18n.err.println "   >>>class Person"
+      I18n.err.println "   a.getPersonName"
+      I18n.err.println "   >>>john"
+      I18n.err.println "   a.getPersonCity"
+      I18n.err.println "   >>>london"
+      System.err.println
+   fi
    return 1   
 }
 __registerFunction Class.generator
@@ -441,17 +443,19 @@ Man.generator() {
          return $?
       fi
    else
-      System.err.println
-      I18n.err.println "   Please enter one class name or scriptname"
-      I18n.err.println "   Example:" 
-      I18n.err.println "   Class.generator Person name age city" 
-      I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash'
-      I18n.err.println "   Man.generator Person"
-      I18n.err.println "   or"
-      System.err.println "   Script.generator test.sh"
-      System.err.println "   Man.generator test.sh"
-      System.err.println 
-      returnValue=1 
+      if [[ -t 2 ]]; then
+         System.err.println
+         I18n.err.println "   Please enter one class name or scriptname"
+         I18n.err.println "   Example:" 
+         I18n.err.println "   Class.generator Person name age city" 
+         I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash'
+         I18n.err.println "   Man.generator Person"
+         I18n.err.println "   or"
+         System.err.println "   Script.generator test.sh"
+         System.err.println "   Man.generator test.sh"
+         System.err.println 
+      fi
+      returnValue=1
    fi
    if (( $returnValue == 0 )); then
       if command -v gzip >/dev/null 2>&1; then 
@@ -654,11 +658,13 @@ System.exit 0" >> "${destination}"
       chmod 755 "${destination}" 2>/dev/null
       System.out.println "${__OODIR__}/scripts/$1"
    else
-      System.err.println
-      I18n.err.println "   Please enter one scriptname."
-      I18n.err.println "   Example:" 
-      System.err.println "   Script.generator script.sh" 
-      System.err.println 
+      if [[ -t 2 ]]; then
+         System.err.println
+         I18n.err.println "   Please enter one scriptname."
+         I18n.err.println "   Example:" 
+         System.err.println "   Script.generator script.sh" 
+         System.err.println
+      fi
       returnValue=1 
    fi
    return $returnValue
