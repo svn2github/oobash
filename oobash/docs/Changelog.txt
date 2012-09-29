@@ -302,8 +302,8 @@
 #    -new dependency: -podselect
 #    -renamed __COUNTER__ to __OBJCOUNTER__ (better naming i think)
 #    -removed global __LOGGINGPROPERTIESFILE__ var and removed log4oobash.properties file:
-#    if logging is active (soon), then eg /tmp/myScript.sh needs a log4-myScript.properties file in /tmp
-#    for an active logging.
+#    if logging is active in this framework (still not possible), then eg /tmp/myScript.sh needs a log4-myScript.properties 
+#    file in /tmp for an active logging.
 #    -Fixes
 
 #################################################################
