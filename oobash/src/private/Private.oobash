@@ -60,7 +60,7 @@ __lookForLoggingPropertiesFile() {
       local directory="$(__dirname "${call}" 2>/dev/null)"
       local base="$(__getFileBase "${call}" 2>/dev/null)"
       local filebase="$(__basename "${base}")"
-      local logfile= "log4-"${filebase}".properties"
+      local logfile="log4-"${filebase}".properties"
       if [[ -r "${directory}"/"${logfile}" ]]; then
          return 0
       fi
