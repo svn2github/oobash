@@ -304,7 +304,6 @@
 #    -removed global __LOGGINGPROPERTIESFILE__ var and removed log4oobash.properties file:
 #    if logging is active in this framework (still not possible), then eg /tmp/myScript.sh needs a log4-myScript.properties 
 #    file in /tmp for an active logging.
-#    __decoratorCheck moved to Private
 #    -Fixes
 
 #################################################################
