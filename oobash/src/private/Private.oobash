@@ -47,6 +47,7 @@
 # __stripPath() strips double and trailing "/" characters in given path
 # __isBashInteger check for integer input and size of int
 # __localDateFormat returns the local date format (depends on LANG setting)
+# __decoratorCheck function to handle decorators, if there are some 
 
 # private
 # check for log4oobash.properties file in the same directory
@@ -605,7 +606,7 @@ __registerFunction __i18nMessage
 
 # private  
 # destroys all objects.
-# does not need registration. unset action in __cleanUp function
+# does not need registration. unset action in __cleanUp function (Registry)
 # called by:
 # __cleanUp
 __cleanUpObjectsPool() {
@@ -620,7 +621,7 @@ __cleanUpObjectsPool() {
 
 # private  
 # unsets all functions.
-# does not need registration. unset action in __cleanUp function.
+# does not need registration. unset action in __cleanUp function. (Registry)
 # called by:
 # __cleanUp
 __cleanUpFunctions() {
@@ -637,7 +638,7 @@ __cleanUpFunctions() {
 
 # private  
 # unsets all class constructors, class arrays, class help functions, class methods.
-# does not need registration. unset action in __cleanUp function
+# does not need registration. unset action in __cleanUp function (Registry)
 # called by:
 # __cleanUp
 __cleanUpClasses() {
@@ -660,7 +661,7 @@ __cleanUpClasses() {
 
 # private  
 # unsets the registered variables.
-# does not need registration. unset action in __cleanUp function
+# does not need registration. unset action in __cleanUp function (Registry)
 # called by:
 # __cleanUp
 __cleanUpVars() {
@@ -1083,3 +1084,52 @@ __localDateFormat() {
    return 0
 }
 __registerFunction __localDateFormat
+
+# __decoratorCheck function to handle decorators, if there are some 
+
+# private
+# function to handle decorators, if there are some
+# does not need registration. unset action in __cleanUp function (Registry)
+# called by:
+# every function that can be decorated
+__decoratorCheck() {
+   # No use of decorators in interactive shell
+   if [[ "${0##*/}" == "bash" ||  "${0##*/}" == "-bash" ]]; then
+      return 0
+   fi
+
+   local file="$2"
+
+   declare -i returnValue=0
+   declare -i offset=0
+   declare -i line="${BASH_LINENO}"
+
+   # ||: important if you change PWD in script and you start the script with relative path eg ./script.sh
+   2>/dev/null mapfile Arr < "${file}" || mapfile Arr < "${__SCRIPT__}"
+
+   # TODO: look for () is weak...
+   # bottom-up search for function start by looking for "()"
+   while [[ "${Arr[line-offset]}" == "${Arr[line-offset]/"()"/}" ]]
+   do 
+      ((offset++))
+   done   
+   ((offset++))
+
+   # bottom-up search for decorators
+   declare -a lineOffset
+
+   while [[ "${Arr[line-offset]:0:1}" == "@" ]]
+   do
+      lineOffset[$[${#lineOffset[@]}]]=$offset
+      ((offset++))
+   done
+
+   # call all the decorators from top to bottom
+   declare -i i=0
+   for ((i=$((${#lineOffset[@]}-1));i>=0;i--))
+   do
+      eval ${Arr[line-lineOffset[i]]} \$@
+      returnValue=$(($returnValue+$?))
+   done
+   return $returnValue
+}
