@@ -1,59 +1,54 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.39.8
-
-# -analyze log4oobash.properties
-# -very primitive logging ?
-
-# __LOGGINGPROPERTIESFILE__='log4oobash.properties'
-# --> Scriptbasename.properties ?
-
 # 0.39.9
 # -add some System functions
-# -chained return values
-# -Generators can use arg with path
-# -check for gnu ps ?
+# -add some File functions
 # -some more preparations for the 0.4 logging
 
 # 0.4
-# Logging (coproc ?)
+# -Logging (coproc ?)
 
 # 0.41
-# sort all functions and the help cases
+# -sort all functions and the help cases
+# -chained return values
+# -Generators can use arg with path
+# -check for gnu ps ?
+# -Script.generator --> function for properties file ?
 
 # 0.45
-# Visualization package
+# -Visualization package:
+# spinner, progress bar, histogram...
 
 # 0.46
-# Facade for some GUI libs ?
+# -Facade for some GUI libs ?
 
 # 0.47
-# tput: terminal info
+# -tput: terminal info
 
 # 0.48
-# tput: colour management
+# -tput: colour management
 
 # 0.49
-# tput: cursor
+# -tput: cursor
 
 # 0.5
-# class Assert 
+# -class Assert 
 
 # 0.60
-# Use of /dev/tcp and /dev/udp
+# -Use of /dev/tcp and /dev/udp
 # for network sockets
 
 # 0.61
-# Support for JSON
+# -Support for JSON
 
 # 0.62
-# Support for HTTP
+# -Support for HTTP
 
 # 0.63
-# Translation services (google...)
+# -Translation services (google...)
 
 # 0.64
-# Social networks
+# -Social networks
 
 # 0.65
 # -url decode/encode
