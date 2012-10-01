@@ -905,6 +905,8 @@ __registerFunction __isArray
 
 # private
 # checks if given parameter is an associative array
+# called by:
+# oobash.source during sourcetime
 __isAssocArray() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local tmp="$(declare -p "$1" 2>/dev/null)"
