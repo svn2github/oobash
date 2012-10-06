@@ -795,10 +795,10 @@ __containsOnly() {
       local str="$("$this".toString)"
       local char
       local bool="$(Boolean.TRUE)"
-      for ((i=0; i < ${#var}; i++))
+      for ((i=0; i < ${#str}; i++))
       do
-         char="${var:i:1}"
-         if [[ "$str" == "${str/"$char"/}" ]]; then
+         char="${str:i:1}"
+         if [[ "$var" == "${var/"$char"/}" ]]; then
             bool="$(Boolean.FALSE)"
             break
          fi
