@@ -1631,6 +1631,8 @@ String.help() {
                   >>>true
                   a.containsOnly \"xab\"
                   >>>false
+                  a.containsOnly \"$(String.asciiLettersLowerCase)\"
+                  >>>true
             ";;&
          containsNone|all)
             match=$(Boolean.TRUE)
@@ -1650,6 +1652,8 @@ String.help() {
                   >>>true
                   a.containsNone \"xya\"
                   >>>false
+                  a.containsNone \"$(String.octDigits)\"
+                  >>>true
             ";;&
          count|all)
             match=$(Boolean.TRUE)
