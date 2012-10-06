@@ -15,7 +15,7 @@
 @calling() {
    if (( $# != 0 )); then
       local func="$1"
-      shift;shift
+      shift 2
       printf "%s\n" "Calling: ${func} $*" >&2
    fi
    return 0
