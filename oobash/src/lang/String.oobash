@@ -1631,7 +1631,7 @@ String.help() {
                   >>>true
                   a.containsOnly \"xab\"
                   >>>false
-                  a.containsOnly \"$(String.asciiLettersLowerCase)\"
+                  a.containsOnly \"\$(String.asciiLettersLowerCase)\"
                   >>>true
             ";;&
          containsNone|all)
@@ -1652,7 +1652,7 @@ String.help() {
                   >>>true
                   a.containsNone \"xya\"
                   >>>false
-                  a.containsNone \"$(String.octDigits)\"
+                  a.containsNone \"\$(String.octDigits)\"
                   >>>true
             ";;&
          count|all)
