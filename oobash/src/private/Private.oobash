@@ -855,7 +855,14 @@ __stacktrace() {
       ((i++))
    done
    declare -i pid=${BASHPID}
-   shopt -s extglob
+   local unsetAtEnd=$(Boolean.FALSE)
+   # is extglob set ?
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd=$(Boolean.TRUE)
+   fi 
    if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
       declare -i index=0
       declare -a status
@@ -884,7 +891,9 @@ __stacktrace() {
          fi
       fi
    fi
-   shopt -u extglob
+   if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
+      shopt -u extglob
+   fi 
    return $returnValue
 }
 __registerFunction __stacktrace
@@ -1070,6 +1079,7 @@ unset unsetAtEnd
 # Script.generator
 # Class.generator
 __localDateFormat() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local format
    case $LANG in
       en_US*|en_BZ*)
