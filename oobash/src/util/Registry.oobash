@@ -42,6 +42,7 @@ __registerFunction __registerVar
 __cleanUp() {
    export PATH="$__OLDPATH__"
    export MANPATH="$__OLDMANPATH__"
+   export PS4="$__OLDPS4__"
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    __cleanUpObjectsPool
    __cleanUpClasses

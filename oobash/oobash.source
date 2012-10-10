@@ -264,6 +264,10 @@ if ! __isAssocArray __OBJECTPOOL__ ; then
    __OLDPATH__="$PATH"
    __registerVar __OLDPATH__
    export PATH=$PATH:"${__OODIR__}"/scripts
+
+   # Save PS4
+   __OLDPS4__="$PS4"
+   __registerVar __OLDPS4__
 fi
 
 # used as uniq object identifier 
@@ -474,7 +478,8 @@ if (( $? == 0 )); then
    # import log4oobash classes
    __import oobash.log4oobash.Layout
    __import oobash.log4oobash.Level
-   
+   __import oobash.log4oobash.PrivateLogging
+
    # Create loglevel objects 
    Level OFF Infinity "OFF" 0          2>/dev/null
    Level FATAL 50000 "FATAL" 0         2>/dev/null
