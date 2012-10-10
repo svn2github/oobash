@@ -305,6 +305,11 @@
 #    if logging is active in this framework (still not possible), then eg /tmp/myScript.sh needs a log4-myScript.properties 
 #    file in /tmp for an active logging.
 #    -Fixes
+# Version:      0.39.9
+#    -Added PrivateLogging.oobash to log4oobash
+#    -Added to PrivateLogging.oobash: __getLoggingTimestamp, __getFreeFD
+#    -moved __isXTRACEFDAvailable from Private to PrivateLogging
+#    -Fixes
 
 #################################################################
 # Features:
