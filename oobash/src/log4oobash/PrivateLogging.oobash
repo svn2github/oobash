@@ -52,6 +52,7 @@ __registerFunction __isXTRACEFDAvailable
 __getFreeFD() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
+   shopt -q extglob
    if (( $? == 1 )); then
       shopt -s extglob
       unsetAtEnd=$(Boolean.TRUE)
@@ -87,13 +88,13 @@ __getFreeFD() {
             fi
          done
       else
-         return 1
+         returnValue=1
       fi
    fi
 
    # You will recognize this problem much earlier... ;-)
    if (( freeFD == maxFDCount )); then
-      return 1
+      returnValue=1
    fi
 
    if (( $returnValue == 0 )); then
