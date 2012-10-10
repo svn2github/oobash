@@ -307,9 +307,9 @@
 #    -Fixes
 # Version:      0.39.9
 #    -Added PrivateLogging.oobash to log4oobash
-#    -Added to PrivateLogging.oobash: __getLoggingTimestamp, __getFreeFD
+#    -Added to PrivateLogging.oobash: __getLoggingTimestamp, __getFreeFD, __setPS4
 #    -moved __isXTRACEFDAvailable from Private to PrivateLogging
-#    -Fixes
+#    -Fixes and small doc improvements
 
 #################################################################
 # Features:
