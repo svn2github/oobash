@@ -347,7 +347,7 @@ ${userClass}.help() {
       System.out.println "${destination}" 
       return 0       
    fi
-   if [[ -t 2 ]]; then
+   if __isatty STDERR; then
       System.err.println
       I18n.err.println "   Please enter one class name and the attributes"
       I18n.err.println "   Example:" 
@@ -443,7 +443,7 @@ Man.generator() {
          return $?
       fi
    else
-      if [[ -t 2 ]]; then
+      if __isatty STDERR; then
          System.err.println
          I18n.err.println "   Please enter one class name or scriptname"
          I18n.err.println "   Example:" 
@@ -658,7 +658,7 @@ System.exit 0" >> "${destination}"
       chmod 755 "${destination}" 2>/dev/null
       System.out.println "${__OODIR__}/scripts/$1"
    else
-      if [[ -t 2 ]]; then
+      if __isatty STDERR; then
          System.err.println
          I18n.err.println "   Please enter one scriptname."
          I18n.err.println "   Example:" 

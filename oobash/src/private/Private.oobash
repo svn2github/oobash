@@ -44,9 +44,10 @@
 # __isAssocArray() checks if given parameter is an associative array
 # __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
-# __isBashInteger check for integer input and size of int
-# __localDateFormat returns the local date format (depends on LANG setting)
-# __decoratorCheck function to handle decorators, if there are some 
+# __isBashInteger() check for integer input and size of int
+# __localDateFormat() returns the local date format (depends on LANG setting)
+# __decoratorCheck() function to handle decorators, if there are some
+# __isatty() checks whether a given file descriptor refers to a terminal
 
 # private
 # check for log4oobash.properties file in the same directory
@@ -1082,3 +1083,38 @@ __localDateFormat() {
    return 0
 }
 __registerFunction __localDateFormat
+
+
+# private
+# checks whether a given file descriptor refers to a terminal
+# possible arguments: integer of file descriptor or the strings: STDIN, STDOUT, STDERR
+# called by:
+# Class.generator
+# Man.generator
+# Script.generator
+__isatty() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i FD
+   declare -u arg=${1:-STDERR}
+   if __isBashInteger "${arg}"; then
+      FD="${arg}"
+   else
+      case "${arg}" in
+         STDIN)  FD=0
+         ;;
+         STDOUT) FD=1
+         ;;
+         STDERR) FD=2
+         ;;
+         *) return 1
+         ;;
+      esac
+   fi
+   
+   if [[ -t ${FD} ]]; then
+      return 0
+   else
+      return 1
+   fi
+}
+__registerFunction __isatty
