@@ -1084,7 +1084,6 @@ __localDateFormat() {
 }
 __registerFunction __localDateFormat
 
-
 # private
 # checks whether a given file descriptor refers to a terminal
 # possible arguments: integer of file descriptor or the strings: STDIN, STDOUT, STDERR
@@ -1095,7 +1094,7 @@ __registerFunction __localDateFormat
 __isatty() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i FD
-   declare -u arg=${1:-STDERR}
+   declare -u arg="$1"
    if __isBashInteger "${arg}"; then
       FD="${arg}"
    else

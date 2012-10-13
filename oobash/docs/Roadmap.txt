@@ -2,7 +2,14 @@
 
 # 0.39.9
 # -add some System functions
-# -add some File functions
+
+# -add some File functions from: http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html
+-isFileNewer
+-isFileOlder
+-sizeOfDirectory
+-cleanDirectory
+-touch
+
 # -some more preparations for the 0.4 logging
 
 # 0.4
