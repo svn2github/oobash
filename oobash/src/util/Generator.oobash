@@ -375,6 +375,7 @@ Man.generator() {
       local class="$1"
       local destination=""${__OODIR__}"/man/man3/$class.3"
       System.out.println "
+.\\\" The MIT License
 .\\\" Copyright (c) <$(date +%Y 2>/dev/null)> $USER
 .\\\"
 .\\\" Permission is hereby granted, free of charge, to any person obtaining a copy
