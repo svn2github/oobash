@@ -212,8 +212,12 @@ Dependeny: None
 -@timestamp
 Prints to stderr: 
 "Time is  "seconds since 1970-01-01 00:00:00 UTC"."nanoseconds (000000000..999999999)" [seconds.nanoseconds]"
+or if there is no GNU date:
+"Time is "seconds since 1970-01-01 00:00:00 UTC" [seconds]"
 Example output:
 Time is 1335983081.406097069 [seconds.nanoseconds]
+or
+Time is 1350311416 [seconds]
 Returns: 0
 Dependency: GNU date
 
