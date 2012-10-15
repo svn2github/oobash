@@ -8,7 +8,6 @@
 -isFileOlder
 -sizeOfDirectory
 -cleanDirectory
--touch
 
 # -some more preparations for the 0.4 logging
 
