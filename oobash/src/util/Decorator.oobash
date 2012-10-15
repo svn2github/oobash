@@ -24,6 +24,7 @@
 @timestamp() {
    if (( $# != 0 )); then
       # we have date command ?
+      local stamp
       if command -v date >/dev/null 2>&1; then
          local testtimestamp
          testtimestamp="$(date "+%N" 2>/dev/null)"
