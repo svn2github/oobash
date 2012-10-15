@@ -23,14 +23,22 @@
 
 @timestamp() {
    if (( $# != 0 )); then
-      local testtimestamp
-      testtimestamp="$(date "+%N" 2>/dev/null)"
-      # is GNU date and is bc available ?
-      if [[ "${testtimestamp: -1}" != "N" ]]; then
-         printf "%s\n" "Time is $(date "+%s.%N" 2>/dev/null) [seconds.nanoseconds]" >&2
+      # we have date command ?
+      if command -v date >/dev/null 2>&1; then
+         local testtimestamp
+         testtimestamp="$(date "+%N" 2>/dev/null)"
+         # is GNU date available ?
+         if [[ "${testtimestamp: -1}" != "N" ]]; then
+            stamp=$(date "+%s.%N" 2>/dev/null)
+            printf "%s\n" "Time is "${stamp}" [seconds.nanoseconds]" >&2
+         else
+            stamp=$(date "+%s" 2>/dev/null)
+            printf "%s\n" "Time is "${stamp}" [seconds]" >&2
+         fi
       else
-         printf "%s\n" "Time is $(date "+%s" 2>/dev/null) [seconds]" >&2
-      fi
+         stamp=0
+         printf "%s\n" "Time is "${stamp}" [seconds]" >&2
+      fi       
    fi
    return 0
 }
