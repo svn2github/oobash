@@ -310,7 +310,7 @@
 #    -Added to PrivateLogging.oobash: __getLoggingTimestamp, __getFreeFD, __setPS4
 #    -moved __isXTRACEFDAvailable from Private to PrivateLogging
 #    -Added to Private: __isatty
-#    -Fixes and small doc improvements
+#    -Fixes and small improvements
 
 #################################################################
 # Features:

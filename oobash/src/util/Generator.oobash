@@ -371,9 +371,30 @@ __registerFunction Class.generator
 Man.generator() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
+   local base="$1"
+   local type
    if (( $# == 1 )) && [[ ! -z $($1.help 2>/dev/null) ]]; then
-      local class="$1"
-      local destination=""${__OODIR__}"/man/man3/$class.3"
+      local destination=""${__OODIR__}"/man/man3/$base.3"
+      local type="classpage"
+   elif (( $# == 1 )) && [[ -r ""${__OODIR__}"/scripts/$1" ]]; then
+      local destination=""${__OODIR__}"/man/man1/${base}.1"
+      local type="scriptpage"
+   else
+      if __isatty STDERR; then
+         System.err.println
+         I18n.err.println "   Please enter one class name or scriptname"
+         I18n.err.println "   Example:"
+         I18n.err.println "   Class.generator Person name age city"
+         I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash'
+         I18n.err.println "   Man.generator Person"
+         I18n.err.println "   or"
+         System.err.println "   Script.generator test.sh"
+         System.err.println "   Man.generator test.sh"
+         System.err.println
+      fi
+      return 1
+   fi
+
       System.out.println "
 .\\\" The MIT License
 .\\\" Copyright (c) <$(date +%Y 2>/dev/null)> $USER
@@ -397,69 +418,58 @@ Man.generator() {
 .\\\" THE SOFTWARE.
       " > "${destination}"
 
-      System.out.print ".TH oobash 3" >>"${destination}"
-      System.out.print " \"$(date "+%d %b %Y" 2>/dev/null)\" bash4-Environment Framework Manuals" >> "${destination}"
-      System.out.print " \""${__FILENAME__}"\"" >> "${destination}"
-      System.out.println >> "${destination}"
-      System.out.println ".SH NAME" >> "${destination}"
-      for line in $($class.help)
-      do
-         if [[ "$line" =~ ^.*-.*$ ]]; then
-            for funcname in $line
-            do 
-               System.out.print "${funcname//-/} " >> "${destination}"
-            done
-         fi
-      done
-      System.out.println >>"${destination}"
-      System.out.println ".SH DESCRIPTION" >> "${destination}"
-      System.out.println "The ${class}.oobash file is part of the oobash framework." >> "${destination}"
-      System.out.println ".SH EXAMPLES" >> "${destination}"
-
-      local empty
-      "${class}".help all | while IFS='' read -r line
-      do                                                        
-         if [[ "${line}" == "" ]]; then
-            empty="true"
-            System.out.println "" >> "${destination}"
-         else
-            if [[ "${empty}" == "true" ]]; then
-               System.out.println ".B" >> "${destination}"           
+   case "${type}" in
+      classpage)
+         System.out.print ".TH oobash 3" >>"${destination}"
+         System.out.print " \"$(date "+%d %b %Y" 2>/dev/null)\" bash4-Environment Framework Manuals" >> "${destination}"
+         System.out.print " \""${__FILENAME__}"\"" >> "${destination}"
+         System.out.println >> "${destination}"
+         System.out.println ".SH NAME" >> "${destination}"
+         for line in $($base.help)
+         do
+            if [[ "$line" =~ ^.*-.*$ ]]; then
+               for funcname in $line
+               do
+                  System.out.print "${funcname//-/} " >> "${destination}"
+               done
             fi
-            System.out.println "${line}" >> "${destination}"
-            empty="false"
-         fi        
-      done
+         done
+         System.out.println >>"${destination}"
+         System.out.println ".SH DESCRIPTION" >> "${destination}"
+         System.out.println "The ${base}.oobash file is part of the oobash framework." >> "${destination}"
+         System.out.println ".SH EXAMPLES" >> "${destination}"
 
-      System.out.println ".SH AUTHOR">>"${destination}"
-      System.out.println "$USER" >> "${destination}"
-   elif (( $# != 0 )) && [[ -r ""${__OODIR__}"/scripts/$1" ]]; then
-      if command -v pod2man  >/dev/null 2>&1; then
-         local script="$1"
-         local destination=""${__OODIR__}"/man/man1/${script}.1"
-         pod2man -r "oobash ${__VERSION__}" -c "OOBASH Script" -d $(date $(__localDateFormat)) \
-                 ""${__OODIR__}"/scripts/${script}" > "${destination}"
-      else
-         __throw "NotInPathException" ": pod2man not in path"
-         return $?
-      fi
-   else
-      if __isatty STDERR; then
-         System.err.println
-         I18n.err.println "   Please enter one class name or scriptname"
-         I18n.err.println "   Example:" 
-         I18n.err.println "   Class.generator Person name age city" 
-         I18n.err.println '   source ${__OODIR__}/src/myClassFiles/Person.oobash'
-         I18n.err.println "   Man.generator Person"
-         I18n.err.println "   or"
-         System.err.println "   Script.generator test.sh"
-         System.err.println "   Man.generator test.sh"
-         System.err.println 
-      fi
-      returnValue=1
-   fi
+         local empty
+         "${base}".help all | while IFS='' read -r line
+         do
+            if [[ "${line}" == "" ]]; then
+               empty="true"
+               System.out.println "" >> "${destination}"
+            else
+               if [[ "${empty}" == "true" ]]; then
+                  System.out.println ".B" >> "${destination}"
+               fi
+               System.out.println "${line}" >> "${destination}"
+               empty="false"
+            fi
+         done
+
+         System.out.println ".SH AUTHOR">>"${destination}"
+         System.out.println "$USER" >> "${destination}"
+      ;;
+      scriptpage)
+         if command -v pod2man  >/dev/null 2>&1; then
+            pod2man -r "oobash ${__VERSION__}" -c "OOBASH Script" -d $(date $(__localDateFormat)) \
+                  ""${__OODIR__}"/scripts/${base}" >> "${destination}"
+         else
+            __throw "NotInPathException" ": pod2man not in path"
+            return $?
+         fi
+      ;;
+   esac
+
    if (( $returnValue == 0 )); then
-      if command -v gzip >/dev/null 2>&1; then 
+      if command -v gzip >/dev/null 2>&1; then
          gzip -f "${destination}"
          System.out.println "${destination}.gz"
       else
