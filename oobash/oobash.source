@@ -150,7 +150,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute fileLength getName isDir
                             getText append clear linecount linematch sha1sum md5sum getTotalSpace getFreeSpace 
                             getUsableSpace getInode getBase getExtension getPosixFilePermissions setPosixFilePermissions
                             getLine delLine replaceLine insertAfterLine insertBeforeLine indexOfExtension getOwner 
-                            getGroup indexOfLastSeparator deleteRecursively)
+                            getGroup indexOfLastSeparator deleteRecursively lastChanged lastAccessed setLastAccessed)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
@@ -469,6 +469,7 @@ fi
 # Do we have logging propeties to use ?
 __lookForLoggingPropertiesFile "$(caller)"
 if (( $? == 0 )); then
+
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
    __registerVar __LayoutMethods__
 
@@ -489,6 +490,32 @@ if (( $? == 0 )); then
    Level DEBUG 10000 "DEBUG" 7         2>/dev/null
    Level TRACE 5000 "TRACE"  7         2>/dev/null
    Level ALL -Infinity "ALL"  7        2>/dev/null
+
+
+   ###############################
+   # DEFAULT CONFIG FOR LOGGING" #
+   ###############################
+
+   #=============================
+   # Property: LOG_DATE_PATTERN
+   #=============================
+   if __gnudateCheck; then
+      LOG_DATE_PATTERN="%b %e, %Y %T.%N"
+   else
+      LOG_DATE_PATTERN="%b %e, %Y %r"
+   fi
+
+   #=============================
+   # Property: LOG_LEVEL
+   # ============================
+   LOG_LEVEL=INFO
+
+   #=============================
+   # Property: LOG_LAYOUT
+   #=============================
+   LOG_LAYOUT=SimpleLayout
+
+   
 fi
 
 return 0

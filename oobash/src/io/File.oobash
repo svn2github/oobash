@@ -962,6 +962,185 @@ __setLastModified() {
    return $returnValue
 }
 
+__lastAccessed() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v stat >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         local result
+         if __gnustatCheck; then
+            result=$(stat -L -c  "+%X" -- "${file}" 2>/dev/null)
+            if (( $? == 0 )); then
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
+            else
+               System.out.println "0"
+            fi
+         else
+            result=$(stat -L -f '%a' -t '+%X' -- "${file}" 2>/dev/null)
+            if (( $? == 0 )); then
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
+            else
+               System.out.println "0"
+            fi
+         fi
+      else
+         __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setLastAccessed() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      if command -v touch >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         if ! __isBashInteger "$3"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i milliSeconds="$3"
+         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+            declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
+            declare -i epochSeconds=${milliSeconds:0:secondsLength}
+         else
+            declare -i epochSeconds=0
+         fi
+         local timestamp
+         if command -v date >/dev/null 2>&1; then
+            if __gnudateCheck; then
+               timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
+               # check if this gnu date is too old to do the -d @.... job
+               if (( $? != 0 )); then
+                  # better than a TooOldGnuDateException ;-)
+                  Boolean.FALSE
+                  return $returnValue
+               fi
+            else
+               # bsd date
+               timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
+            fi
+         else
+            __throw "NotInPathException" ": date not in path"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         touch -a -t ${timestamp} -- "${file}" 2>/dev/null
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__lastChanged() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v stat >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         local result
+         if __gnustatCheck; then
+            result=$(stat -L -c  "+%Z" -- "${file}" 2>/dev/null)
+            if (( $? == 0 )); then
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
+            else
+               System.out.println "0"
+            fi
+         else
+            result=$(stat -L -f '%m' -t '+%Z' -- "${file}" 2>/dev/null)
+            if (( $? == 0 )); then
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
+            else
+               System.out.println "0"
+            fi
+         fi
+      else
+         __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 __setReadOnly() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1999,6 +2178,7 @@ File.help() {
       -getLine -replaceLine -delLine -createNewFile
       -insertAfterLine -insertBeforeLine -indexOfExtension
       -indexOfLastSeparator -getUser -getGroup
+      -lastChanged -lastAccessed -setLastAccessed
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile
@@ -3094,7 +3274,7 @@ File.help() {
                   since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if 
                   an I/O error occurs
                Throws:
-                  NotInPathException - if GNU stat is not in path
+                  NotInPathException - if stat is not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   File a /tmp/abc
@@ -3119,7 +3299,7 @@ File.help() {
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
                                            - if number of arguments != 3
-                  NotInPathException - if GNU date is not in path
+                  NotInPathException - if date is not in path
                                      - if touch is not in path
                Example:
                   File a /tmp/abc
@@ -3127,7 +3307,72 @@ File.help() {
                   >>>true
                   a.lastModified
                   >>>1297000
-            ";;& 
+            ";;&
+         lastAccessed|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               lastAccessed
+                  Returns the time that the file denoted by this abstract pathname was last accessed.
+               Parameters:
+                  None
+               Returns:
+                  A long value representing the time the file was last accessed, measured in milliseconds
+                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
+                  an I/O error occurs
+               Throws:
+                  NotInPathException - if stat is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.lastAccessed
+                  >>>1297000
+            ";;&
+         setLastAccessed|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setLastAccessed
+                  Sets the last-accessed time of the file or directory named by this abstract pathname.
+                  All platforms support file-access times to the nearest second, but some provide
+                  more precision. The argument will be truncated to fit the supported precision. If the
+                  operation succeeds and no intervening operations on the file take place, then the next
+                  invocation of the lastAccessed method will return the (possibly truncated) time
+                  argument that was passed to this method.
+               Parameters:
+                  time - The new last-accessed time, measured in milliseconds since the
+                  epoch (00:00:00 GMT, January 1, 1970)
+               Returns:
+                  true if and only if the operation succeeded; false otherwise
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 3
+                  NotInPathException - if date is not in path
+                                     - if touch is not in path
+               Example:
+                  File a /tmp/abc
+                  a.setLastAccessed 1297632
+                  >>>true
+                  a.lastAccessed
+                  >>>1297000
+            ";;&
+         lastChanged|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               lastChanged
+                  Returns the time that the file denoted by this abstract pathname was last cahnged.
+               Parameters:
+                  None
+               Returns:
+                  A long value representing the time the file was last changed, measured in milliseconds
+                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
+                  an I/O error occurs
+               Throws:
+                  NotInPathException - if stat is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.lastChanged
+                  >>>1297000
+            ";;&
          delete|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "         
