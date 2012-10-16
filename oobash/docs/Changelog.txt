@@ -306,8 +306,8 @@
 #    file in /tmp for an active logging.
 #    -Fixes
 # Version:      0.39.9
-#    -Added PrivateLogging.oobash to log4oobash package
-#    -Added to PrivateLogging.oobash: __getLoggingTimestamp, __getFreeFD, __setPS4
+#    -Added file PrivateLogging.oobash to log4oobash package
+#    -Added to PrivateLogging: __getLoggingTimestamp, __getFreeFD, __setPS4
 #    -Added to Private: __isatty
 #    -Added to File: lastChanged, lastAccessed, setLastAccessed
 #    -moved __isXTRACEFDAvailable from Private to PrivateLogging
