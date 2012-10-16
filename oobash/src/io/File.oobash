@@ -1109,7 +1109,7 @@ __lastChanged() {
                System.out.println "0"
             fi
          else
-            result=$(stat -L -f '%m' -t '+%Z' -- "${file}" 2>/dev/null)
+            result=$(stat -L -f '%c' -t '+%Z' -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
                if [[ ${result:0:1} == "+" ]]; then
                   if (( ${result} != 0 )); then
