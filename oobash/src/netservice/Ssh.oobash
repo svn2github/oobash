@@ -63,13 +63,13 @@ Ssh() {
             __throw "AuthException" ": no passwordless authentication possible with SshHost '${name}' and user '${user}' on port '${port}' "
             returnValue=$?
             __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
-            return $returnValue 
+            return $returnValue
          fi
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
          __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
-         return $returnValue 
+         return $returnValue
       fi
  
       local pointer=$((__OBJCOUNTER__++))
@@ -689,7 +689,7 @@ Ssh.help() {
                   If shell is interactive and the given command fails,
                   then this method tries the same command again, but
                   uses pseudo-tty allocation.
-                  Remote stderr is reditrected to /dev/null, if shell is not interactive.
+                  Stderr is reditrected to /dev/null, if shell is not interactive.
                Parameters:
                   command
                Returns:
@@ -706,7 +706,7 @@ Ssh.help() {
             System.${printStream}.println "
                copy
                   Copies file or directory from this Ssh object to another.
-                  All remote errors are redirected to /dev/null.
+                  All errors are redirected to /dev/null.
                Parameters:
                   File or directory
                   Destination Ssh object
@@ -785,7 +785,7 @@ Ssh.help() {
                   grep searches the given file (or recursive all files of the given directory)
                   for lines containing a match to the given pattern. By default, grep prints 
                   the matching lines.
-                  Remote stderr is not redirected.
+                  Stderr is not redirected.
                Parameters:
                   grepPattern
                   file
@@ -811,7 +811,7 @@ Ssh.help() {
                   for lines containing a match to the given pattern. By default, grepIgnoreCase prints
                   the matching lines.
                   This method ignores case distinctions in the grepPattern.
-                  Remote stderr is not redirected.
+                  Stderr is not redirected.
                Parameters:
                   grepPattern
                   file
@@ -836,7 +836,7 @@ Ssh.help() {
                   grepInvertMatch searches the given file (or recursive all files of the given directory)
                   for non-matching lines to the given pattern. By default, grepInvertMatch prints 
                   the non-matching lines.
-                  Remote stderr is not redirected.
+                  Stderr is not redirected.
                Parameters:
                   grepPattern
                   file
@@ -856,7 +856,7 @@ Ssh.help() {
                diffFile
                   if the first [ optional: and 3rd argument] defines a regular file, then
                   the output is a diff of the two files.
-                  Remote stderr is not redirected.
+                  Stderr is not redirected.
                Parameters:
                   primititve file on this Ssh object
                   Ssh object
@@ -878,7 +878,7 @@ Ssh.help() {
             System.${printStream}.println "
                diffFiletree
                   Compares the filetrees and returns the difference.
-                  Remote stderr is not redirected.
+                  Stderr is not redirected.
                Parameters:
                   directory on this Ssh object
                   Ssh object
