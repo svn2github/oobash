@@ -22,23 +22,25 @@
 # private
 # returns a timestamp for logevent
 # called by:
-__getLoggingTimestamp() {
-   if command -v date 2>&1 1>/dev/null; then
-      local default="%b %e, %Y %r"
-      local datePattern="${1:-$default}"
-      date "+${datePattern}"
-   else
+   # overwrite __getLoggingTimestamp if no date command available
+if command -v date 2>&1 1>/dev/null; then
+   __getLoggingTimestamp() {
+      date "+${LOG_DATE_PATTERN}"
+      return 0
+   }
+else
+   __getLoggingTimestamp() {
       System.out.println "$SECONDS sec"
-   fi
-   return 0
-}
+      return 0
+   }
+fi
+
 __registerFunction __getLoggingTimestamp
 
 # private
 # checks if BASH_XTRACEFD is available with this bash version
 # called by:
 __isXTRACEFDAvailable() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    if (( ${BASH_VERSINFO[1]} != 0 )); then
       return 0
    else
@@ -51,7 +53,6 @@ __registerFunction __isXTRACEFDAvailable
 # tries to return a free file descriptor
 # called by:
 __getFreeFD() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    shopt -q extglob
    if (( $? == 1 )); then
@@ -117,3 +118,4 @@ __setPS4() {
    return 0
 }
 __registerFunction __setPS4
+   

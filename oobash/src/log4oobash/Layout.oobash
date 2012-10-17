@@ -21,7 +21,6 @@
 #####################
 
 __getContentType() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
@@ -40,7 +39,6 @@ __getContentType() {
 __registerFunction __getContentType
 
 __getHeader() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 4 )); then
       local class="$2"
@@ -81,7 +79,6 @@ Log session start time '"$(date)"'<br>
 __registerFunction __getHeader
    
 __getFooter() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local class="$2"
