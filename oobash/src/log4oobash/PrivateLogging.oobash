@@ -14,15 +14,14 @@
 ###############################
 
 # Index of content:
-# __getLoggingTimestamp() returns a timestamp for logevent
+# __getLoggingTimestamp() returns a timestamp
 # __isXTRACEFDAvailable() checks if BASH_XTRACEFD is available with this bash version
 # __getFreeFD() tries to return a free file descriptor
 # __setPS4() sets PS4 prompt for a better prefix during tracing output
 
 # private
-# returns a timestamp for logevent
+# returns a timestamp (for a logevent)
 # called by:
-   # overwrite __getLoggingTimestamp if no date command available
 if command -v date 2>&1 1>/dev/null; then
    __getLoggingTimestamp() {
       date "+${LOG_DATE_PATTERN}"
