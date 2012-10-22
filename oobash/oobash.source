@@ -179,7 +179,7 @@ __registerFunction __registerFunction
 # ################
 __import() {
    local packageOrClass="${1/"oobash."/}"
-   source ${__OODIR__}/src/${packageOrClass//"."/"/"}.oobash
+   source "${__OODIR__}"/src/${packageOrClass//"."/"/"}.oobash
    return 0
 }
 __registerFunction __import
@@ -229,9 +229,18 @@ __registerVar TEXTDOMAIN
 if [[ ! -z "${__QUIET__}" ]]; then
    __registerVar __QUIET__
 fi
+if [[ ! -z "${__AUTHOR__}" ]]; then
+   __registerVar __AUTHOR__
+fi
+if [[ ! -z "${__EMAIL__}" ]]; then
+   __registerVar __EMAIL__
+fi
+if [[ ! -z "${__COMPANY__}" ]]; then
+   __registerVar __COMPANY__
+fi
 
 # source all your class files
-for class in ${__OODIR__}/src/myClassFiles/*.oobash
+for class in "${__OODIR__}"/src/myClassFiles/*.oobash
 do
    source ${class} 2>/dev/null
 done
