@@ -47,7 +47,9 @@
 # __isBashInteger() check for integer input and size of int
 # __localDateFormat() returns the local date format (depends on LANG setting)
 # __decoratorCheck() function to handle decorators, if there are some
-# __isatty() checks whether a given file descriptor refers to a terminal
+# __isatty() checks if a given file descriptor refers to a terminal
+# __terminalSupportsColours() asks local terminal database if this terminal supports colours
+
 
 # private
 # check for log4oobash.properties file in the same directory
@@ -1085,7 +1087,7 @@ __localDateFormat() {
 __registerFunction __localDateFormat
 
 # private
-# checks whether a given file descriptor refers to a terminal
+# checks if a given file descriptor refers to a terminal
 # possible arguments: integer of file descriptor or the strings: STDIN, STDOUT, STDERR
 # called by:
 # Class.generator
@@ -1117,3 +1119,19 @@ __isatty() {
    fi
 }
 __registerFunction __isatty
+
+# private 
+# asks local terminal database if this terminal supports colours
+# called by:
+__terminalSupportsColours() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=1
+   if command -v tput >/dev/null 2>&1; then
+      declare -i numberOfcolors=$(tput colors)
+      if (( $numberOfcolors >= 8 )); then
+         returnValue=0
+      fi
+   fi
+   return $returnValue
+}
+__registerFunction __terminalSupportsColours
