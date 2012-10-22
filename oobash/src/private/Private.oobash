@@ -1127,7 +1127,7 @@ __terminalSupportsColours() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=1
    if command -v tput >/dev/null 2>&1; then
-      declare -i numberOfcolors=$(tput colors)
+      declare -i numberOfcolors=$(tput colors 2>/dev/null)
       if (( $numberOfcolors >= 8 )); then
          returnValue=0
       fi
