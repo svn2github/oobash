@@ -40,14 +40,24 @@ __registerFunction __registerVar
 # public  
 # cleans the environment
 __cleanUp() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    export PATH="$__OLDPATH__"
    export MANPATH="$__OLDMANPATH__"
    export PS4="$__OLDPS4__"
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+
+   local var
+   for var in __QUIET__ __AUTHOR__ __EMAIL__ __COMPANY__
+   do
+      if $(declare -p ${var} 2>/dev/null 1>&2); then  
+         unset ${var}
+      fi
+   done
+
    __cleanUpObjectsPool
    __cleanUpClasses
    __cleanUpFunctions
    __cleanUpVars
+
    unset __Registry__
    unset -f __cleanUpObjectsPool
    unset -f __cleanUpClasses

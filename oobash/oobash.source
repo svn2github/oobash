@@ -226,18 +226,6 @@ __registerVar __HELP__
 __registerVar __STARTTIME__
 __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
-if [[ ! -z "${__QUIET__}" ]]; then
-   __registerVar __QUIET__
-fi
-if [[ ! -z "${__AUTHOR__}" ]]; then
-   __registerVar __AUTHOR__
-fi
-if [[ ! -z "${__EMAIL__}" ]]; then
-   __registerVar __EMAIL__
-fi
-if [[ ! -z "${__COMPANY__}" ]]; then
-   __registerVar __COMPANY__
-fi
 
 # source all your class files
 for class in "${__OODIR__}"/src/myClassFiles/*.oobash
