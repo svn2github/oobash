@@ -112,7 +112,7 @@ I18n.help() {
             I18n.out.println
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message and then terminates 
-               to stdout.
+               to stdout. If you use bash variables in the message you have to use single quotation marks.
             Parameters:
                x - The message to be translated and printed.
             Throws:
@@ -124,7 +124,7 @@ I18n.help() {
             I18n.err.println
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message and then terminates
-               to stderr.
+               to stderr. If you use bash variables in the message you have to use single quotation marks.
             Parameters:
                x - The message to be translated and printed.
             Throws:
@@ -136,6 +136,7 @@ I18n.help() {
             I18n.out.print
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message to stdout.
+               If you use bash variables in the message you have to use single quotation marks.
             Parameters:
                x - The message to be translated and printed.
             Throws:
@@ -147,6 +148,7 @@ I18n.help() {
             I18n.err.print
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message to stderr.
+               If you use bash variables in the message you have to use single quotation marks.
             Parameters:
                x - The message to be translated and printed.
             Throws:
