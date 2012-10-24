@@ -311,6 +311,10 @@
 #    -Added to Private: __isatty, __terminalSupportsColours
 #    -Added to File: lastChanged, lastAccessed, setLastAccessed
 #    -moved __isXTRACEFDAvailable from Private to PrivateLogging
+#    -new Array __OptionalVars__: optional varaibles, at the moment:
+#     __QUIET__ __AUTHOR__ __EMAIL__ __COMPANY__
+#    -All generators try to use the following optional variables, if you set them:
+#    __AUTHOR__ __COMPANY__ __EMAIL__
 #    -Fixes and small improvements
 
 #################################################################

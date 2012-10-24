@@ -45,11 +45,10 @@ __cleanUp() {
    export MANPATH="$__OLDMANPATH__"
    export PS4="$__OLDPS4__"
 
-   # TODO: array with all the optional variables in oobash.source
    local var
-   for var in __QUIET__ __AUTHOR__ __EMAIL__ __COMPANY__
+   for var in ${__OptionalVars__[@]}
    do
-      if $(declare -p ${var} 2>/dev/null 1>&2); then  
+      if $(declare -p ${var} 2>/dev/null 1>&2); then
          unset ${var}
       fi
    done

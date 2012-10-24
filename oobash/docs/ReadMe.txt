@@ -77,6 +77,11 @@ Only private functions and decorators make use of a 0/1 return value to represen
 E) Own class files and manpages and scripts
 ############################################
 
+All generators try to use the following optional variables, if you set them:
+__AUTHOR__
+__COMPANY__
+__EMAIL__
+
 a) Create own class files
 --------------------------
 

@@ -124,6 +124,8 @@ unset signal sig counter unsetAtEnd
 declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch wc sort tr pwd ps kill 
                              renice openssl ssh scp vim diff pod2man pod2usage podselect)
 
+# All optional variables
+declare -a __OptionalVars__=(__QUIET__ __AUTHOR__ __EMAIL__ __COMPANY__)
 
 # Arrays for framework methods and inheritance happens here:
 declare -a __ObjectMethods__=(getClass toString hashCode equals)
@@ -217,6 +219,7 @@ __registerVar __ComparableMethods__
 __registerVar __Dependencies__
 __registerVar __ExceptionValues__
 __registerVar __Signals__
+__registerVar __OptionalVars__
 __registerVar __VERSION__
 __registerVar __FILENAME__
 __registerVar __LOGGINGPROPERTIESFILE__
