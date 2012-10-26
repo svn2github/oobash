@@ -3,13 +3,12 @@
 # 0.39.9
 # -add some System functions
 
-# -add some File functions from: http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html
--isFileNewer
--isFileOlder
--sizeOfDirectory
--cleanDirectory
+File:
+3) touch
+4) isFileNewer
+5) isFileOlder
 
-# -some more preparations for the 0.4 logging
+openTty (exec), close Tty (naming?) (exec) System.exec  ???
 
 # 0.4
 # -Logging (coproc ?)
