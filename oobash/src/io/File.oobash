@@ -2003,7 +2003,7 @@ __isNewerThan() {
       local this="$1"
       local that="$3"
       local thatclass
-      argclass="$("$that".getClass 2>/dev/null)"
+      thatclass="$("$that".getClass 2>/dev/null)"
       if (( $? == 0 )); then
          if [[ "class File" == "$thatclass" ]]; then
             local thisFile="$($this.toString)"
@@ -2011,7 +2011,7 @@ __isNewerThan() {
             if [[ $thisFile -nt $thatFile ]]; then
                Boolean.TRUE
             else
-               Boolean.False
+               Boolean.FALSE
             fi
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
@@ -2038,7 +2038,7 @@ __isOlderThan() {
       local this="$1"
       local that="$3"
       local thatclass
-      argclass="$("$that".getClass 2>/dev/null)"
+      thatclass="$("$that".getClass 2>/dev/null)"
       if (( $? == 0 )); then
          if [[ "class File" == "$thatclass" ]]; then
             local thisFile="$($this.toString)"
@@ -2046,7 +2046,7 @@ __isOlderThan() {
             if [[ $thisFile -ot $thatFile ]]; then
                Boolean.TRUE
             else
-               Boolean.False
+               Boolean.FALSE
             fi
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
