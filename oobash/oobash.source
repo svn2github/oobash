@@ -152,7 +152,8 @@ declare -a __FileMethods__=(canRead canWrite canExecute fileLength getName isDir
                             getText append clear linecount linematch sha1sum md5sum getTotalSpace getFreeSpace 
                             getUsableSpace getInode getBase getExtension getPosixFilePermissions setPosixFilePermissions
                             getLine delLine replaceLine insertAfterLine insertBeforeLine indexOfExtension getOwner 
-                            getGroup indexOfLastSeparator deleteRecursively lastChanged lastAccessed setLastAccessed)
+                            getGroup indexOfLastSeparator deleteRecursively lastChanged lastAccessed setLastAccessed
+                            isOlderThan isNewerThan touch)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 

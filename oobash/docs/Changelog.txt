@@ -309,7 +309,7 @@
 #    -Added file PrivateLogging.oobash to log4oobash package
 #    -Added to PrivateLogging: __getLoggingTimestamp, __getFreeFD, __setPS4
 #    -Added to Private: __isatty, __terminalSupportsColours
-#    -Added to File: lastChanged, lastAccessed, setLastAccessed
+#    -Added to File: lastChanged, lastAccessed, setLastAccessed, touch, isOlderThan, isNewerThan
 #    -moved __isXTRACEFDAvailable from Private to PrivateLogging
 #    -new Array __OptionalVars__: optional varaibles, at the moment:
 #     __QUIET__ __AUTHOR__ __EMAIL__ __COMPANY__

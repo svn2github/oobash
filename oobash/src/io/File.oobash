@@ -1996,6 +1996,101 @@ __getGroup() {
    return $returnValue
 }
 
+__isNewerThan() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local that="$3"
+      local thatclass
+      argclass="$("$that".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class File" == "$thatclass" ]]; then
+            local thisFile="$($this.toString)"
+            local thatFile="$($that.toString)"
+            if [[ $thisFile -nt $thatFile ]]; then
+               Boolean.TRUE
+            else
+               Boolean.False
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isOlderThan() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local that="$3"
+      local thatclass
+      argclass="$("$that".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class File" == "$thatclass" ]]; then
+            local thisFile="$($this.toString)"
+            local thatFile="$($that.toString)"
+            if [[ $thisFile -ot $thatFile ]]; then
+               Boolean.TRUE
+            else
+               Boolean.False
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
+            returnValue=$?
+            __stackOrHelp "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__touch() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v touch >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         touch -- "${file}" 2>/dev/null
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __stackOrHelp "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
 
 ##################
 #                #
