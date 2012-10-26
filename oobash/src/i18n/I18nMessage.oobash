@@ -116,7 +116,10 @@ I18n.help() {
             Parameters:
                x - The message to be translated and printed.
             Throws:
-               IllegalArgumentException - if number of arguments > 1 
+               IllegalArgumentException - if number of arguments > 1
+            Example:
+               I18n.out.println \" oo-style framework for bash 4\"
+               I18n.out.println ' Version:      \${__VERSION__}'
             ";;&
          I18n.err.println|err.println|all)
             match=$(Boolean.TRUE)
@@ -129,6 +132,9 @@ I18n.help() {
                x - The message to be translated and printed.
             Throws:
                IllegalArgumentException - if number of arguments > 1
+            Example:
+               I18n.err.println \" oo-style framework for bash 4\"
+               I18n.err.println ' Version:      \${__VERSION__}'
             ";;& 
          I18n.out.print|out.print|all)
             match=$(Boolean.TRUE)
@@ -140,7 +146,10 @@ I18n.help() {
             Parameters:
                x - The message to be translated and printed.
             Throws:
-               IllegalArgumentException - if number of arguments > 1 
+               IllegalArgumentException - if number of arguments > 1
+            Example:
+               I18n.out.print \" oo-style framework for bash 4\"
+               I18n.out.print ' Version:      \${__VERSION__}'
             ";;&
          I18n.err.print|err.print|all)
             match=$(Boolean.TRUE)
@@ -153,6 +162,9 @@ I18n.help() {
                x - The message to be translated and printed.
             Throws:
                IllegalArgumentException - if number of arguments > 1
+            Example:
+               I18n.err.print \" oo-style framework for bash 4\"
+               I18n.err.print ' Version:      \${__VERSION__}'
             ";;& 
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
