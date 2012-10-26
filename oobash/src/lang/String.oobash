@@ -1392,8 +1392,12 @@ String.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                base64Decode
-                  Decodes this base 64 encoded string. 
-                  Only works if maximum encoded line length is 64.
+                  Decodes this base 64 encoded string.
+                  Only works if encoded data is in
+                  Privacy Enhanced Mail (PEM) format:
+                  -line length is 64 characters
+                  -newline character after 64 characters
+                  (RFC 4648, section 3.1)
                Parameters:
                   None 
                Returns:
@@ -1412,7 +1416,10 @@ String.help() {
             System.${printStream}.println "
                base64Encode
                   Encodes this string with base64.
-                  Maximum encoded line length is 64.
+                  Encoded data is in Privacy Enhanced Mail (PEM) format:
+                  -line length is 64 characters
+                  -newline character after 64 characters
+                  (RFC 4648, section 3.1)
                Parameters:
                   None
                Returns:
