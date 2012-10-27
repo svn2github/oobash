@@ -35,7 +35,8 @@ Class.generator() {
       do
          eval local \'"${attributes[$i]}"\'=test 2>/dev/null
          if (( $? != 0 )); then
-            I18n.err.println "Sorry, no valid attribute name: '\${attributes[$i]}'"
+            local attribute="${attributes[$i]}"
+            I18n.err.println "Sorry, no valid attribute name: '\$attribute'"
             return 1
          else
             getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
