@@ -112,7 +112,7 @@ I18n.help() {
             I18n.out.println
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message and then terminates 
-               to stdout. If you use bash variables in the message you have to use single quotation marks.
+               to stdout.
             Parameters:
                x - The message to be translated and printed.
             Throws:
@@ -120,6 +120,7 @@ I18n.help() {
             Example:
                I18n.out.println \" oo-style framework for bash 4\"
                I18n.out.println ' Version:      \${__VERSION__}'
+               I18n.out.println \"Sorry, no valid classname: '\\\$userClass'\"
             ";;&
          I18n.err.println|err.println|all)
             match=$(Boolean.TRUE)
@@ -127,7 +128,7 @@ I18n.help() {
             I18n.err.println
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message and then terminates
-               to stderr. If you use bash variables in the message you have to use single quotation marks.
+               to stderr.
             Parameters:
                x - The message to be translated and printed.
             Throws:
@@ -135,6 +136,7 @@ I18n.help() {
             Example:
                I18n.err.println \" oo-style framework for bash 4\"
                I18n.err.println ' Version:      \${__VERSION__}'
+               I18n.err.println \"Sorry, no valid classname: '\\\$userClass'\"
             ";;& 
          I18n.out.print|out.print|all)
             match=$(Boolean.TRUE)
@@ -142,7 +144,6 @@ I18n.help() {
             I18n.out.print
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message to stdout.
-               If you use bash variables in the message you have to use single quotation marks.
             Parameters:
                x - The message to be translated and printed.
             Throws:
@@ -150,6 +151,7 @@ I18n.help() {
             Example:
                I18n.out.print \" oo-style framework for bash 4\"
                I18n.out.print ' Version:      \${__VERSION__}'
+               I18n.out.print \"Sorry, no valid classname: '\\\$userClass'\"
             ";;&
          I18n.err.print|err.print|all)
             match=$(Boolean.TRUE)
@@ -157,7 +159,6 @@ I18n.help() {
             I18n.err.print
                Translates a natural language message into the user’s language, by looking 
                up the translation in a message catalog and prints the message to stderr.
-               If you use bash variables in the message you have to use single quotation marks.
             Parameters:
                x - The message to be translated and printed.
             Throws:
@@ -165,6 +166,7 @@ I18n.help() {
             Example:
                I18n.err.print \" oo-style framework for bash 4\"
                I18n.err.print ' Version:      \${__VERSION__}'
+               I18n.err.print \"Sorry, no valid classname: '\\\$userClass'\"
             ";;& 
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
