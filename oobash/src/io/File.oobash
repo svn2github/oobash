@@ -2256,16 +2256,16 @@ File.help() {
       System.${printStream}.println "
       Usage: File.help all|methodname|constructor
       Available methods:
-      -isDirectory -exists -toString -hashCode 
-      -canRead -canWrite -canExecute -getName
+      -isDirectory -exists -toString -lastAccessed
+      -canRead -canWrite -canExecute -setLastAccessed
       -isHidden -isFile -mkdir -mkdirs -getParent
       -getClass -equals -isSymbolicLink -fileLength
-      -isNamedPipe -hasStickyBit -isSocket
+      -isNamedPipe -hasStickyBit -isSocket -hashCode 
       -isCharacterSpecial -isBlockSpecial -compareTo
-      -setExecutable -setReadable -setWritable
+      -setExecutable -setReadable -setWritable -touch
       -setReadOnly -delete -deleteRecursively -isAbsolute
       -getAbsolutePath -getCanonicalPath -getPath  
-      -lastModified -setLastModified -getText 
+      -lastModified -setLastModified -getText -getName
       -setText -append -clear -linematch -linecount
       -sha1sum -md5sum -getFreeSpace -getTotalSpace
       -getUsableSpace -getInode -getBase -getExtension
@@ -2273,7 +2273,7 @@ File.help() {
       -getLine -replaceLine -delLine -createNewFile
       -insertAfterLine -insertBeforeLine -indexOfExtension
       -indexOfLastSeparator -getUser -getGroup
-      -lastChanged -lastAccessed -setLastAccessed
+      -lastChanged -isOlderThan -isNewerThan
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile
@@ -2304,6 +2304,62 @@ File.help() {
                Example:
                   File a testfile
             ";;&
+         isOlderThan|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isOlderThan
+                  Tests whether the file denoted by this abstract pathname is older (modification date)
+                  than the given one.
+               Parameters:
+                  aFileObject - The File object to be compared with
+               Returns:
+                  true if and only if the file denoted by this abstract pathname is older; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                                           -if argument is no File object
+                                           -if argument is no object
+               Example:
+                  File a /XXX
+                  a.isOlderThan b
+                  >>>false 
+            ";;&
+         isNewerThan|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isNewerThan
+                  Tests whether the file denoted by this abstract pathname is newer (modification date)
+                  than the given one.            
+               Parameters:
+                  aFileObject - The File object to be compared with
+               Returns:
+                  true if and only if the file denoted by this abstract pathname is newer; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                                           -if argument is no File object
+                                           -if argument is no object
+               Example:
+                  File a /XXX
+                  a.isNewerThan b
+                  >>>true
+            ";;&
+         touch|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               touch
+                  Creates an empty file or updates the last updated timestamp on 
+                  the same as the unix command of the same name.
+               Parameters:
+                  None 
+               Returns:
+                  true if and only if the touch is successful; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if touch is not in path
+               Example:
+                  File x /tmp/xxx
+                  x.touch
+                  >>>true
+            ";;& 
          indexOfExtension|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "

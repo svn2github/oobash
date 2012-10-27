@@ -3,11 +3,6 @@
 # 0.39.9
 # -add some System functions
 
-File:
-3) touch
-4) isFileNewer
-5) isFileOlder
-
 openTty (exec), close Tty (naming?) (exec) System.exec  ???
 
 # 0.4
