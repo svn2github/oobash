@@ -18,6 +18,7 @@
 # __getFileBase() returns file name without file extension
 # __checkForKeywords() checks if objectname argument for a constructor is a keyword
 # __periodCheck() check if given string contains "." character
+# __slashCheck() check if given string contains "/" character
 # __throw() throws an exception with name of exception and message
 # __attribute() stores an attribute of an object
 # __destructor() destroys a given object
@@ -130,6 +131,25 @@ __periodCheck() {
    return 0
 }
 __registerFunction __periodCheck
+
+# private
+# check if given string contains "/" character 
+# called by:
+# -every constructor
+__slashCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   str="$1"
+   declare -i i
+   for ((i=0; i < ${#str}; i++))
+   do
+      local char="${this:i:1}"
+      case "${char}" in
+         /) return 1;;
+      esac
+   done
+   return 0
+}
+__registerFunction __slashCheck
 
 # private
 # throws an exception with name of exception and message
