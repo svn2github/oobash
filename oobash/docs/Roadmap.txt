@@ -5,6 +5,11 @@
 
 openTty (exec), close Tty (naming?) (exec) System.exec  ???
 
+Remove stupid Logging defaults in oobash.source
+
+new line for the constructor docs:
+- if objectname contains slash character
+
 # 0.4
 # -Logging (coproc ?)
 
