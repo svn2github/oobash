@@ -47,6 +47,13 @@ String() {
          return $returnValue
       fi
 
+      if ! __slashCheck "$this"; then
+         __throw "IllegalArgumentException" ": No slash character allowed in objectname"
+         returnValue=$?
+         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         return $returnValue
+      fi
+
       local pointer=$((__OBJCOUNTER__++))
 
       local string="$2"
