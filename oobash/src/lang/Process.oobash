@@ -746,6 +746,7 @@ Process.help() {
                                            - if objectname is not valid
                                            - if objectname is a keyword
                                            - if objectname contains full stop character
+                                           - if objectname contains slash character
                   ProcessException - if process can't be managed
                Example:
                   Process a <pid> 

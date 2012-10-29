@@ -182,6 +182,7 @@ Boolean.help() {
                                            - if objectname is not valid
                                            - if objectname is a keyword
                                            - if objectname contains full stop character
+                                           - if objectname contains slash character
                Example:
                   Boolean a \"True\" produces a Boolean object that represents true.
                   Boolean a \"yes\"  produces a Boolean object that represents false.
