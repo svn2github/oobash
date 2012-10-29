@@ -481,7 +481,6 @@ if (( $? == 0 )); then
    # import log4oobash classes
    __import oobash.log4oobash.Layout
    __import oobash.log4oobash.Level
-   __import oobash.log4oobash.PrivateLogging
 
    # Create loglevel objects 
    Level OFF Infinity "OFF" 0          2>/dev/null
@@ -517,7 +516,6 @@ if (( $? == 0 )); then
    #=============================
    LOG_LAYOUT=SimpleLayout
 
-   
 fi
 
 return 0

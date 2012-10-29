@@ -50,6 +50,10 @@
 # __decoratorCheck() function to handle decorators, if there are some
 # __isatty() checks if a given file descriptor refers to a terminal
 # __terminalSupportsColours() asks local terminal database if this terminal supports colours
+# __getLoggingTimestamp() returns a timestamp
+# __isXTRACEFDAvailable() checks if BASH_XTRACEFD is available with this bash version
+# __getFreeFD() tries to return a free file descriptor
+# __setPS4() sets PS4 prompt for a better prefix during tracing output
 
 
 # private
@@ -1155,3 +1159,101 @@ __terminalSupportsColours() {
    return $returnValue
 }
 __registerFunction __terminalSupportsColours
+
+# private
+# returns a timestamp (for a logevent)
+# called by:
+if command -v date 2>&1 1>/dev/null; then
+   __getLoggingTimestamp() {
+      date "+${LOG_DATE_PATTERN}"
+      return 0
+   }
+else
+   __getLoggingTimestamp() {
+      System.out.println "$SECONDS sec"
+      return 0
+   }
+fi
+__registerFunction __getLoggingTimestamp
+
+# private
+# checks if BASH_XTRACEFD is available with this bash version
+# called by:
+__isXTRACEFDAvailable() {
+   if (( ${BASH_VERSINFO[1]} != 0 )); then
+      return 0
+   else
+      return 1
+   fi
+}
+__registerFunction __isXTRACEFDAvailable
+
+# private
+# tries to return a free file descriptor
+# called by:
+__getFreeFD() {
+   declare -i returnValue=0
+   shopt -q extglob
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd=$(Boolean.TRUE)
+   fi
+   declare -i freeFD=0
+   declare -i maxFDCount
+   maxFDCount=$(( $(ulimit -n) ))
+
+   if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
+      while [[ -e /proc/$$/fd/${freeFD} ]] && (( ${freeFD} < ${maxFDCount} )); do
+         ((freeFD++))
+      done
+   else
+      if command -v lsof >/dev/null 2>&1; then
+         declare -i i
+         local fd
+         local bool
+         for ((freeFD=0; freeFD < ${maxFDCount}; freeFD++)); do
+            bool="$(Boolean.TRUE)"
+            for fd in $(lsof -p $$ -F f); do
+               if [[ "$fd" == f* ]]; then
+                  fd="${fd:1}"
+                  if [[ "${fd##+([[:digit:]])}" == "" ]]; then
+                     if (( $fd == $freeFD)); then
+                        bool="$(Boolean.FALSE)"
+                        break
+                     fi
+                  fi
+               fi
+            done
+            if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
+               break
+            fi
+         done
+      else
+         returnValue=1
+      fi
+   fi
+
+   # You will recognize this problem much earlier... ;-)
+   if (( freeFD == maxFDCount )); then
+      returnValue=1
+   fi
+
+   if (( $returnValue == 0 )); then
+      System.out.println ${freeFD}
+   fi
+
+   if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
+      shopt -u extglob
+   fi
+   return $returnValue
+}
+__registerFunction __getFreeFD
+
+# private
+# sets PS4 prompt for a better prefix during tracing output
+# called by:
+__setPS4() {
+   export PS4='+${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}: '
+   return 0
+}
+__registerFunction __setPS4
