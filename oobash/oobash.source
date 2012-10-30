@@ -18,7 +18,7 @@ if command -v gdate >/dev/null 2>&1; then
    __STARTTIME__="`gdate +%s.%N 2>/dev/null`"
 fi
 SECONDS=0
-__VERSION__="0.39.9"
+__VERSION__="0.40"
 __FILENAME__="oobash.source"
 __STACKTRACE__="true"
 __HELP__="true"
