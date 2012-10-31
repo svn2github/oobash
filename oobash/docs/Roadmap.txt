@@ -4,7 +4,10 @@
 # -Logging (coproc ?)
 
 # TODO:
-# support for cyrillic chars
+# support for cyrillic chars:
+# http://de.wikipedia.org/wiki/Unicodeblock_Kyrillisch
+# http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
+
 # look at the used vars in __desturctor
 
 # 0.4.1
