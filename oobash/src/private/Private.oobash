@@ -123,11 +123,12 @@ __registerVar __Keywords__
 # -every constructor
 __periodCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   str="$1"
+   local str="$1"
+   local char
    declare -i i
    for ((i=0; i < ${#str}; i++))
    do
-      local char="${this:i:1}"
+      char="${this:i:1}"
       case "${char}" in
          .) return 1;;
       esac
@@ -142,11 +143,12 @@ __registerFunction __periodCheck
 # -every constructor
 __slashCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   str="$1"
+   local str="$1"
+   local char
    declare -i i
    for ((i=0; i < ${#str}; i++))
    do
-      local char="${this:i:1}"
+      char="${this:i:1}"
       case "${char}" in
          /) return 1;;
       esac

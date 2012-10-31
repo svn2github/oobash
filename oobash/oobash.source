@@ -354,12 +354,13 @@ command_not_found_handle() {
    done
 
    if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.TRUE) ]]; then 
+      local char class
       local string="${__OBJECTPOOL__["$this"]}"
       for ((i=0; i < ${#string}; i++))
       do
-         local char="${string:i:1}"
+         char="${string:i:1}"
          if [[ "${char}" == "@" ]]; then
-            local class="${string:0:i}"
+            class="${string:0:i}"
          fi
       done 
       
