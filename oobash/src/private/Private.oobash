@@ -199,14 +199,17 @@ __destructor() {
    local this="$1"
    local string="${__OBJECTPOOL__["${this}"]}"
    if [[ ! -z "${string}" ]]; then
+      local char
+      local pointer
+      local lastClass
       declare -i i=0
       for ((i=0; i < ${#string}; i++))
       do
-         local char="${string:i:1}"
+         char="${string:i:1}"
          if [[ ${char} == "@" ]]; then
-            local i=$(($i+1))
-            local pointer="${string:i}"
-            local lastClass="${string:0:(i-1)}"
+            (( i++ ))
+            pointer="${string:i}"
+            lastClass="${string:0:(i-1)}"
             break
          fi
       done
@@ -219,7 +222,7 @@ __destructor() {
             unset __ATTRIBUTEPOOL__["${key}"]
          fi      
       done
-      
+
       __unalias "$this" "$lastClass"
    fi
    return 0
@@ -1205,7 +1208,7 @@ __getFreeFD() {
    fi
    declare -i freeFD=0
    declare -i maxFDCount
-   maxFDCount=$(( $(ulimit -n) ))
+   maxFDCount=$(ulimit -n)
 
    if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
       while [[ -e /proc/$$/fd/${freeFD} ]] && (( ${freeFD} < ${maxFDCount} )); do
@@ -1221,7 +1224,7 @@ __getFreeFD() {
             for fd in $(lsof -p $$ -F f); do
                if [[ "$fd" == f* ]]; then
                   fd="${fd:1}"
-                  if [[ "${fd##+([[:digit:]])}" == "" ]]; then
+                  if [[ -z "${fd##+([[:digit:]])}" ]]; then
                      if (( $fd == $freeFD)); then
                         bool="$(Boolean.FALSE)"
                         break

@@ -8,7 +8,7 @@
 # http://de.wikipedia.org/wiki/Unicodeblock_Kyrillisch
 # http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
 
-# look at the used vars in __desturctor
+# urdecode + urlencode
 
 # 0.4.1
 # -tput: colour management
