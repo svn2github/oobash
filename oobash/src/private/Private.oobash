@@ -326,11 +326,13 @@ __strUpper() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -u str="$1"
    local upper=''
+   local char
+   local valueOf
    declare -i i=0
    for ((i=0; i < ${#str}; i++))
    do
-      local char="${str:i:1}"
-      local valueOf=$(printf '%d\n' "'$char")
+      char="${str:i:1}"
+      valueOf=$(printf '%d\n' "'$char")
       case "${valueOf}" in
          # small sharp s 
          223 )                  
@@ -355,11 +357,13 @@ __strLower() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -l str="$1"
    local lower=''
+   local char
+   local valueOf
    declare -i i=0
    for ((i=0; i < ${#str}; i++))
    do
-      local char="${str:i:1}"
-      local valueOf=$(printf '%d\n' "'$char")
+      char="${str:i:1}"
+      valueOf=$(printf '%d\n' "'$char")
       case $valueOf in
          # uppercase sharp s
          7838)
@@ -566,15 +570,16 @@ __posixFilePermissionsConverter() {
    declare -i octalPerm=0
    if [[ "${permissions}" =~ ^([r-][w-][x-]){3}$ ]]; then
       # convert to octal format
+      local perm
       declare -i i=0
       for ((i=0; i < 9; i++))
       do
-         local perm="${permissions:i:1}"
-            case ${perm} in
-               r)octalPerm=$(($octalPerm+4));;
-               w)octalPerm=$(($octalPerm+2));;
-               x)octalPerm=$(($octalPerm+1));;
-            esac
+         perm="${permissions:i:1}"
+         case ${perm} in
+            r)octalPerm=$(($octalPerm+4));;
+            w)octalPerm=$(($octalPerm+2));;
+            x)octalPerm=$(($octalPerm+1));;
+         esac
          # starting with 0
          if (( $i == 2 || $i == 5 || $i== 8 )); then
             octal=${octal}${octalPerm}
@@ -657,10 +662,10 @@ __cleanUpFunctions() {
 __cleanUpClasses() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
+   local meth
    for value in ${!__Registry__[@]}
    do 
       if [[ "${__Registry__[$value]}" == "class" ]]; then
-         local meth
          for meth in $(eval echo \${__${value}__[@]})
          do 
             unset -f __${meth}

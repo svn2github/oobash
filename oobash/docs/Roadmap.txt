@@ -3,6 +3,10 @@
 # 0.4 LOGGING
 # -Logging (coproc ?)
 
+# TODO:
+# support for cyrillic chars
+# look at the used vars in __desturctor
+
 # 0.4.1
 # -tput: colour management
 # -optimize logging
