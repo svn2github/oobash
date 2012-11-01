@@ -1219,8 +1219,7 @@ __getFreeFD() {
    else
       if command -v lsof >/dev/null 2>&1; then
          declare -i i
-         local fd
-         local bool
+         local bool fd
          for ((freeFD=0; freeFD < ${maxFDCount}; freeFD++)); do
             bool="$(Boolean.TRUE)"
             for fd in $(lsof -p $$ -F f); do

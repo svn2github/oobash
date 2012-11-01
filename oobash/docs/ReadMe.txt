@@ -244,6 +244,8 @@ Runtime: 3 [seconds]
 Returns 0
 Dependeny: None for seconds output, bc and GNU date for [seconds.nanoseconds] output
 
+You can see a decorator example script in the docs/examples directory.
+
 K) Stacktrace
 ##############
 Will only work if shell is not interactive (script).
@@ -254,6 +256,7 @@ __STACKTRACE__="false"
 or
 __HELP__="false"
 in the oobash.source file.
+
 You can see a stacktrace example script in the docs/examples directory.
 
 L) "Exceptions"

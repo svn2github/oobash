@@ -15,7 +15,7 @@
 # -optimize logging
 
 # 0.4.2
-# -Script.generator --> function for properties file ?
+# -Script.generator --> create log.properties file for the script ?
 # -optimize logging
 
 # 0.4.3
