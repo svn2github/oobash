@@ -54,6 +54,7 @@
 
 # 0.80 GUI
 # -Facade for some GUI libs
+# yad zenity kdialog Xdialog dialog + some OSX alternatives ???
 # -Visualization package:
 # spinner, progress bar, histogram...
 
