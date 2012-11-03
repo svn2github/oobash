@@ -855,10 +855,10 @@ Math.random() {
          if (( $? == 1 )); then
             shopt -s extglob
             unsetAtEnd="$(Boolean.TRUE)"
-         fi    
-         res=$(System.out.println "scale=15; $RANDOM/32768" | bc -l)
+         fi             
+         res=$(System.out.println "scale=12; $RANDOM/32768" | bc -l)
          result="${res%%+([0])}"
-         System.out.println 0"${result}"  
+         System.out.println 0"${result}"${RANDOM: -3}
          if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
             shopt -u extglob
          fi  
