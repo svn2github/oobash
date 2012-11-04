@@ -502,9 +502,9 @@ __registerFunction Man.generator
 Script.generator() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 1 )); then
+   local scriptname="$(__basename $1)"
+   if (( $# == 1 )) && [[ "${scriptname}" != "/" ]] ; then
       local user=${__AUTHOR__:-$USER}
-      local scriptname="$1"
       local destination="${__OODIR__}"/scripts/"${scriptname}"
       local interpreter
       if [[ ${0:0:1} != "/" ]]; then
@@ -699,7 +699,7 @@ fi
 
 System.exit 0" >> "${destination}"
       chmod 755 "${destination}" 2>/dev/null
-      System.out.println "${__OODIR__}/scripts/$1"
+      System.out.println "${__OODIR__}/scripts/${scriptname}"
    else
       if __isatty STDERR; then
          System.err.println
