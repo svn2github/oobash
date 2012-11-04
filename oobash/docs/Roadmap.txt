@@ -53,8 +53,8 @@
 # -Date functions..
 
 # 0.80 GUI
-# -Facade for some GUI libs
-# yad zenity kdialog Xdialog dialog + some OSX alternatives ???
+# -Facade for some GUI libs:
+# yad zenity kdialog Xdialog dialog cocoaDialog
 # -Visualization package:
 # spinner, progress bar, histogram...
 
