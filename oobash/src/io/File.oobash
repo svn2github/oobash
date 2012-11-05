@@ -1545,7 +1545,7 @@ __setPosixFilePermissions() {
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                returnValue=$?
-               __stackOrHelp "File" "${FUNCNAME}"
+               __stackOrHelp "File" "${FUNCNAME:2}"
                return $returnValue
             fi
             chmod "${permissions}" "${file}" 2>/dev/null
