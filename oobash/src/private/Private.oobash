@@ -573,7 +573,8 @@ __posixFilePermissionsConverter() {
    local permissions="$1"
    local octal=''
    declare -i octalPerm=0
-   if [[ "${permissions}" =~ ^([r-][w-][x-]){3}$ ]]; then
+   declare -i highOrderOctal=0
+   if [[ "${permissions}" =~ ^([r-][w-][xsS-]){2}[r-][w-][xtT-]$ ]]; then
       # convert to octal format
       local perm
       declare -i i=0
@@ -583,7 +584,21 @@ __posixFilePermissionsConverter() {
          case ${perm} in
             r)octalPerm=$(($octalPerm+4));;
             w)octalPerm=$(($octalPerm+2));;
+            s)octalPerm=$(($octalPerm+1))
+              if (( $i == 2)); then
+                 highOrderOctal=$(($highOrderOctal+4))
+              else
+                 highOrderOctal=$(($highOrderOctal+2))
+              fi;;
+            S)if (( $i == 2)); then
+                 highOrderOctal=$(($highOrderOctal+4))
+              else
+                 highOrderOctal=$(($highOrderOctal+2))
+              fi;;
             x)octalPerm=$(($octalPerm+1));;
+            t)octalPerm=$(($octalPerm+1))
+              highOrderOctal=$(($highOrderOctal+1));;
+            T)highOrderOctal=$(($highOrderOctal+1));;
          esac
          # starting with 0
          if (( $i == 2 || $i == 5 || $i== 8 )); then
@@ -600,7 +615,11 @@ __posixFilePermissionsConverter() {
    if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
-   System.out.println "${octal}"   
+   if (( $highOrderOctal == 0 ));then
+      System.out.println "${octal}"
+   else
+      System.out.println "${highOrderOctal}${octal}"
+   fi
    return 0
 }
 __registerFunction __posixFilePermissionsConverter

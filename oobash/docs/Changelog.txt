@@ -315,6 +315,7 @@
 #    __AUTHOR__ __COMPANY__ __EMAIL__
 #    -Fixes and small improvements
 # Version:      0.40
+#    -support for sticky bit, setuid and setgid in __posixFilePermissionsConverter
 #    -Fixes and small improvements
 
 
