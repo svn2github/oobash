@@ -615,11 +615,7 @@ __posixFilePermissionsConverter() {
    if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
-   if (( $highOrderOctal == 0 ));then
-      System.out.println "${octal}"
-   else
-      System.out.println "${highOrderOctal}${octal}"
-   fi
+   System.out.println "${highOrderOctal}${octal}"
    return 0
 }
 __registerFunction __posixFilePermissionsConverter
