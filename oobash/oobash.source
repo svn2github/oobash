@@ -427,7 +427,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -getTotalSpace -getFreeSpace -getUsableSpace -getPosixFilePermissions -setPosixFilePermissions"
    System.out.println "  -getLine -delLine -replaceLine -insertAfterLine -insertBeforeLine -indexOfExtension"
    System.out.println "  -indexOfLastSeparator -getOwner -getGroup -deleteRecursively -lastAccessed -setLastAccessed"
-   System.out.println "  -isOlderThan -isNewerThan -touch"
+   System.out.println "  -isOlderThan -isNewerThan -touch -setuid -setgid -setStickyBit"
    System.out.println "  -File.createTemporaryFile -File.createTempFile -File.createTemporaryDir -File.createTempDir"
    System.out.println " Process:"
    System.out.println "  -getPriority -setPriority -kill -isDaemon -getEffectiveUserId -getRealUserId -getMemorySize"
