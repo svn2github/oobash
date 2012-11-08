@@ -3,12 +3,25 @@
 # 0.4 LOGGING
 # -Logging (coproc ?)
 
+# add to File: hasUidBit hasGidBit
+
+# Docs fo setuid setgid setStickyBit
+
 # TODO:
 # support for cyrillic chars:
 # http://de.wikipedia.org/wiki/Unicodeblock_Kyrillisch
 # http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
 
 # urdecode + urlencode
+
+# eg "$this".exists --> remove " ?? 
+
+# __getAttributeFromObject to Private instead of this.toString ? Would be much faster than eg:
+local file="$("$this".toString)"
+local str="$("$this".toString)"
+
+# Some Private functions for: canRead canWrite isFile exists...? Would be much faster than eg:
+if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # 0.4.1
 # -tput: colour management
