@@ -762,7 +762,7 @@ __delete() {
          if command -v rmdir >/dev/null 2>&1; then
             local this="$1"
             local file="$("$this".toString)"
-            if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
+            if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
                rm -f -- "${file}" 2>/dev/null || rmdir -- "${file}" 2>/dev/null
                if (( $? == 0 )); then
                   Boolean.TRUE
@@ -797,7 +797,7 @@ __deleteRecursively() {
       if command -v rm >/dev/null 2>&1; then
          local this="$1"
          local file="$("$this".toString)"
-         if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
+         if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
             rm -rf -- "${file}" 2>/dev/null
             if (( $? == 0 )); then
                Boolean.TRUE
@@ -827,7 +827,7 @@ __createNewFile() {
       if command -v touch >/dev/null 2>&1; then
          local this="$1"
          local file="$("$this".toString)"
-         if [[ $("$this".exists) == $(Boolean.FALSE) ]]; then 
+         if [[ "$("$this".exists)" == "$(Boolean.FALSE)" ]]; then 
             touch -- "${file}" 2>/dev/null
             if (( $? == 0 )); then
                Boolean.TRUE
@@ -1539,7 +1539,7 @@ __setPosixFilePermissions() {
       if [[ -e "${file}" ]]; then
          if command -v chmod >/dev/null 2>&1; then
             local permissions=''
-            permissions=$(__posixFilePermissionsConverter "$3")
+            permissions=$(__posixFilePermission2Octal "$3")
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                returnValue=$?
@@ -1584,7 +1584,7 @@ __setuid() {
             else
                output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            posixFilePermission=$(__posixFilePermissionsConverter "${output: -9}")
+            posixFilePermission=$(__posixFilePermission2Octal "${output: -9}")
             highOrderOctal=${posixFilePermission:0:1}
             case ${highOrderOctal} in
                0|1|2|3)
@@ -1635,7 +1635,7 @@ __setgid() {
             else
                output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            posixFilePermission=$(__posixFilePermissionsConverter "${output: -9}")
+            posixFilePermission=$(__posixFilePermission2Octal "${output: -9}")
             highOrderOctal=${posixFilePermission:0:1}
             case ${highOrderOctal} in
                0|1|4|5)
@@ -1686,7 +1686,7 @@ __setStickyBit() {
             else
                output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            posixFilePermission=$(__posixFilePermissionsConverter "${output: -9}")
+            posixFilePermission=$(__posixFilePermission2Octal "${output: -9}")
             highOrderOctal=${posixFilePermission:0:1}
             if (( $((highOrderOctal%2)) == 0 )); then
                ((highOrderOctal++))
@@ -2166,7 +2166,7 @@ __isNewerThan() {
          if [[ "class File" == "$thatclass" ]]; then
             local thisFile="$($this.toString)"
             local thatFile="$($that.toString)"
-            if [[ $thisFile -nt $thatFile ]]; then
+            if [[ "${thisFile}" -nt "${thatFile}" ]]; then
                Boolean.TRUE
             else
                Boolean.FALSE
@@ -2201,7 +2201,7 @@ __isOlderThan() {
          if [[ "class File" == "$thatclass" ]]; then
             local thisFile="$($this.toString)"
             local thatFile="$($that.toString)"
-            if [[ $thisFile -ot $thatFile ]]; then
+            if [[ "${thisFile}" -ot "${thatFile}" ]]; then
                Boolean.TRUE
             else
                Boolean.FALSE
@@ -2273,7 +2273,7 @@ File.createTemporaryFile() {
             local suffix="$2"
             if (( $# == 3 )); then
                local permissions=''
-               permissions=$(__posixFilePermissionsConverter "$3")
+               permissions=$(__posixFilePermission2Octal "$3")
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                   returnValue=$?
@@ -2345,7 +2345,7 @@ File.createTemporaryDir() {
             local suffix="$2"
             if (( $# == 3 )); then
                local permissions=''
-               permissions=$(__posixFilePermissionsConverter "$3")
+               permissions=$(__posixFilePermission2Octal "$3")
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                   returnValue=$?

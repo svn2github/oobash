@@ -28,7 +28,7 @@
 # __strUpper() returns given string uppercase
 # __strLower() returns given string lowercase
 # __mathConverter() validates and converts input for valid input for the math methods
-# __posixFilePermissionsConverter() converts a "rwxrwxrwx" file permission string to octal
+# __posixFilePermission2Octal() converts a "rwxrwxrwx" file permission string to octal
 # __i18nMessage() translates and prints message to given channel
 # __cleanUpObjectsPool() destroys all objects
 # __cleanUpFunctions() unsets all functions
@@ -560,7 +560,7 @@ __registerFunction __mathConverter
 # string to octal (eg 777)
 # called by:
 # -File.createTemporaryFile
-__posixFilePermissionsConverter() {
+__posixFilePermission2Octal() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local unsetAtEnd=$(Boolean.FALSE) 
    # is extglob set ?
@@ -618,7 +618,7 @@ __posixFilePermissionsConverter() {
    System.out.println "${highOrderOctal}${octal}"
    return 0
 }
-__registerFunction __posixFilePermissionsConverter
+__registerFunction __posixFilePermission2Octal
 
 # private
 # translates and prints message to given channel

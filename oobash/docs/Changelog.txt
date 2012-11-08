@@ -316,7 +316,8 @@
 #    -Fixes and small improvements
 # Version:      0.40
 #    -Added to File: setuid setgid setStickyBit
-#    -support for sticky bit, setuid and setgid in __posixFilePermissionsConverter
+#    -renamed __posixFilePermissionsConverter to __posixFilePermission2Octal
+#    -support for sticky bit, setuid and setgid in __posixFilePermission2Octal
 #    -Fixes and small improvements
 
 
