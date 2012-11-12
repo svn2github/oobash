@@ -3,6 +3,15 @@
 # 0.4 LOGGING
 # -Logging (coproc ?)
 
+# Private:
+# convert hex to dec
+#         hex to oct
+#         oct to hex
+#         oct to dec
+#         dec to oct
+#         dec to hex
+# ?
+
 # add to File: hasUidBit hasGidBit
 
 # Docs for setuid setgid setStickyBit
