@@ -5,7 +5,7 @@
 
 # add to File: hasUidBit hasGidBit
 
-# Docs fo setuid setgid setStickyBit
+# Docs for setuid setgid setStickyBit
 
 # TODO:
 # support for cyrillic chars:
@@ -67,9 +67,9 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # 0.80 GUI
 # -Facade for some GUI libs:
-# yad zenity kdialog Xdialog dialog cocoaDialog
+# yad zenity kdialog Xdialog dialog whiptail cocoaDialog
 # -Visualization package:
-# spinner, progress bar, histogram...
+# spinner, histogram...
 
 # 0.90 EXTERNAL TOOLS
 # -jmxterm http://wiki.cyclopsgroup.org/jmxterm ? 
