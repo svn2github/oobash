@@ -14,9 +14,7 @@
 
 # urdecode + urlencode
 
-# eg "$this".exists --> remove " ?? 
-
-# __getAttributeFromObject to Private instead of this.toString ? Would be much faster than eg:
+# use __getAttributeFromObject instead of this.toString. eg:
 local file="$("$this".toString)"
 local str="$("$this".toString)"
 
