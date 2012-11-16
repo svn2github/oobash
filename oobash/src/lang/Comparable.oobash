@@ -88,9 +88,9 @@ __compareTo() {
       for ((i=0; i < $length; i++))
       do    
          local charArg="${str:i:1}"
-         declare -i valueArg=$(printf '%d\n' "'$charArg")
+         declare -i valueArg=$(__charCode "$charArg")
          local charStr="$("$this".charAt $i)"
-         declare -i valueStr=$(printf '%d\n' "'$charStr")
+         declare -i valueStr=$(__charCode "$charStr")
          if (( $valueStr != $valueArg )); then
             System.out.println $(( $valueStr - $valueArg ))
             return $returnValue

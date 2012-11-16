@@ -416,7 +416,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -compareToIgnoreCase -getClass -charCodeAt -containsOnly -containsNone -indexOfDifference"
    I18n.out.println " Some String constants:"
    System.out.println "  -String.digits -String.asciiLetters -String.asciiLettersLowerCase"
-   System.out.println "  -String.asciiLettersUpperCase -String.hexDigits -String.octDigits"
+   System.out.println "  -String.asciiLettersUpperCase -String.hexDigits -String.octDigits -String.fromCharCode"
    System.out.println " File:"
    System.out.println "  -canRead -canWrite -canExecute -toString -fileLength -getName -isDirectory -exists -hashCode" 
    System.out.println "  -isHidden -isFile -mkdir -mkdirs -getParent -getClass -equals -isSymbolicLink -getInode"

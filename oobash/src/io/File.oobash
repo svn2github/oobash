@@ -2432,6 +2432,7 @@ File.help() {
       -insertAfterLine -insertBeforeLine -indexOfExtension
       -indexOfLastSeparator -getUser -getGroup
       -lastChanged -isOlderThan -isNewerThan
+      -setuid -setgid -setStickyBit
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile

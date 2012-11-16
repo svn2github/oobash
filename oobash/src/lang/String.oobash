@@ -109,9 +109,9 @@ __compareToIgnoreCase() {
       for ((i=0; i < $length; i++))
       do
          charStr1="${str1:i:1}"
-         valueStr1=$(printf '%d\n' "'$charStr1")
+         valueStr1=$(__charCode "$charStr1")
          charStr2="${str2:i:1}"
-         valueStr2=$(printf '%d\n' "'$charStr2")
+         valueStr2=$(__charCode "$charStr2")
          if (( $valueStr1 != $valueStr2 )); then
             System.out.println $((valueStr1-valueStr2))
             return $returnValue
@@ -406,7 +406,7 @@ __isLowerCase() {
       for ((i=0; i < ${#str}; i++))
       do
          char="${str:i:1}"
-         valueOf=$(printf '%d\n' "'$char")
+         valueOf=$(__charCode "$char")
          case $valueOf in
             # upper case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
             65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|196|214|220|140|192|194|198|199|200|201|202|203|206|207|212|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|350|354|536|538|381|352|344|340|327|313|268|221|366|282|270|356|216|197|336|368|204|210|208|222|7838 )
@@ -438,7 +438,7 @@ __isUpperCase() {
       for ((i=0; i < ${#str}; i++))
       do
          char="${str:i:1}"
-         valueOf=$(printf '%d\n' "'$char")
+         valueOf=$(__charCode "$char")
          case $valueOf in
             # upper case us ascii + german umlauts + franch + polish + spanish + romanian + czech + slovak + slovenian + slovenian + swedish + finnish + danish + norwegian + scottish gaelic + catalan + hungarian + icelandic special characters 
             65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|196|214|220|140|192|194|198|199|200|201|202|203|206|207|212|217|219|260|280|211|262|321|323|346|377|379|193|205|209|218|258|350|354|536|538|381|352|344|340|327|313|268|221|366|282|270|356|216|197|336|368|204|210|208|222|7838 )
@@ -1087,7 +1087,7 @@ __charCodeAt() {
          if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
             local str="$("$this".toString)"
             local char=${str:$pos:1}
-            local code=$(printf '%d\n' "'$char")
+            declare -i code=$(__charCode "$char")
             System.out.println $code
          else
             __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
@@ -1392,7 +1392,7 @@ fi
 #               #
 #################
 
-complete -W  "$(echo ${__String__[@]}) all String digits asciiLetters asciiLettersLowerCase asciiLettersUpperCase hexDigits octDigits" String.help
+complete -W  "$(echo ${__String__[@]}) all String digits asciiLetters asciiLettersLowerCase asciiLettersUpperCase hexDigits octDigits fromCharCode" String.help
 
 String.help() {    
    local printStream=${printStream:-out}

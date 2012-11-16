@@ -154,7 +154,7 @@ __hashCode() {
          declare -i i=0
          for ((i=0; i < ${#str}; i++))
          do    
-            valueOf=$(printf '%d\n' "'${str:i:1}")
+            valueOf=$(__charCode "${str:i:1}")
             hash=$(System.out.println "$hash*31+$valueOf" | bc)
          done
          hash=$(System.out.println "$hash-((2^32)*($hash/(2^32)))" | bc) 

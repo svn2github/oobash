@@ -3,9 +3,6 @@
 # 0.4 LOGGING
 # -Logging (coproc ?)
 
-# Math.subtracter
-# Math.divider
-
 # Private:
 # convert hex to dec
 #         hex to oct
