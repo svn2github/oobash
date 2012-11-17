@@ -32,6 +32,7 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # docs for String.fromCharCode
 # The fromCharCode() method converts an Unicode decimal value into a character
+# more args for String.fromCharCode ?
 
 # 0.4.1
 # -tput: colour management
