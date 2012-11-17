@@ -847,26 +847,13 @@ Math.random() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 0 )); then
-      if command -v bc >/dev/null 2>&1; then 
-         local unsetAtEnd="$(Boolean.FALSE)"
-         # is extglob set ?
-         shopt -q extglob
-         # if extglob not set already --> set it now and change boolean 
-         if (( $? == 1 )); then
-            shopt -s extglob
-            unsetAtEnd="$(Boolean.TRUE)"
-         fi             
-         res=$(System.out.println "scale=12; $RANDOM/32768" | bc -l)
-         result="${res%%+([0])}"
-         System.out.println 0"${result}"${RANDOM: -3}
-         if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
-            shopt -u extglob
-         fi  
-      else
-         __throw "NotInPathException" ": bc not in path"
-         returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
-      fi
+      local result="0."
+      declare -i i
+      for ((i=0;i<15;i++)); 
+      do 
+         result=${result}$(printf "%s" "$(( $RANDOM % 10  ))")
+      done
+      System.out.println $result
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
@@ -1510,7 +1497,6 @@ Math.help() {
                Returns:
                   a pseudorandom greater than or equal to 0.0 and less than 1.0.
                Throws:
-                  NotInPathException - if bc not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   Math.random
