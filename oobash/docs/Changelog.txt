@@ -320,6 +320,7 @@
 #    -Added to Private: __getAttributeFromObjectByName, __charCode
 #    -Added to File: setuid setgid setStickyBit
 #    -renamed __posixFilePermissionsConverter to __posixFilePermission2Octal
+#    -renamed __terminalSupportsColours to __terminalSupportsColors
 #    -support for sticky bit, setuid and setgid in __posixFilePermission2Octal
 #    -Fixes and small improvements
 

@@ -853,7 +853,7 @@ Math.random() {
       do 
          result=${result}$(printf "%s" "$(( $RANDOM % 10  ))")
       done
-      System.out.println $result
+      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
