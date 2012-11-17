@@ -690,9 +690,14 @@ done
 # MAIN #
 ########
 
-# To avoid accidents: no arguments, then show usage.
+# To avoid accidents: exit if no arguments
 if (( \$# == 0 )); then
-   help
+   System.err.println
+   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+   returnValue=\$?
+   __stack
+   System.err.println
+   help \$returnValue
 fi
 
 # Now your code...
