@@ -1360,28 +1360,28 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
    String.fromCharCode() {
       __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
       declare -i returnValue=0
-      if (( $# == 1 )); then
+      local hexValue
+      local result=""
+      while (($#))
+      do     
          # check auf 0 bis 65535
          if ! __isBashInteger "$1"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
             returnValue=$?
             __stackOrHelp "String" "${FUNCNAME}"
          else
             if (( "$1" < 0 )) || (( "$1" > 65535 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                returnValue=$?
                __stackOrHelp "String" "${FUNCNAME}"
             else
                local hexValue=$(printf %x "$1")
-               local result=$(printf "%b" "\u${hexValue}")
-               System.out.println "${result}"
+               local result="${result}""$(printf "%b" "\u${hexValue}")"
             fi
          fi
-      else
-         __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-         returnValue=$?
-         __stackOrHelp "String" "${FUNCNAME}"
-      fi 
+         shift
+      done
+      System.out.println "${result}"
       return $returnValue
    }
 fi
