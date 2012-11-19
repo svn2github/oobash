@@ -695,7 +695,6 @@ if (( \$# == 0 )); then
    System.err.println
    __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
    returnValue=\$?
-   __stack
    System.err.println
    help \$returnValue
 fi
