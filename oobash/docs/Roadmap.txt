@@ -3,23 +3,12 @@
 # 0.4 LOGGING
 # -Logging (coproc ?)
 
-# Private:
-# convert hex to dec
-#         hex to oct
-#         oct to hex
-#         oct to dec
-#         dec to oct
-#         dec to hex
-# ?
-
 # Docs for setuid setgid setStickyBit hasUidBit hasGidBit
 
 # TODO:
 # support for cyrillic chars:
 # http://de.wikipedia.org/wiki/Unicodeblock_Kyrillisch
 # http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
-
-# urdecode + urlencode
 
 # use __getAttributeFromObject instead of this.toString. eg:
 local file="$("$this".toString)"
@@ -28,16 +17,28 @@ local str="$("$this".toString)"
 # Some Private functions for: canRead canWrite isFile exists...? Would be much faster than eg:
 if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
+# __posixFilePermission2Octal renaming __posixFilePermissionToOctal ?
+# charCodeAt : Exception if value == 0 ?
+
 # 0.4.1
 # -tput: colour management
 # -optimize logging
 
 # 0.4.2
 # -Script.generator --> create log.properties file for the script ?
+# urdecode + urlencode
 # -optimize logging
 
 # 0.4.3
 # -optimize logging
+# Private:
+# convert hex to dec
+#         hex to oct
+#         oct to hex
+#         oct to dec
+#         dec to oct
+#         dec to hex
+# ?
 
 # 0.41
 # -sort all functions and the help cases
