@@ -21,12 +21,11 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # 0.4.1
 # -tput: colour management
-# -urdecode + urlencode
+# -urldecode + urlencode
 # -optimize logging
 
 # 0.4.2
 # -Script.generator --> create log.properties file for the script ?
-# urdecode + urlencode
 # -optimize logging
 
 # 0.4.3

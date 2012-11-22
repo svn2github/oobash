@@ -56,8 +56,7 @@ Boolean() {
 
       local pointer=$((__OBJCOUNTER__++))
 
-      local bool="$2"
-      bool=$(Boolean.parseBoolean "$bool")
+      local bool=$(Boolean.parseBoolean "$2")
       local class=$FUNCNAME
 
       __destructor "$this"
