@@ -1088,7 +1088,14 @@ __charCodeAt() {
             local str="$("$this".toString)"
             local char=${str:$pos:1}
             declare -i code=$(__charCode "$char")
-            System.out.println $code
+            # this is NOT the null character, but an error
+            if (( $code == 0 )); then
+               __throw "IllegalArgumentException" ": Invalid character at index $pos"
+               returnValue=$?
+               __stackOrHelp "$2" "${FUNCNAME:2}"
+            else
+               System.out.println $code
+            fi
          else
             __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
             returnValue=$?
@@ -1546,6 +1553,7 @@ String.help() {
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
                                            - if number of arguments != 1
+                                           - if invalid character at given index
                   IndexOutOfBoundsException - if the index argument is negative or not less than the length of this string.
                Example:
                   String a abc

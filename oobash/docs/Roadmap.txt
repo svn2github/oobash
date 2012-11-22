@@ -18,10 +18,10 @@ local str="$("$this".toString)"
 if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # __posixFilePermission2Octal renaming __posixFilePermissionToOctal ?
-# charCodeAt : Exception if value == 0 ?
 
 # 0.4.1
 # -tput: colour management
+# -urdecode + urlencode
 # -optimize logging
 
 # 0.4.2
