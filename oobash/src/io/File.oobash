@@ -79,6 +79,44 @@ __registerClass File
 #                   #
 #####################
 
+__hasUidBit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local perm="$("$this".getPosixFilePermissions)"
+      local octal="$(__posixFilePermission2Octal "$perm")"
+      case ${octal:0:1} in
+         4|5|6|7) Boolean.TRUE;;
+         *)       Boolean.FALSE;;
+      esac
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__hasGidBit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local perm="$("$this".getPosixFilePermissions)"
+      local octal="$(__posixFilePermission2Octal "$perm")"
+      case ${octal:0:1} in
+         2|3|6|7) Boolean.TRUE;;
+         *)       Boolean.FALSE;;
+      esac
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __stackOrHelp "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 __getBase() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -2431,8 +2469,8 @@ File.help() {
       -getLine -replaceLine -delLine -createNewFile
       -insertAfterLine -insertBeforeLine -indexOfExtension
       -indexOfLastSeparator -getUser -getGroup
-      -lastChanged -isOlderThan -isNewerThan
-      -setuid -setgid -setStickyBit
+      -lastChanged -isOlderThan -isNewerThan 
+      -setuid -setgid -setStickyBit -hasUidBit -hasGidBit
       Static utilities:
       -File.createTemporaryDir -File.createTempDir
       -File.createTemporaryFile -File.createTempFile

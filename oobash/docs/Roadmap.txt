@@ -12,9 +12,7 @@
 #         dec to hex
 # ?
 
-# add to File: hasUidBit hasGidBit
-
-# Docs for setuid setgid setStickyBit
+# Docs for setuid setgid setStickyBit hasUidBit hasGidBit
 
 # TODO:
 # support for cyrillic chars:

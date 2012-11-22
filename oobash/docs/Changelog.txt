@@ -318,7 +318,7 @@
 #    -Added to String: String.fromCharCode (available only if bash4 has at least minor version number 2.
 #                      If bash is older, this function is not available)
 #    -Added to Private: __getAttributeFromObjectByName, __charCode
-#    -Added to File: setuid setgid setStickyBit
+#    -Added to File: setuid, setgid, setStickyBit, hasUidBit, hasGidBit
 #    -renamed __posixFilePermissionsConverter to __posixFilePermission2Octal
 #    -renamed __terminalSupportsColours to __terminalSupportsColors
 #    -support for sticky bit, setuid and setgid in __posixFilePermission2Octal

@@ -153,7 +153,7 @@ declare -a __FileMethods__=(canRead canWrite canExecute fileLength getName isDir
                             getUsableSpace getInode getBase getExtension getPosixFilePermissions setPosixFilePermissions
                             getLine delLine replaceLine insertAfterLine insertBeforeLine indexOfExtension getOwner 
                             getGroup indexOfLastSeparator deleteRecursively lastChanged lastAccessed setLastAccessed
-                            isOlderThan isNewerThan touch setuid setgid setStickyBit)
+                            isOlderThan isNewerThan touch setuid setgid setStickyBit hasUidBit hasGidBit)
 
 declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
 
@@ -427,7 +427,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -getTotalSpace -getFreeSpace -getUsableSpace -getPosixFilePermissions -setPosixFilePermissions"
    System.out.println "  -getLine -delLine -replaceLine -insertAfterLine -insertBeforeLine -indexOfExtension"
    System.out.println "  -indexOfLastSeparator -getOwner -getGroup -deleteRecursively -lastAccessed -setLastAccessed"
-   System.out.println "  -isOlderThan -isNewerThan -touch -setuid -setgid -setStickyBit"
+   System.out.println "  -isOlderThan -isNewerThan -touch -setuid -setgid -setStickyBit -hasUidBit -hasGidBit"
    System.out.println "  -File.createTemporaryFile -File.createTempFile -File.createTemporaryDir -File.createTempDir"
    System.out.println " Process:"
    System.out.println "  -getPriority -setPriority -kill -isDaemon -getEffectiveUserId -getRealUserId -getMemorySize"
