@@ -19,6 +19,10 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # __posixFilePermission2Octal renaming __posixFilePermissionToOctal ?
 
+# Bug ?: String length: str with new line
+
+# avoid "command not found" in Comparable
+
 # 0.4.1
 # -tput: colour management
 # -urldecode + urlencode
