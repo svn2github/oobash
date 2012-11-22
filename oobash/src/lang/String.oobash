@@ -1381,7 +1381,9 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
          fi
          shift
       done
-      System.out.println "${result}"
+      if (( $returnValue == 0 )); then
+         System.out.println "${result}"
+      fi
       return $returnValue
    }
 fi
@@ -1418,6 +1420,7 @@ String.help() {
       -String.digits                  -String.asciiLetters  
       -String.asciiLettersLowerCase   -String.asciiLettersUpperCase 
       -String.hexDigits               -String.octDigits
+      -String.fromCharCode
                "
       return 0
    fi
@@ -2486,6 +2489,22 @@ String.help() {
                Example:
                   String.octDigits
                   >>>01234567
+               ";;&
+         String.fromCharCode|fromCharCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.fromCharCode
+                  This function is only available, if bash4 has at least minor version number 2.
+                  Converts Unicode values into characters
+               Parameters:
+                  Unicode values
+               Returns:
+                  Converted characters as a string.
+               Throws:
+                  IllegalArgumentException - if parameter is no unicode value
+               Example:
+                  String.fromCharCode 72 69 76 76 79
+                  >>>HELLO 
                ";;&
          *)   
             if [[ "${match}" == "$(Boolean.FALSE)" ]]; then   

@@ -28,9 +28,6 @@ local str="$("$this".toString)"
 # Some Private functions for: canRead canWrite isFile exists...? Would be much faster than eg:
 if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
-# docs for String.fromCharCode
-# The fromCharCode() method converts an Unicode decimal value into a character
-
 # 0.4.1
 # -tput: colour management
 # -optimize logging
