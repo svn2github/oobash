@@ -570,7 +570,8 @@ __copy() {
                return $returnValue
             fi
 
-            for status in ${PIPESTATUS[@]}; do
+            for status in ${PIPESTATUS[@]}
+            do
                if (( "$status" != 0 )); then
                   bool="$(Boolean.FALSE)"
                   break
