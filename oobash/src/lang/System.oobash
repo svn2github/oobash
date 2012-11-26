@@ -251,9 +251,9 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.out.println
-               Print a String and then terminate the line to \"standard\" output 
+               Print a primitive string and then terminate the line to \"standard\" output 
             Parameters:
-               x - The String to be printed.
+               x - The primitive string to be printed.
             Throws:
                IllegalArgumentException - if number of arguments != 1
             Example:
@@ -264,9 +264,9 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.err.println
-               Print a String and then terminate the line to \"standard\" error output
+               Print a primitive string and then terminate the line to \"standard\" error output
             Parameters:
-               x - The String to be printed.
+               x - The primitive string to be printed.
             Throws:
                IllegalArgumentException - if number of arguments != 1
             Example:
@@ -277,9 +277,9 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.out.print
-               Print a String to \"standard\" output 
+               Print a primitive string to \"standard\" output 
             Parameters:
-               x - The String to be printed.
+               x - The primitive string to be printed.
             Throws:
                IllegalArgumentException - if number of arguments != 1
             Example:
@@ -290,9 +290,9 @@ System.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
             System.err.print
-               Print a String to \"standard\" error output
+               Print a primitive string to \"standard\" error output
             Parameters:
-               x - The String to be printed.
+               x - The primitive string to be printed.
             Throws:
                IllegalArgumentException - if number of arguments != 1
             Example:
