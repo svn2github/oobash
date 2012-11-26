@@ -85,7 +85,7 @@ __hasUidBit() {
    if (( $# == 2 )); then
       local this="$1"
       local perm="$("$this".getPosixFilePermissions)"
-      local octal="$(__posixFilePermission2Octal "$perm")"
+      local octal="$(__posixFilePermissionToOctal "$perm")"
       case ${octal:0:1} in
          4|5|6|7) Boolean.TRUE;;
          *)       Boolean.FALSE;;
@@ -104,7 +104,7 @@ __hasGidBit() {
    if (( $# == 2 )); then
       local this="$1"
       local perm="$("$this".getPosixFilePermissions)"
-      local octal="$(__posixFilePermission2Octal "$perm")"
+      local octal="$(__posixFilePermissionToOctal "$perm")"
       case ${octal:0:1} in
          2|3|6|7) Boolean.TRUE;;
          *)       Boolean.FALSE;;
@@ -1577,7 +1577,7 @@ __setPosixFilePermissions() {
       if [[ -e "${file}" ]]; then
          if command -v chmod >/dev/null 2>&1; then
             local permissions=''
-            permissions=$(__posixFilePermission2Octal "$3")
+            permissions=$(__posixFilePermissionToOctal "$3")
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                returnValue=$?
@@ -1622,7 +1622,7 @@ __setuid() {
             else
                output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            posixFilePermission=$(__posixFilePermission2Octal "${output: -9}")
+            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
             highOrderOctal=${posixFilePermission:0:1}
             case ${highOrderOctal} in
                0|1|2|3)
@@ -1673,7 +1673,7 @@ __setgid() {
             else
                output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            posixFilePermission=$(__posixFilePermission2Octal "${output: -9}")
+            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
             highOrderOctal=${posixFilePermission:0:1}
             case ${highOrderOctal} in
                0|1|4|5)
@@ -1724,7 +1724,7 @@ __setStickyBit() {
             else
                output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            posixFilePermission=$(__posixFilePermission2Octal "${output: -9}")
+            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
             highOrderOctal=${posixFilePermission:0:1}
             if (( $((highOrderOctal%2)) == 0 )); then
                ((highOrderOctal++))
@@ -2311,7 +2311,7 @@ File.createTemporaryFile() {
             local suffix="$2"
             if (( $# == 3 )); then
                local permissions=''
-               permissions=$(__posixFilePermission2Octal "$3")
+               permissions=$(__posixFilePermissionToOctal "$3")
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                   returnValue=$?
@@ -2383,7 +2383,7 @@ File.createTemporaryDir() {
             local suffix="$2"
             if (( $# == 3 )); then
                local permissions=''
-               permissions=$(__posixFilePermission2Octal "$3")
+               permissions=$(__posixFilePermissionToOctal "$3")
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                   returnValue=$?

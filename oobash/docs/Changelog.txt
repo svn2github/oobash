@@ -319,9 +319,9 @@
 #                      If bash is older, this function is not available)
 #    -Added to Private: __getAttributeFromObjectByName, __charCode
 #    -Added to File: setuid, setgid, setStickyBit, hasUidBit, hasGidBit
-#    -renamed __posixFilePermissionsConverter to __posixFilePermission2Octal
+#    -renamed __posixFilePermissionsConverter to __posixFilePermissionToOctal
 #    -renamed __terminalSupportsColours to __terminalSupportsColors
-#    -support for sticky bit, setuid and setgid in __posixFilePermission2Octal
+#    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
 #    -Math.random works without bc now
 #    -Fixes and small improvements
 

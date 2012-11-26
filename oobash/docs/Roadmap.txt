@@ -17,10 +17,6 @@ local str="$("$this".toString)"
 # Some Private functions for: canRead canWrite isFile exists...? Would be much faster than eg:
 if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
-# __posixFilePermission2Octal renaming __posixFilePermissionToOctal ?
-
-# Bug ?: String length: str with new line
-
 # avoid "command not found" in Comparable
 
 # 0.4.1
