@@ -84,7 +84,7 @@ __hasUidBit() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local perm="$("$this".getPosixFilePermissions)"
+      local perm="$("$this".getPosixFilePermissions 2>/dev/null)"
       local octal="$(__posixFilePermissionToOctal "$perm")"
       case ${octal:0:1} in
          4|5|6|7) Boolean.TRUE;;
@@ -103,7 +103,7 @@ __hasGidBit() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local perm="$("$this".getPosixFilePermissions)"
+      local perm="$("$this".getPosixFilePermissions  2>/dev/null)"
       local octal="$(__posixFilePermissionToOctal "$perm")"
       case ${octal:0:1} in
          2|3|6|7) Boolean.TRUE;;
@@ -2501,6 +2501,99 @@ File.help() {
                                            - if objectname contains slash character
                Example:
                   File a testfile
+            ";;&
+         setuid|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setuid
+                  Sets the setuid (short for \"set user ID upon execution\") bit for this file
+                  to \"1\", if possible.
+               Parameters:
+                  None
+               Returns:
+                  true if the setuid operation was successful, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if file does not exist
+                  NotInPathException - if stat is not in path
+                                     - if chmod is not in path
+               Example:
+                  File a /tmp/iExist
+                  a.setuid
+                  >>>true
+            ";;&
+         setgid|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setgid
+                  Sets the setgid (short for \"set group ID upon execution\") bit for this file
+                  to \"1\", if possible.
+               Parameters:
+                  None
+               Returns:
+                  true if the setgid operation was successful, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if file does not exist
+                  NotInPathException - if stat is not in path
+                                     - if chmod is not in path
+               Example:
+                  File a /tmp/iExist
+                  a.setgid
+                  >>>true
+            ";;&
+         setStickyBit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setStickyBit
+                  Sets the sticky bit for this file to \"1\", if possible.
+               Parameters:
+                  None
+               Returns:
+                  true if the setStickyBit operation was successful, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if file does not exist
+                  NotInPathException - if stat is not in path
+                                     - if chmod is not in path
+               Example:
+                  File a /tmp/iExist
+                  a.setStickyBit
+                  >>>true
+            ";;&
+         hasUidBit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hasUidBit
+                  Tests if the setuid (short for \"set user ID upon execution\") bit is active (\"1\")
+                  for this file.
+               Parameters:
+                  None
+               Returns:
+                  true if setuid bit is \"1\"; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/iExist
+                  a.hasUidBit
+                  >>>false
+            ";;&
+         hasGidBit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hasGidBit
+                  Tests if the setgid (short for \"set group ID upon execution\") bit is active (\"1\")
+                  for this file.
+               Parameters:
+                  None
+               Returns:
+                  true if setgid bit is \"1\"; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/iExist
+                  a.hasGidBit
+                  >>>false
             ";;&
          isOlderThan|all)
             match=$(Boolean.TRUE)

@@ -309,7 +309,7 @@
 #    -Added to Private: __isatty, __terminalSupportsColours, __slashCheck, __getLoggingTimestamp, 
 #                       __getFreeFD, __setPS4
 #    -Added to File: lastChanged, lastAccessed, setLastAccessed, touch, isOlderThan, isNewerThan
-#    -new Array __OptionalVars__: optional varaibles, at the moment:
+#    -new Array __OptionalVars__: optional variables, at the moment:
 #     __QUIET__ __AUTHOR__ __EMAIL__ __COMPANY__
 #    -All generators try to use the following optional variables, if you set them:
 #    __AUTHOR__ __COMPANY__ __EMAIL__
