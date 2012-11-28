@@ -1229,7 +1229,8 @@ __getFreeFD() {
    maxFDCount=$(ulimit -n)
 
    if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
-      while [[ -e /proc/$$/fd/${freeFD} ]] && (( ${freeFD} < ${maxFDCount} )); do
+      while [[ -e /proc/$$/fd/${freeFD} ]] && (( ${freeFD} < ${maxFDCount} ))
+      do
          ((freeFD++))
       done
    else
