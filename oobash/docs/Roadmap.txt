@@ -17,10 +17,14 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # avoid "command not found" in Comparable
 
+# docs charCodeAt: char --> character
+
 # 0.4.1
-# -tput: colour management
-# -urldecode + urlencode
+# -tput: color management
 # -optimize logging
+# -File:
+# * extended file attributes: lsattr, chattr.. ?
+# * File spit, merge ?
 
 # 0.4.2
 # -Script.generator --> create log.properties file for the script ?
@@ -35,6 +39,7 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 #         oct to dec
 #         dec to oct
 #         dec to hex
+#         + binary
 # ?
 
 # 0.41
@@ -46,7 +51,7 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 
 # 0.42
 # -tput: terminal info
-
+ 
 # 0.43
 # -tput: cursor
 
@@ -65,7 +70,7 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 # -sudo decorator for Ssh ?
 # ...
 
-# 0.70 DATE/IPv4+IPv6 ADRESSES/..
+# 0.70 DATE/IPv4+IPv6 ADDRESS/..
 # -Date functions..
 
 # 0.80 GUI
