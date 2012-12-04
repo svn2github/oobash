@@ -8,15 +8,6 @@
 # http://de.wikipedia.org/wiki/Unicodeblock_Kyrillisch
 # http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
 
-# use __getAttributeFromObject instead of this.toString. eg:
-local file="$("$this".toString)"
-local str="$("$this".toString)"
-
-# Some Private functions for: canRead canWrite isFile exists...? Would be much faster than eg:
-if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
-
-# avoid "command not found" in Comparable
-
 # docs charCodeAt: char --> character
 
 # 0.4.1
@@ -41,6 +32,14 @@ if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then
 #         dec to hex
 #         + binary
 # ?
+
+# 0.4.4
+# Try to be faster ?:
+# * use __getAttributeFromObject instead of eg "$("$this".toString)" ???
+# * use some Private functions for: canRead canWrite isFile exists...?
+# e.g.:
+# "if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then"
+# would be faster, but not so pretty...
 
 # 0.41
 # -sort all functions and the help cases
