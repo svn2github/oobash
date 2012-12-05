@@ -22,14 +22,7 @@
 # 0.4.3
 # -optimize logging
 # Private:
-# convert hex to dec
-#         hex to oct
-#         oct to hex
-#         oct to dec
-#         dec to oct
-#         dec to hex
-#         + binary
-# ?
+# convert between hex dec oct bin
 
 # 0.4.4
 # Try to be faster ?:
