@@ -158,8 +158,7 @@ __base64Decode() {
       local this="$1"
       if command -v openssl >/dev/null 2>&1; then       
          declare -i returnValue
-         local output
-         local input
+         local output input
          input="$("$this".toString)"
          output="$(System.out.println "${input}" | openssl enc -base64 -d 2>/dev/null)"
          if (( "${#input}" != 0 && "${#output}" == 0 )); then
@@ -167,7 +166,7 @@ __base64Decode() {
             returnValue=$?
             __stackOrHelp "$2" "${FUNCNAME:2}" 
          else
-            System.out.println "$output"
+            System.out.println "${output}"
          fi
       else
          __throw "NotInPathException" ": openssl not in path"
