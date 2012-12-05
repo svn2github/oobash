@@ -157,7 +157,6 @@ __base64Decode() {
    if (( $# == 2 )); then
       local this="$1"
       if command -v openssl >/dev/null 2>&1; then       
-         declare -i returnValue
          local output input
          input="$("$this".toString)"
          output="$(System.out.println "${input}" | openssl enc -base64 -d 2>/dev/null)"
