@@ -189,7 +189,7 @@ __rstrip() {
       shopt -s extglob
       # trimming...
       result="${str%%+([[:space:]])}"
-      System.out.println "$result"
+      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -207,7 +207,7 @@ __lstrip() {
       shopt -s extglob
       # trimming...
       local result="${str##+([[:space:]])}"    
-      System.out.println "$result"
+      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -378,7 +378,7 @@ __count() {
       else
          if command -v bc >/dev/null 2>&1; then 
             declare -i count=$(System.out.println "($string_length-$replaced_length)/$pattern_length" | bc)
-            System.out.println $count            
+            System.out.println "${count}"         
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -605,7 +605,7 @@ __swapCase() {
             swaped="$swaped""${char~}" ;;
          esac
       done
-      System.out.println "$swaped"
+      System.out.println "${swaped}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -763,7 +763,7 @@ __trim() {
       # trimming...
       local result="${str##+([[:space:]])}"    
       result="${result%%+([[:space:]])}"
-      System.out.println "$result"
+      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -809,7 +809,7 @@ __containsOnly() {
             break
          fi
       done
-      Boolean.parseBoolean "$bool"
+      Boolean.parseBoolean "${bool}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -835,7 +835,7 @@ __containsNone() {
             break
          fi
       done
-      Boolean.parseBoolean "$bool"
+      Boolean.parseBoolean "${bool}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
