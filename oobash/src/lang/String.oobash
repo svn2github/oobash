@@ -118,7 +118,7 @@ __compareToIgnoreCase() {
             fi		
          done
       fi
-      System.out.println $result
+      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
