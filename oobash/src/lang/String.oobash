@@ -87,36 +87,37 @@ __compareToIgnoreCase() {
       local this="$1"
       local str1="$("$this".toUpperCase)"
       local str2="$(__strUpper "$3")"
-      declare -i length=-1
-      if (( ${#str1} == ${#str2} )); then
-         length=${#str2}
-         if [[ "$str1" == "$str2" ]]; then
-            System.out.println 0
-            return $returnValue
-         fi
-      fi
-      if (( $length == -1 )); then
-         declare -i result=$((${#str1}-${#str2}))
-         if (( ${#str1} < ${#str} )); then
-            length=${#str1}
-         else
+      declare -i result
+      if [[ "$str1" == "$str2" ]]; then
+         result=0
+      else
+         declare -i length=-1
+         if (( ${#str1} == ${#str2} )); then
             length=${#str2}
          fi
-      fi	
-      declare -i i=0
-      local charStr1 charStr2
-      declare -i valueStr1 valueStr2
-      for ((i=0; i < $length; i++))
-      do
-         charStr1="${str1:i:1}"
-         valueStr1=$(__charCode "$charStr1")
-         charStr2="${str2:i:1}"
-         valueStr2=$(__charCode "$charStr2")
-         if (( $valueStr1 != $valueStr2 )); then
-            System.out.println $((valueStr1-valueStr2))
-            return $returnValue
-         fi		
-      done
+         if (( $length == -1 )); then
+            result=$((${#str1}-${#str2}))
+            if (( ${#str1} < ${#str} )); then
+               length=${#str1}
+            else
+               length=${#str2}
+            fi
+         fi	
+         declare -i i=0
+         local charStr1 charStr2
+         declare -i valueStr1 valueStr2
+         for ((i=0; i < $length; i++))
+         do
+            charStr1="${str1:i:1}"
+            valueStr1=$(__charCode "$charStr1")
+            charStr2="${str2:i:1}"
+            valueStr2=$(__charCode "$charStr2")
+            if (( $valueStr1 != $valueStr2 )); then
+               result=$((valueStr1-valueStr2))
+               break
+            fi		
+         done
+      fi
       System.out.println $result
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
