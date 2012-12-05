@@ -1542,14 +1542,13 @@ String.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                charCodeAt
-                  Returns the char code value at the specified index. An index ranges from
-                  0 to length - 1. The first char value of the sequence is at index 0,
+                  Returns the character code value at the specified index. An index ranges from
+                  0 to length - 1. The first character value of the sequence is at index 0,
                   the next at index 1, and so on, as for array indexing.
                Parameters:
-                  index - the index of the char value (integer)
+                  index - the index of the character value (integer)
                Returns:
-                  the char code value at the specified index of this string. The first char
-                  value is at index 0.
+                  the character code value at the specified index of this string.
                Throws:
                   IllegalArgumentException - if the parameter cannot be treated as a number
                                            - if number of arguments != 1

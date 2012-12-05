@@ -8,8 +8,6 @@
 # http://de.wikipedia.org/wiki/Unicodeblock_Kyrillisch
 # http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
 
-# docs charCodeAt: char --> character
-
 # 0.4.1
 # -tput: color management
 # -optimize logging
