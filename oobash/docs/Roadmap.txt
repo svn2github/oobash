@@ -4,9 +4,10 @@
 # -Logging (coproc ?)
 
 # TODO:
-# support for cyrillic chars:
-# http://de.wikipedia.org/wiki/Unicodeblock_Kyrillisch
-# http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
+
+# Fix in String.fromCharCode for all the characters that are not supported by bash printf unicode support
+# Docs: indexOfDifference param: primitive string --> example with "$(obj.toString)"
+# check all String docs: String <--> primitive string
 
 # 0.4.1
 # -tput: color management

@@ -323,6 +323,7 @@
 #    -renamed __terminalSupportsColours to __terminalSupportsColors
 #    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
 #    -Math.random works without bc now
+#    -Support for cyrillic characters
 #    -Fixes and small improvements
 
 
