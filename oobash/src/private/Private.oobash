@@ -857,7 +857,7 @@ __stackOrHelp() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    # interactive --> help
    if [[ -n "$PS1" ]]; then
-      if [[ $(Boolean.parseBoolean "$__HELP__") == "$(Boolean.TRUE)" ]]; then
+      if [[ "$(Boolean.parseBoolean "${__HELP__}")" == "$(Boolean.TRUE)" ]]; then
          local printStream=err
          local class="$1"
          local func="$2"
@@ -865,7 +865,7 @@ __stackOrHelp() {
       fi
    # not interactive --> stacktrace
    else
-      if [[ "$(Boolean.parseBoolean ${__STACKTRACE__})" == "$(Boolean.TRUE)" ]]; then
+      if [[ "$(Boolean.parseBoolean "${__STACKTRACE__}")" == "$(Boolean.TRUE)" ]]; then
          __stacktrace
       fi
    fi
@@ -1357,3 +1357,4 @@ __charCode() {
    return 0
 }
 __registerFunction __charCode
+

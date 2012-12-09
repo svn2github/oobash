@@ -1,6 +1,6 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.4 LOGGING
+# 0.40 LOGGING
 # -Logging (coproc ?)
 
 # TODO:
@@ -10,25 +10,28 @@
 # Docs: indexOfDifference param: primitive string --> example with "$(obj.toString)"
 # check all String docs: String <--> primitive string
 # stackOrHelp rename to handleErrorMessage (decision in source time)
-# stack (ony available in script - decision in source time )
+# remove __stack then ?
+# parameter checks in the constructors --> stamp out duplication
+# use one name pattern for the parameter checks in the constructors --> rename !
+# mark unused private functions
 
-# 0.4.1
+# 0.40.1
 # -tput: color management
 # -optimize logging
 # -File:
 # * extended file attributes: lsattr, chattr.. ?
 # * File spit, merge ?
 
-# 0.4.2
+# 0.40.2
 # -Script.generator --> create log.properties file for the script ?
 # -optimize logging
 
-# 0.4.3
+# 0.40.3
 # -optimize logging
 # Private:
 # convert between hex dec oct bin
 
-# 0.4.4
+# 0.40.4
 # Try to be faster ?:
 # * use __getAttributeFromObject instead of eg "$("$this".toString)" ???
 # * use some Private functions for: canRead canWrite isFile exists...?
