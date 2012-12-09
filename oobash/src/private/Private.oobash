@@ -55,7 +55,7 @@
 # __getFreeFD() tries to return a free file descriptor
 # __setPS4() sets PS4 prompt for a better prefix during tracing output
 # __getAttributeFromObjectByName() returns the value of a given attribute of a given object 
-# __charCode() returns the charcter code of first etter of given string 
+# __charCode() returns the charcter code of first letter of given string 
 
 # private
 # check for log4oobash.properties file in the same directory
@@ -344,7 +344,7 @@ __strUpper() {
          223 )                  
          upper="${upper}""ẞ";;
          228|246|252|224|226|230|231|232|233|\
-         234|235|238|239|244|156|249|251|261|\
+         234|235|238|239|244|339|249|251|261|\
          281|243|263|322|324|347|378|380|225|\
          237|241|250|259|537|351|539|355|283|\
          367|253|269|314|328|341|345|353|382|\
@@ -387,7 +387,7 @@ __strLower() {
          7838)
          lower="${lower}""ß";;
          220|196|214|192|194|198|199|200|201|\
-         202|203|206|207|212|140|217|219|260|\
+         202|203|206|207|212|338|217|219|260|\
          280|211|262|321|323|346|377|379|193|\
          205|209|218|258|536|350|538|354|282|\
          366|221|268|313|327|340|344|352|381|\
