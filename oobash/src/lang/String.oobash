@@ -2511,6 +2511,8 @@ String.help() {
                Example:
                   String.fromCharCode 72 69 76 76 79
                   >>>HELLO 
+                  String.fromCharCode  9601 9602 9603 9604 9605 9606 9607 9608
+                  >>>▁▂▃▄▅▆▇█
                ";;&
          *)   
             if [[ "${match}" == "$(Boolean.FALSE)" ]]; then   
