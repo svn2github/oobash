@@ -4,13 +4,13 @@
 # -Logging (coproc ?)
 
 # TODO:
-
 # Fix in String.fromCharCode for all the characters that are not supported by bash printf unicode support
 # check if i really used unicode values and not html character values (upper,lower...) 
 # Docs: indexOfDifference param: primitive string --> example with "$(obj.toString)"
 # check all String docs: String <--> primitive string
 # parameter checks in the constructors --> stamp out duplication
-# use one name pattern for the parameter checks in the constructors --> rename !
+# private getObjectPointer in all getters --> reduce code dupication 
+# use ONE name pattern for the parameter checks in the constructors --> rename !
 
 # 0.40.1
 # -tput: color management
