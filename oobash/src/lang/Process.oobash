@@ -18,14 +18,14 @@ Process() {
       if ! __isBashInteger "$2"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       else
          declare -i pid="$2"
          if (( $pid < 1 )); then
             __throw "IllegalArgumentException" ": Illegal argument: \"$pid\" is no valid pid"
             returnValue=$?
-            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
          fi
       fi
@@ -33,28 +33,28 @@ Process() {
       if ! __visible "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __checkForKeywords "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi 
 
       if ! __periodCheck "$this"; then
          __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __slashCheck "$this"; then
          __throw "IllegalArgumentException" ": No slash character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
@@ -65,13 +65,13 @@ Process() {
          if (( ${pid} < 1 || ${pid} > ${maxpid} )); then
             __throw "IllegalArgumentException" ": Pid \"$pid\" is not valid"
             returnValue=$?
-            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
          fi
          if [[ ! -d /proc/${pid} ]]; then
             __throw "ProcessException" ": Process with pid: \"$pid\" can't be managed"
             returnValue=$?
-            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
          fi
       else
@@ -80,7 +80,7 @@ Process() {
             if (( $? != 0 ));then
                __throw "ProcessException" ": Process with pid: \"$pid\" can't be managed"
                returnValue=$?
-               __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+               __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
                return $returnValue
             fi
          fi
@@ -99,7 +99,7 @@ Process() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+      __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -137,19 +137,19 @@ __getPid() {
          if (( $? != 0 )); then
             __throw "ProcessException" ": Process with pid: \"${__ATTRIBUTEPOOL__[${pointer}@pid]}\" can't be managed"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          else
             System.out.println ${pId}
          fi
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"        
+         __handleErrorMessage "$2" "${FUNCNAME:2}"        
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -169,7 +169,7 @@ __getParentPid() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println ${ppid}
             fi
@@ -177,12 +177,12 @@ __getParentPid() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -202,7 +202,7 @@ __getRealUserId() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println ${ruid}
             fi
@@ -210,12 +210,12 @@ __getRealUserId() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -235,7 +235,7 @@ __getEffectiveUserId() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println ${euid}
             fi
@@ -243,12 +243,12 @@ __getEffectiveUserId() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -268,7 +268,7 @@ __getUser() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println ${owner}
             fi
@@ -276,12 +276,12 @@ __getUser() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"        
+         __handleErrorMessage "$2" "${FUNCNAME:2}"        
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -301,7 +301,7 @@ __getMemorySize() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println ${mem}
             fi
@@ -309,12 +309,12 @@ __getMemorySize() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"        
+         __handleErrorMessage "$2" "${FUNCNAME:2}"        
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -334,7 +334,7 @@ __getStartTime() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println "${start}"
             fi
@@ -342,12 +342,12 @@ __getStartTime() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"        
+         __handleErrorMessage "$2" "${FUNCNAME:2}"        
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -367,7 +367,7 @@ __getCommand() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println "${cmd}"
             fi
@@ -375,12 +375,12 @@ __getCommand() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"      
+         __handleErrorMessage "$2" "${FUNCNAME:2}"      
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -400,7 +400,7 @@ __getStatus() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                case "${stat:0:1}" in
                   U|D)stat="Uninterruptible";;
@@ -428,7 +428,7 @@ __getStatus() {
                      fi;;
                   *)__throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                      returnValue=$?
-                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     __handleErrorMessage "$2" "${FUNCNAME:2}"
                      return $returnValue;;
                esac
                System.out.println "${stat}"
@@ -437,12 +437,12 @@ __getStatus() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -462,7 +462,7 @@ __getPriority() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println ${prio}
             fi
@@ -470,12 +470,12 @@ __getPriority() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -493,7 +493,7 @@ __setPriority() {
             if ! __isBashInteger "$3"; then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                declare -i priority="$3"    
                if (( ${priority} >= -20 && ${priority} <= 19 )); then
@@ -506,19 +506,19 @@ __setPriority() {
                else
                   __throw "IllegalArgumentException" ": Illegal argument: \"${priority}\" - has to be between -20 and 19"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                fi
             fi
          fi
       else
          __throw "NotInPathException" ": renice not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -538,7 +538,7 @@ __isDaemon() {
             if (( $? != 0 )); then
                __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                if [[ "${tty}" =~ "?" ]] ; then
                   Boolean.TRUE
@@ -550,12 +550,12 @@ __isDaemon() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -586,7 +586,7 @@ __kill() {
                   if [[ "${signalValid}" != "$(Boolean.TRUE)" ]]; then
                      __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
                      returnValue=$?
-                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     __handleErrorMessage "$2" "${FUNCNAME:2}"
                      return $returnValue
                   fi
                fi           
@@ -603,12 +603,12 @@ __kill() {
       else
          __throw "NotInPathException" ": kill not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -629,7 +629,7 @@ __threadCount() {
                if (( $? != 0 )); then
                   __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                   return $returnValue
                fi
             else
@@ -637,7 +637,7 @@ __threadCount() {
                if (( $? != 0 )); then
                   __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                   return $returnValue
                fi
             fi
@@ -656,12 +656,12 @@ __threadCount() {
       else
          __throw "NotInPathException" ": ps not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -694,12 +694,12 @@ Process.create() {
       else
          __throw "NotInPathException" ": ${processCommand} not in path"
          returnValue=$?
-         __stackOrHelp "Process" "${FUNCNAME}"
+         __handleErrorMessage "Process" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Process" "${FUNCNAME}"
+      __handleErrorMessage "Process" "${FUNCNAME}"
    fi
    return $returnValue
 }

@@ -59,13 +59,13 @@ __compareTo() {
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)" 
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
          return $returnValue
       fi                    
       declare -i length=-1
@@ -100,7 +100,7 @@ __compareTo() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }

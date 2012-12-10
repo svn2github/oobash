@@ -30,12 +30,12 @@ System.currentTimeMillis() {
       else
          __throw "NotInPathException" ": GNU date not in path"
          returnValue=$?
-         __stackOrHelp "System" "${FUNCNAME}"
+         __handleErrorMessage "System" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -50,12 +50,12 @@ System.currentTimeNanos() {
       else
          __throw "NotInPathException" ": GNU date not in path"
          returnValue=$?
-         __stackOrHelp "System" "${FUNCNAME}"
+         __handleErrorMessage "System" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -68,7 +68,7 @@ System.exit() {
       if ! __isBashInteger "$1"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "System" "${FUNCNAME}"
+         __handleErrorMessage "System" "${FUNCNAME}"
       else
          declare -i status="$1"
          if (( ${status} >= 0 && ${status} <= 255 )); then
@@ -76,13 +76,13 @@ System.exit() {
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
             returnValue=$?
-            __stackOrHelp "System" "${FUNCNAME}"
+            __handleErrorMessage "System" "${FUNCNAME}"
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -97,7 +97,7 @@ System.err.println() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -112,7 +112,7 @@ System.out.println() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -127,7 +127,7 @@ System.err.print() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -142,7 +142,7 @@ System.out.print() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -164,7 +164,7 @@ System.runtime() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "System" "${FUNCNAME}"
+      __handleErrorMessage "System" "${FUNCNAME}"
    fi
    return $returnValue
 }

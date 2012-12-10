@@ -33,14 +33,14 @@ Ssh() {
       if ! __isBashInteger "$p"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$p\" is no valid port number"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       else
          declare -i port="$p"
          if (( $port < 0 )) || (( $port >  65536 )); then     
             __throw "IllegalArgumentException" ": Illegal argument: \"$p\" is no valid port number"
             returnValue=$?
-            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
          fi
       fi
@@ -49,28 +49,28 @@ Ssh() {
       if ! __visible "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __checkForKeywords "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __periodCheck "$this"; then
          __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
       
       if ! __slashCheck "$this"; then
          __throw "IllegalArgumentException" ": No slash character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
@@ -81,13 +81,13 @@ Ssh() {
          if (( $returnValue != 0 )); then
             __throw "AuthException" ": no passwordless authentication possible with SshHost '${name}' and user '${user}' on port '${port}' "
             returnValue=$?
-            __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+            __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
             return $returnValue
          fi
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
  
@@ -106,7 +106,7 @@ Ssh() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+      __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -144,7 +144,7 @@ __getSshHost() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -175,7 +175,7 @@ __getSshUser() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -206,7 +206,7 @@ __getSshPort() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -230,12 +230,12 @@ __command() {
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
-         __stackOrHelp "${class}" "${FUNCNAME:2}"
+         __handleErrorMessage "${class}" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -258,22 +258,22 @@ __execModule() {
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
-               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               __handleErrorMessage "${class}" "${FUNCNAME:2}"
             fi
          else
             __throw "IOException" ":\"${file}\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": Cannot read file \"${file}\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -295,17 +295,17 @@ __vimEdit() {
          else
             __throw "NotInPathException" ": scp not in path"
             returnValue=$?
-            __stackOrHelp "${class}" "${FUNCNAME:2}"
+            __handleErrorMessage "${class}" "${FUNCNAME:2}"
          fi
       else
          __throw "NotInPathException" ": vim not in path"
          returnValue=$?
-         __stackOrHelp "${class}" "${FUNCNAME:2}"
+         __handleErrorMessage "${class}" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -325,12 +325,12 @@ __connect() {
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
-         __stackOrHelp "${class}" "${FUNCNAME:2}"
+         __handleErrorMessage "${class}" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -356,12 +356,12 @@ __grep() {
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
-         __stackOrHelp "${class}" "${FUNCNAME:2}"
+         __handleErrorMessage "${class}" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -387,12 +387,12 @@ __grepInvertMatch() {
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
-         __stackOrHelp "${class}" "${FUNCNAME:2}"
+         __handleErrorMessage "${class}" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -418,12 +418,12 @@ __grepIgnoreCase() {
       else
          __throw "NotInPathException" ": ssh not in path"
          returnValue=$?
-         __stackOrHelp "${class}" "${FUNCNAME:2}"
+         __handleErrorMessage "${class}" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -454,27 +454,27 @@ __diffFile() {
                else
                   __throw "NotInPathException" ": diff not in path"
                   returnValue=$?
-                  __stackOrHelp "${class}" "${FUNCNAME:2}"
+                  __handleErrorMessage "${class}" "${FUNCNAME:2}"
                fi
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
-               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               __handleErrorMessage "${class}" "${FUNCNAME:2}"
             fi
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -509,27 +509,27 @@ __diffFiletree() {
                else
                   __throw "NotInPathException" ": diff not in path"
                   returnValue=$?
-                  __stackOrHelp "${class}" "${FUNCNAME:2}"
+                  __handleErrorMessage "${class}" "${FUNCNAME:2}"
                fi
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
-               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               __handleErrorMessage "${class}" "${FUNCNAME:2}"
             fi
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -566,7 +566,7 @@ __copy() {
             else
                __throw "NotInPathException" ": ssh not in path"
                returnValue=$?
-               __stackOrHelp "${class}" "${FUNCNAME:2}"
+               __handleErrorMessage "${class}" "${FUNCNAME:2}"
                return $returnValue
             fi
 
@@ -586,17 +586,17 @@ __copy() {
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"${argobject}\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "${class}" "${FUNCNAME:2}"
+      __handleErrorMessage "${class}" "${FUNCNAME:2}"
    fi
    return $returnValue
 }

@@ -29,7 +29,7 @@ __getClass() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -70,13 +70,13 @@ __toString() {
          else
             __throw "NotInPathException" ": sort not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
       else
          __throw "NotInPathException" ": tr not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
          return $returnValue
       fi         
       for key in $keys
@@ -94,7 +94,7 @@ __toString() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -127,12 +127,12 @@ __equals() {
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -179,12 +179,12 @@ __hashCode() {
       else
          __throw "NotInPathException" ": bc not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }

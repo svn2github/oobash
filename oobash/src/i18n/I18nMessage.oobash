@@ -24,7 +24,7 @@ I18n.out.println() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "I18n" "${FUNCNAME}"
+      __handleErrorMessage "I18n" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -41,7 +41,7 @@ I18n.err.println() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "I18n" "${FUNCNAME}"
+      __handleErrorMessage "I18n" "${FUNCNAME}"
    fi
    return $returnValue   
 }
@@ -58,7 +58,7 @@ I18n.out.print() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "I18n" "${FUNCNAME}"
+      __handleErrorMessage "I18n" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -75,7 +75,7 @@ I18n.err.print() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "I18n" "${FUNCNAME}"
+      __handleErrorMessage "I18n" "${FUNCNAME}"
    fi
    return $returnValue   
 }

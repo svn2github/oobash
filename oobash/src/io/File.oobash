@@ -29,28 +29,28 @@ File() {
       if ! __visible "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __checkForKeywords "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __periodCheck "$this"; then
          __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __slashCheck "$this"; then
          __throw "IllegalArgumentException" ": No slash character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
@@ -67,7 +67,7 @@ File() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+      __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
    fi
    return $returnValue 	
 }
@@ -93,7 +93,7 @@ __hasUidBit() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -112,7 +112,7 @@ __hasGidBit() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -126,7 +126,7 @@ __getBase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -146,7 +146,7 @@ __getExtension() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -167,7 +167,7 @@ __getTotalSpace() {
          else
             __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          System.out.println "0"
@@ -175,7 +175,7 @@ __getTotalSpace() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -196,7 +196,7 @@ __getUsableSpace() {
          else
             __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          System.out.println "0"
@@ -204,7 +204,7 @@ __getUsableSpace() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -225,7 +225,7 @@ __getFreeSpace() {
          else
             __throw "NotInPathException" ": GNU stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          System.out.println "0"
@@ -233,7 +233,7 @@ __getFreeSpace() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -252,7 +252,7 @@ __canRead() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -271,7 +271,7 @@ __canWrite() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -290,7 +290,7 @@ __canExecute() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -304,7 +304,7 @@ __getName() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -323,7 +323,7 @@ __isDirectory() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -342,7 +342,7 @@ __exists() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -361,7 +361,7 @@ __isFile() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -381,7 +381,7 @@ __isHidden() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -403,12 +403,12 @@ __mkdir() {
       else
          __throw "NotInPathException" ": mkdir not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -430,12 +430,12 @@ __mkdirs() {
       else
          __throw "NotInPathException" ": mkdir not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -449,7 +449,7 @@ __getParent() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -468,7 +468,7 @@ __isSymbolicLink() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -487,7 +487,7 @@ __isNamedPipe() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -506,7 +506,7 @@ __hasStickyBit() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -525,7 +525,7 @@ __isSocket() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -544,7 +544,7 @@ __isCharacterSpecial() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -563,7 +563,7 @@ __isBlockSpecial() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -580,7 +580,7 @@ __setReadable() {
          ;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
          return $returnValue
          ;;
    esac
@@ -608,7 +608,7 @@ __setReadable() {
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -625,7 +625,7 @@ __setWritable() {
          ;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
          return $returnValue
          ;;
    esac
@@ -653,7 +653,7 @@ __setWritable() {
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -670,7 +670,7 @@ __setExecutable() {
          ;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
          return $returnValue
          ;;
    esac
@@ -698,7 +698,7 @@ __setExecutable() {
    else
       __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -723,18 +723,18 @@ __getCanonicalPath() {
             else
                __throw "NotInPathException" ": pwd not in path"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          fi
       else
          __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -753,7 +753,7 @@ __getAbsolutePath() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -768,7 +768,7 @@ __getPath() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -787,7 +787,7 @@ __isAbsolute() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -813,17 +813,17 @@ __delete() {
          else
             __throw "NotInPathException" ": rmdir not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "NotInPathException" ": rm not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -848,12 +848,12 @@ __deleteRecursively() {
       else
          __throw "NotInPathException" ": rm not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -878,12 +878,12 @@ __createNewFile() {
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -938,12 +938,12 @@ __lastModified() {
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"        
+         __handleErrorMessage "$2" "${FUNCNAME:2}"        
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -958,7 +958,7 @@ __setLastModified() {
          if ! __isBashInteger "$3"; then
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
          declare -i milliSeconds="$3"
@@ -985,7 +985,7 @@ __setLastModified() {
          else
             __throw "NotInPathException" ": date not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
          touch -m -t ${timestamp} -- "${file}" 2>/dev/null
@@ -997,12 +997,12 @@ __setLastModified() {
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1057,12 +1057,12 @@ __lastAccessed() {
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1077,7 +1077,7 @@ __setLastAccessed() {
          if ! __isBashInteger "$3"; then
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
          declare -i milliSeconds="$3"
@@ -1104,7 +1104,7 @@ __setLastAccessed() {
          else
             __throw "NotInPathException" ": date not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
          touch -a -t ${timestamp} -- "${file}" 2>/dev/null
@@ -1116,12 +1116,12 @@ __setLastAccessed() {
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1176,12 +1176,12 @@ __lastChanged() {
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1202,12 +1202,12 @@ __setReadOnly() {
       else
          __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1227,17 +1227,17 @@ __getText() {
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"            
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1264,27 +1264,27 @@ __setText() {
                else
                   __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"                  
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"                  
                fi
             else
                __throw "IOException" ": Cannot write file \"$("$this".toString)\""
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else 
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"           
+            __handleErrorMessage "$2" "${FUNCNAME:2}"           
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1311,27 +1311,27 @@ __append() {
                else
                   __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                fi
             else
                __throw "IOException" ": Cannot write file \"$("$this".toString)\""
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"               
+               __handleErrorMessage "$2" "${FUNCNAME:2}"               
             fi            
          else 
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1352,17 +1352,17 @@ __clear() {
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"            
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot write file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1381,17 +1381,17 @@ __linecount() {
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"            
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1416,17 +1416,17 @@ __linematch() {
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"   
+         __handleErrorMessage "$2" "${FUNCNAME:2}"   
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1447,22 +1447,22 @@ __md5sum() {
             else
                __throw "NotInPathException" ": openssl not in path"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"            
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1483,22 +1483,22 @@ __sha1sum() {
             else
                __throw "NotInPathException" ": openssl not in path"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"            
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
          fi
       else
          __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1519,17 +1519,17 @@ __getInode() {
          else
             __throw "NotInPathException" ": stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1553,17 +1553,17 @@ __getPosixFilePermissions() {
          else
             __throw "NotInPathException" ": stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1581,7 +1581,7 @@ __setPosixFilePermissions() {
             if (( $? != 0 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                returnValue=$?
-               __stackOrHelp "File" "${FUNCNAME:2}"
+               __handleErrorMessage "File" "${FUNCNAME:2}"
                return $returnValue
             fi
             chmod "${permissions}" "${file}" 2>/dev/null
@@ -1593,17 +1593,17 @@ __setPosixFilePermissions() {
          else
             __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1637,24 +1637,24 @@ __setuid() {
                else
                   __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                fi;;   
                *) Boolean.FALSE;;
             esac     
          else
             __throw "NotInPathException" ": stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1688,24 +1688,24 @@ __setgid() {
                else
                   __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                fi;;   
                *) Boolean.FALSE;;
             esac           
          else
             __throw "NotInPathException" ": stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1738,7 +1738,7 @@ __setStickyBit() {
                else
                   __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                fi               
             else
                Boolean.FALSE 
@@ -1746,17 +1746,17 @@ __setStickyBit() {
          else
             __throw "NotInPathException" ": stat not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1769,7 +1769,7 @@ __getLine() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i line="$3"
          declare -i index=$((line-1))
@@ -1781,25 +1781,25 @@ __getLine() {
                if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
                   __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                else
                   System.out.print "${FILE[index]}"
                fi
             else
                __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else
             __throw "IOException" ": Cannot read file \"$("$this".toString)\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1812,7 +1812,7 @@ __delLine() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i line="$3"
          declare -i index=$((line-1))
@@ -1824,7 +1824,7 @@ __delLine() {
                if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
                   __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
                else
                   > "$file" 1>/dev/null 2>/dev/null
                   for indx in "${!FILE[@]}"
@@ -1837,18 +1837,18 @@ __delLine() {
             else
                __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else
             __throw "IOException" ": Cannot read file \"$("$this".toString)\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1861,7 +1861,7 @@ __replaceLine() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i line="$3"
          declare -i index=$((line-1))
@@ -1879,7 +1879,7 @@ __replaceLine() {
                      if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
                         __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                         returnValue=$?
-                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                        __handleErrorMessage "$2" "${FUNCNAME:2}"
                      else
                         > "$file" 1>/dev/null 2>/dev/null
                         for indx in "${!FILE[@]}"
@@ -1894,28 +1894,28 @@ __replaceLine() {
                   else
                      __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                      returnValue=$?
-                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     __handleErrorMessage "$2" "${FUNCNAME:2}"
                   fi
                else
                   __throw "IOException" ": Cannot write file \"$("$this".toString)\""
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"               
                fi            
             else 
                __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"         
+            __handleErrorMessage "$2" "${FUNCNAME:2}"         
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1928,7 +1928,7 @@ __insertBeforeLine() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i line="$3"
          declare -i index=$((line-1))
@@ -1946,7 +1946,7 @@ __insertBeforeLine() {
                      if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
                         __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                         returnValue=$?
-                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                        __handleErrorMessage "$2" "${FUNCNAME:2}"
                      else
                         > "$file" 1>/dev/null 2>/dev/null
                         for indx in "${!FILE[@]}"
@@ -1962,28 +1962,28 @@ __insertBeforeLine() {
                   else
                      __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                      returnValue=$?
-                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     __handleErrorMessage "$2" "${FUNCNAME:2}"
                   fi
                else
                   __throw "IOException" ": Cannot write file \"$("$this".toString)\""
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"               
                fi            
             else 
                __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"         
+            __handleErrorMessage "$2" "${FUNCNAME:2}"         
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1996,7 +1996,7 @@ __insertAfterLine() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i line="$3"
          declare -i index=$((line-1))
@@ -2014,7 +2014,7 @@ __insertAfterLine() {
                      if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
                         __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                         returnValue=$?
-                        __stackOrHelp "$2" "${FUNCNAME:2}"
+                        __handleErrorMessage "$2" "${FUNCNAME:2}"
                      else
                         > "$file" 1>/dev/null 2>/dev/null
                         for indx in "${!FILE[@]}"
@@ -2030,28 +2030,28 @@ __insertAfterLine() {
                   else
                      __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
                      returnValue=$?
-                     __stackOrHelp "$2" "${FUNCNAME:2}"
+                     __handleErrorMessage "$2" "${FUNCNAME:2}"
                   fi
                else
                   __throw "IOException" ": Cannot write file \"$("$this".toString)\""
                   returnValue=$?
-                  __stackOrHelp "$2" "${FUNCNAME:2}"               
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"               
                fi            
             else 
                __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"         
+            __handleErrorMessage "$2" "${FUNCNAME:2}"         
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2074,7 +2074,7 @@ __indexOfExtension() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2091,7 +2091,7 @@ __indexOfLastSeparator() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2116,12 +2116,12 @@ __fileLength() {
       else
          __throw "NotInPathException" ": wc not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2144,17 +2144,17 @@ __getOwner() {
          else
             __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"        
+            __handleErrorMessage "$2" "${FUNCNAME:2}"        
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2177,17 +2177,17 @@ __getGroup() {
          else
             __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"        
+            __handleErrorMessage "$2" "${FUNCNAME:2}"        
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2212,17 +2212,17 @@ __isNewerThan() {
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2247,17 +2247,17 @@ __isOlderThan() {
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2278,12 +2278,12 @@ __touch() {
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -2305,7 +2305,7 @@ File.createTemporaryFile() {
             if (( ${#prefix} < 3 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
                returnValue=$?
-               __stackOrHelp "File" "${FUNCNAME}"
+               __handleErrorMessage "File" "${FUNCNAME}"
                return $returnValue
             fi
             local suffix="$2"
@@ -2315,7 +2315,7 @@ File.createTemporaryFile() {
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                   returnValue=$?
-                  __stackOrHelp "File" "${FUNCNAME}"
+                  __handleErrorMessage "File" "${FUNCNAME}"
                   return $returnValue
                fi
             fi
@@ -2324,7 +2324,7 @@ File.createTemporaryFile() {
             if (( $? != 0 )); then
                __throw "IOException" ": File could not be created"
                returnValue=$?
-               __stackOrHelp "File" "${FUNCNAME}"
+               __handleErrorMessage "File" "${FUNCNAME}"
                return $returnValue
             fi
             if [[ -n "${permissions}" ]]; then
@@ -2334,17 +2334,17 @@ File.createTemporaryFile() {
          else
             __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
             returnValue=$?
-            __stackOrHelp "File" "${FUNCNAME}"            
+            __handleErrorMessage "File" "${FUNCNAME}"            
          fi
       else
          __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "File" "${FUNCNAME}"         
+         __handleErrorMessage "File" "${FUNCNAME}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "File" "${FUNCNAME}"
+      __handleErrorMessage "File" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -2360,7 +2360,7 @@ File.createTempFile() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "File" "${FUNCNAME}"
+      __handleErrorMessage "File" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -2377,7 +2377,7 @@ File.createTemporaryDir() {
             if (( ${#prefix} < 3 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
                returnValue=$?
-               __stackOrHelp "File" "${FUNCNAME}"
+               __handleErrorMessage "File" "${FUNCNAME}"
                return $returnValue
             fi
             local suffix="$2"
@@ -2387,7 +2387,7 @@ File.createTemporaryDir() {
                if (( $? != 0 )); then
                   __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
                   returnValue=$?
-                  __stackOrHelp "File" "${FUNCNAME}"
+                  __handleErrorMessage "File" "${FUNCNAME}"
                   return $returnValue
                fi
             fi
@@ -2396,7 +2396,7 @@ File.createTemporaryDir() {
             if (( $? != 0 )); then
                __throw "IOException" ": Directory could not be created"
                returnValue=$?
-               __stackOrHelp "File" "${FUNCNAME}"
+               __handleErrorMessage "File" "${FUNCNAME}"
                return $returnValue
             fi
             if [[ -n ${permissions} ]]; then
@@ -2406,17 +2406,17 @@ File.createTemporaryDir() {
          else
             __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
             returnValue=$?
-            __stackOrHelp "File" "${FUNCNAME}"
+            __handleErrorMessage "File" "${FUNCNAME}"
          fi
       else
          __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __stackOrHelp "File" "${FUNCNAME}"
+         __handleErrorMessage "File" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "File" "${FUNCNAME}"
+      __handleErrorMessage "File" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -2432,7 +2432,7 @@ File.createTempDir() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "File" "${FUNCNAME}"
+      __handleErrorMessage "File" "${FUNCNAME}"
    fi
    return $returnValue
 }

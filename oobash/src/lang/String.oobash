@@ -29,28 +29,28 @@ String() {
       if ! __visible "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __checkForKeywords "$this"; then
          __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __periodCheck "$this"; then
          __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
       if ! __slashCheck "$this"; then
          __throw "IllegalArgumentException" ": No slash character allowed in objectname"
          returnValue=$?
-         __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
 
@@ -68,7 +68,7 @@ String() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "${FUNCNAME}" "${FUNCNAME}"
+      __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -122,7 +122,7 @@ __compareToIgnoreCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -141,12 +141,12 @@ __base64Encode() {
       else
          __throw "NotInPathException" ": openssl not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -163,19 +163,19 @@ __base64Decode() {
          if (( "${#input}" != 0 && "${#output}" == 0 )); then
             __throw "DecoderException" ": Decoding problem with: ""'${input}'"" "
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            __handleErrorMessage "$2" "${FUNCNAME:2}" 
          else
             System.out.println "${output}"
          fi
       else
          __throw "NotInPathException" ": openssl not in path"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -193,7 +193,7 @@ __rstrip() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -211,7 +211,7 @@ __lstrip() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -244,7 +244,7 @@ __title() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -266,7 +266,7 @@ __isTitle() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -290,7 +290,7 @@ __isAscii() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -314,7 +314,7 @@ __isHexDigit() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -338,7 +338,7 @@ __isPrintable() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -358,7 +358,7 @@ __isVisible() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -382,13 +382,13 @@ __count() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            __handleErrorMessage "$2" "${FUNCNAME:2}" 
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -420,7 +420,7 @@ __isLowerCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi 
    return $returnValue
 }
@@ -452,7 +452,7 @@ __isUpperCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -476,7 +476,7 @@ __isAlnum() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -500,7 +500,7 @@ __isAlpha() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -524,7 +524,7 @@ __isDigit() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -548,7 +548,7 @@ __isSpace() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi 
    return $returnValue
 }
@@ -561,7 +561,7 @@ __zfill() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       else
          declare -i width=$3
          length=$("$this".length)
@@ -576,7 +576,7 @@ __zfill() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -609,7 +609,7 @@ __swapCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -622,7 +622,7 @@ __center() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       else
          declare -i width=$3
          if (( $("$this".length) < $width )); then
@@ -651,7 +651,7 @@ __center() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -674,17 +674,17 @@ __equalsIgnoreCase() {
          else
             __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -700,7 +700,7 @@ __toUpperCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -716,7 +716,7 @@ __toLowerCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -733,7 +733,7 @@ __capitalize() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -748,7 +748,7 @@ __concat() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 } 
@@ -767,7 +767,7 @@ __trim() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -787,7 +787,7 @@ __contains() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -813,7 +813,7 @@ __containsOnly() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -839,7 +839,7 @@ __containsNone() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -872,7 +872,7 @@ __indexOfDifference() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -892,7 +892,7 @@ __matches() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -911,7 +911,7 @@ __isEmpty() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -924,12 +924,12 @@ __startsWith() {
       4) if ! __isBashInteger "$4"; then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            __handleErrorMessage "$2" "${FUNCNAME:2}" 
          fi
          declare -i toffset=$4;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}";;
+         __handleErrorMessage "$2" "${FUNCNAME:2}";;
    esac
    if (( $returnValue == 0 )); then
       local this="$1"
@@ -959,7 +959,7 @@ __lastIndexOf() {
          if ! __isBashInteger "$4"; then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            __handleErrorMessage "$2" "${FUNCNAME:2}" 
             return $returnValue
          fi
          declare -i to=$(($4+1))
@@ -970,7 +970,7 @@ __lastIndexOf() {
          fi;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
          return $returnValue;;
    esac
    local str="$("$this".toString)"
@@ -1004,7 +1004,7 @@ __indexOf() {
          if ! __isBashInteger "$4"; then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            __handleErrorMessage "$2" "${FUNCNAME:2}" 
             return $returnValue
          fi
          declare -i from=$4
@@ -1014,7 +1014,7 @@ __indexOf() {
          fi;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
          return $returnValue;;
    esac
    local this="$1" 
@@ -1051,7 +1051,7 @@ __charAt() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
       else
          declare -i pos="$3"
          if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
@@ -1061,13 +1061,13 @@ __charAt() {
          else
             __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1080,7 +1080,7 @@ __charCodeAt() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i pos="$3"
          if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
@@ -1091,20 +1091,20 @@ __charCodeAt() {
             if (( $code == 0 )); then
                __throw "IllegalArgumentException" ": Invalid character at index $pos"
                returnValue=$?
-               __stackOrHelp "$2" "${FUNCNAME:2}"
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             else
                System.out.println "${code}"
             fi
          else
             __throw "IndexOutOfBoundsException" ": String index out of range: $pos"
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}"
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1124,7 +1124,7 @@ __endsWith() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1146,7 +1146,7 @@ __replaceFirst() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1175,7 +1175,7 @@ __replaceAll() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1190,38 +1190,38 @@ __substring() {
       4) if ! __isBashInteger "$4"; then
             __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
-            __stackOrHelp "$2" "${FUNCNAME:2}" 
+            __handleErrorMessage "$2" "${FUNCNAME:2}" 
             return $returnValue
          fi
          declare -i endIndex=$4;;
       *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
          return $returnValue;;
    esac
 
    if ! __isBashInteger "$3"; then
       __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}" 
+      __handleErrorMessage "$2" "${FUNCNAME:2}" 
    else
       declare -i beginIndex=$3
       if (( $beginIndex < 0 )); then
          __throw "IndexOutOfBoundsException" ": String index out of range: $beginIndex"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
          return $returnValue
       fi
       if (( $endIndex > $count )); then
          __throw "IndexOutOfBoundsException" ": String index out of range: $endIndex"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
          return $returnValue
       fi       
       if (( $beginIndex > $endIndex )); then
          __throw "IndexOutOfBoundsException" ": String index out of range: $(($endIndex-$beginIndex))"
          returnValue=$?
-         __stackOrHelp "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
          return $returnValue
       fi  
       local str="$("$this".toString)"
@@ -1250,7 +1250,7 @@ __reverse() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1266,7 +1266,7 @@ __length() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
-      __stackOrHelp "$2" "${FUNCNAME:2}"
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1285,7 +1285,7 @@ String.digits() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "String" "${FUNCNAME}"
+      __handleErrorMessage "String" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1299,7 +1299,7 @@ String.asciiLetters() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "String" "${FUNCNAME}"
+      __handleErrorMessage "String" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1313,7 +1313,7 @@ String.asciiLettersLowerCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "String" "${FUNCNAME}"
+      __handleErrorMessage "String" "${FUNCNAME}"
    fi 
    return $returnValue
 }
@@ -1327,7 +1327,7 @@ String.asciiLettersUpperCase() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "String" "${FUNCNAME}"
+      __handleErrorMessage "String" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1341,7 +1341,7 @@ String.hexDigits() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "String" "${FUNCNAME}"
+      __handleErrorMessage "String" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1355,7 +1355,7 @@ String.octDigits() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "String" "${FUNCNAME}"
+      __handleErrorMessage "String" "${FUNCNAME}"
    fi 
    return $returnValue
 }
@@ -1372,13 +1372,13 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
          if ! __isBashInteger "$1"; then
             __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
             returnValue=$?
-            __stackOrHelp "String" "${FUNCNAME}"
+            __handleErrorMessage "String" "${FUNCNAME}"
             break
          else
             if (( "$1" < 0 )) || (( "$1" > 65535 )); then
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                returnValue=$?
-               __stackOrHelp "String" "${FUNCNAME}"
+               __handleErrorMessage "String" "${FUNCNAME}"
                break
             else
                local hexValue=$(printf %x "$1")

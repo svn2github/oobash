@@ -37,7 +37,7 @@
 # __dependencyCheck() check for external commands (element of __Dependencies__ array) that are used in this framework
 # __gnudateCheck() check for gnu date
 # __gnustatCheck() checks for gnu stat
-# __stackOrHelp() decision: call stacktrace or help or nothing
+# __handleErrorMessage() decision: call stacktrace or help or nothing
 # __stack() decision: call stacktrace or nothing
 # __tracebackHeader() prints the traceback header to stderr
 # __stacktrace() generates stacktrace
@@ -850,42 +850,29 @@ __gnureadlinkCheck() {
 __registerFunction __gnureadlinkCheck
 
 # private
-# decision: call stacktrace or help or nothing
+# Script: stacktrace / Interactive: help
 # called by:
 # every funtion that throws an exception
-__stackOrHelp() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   # interactive --> help
-   if [[ -n "$PS1" ]]; then
+if [[ ! -z "$PS1" ]]; then
+   __handleErrorMessage() {
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
       if [[ "$(Boolean.parseBoolean "${__HELP__}")" == "$(Boolean.TRUE)" ]]; then
          local printStream=err
          local class="$1"
          local func="$2"
          ${class}.help ${func}
       fi
-   # not interactive --> stacktrace
-   else
+      return 0
+   }
+else
+   __handleErrorMessage() {
       if [[ "$(Boolean.parseBoolean "${__STACKTRACE__}")" == "$(Boolean.TRUE)" ]]; then
          __stacktrace
       fi
-   fi
-   return 0
-}
-__registerFunction __stackOrHelp
-
-
-# private
-# decision: call stacktrace or nothing
-# called by:
-# every script or helpless function that throws an exception
-__stack() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   if [[ "$(Boolean.parseBoolean ${__STACKTRACE__})" == "$(Boolean.TRUE)" ]] && [[ -z "$PS1" ]]; then
-      __stacktrace
-   fi
-   return 0
-}
-__registerFunction __stack
+      return 0
+   }
+fi
+__registerFunction __handleErrorMessage
 
 # private
 # prints or prints not the traceback header to stderr
@@ -903,7 +890,7 @@ __registerFunction __tracebackHeader
 # private 
 # generates stacktrace
 # called by:
-# __stackOrHelp
+# __handleErrorMessage
 __stacktrace() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0

@@ -9,8 +9,6 @@
 # check if i really used unicode values and not html character values (upper,lower...) 
 # Docs: indexOfDifference param: primitive string --> example with "$(obj.toString)"
 # check all String docs: String <--> primitive string
-# stackOrHelp rename to handleErrorMessage (decision in source time)
-# remove __stack then ?
 # parameter checks in the constructors --> stamp out duplication
 # use one name pattern for the parameter checks in the constructors --> rename !
 # mark unused private functions

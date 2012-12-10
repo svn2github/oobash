@@ -321,6 +321,8 @@
 #    -Added to File: setuid, setgid, setStickyBit, hasUidBit, hasGidBit
 #    -renamed __posixFilePermissionsConverter to __posixFilePermissionToOctal
 #    -renamed __terminalSupportsColours to __terminalSupportsColors
+#    -renamed __stackOrHelp to __handleErrorMessage
+#    -removed __stack function
 #    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
 #    -Math.random works without bc now
 #    -Support for cyrillic characters

@@ -72,17 +72,17 @@ Math.cbrt() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -113,17 +113,17 @@ Math.sin() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -154,17 +154,17 @@ Math.cos() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -211,17 +211,17 @@ Math.tan() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -258,17 +258,17 @@ Math.atan() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -315,17 +315,17 @@ Math.asin() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -367,17 +367,17 @@ Math.acos() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -415,22 +415,22 @@ Math.max() {
             else
                __throw "NotInPathException" ": bc not in path"
                returnValue=$?
-               __stackOrHelp "Math" "${FUNCNAME}"
+               __handleErrorMessage "Math" "${FUNCNAME}"
             fi
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -468,22 +468,22 @@ Math.min() {
             else
                __throw "NotInPathException" ": bc not in path"
                returnValue=$?
-               __stackOrHelp "Math" "${FUNCNAME}"
+               __handleErrorMessage "Math" "${FUNCNAME}"
             fi
          else
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi  
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -512,17 +512,17 @@ Math.abs() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi 
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -561,17 +561,17 @@ Math.sqrt() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi       
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -608,17 +608,17 @@ Math.exp() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -655,17 +655,17 @@ Math.expm1() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -703,17 +703,17 @@ Math.sinh() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -751,17 +751,17 @@ Math.cosh() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -799,17 +799,17 @@ Math.tanh() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi       
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -823,7 +823,7 @@ Math.E() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -837,7 +837,7 @@ Math.PI() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -857,7 +857,7 @@ Math.random() {
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -901,7 +901,7 @@ Math.adder() {
             else
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                returnValue=$?
-               __stackOrHelp "Math" "${FUNCNAME}"
+               __handleErrorMessage "Math" "${FUNCNAME}"
                break
             fi 
             shift
@@ -932,12 +932,12 @@ Math.adder() {
       else
          __throw "NotInPathException" ": bc not in path"
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -983,7 +983,7 @@ Math.multiplier() {
             else
                __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
                returnValue=$?
-               __stackOrHelp "Math" "${FUNCNAME}"
+               __handleErrorMessage "Math" "${FUNCNAME}"
                break
             fi 
             shift
@@ -1014,12 +1014,12 @@ Math.multiplier() {
       else
          __throw "NotInPathException" ": bc not in path"
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1059,17 +1059,17 @@ Math.log() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1109,17 +1109,17 @@ Math.log10() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi       
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1159,17 +1159,17 @@ Math.log1p() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi        
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1206,17 +1206,17 @@ Math.toDegrees() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi       
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1253,17 +1253,17 @@ Math.toRadians() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi       
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1301,17 +1301,17 @@ Math.ceil() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi       
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1350,17 +1350,17 @@ Math.floor() {
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi       
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
@@ -1401,22 +1401,22 @@ Math.hypot() {
             else
                __throw "NotInPathException" ": bc not in path"
                returnValue=$?
-               __stackOrHelp "Math" "${FUNCNAME}"               
+               __handleErrorMessage "Math" "${FUNCNAME}"               
             fi
          else 
             __throw "IllegalArgumentException" ": Illegal argument: \"$2\""
             returnValue=$?
-            __stackOrHelp "Math" "${FUNCNAME}"
+            __handleErrorMessage "Math" "${FUNCNAME}"
          fi  
       else
          __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
          returnValue=$?
-         __stackOrHelp "Math" "${FUNCNAME}"
+         __handleErrorMessage "Math" "${FUNCNAME}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __stackOrHelp "Math" "${FUNCNAME}"
+      __handleErrorMessage "Math" "${FUNCNAME}"
    fi
    return $returnValue
 }
