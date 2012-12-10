@@ -11,7 +11,6 @@
 # check all String docs: String <--> primitive string
 # parameter checks in the constructors --> stamp out duplication
 # use one name pattern for the parameter checks in the constructors --> rename !
-# mark unused private functions
 
 # 0.40.1
 # -tput: color management

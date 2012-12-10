@@ -41,21 +41,29 @@
 # __stack() decision: call stacktrace or nothing
 # __tracebackHeader() prints the traceback header to stderr
 # __stacktrace() generates stacktrace
-# __isArray() checks if given parameter is an array
 # __isAssocArray() checks if given parameter is an associative array
-# __isWriteable() checks if given parameter is writeable
 # __stripPath() strips double and trailing "/" characters in given path
 # __isBashInteger() check for integer input and size of int
 # __localDateFormat() returns the local date format (depends on LANG setting)
 # __decoratorCheck() function to handle decorators, if there are some
 # __isatty() checks if a given file descriptor refers to a terminal
 # __terminalSupportsColors() asks local terminal database if this terminal supports colours
+# __charCode() returns the charcter code of first letter of given string
+
+###########
+# LOGGING #
+###########
 # __getLoggingTimestamp() returns a timestamp
 # __isXTRACEFDAvailable() checks if BASH_XTRACEFD is available with this bash version
 # __getFreeFD() tries to return a free file descriptor
 # __setPS4() sets PS4 prompt for a better prefix during tracing output
-# __getAttributeFromObjectByName() returns the value of a given attribute of a given object 
-# __charCode() returns the charcter code of first letter of given string 
+
+##########
+# UNUSED #
+##########
+# __getAttributeFromObjectByName() returns the value of a given attribute of a given object
+# __isWriteable() checks if given parameter is writeable
+# __isArray() checks if given parameter is an array
 
 # private
 # check for log4oobash.properties file in the same directory
@@ -584,7 +592,14 @@ __registerFunction __mathConverter
 # converts a "rwxrwxrwx" file permission
 # string to octal (eg 777)
 # called by:
+# -__hasUidBit
+# -__hasGidBit
+# -__setPosixFilePermissions
+# -__setuid
+# -__setgid
+# -__setStickyBit
 # -File.createTemporaryFile
+# -File.createTemporaryDir
 __posixFilePermissionToOctal() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local unsetAtEnd=$(Boolean.FALSE) 
@@ -950,20 +965,6 @@ __stacktrace() {
 __registerFunction __stacktrace
 
 # private
-# checks if given parameter is an array
-__isArray() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local tmp="$(declare -p "$1" 2>/dev/null)"
-   tmp="${tmp/declare -/}"
-   if [[ "${tmp:0:1}" == "a" ]]; then
-      return 0
-   else
-      return 1
-   fi
-}
-__registerFunction __isArray
-
-# private
 # checks if given parameter is an associative array
 # called by:
 # oobash.source during sourcetime
@@ -978,30 +979,6 @@ __isAssocArray() {
    fi
 }
 __registerFunction __isAssocArray
-
-# private
-# checks if given parameter is writeable
-__isWriteable() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local tmp
-   tmp="$(declare -p "$1" 2>/dev/null)"
-   if (( $? == 0 )); then
-      tmp="${tmp/declare -/}"
-      declare -i i
-      local char
-      for ((i=0; i < ${#tmp}; i++))
-      do
-         char="${tmp:i:1}"
-         case "${char}" in
-            "r") return 1;;
-            " ") return 0;;
-         esac
-      done
-   else
-      return 1
-   fi
-}
-__registerFunction __isWriteable
 
 # private
 # strips double and trailing "/" characters in given path
@@ -1182,7 +1159,32 @@ __isatty() {
 }
 __registerFunction __isatty
 
-# private 
+# private
+# returns the charcter code of first etter of given string 
+# called by:
+# __charCodeAt (Sting)
+# __compareToIgnoreCase (String)
+# __isLowerCase (String)
+# __isUpperCase (String)
+# __compareTo (Comparable)
+# __hashCode (Object)
+# __strLower (Private)
+# __strUpper (Private)
+__charCode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local char="${1:0:1}"
+   declare -i code
+   code=$(printf '%d\n' "'$char")
+   System.out.println "${code}" 
+   return 0
+}
+__registerFunction __charCode
+
+###########
+# LOGGING #
+###########
+
+# private
 # asks local terminal database if this terminal supports colours
 # called by:
 __terminalSupportsColors() {
@@ -1298,6 +1300,10 @@ __setPS4() {
 }
 __registerFunction __setPS4
 
+################
+# STILL UNUSED #
+################
+
 __getAttributeFromObjectByName() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1306,7 +1312,7 @@ __getAttributeFromObjectByName() {
    local key char pointer str
    declare -i i j
    for key in "${!__OBJECTPOOL__[@]}"
-   do 
+   do
       if [[ "$this" == "$key" ]]; then
          str="${__OBJECTPOOL__["$this"]}"
          for ((i=0; i < ${#str}; i++))
@@ -1316,32 +1322,48 @@ __getAttributeFromObjectByName() {
                j=$((++i))
                pointer="${str:j}"
             fi
-         done              
+         done
       fi
    done
-   System.out.println "${__ATTRIBUTEPOOL__[${pointer}@${attribute}]}" 
+   System.out.println "${__ATTRIBUTEPOOL__[${pointer}@${attribute}]}"
    return $returnValue
 }
 __registerFunction __getAttributeFromObjectByName
 
 # private
-# returns the charcter code of first etter of given string 
-# called by:
-# __charCodeAt (Sting)
-# __compareToIgnoreCase (String)
-# __isLowerCase (String)
-# __isUpperCase (String)
-# __compareTo (Comparable)
-# __hashCode (Object)
-# __strLower (Private)
-# __strUpper (Private)
-__charCode() {
+# checks if given parameter is writeable
+__isWriteable() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local char="${1:0:1}"
-   declare -i code
-   code=$(printf '%d\n' "'$char")
-   System.out.println "${code}" 
-   return 0
+   local tmp
+   tmp="$(declare -p "$1" 2>/dev/null)"
+   if (( $? == 0 )); then
+      tmp="${tmp/declare -/}"
+      declare -i i
+      local char
+      for ((i=0; i < ${#tmp}; i++))
+      do
+         char="${tmp:i:1}"
+         case "${char}" in
+            "r") return 1;;
+            " ") return 0;;
+         esac
+      done
+   else
+      return 1
+   fi
 }
-__registerFunction __charCode
+__registerFunction __isWriteable
 
+# private
+# checks if given parameter is an array
+__isArray() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local tmp="$(declare -p "$1" 2>/dev/null)"
+   tmp="${tmp/declare -/}"
+   if [[ "${tmp:0:1}" == "a" ]]; then
+      return 0
+   else
+      return 1
+   fi
+}
+__registerFunction __isArray
