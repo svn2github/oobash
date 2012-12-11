@@ -76,6 +76,7 @@
 # __getSyslogEquivalent
 # __getPid
 # __toString
+# __getAttributeFromObjectByName
 __getObjectPointer() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local this="$1"
@@ -1343,22 +1344,8 @@ __getAttributeFromObjectByName() {
    declare -i returnValue=0
    local this="$1"
    local attribute="$2"
-   local key char pointer str
-   declare -i i j
-   for key in "${!__OBJECTPOOL__[@]}"
-   do
-      if [[ "$this" == "$key" ]]; then
-         str="${__OBJECTPOOL__["$this"]}"
-         for ((i=0; i < ${#str}; i++))
-         do
-            char="${str:i:1}"
-            if [[ $char == "@" ]]; then
-               j=$((++i))
-               pointer="${str:j}"
-            fi
-         done
-      fi
-   done
+   local pointer
+   pointer="$(__getObjectPointer "${this}")"
    System.out.println "${__ATTRIBUTEPOOL__[${pointer}@${attribute}]}"
    return $returnValue
 }
