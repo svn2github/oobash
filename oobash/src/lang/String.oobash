@@ -1581,9 +1581,9 @@ String.help() {
                Parameters:
                   anotherString - the primitive string to be compared.
                Returns:
-                  the value 0 if the argument String is equal to this String; a value less than 0 
+                  the value 0 if the argument string is equal to this String; a value less than 0
                   if this String is lexicographically less than the string argument;
-                  and a value greater than 0 if this String is lexicographically greater than the String argument.
+                  and a value greater than 0 if this String is lexicographically greater than the string argument.
                Throws:
                   IllegalArgumentException - if number of arguments != 1
                Example:
@@ -1605,14 +1605,14 @@ String.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                compareToIgnoreCase
-                  Compares two String objects lexicographically, ignoring case differences. 
-                  This method returns an integer whose sign is that of calling 
-                  compareTo with normalized versions of the String objects where case differences 
+                  Compares a String object with a primitive string lexicographically, ignoring case differences.
+                  This method returns an integer whose sign is that of calling
+                  compareTo with normalized versions of the String object and the primitive string where case differences
                   have been eliminated.
                Parameters:
-                  str - the String to be compared.
+                  str - the primitive string to be compared.
                Returns:
-                  a negative integer, zero, or a positive integer as the specified String 
+                  a negative integer, zero, or a positive integer as the specified primitive string
                   is greater than, equal to, or less than this String, 
                   ignoring case considerations.
                Throws:
@@ -1694,7 +1694,7 @@ String.help() {
                   Checks that the String does not contain certain characters.
                   An empty String (\"\") always returns true.
                Parameters:
-                  invalidChars - a String of invalid chars
+                  invalidChars - a primitive string of invalid chars
                Returns:
                   true if it contains none of the invalid chars, false otherwise
                Throws:
@@ -1898,7 +1898,7 @@ String.help() {
                   String a ab
                   a.indexOfDifference abxyz
                   >>>2
-                  a.indexOfDifference ab
+                  a.indexOfDifference \"\$(a.toString)\"
                   >>>-1
             ";;&
          isAlnum|all)
