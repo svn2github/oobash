@@ -115,22 +115,8 @@ __getPid() {
    local class="$2"
    if (( $# == 2 )); then
       local this="$1"
-      declare -i i j
-      local key str char pointer
-      for key in "${!__OBJECTPOOL__[@]}"
-      do 
-         if [[ "$this" == "$key" ]]; then
-            str="${__OBJECTPOOL__["$this"]}"
-            for ((i=0; i < ${#str}; i++))
-            do
-               char="${str:i:1}"
-               if [[ ${char} == "@" ]]; then
-                  j=$((++i))
-                  pointer="${str:j}"
-               fi
-            done              
-         fi
-      done
+      local pointer
+      pointer="$(__getObjectPointer "${this}")"
       if command -v ps >/dev/null 2>&1; then
          local pId
          pId="$(ps  -p "${__ATTRIBUTEPOOL__[${pointer}@pid]}" -o pid="" 2>/dev/null)"

@@ -14,6 +14,7 @@
 #######################
 
 # Index of content:
+# __getObjectPointer() returns pointer of given object
 # __getFileBase() returns file name without file extension
 # __checkForKeywords() checks if objectname argument for a constructor is a keyword
 # __periodCheck() check if given string contains "." character
@@ -64,6 +65,39 @@
 # __isWriteable() checks if given parameter is writeable
 # __isArray() checks if given parameter is an array
 
+
+# private
+# returns pointer of given object
+# Called by:
+# __getSshHost
+# __getSshUser
+# __getSshPort
+# __toInt
+# __getSyslogEquivalent
+# __getPid
+# __toString
+__getObjectPointer() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local this="$1"
+   local key char pointer str
+   declare -i i j
+   for key in "${!__OBJECTPOOL__[@]}"
+   do
+      if [[ "$this" == "$key" ]]; then
+         str="${__OBJECTPOOL__["$this"]}"
+         for ((i=0; i < ${#str}; i++))
+         do
+            char="${str:i:1}"
+            if [[ $char == "@" ]]; then
+               j=$((++i))
+               pointer="${str:j}"
+            fi
+         done
+      fi
+   done
+   System.out.println "${pointer}"
+   return 0
+}
 
 # private
 # returns file name without file extension

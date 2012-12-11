@@ -7,8 +7,8 @@
 # Fix in String.fromCharCode for all the characters that are not supported by bash printf unicode support
 # check if i really used unicode values and not html character values (upper,lower...) 
 # parameter checks in the constructors --> stamp out duplication
-# private getObjectPointer in all getters --> reduce code dupication 
 # use ONE name pattern for the parameter checks in the constructors --> rename !
+# check all comments: "why" and not "what" !
 
 # 0.40.1
 # -tput: color management
