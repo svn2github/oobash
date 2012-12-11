@@ -9,14 +9,14 @@
 # parameter checks in the constructors --> stamp out duplication
 # use ONE name pattern for the parameter checks in the constructors --> rename !
 # check all comments: "why" and not "what" !
-# mark private functions for File 
+# mark private functions for File/String/Common
 
 # 0.40.1
 # -tput: color management
 # -optimize logging
 # -File:
 # * extended file attributes: lsattr, chattr.. ?
-# * File spit, merge ?
+# * File split, merge ?
 
 # 0.40.2
 # -Script.generator --> create log.properties file for the script ?
