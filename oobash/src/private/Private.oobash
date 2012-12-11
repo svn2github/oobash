@@ -864,8 +864,8 @@ __registerFunction __gnustatCheck
 # __getCanonicalPath
 __gnureadlinkCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   # For this framework it is important to work with a gnu stat, so:
-   # special check for gnu stat with "--file-system" gnu feature:
+   # For this framework it is important to work with a gnu readlink, so:
+   # special check for gnu readlink with "-f" gnu feature:
    if command -v readlink >/dev/null 2>&1; then
       readlink -f / 2>/dev/null 1>&2
       if (( $? != 0 )); then
