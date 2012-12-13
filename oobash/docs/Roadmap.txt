@@ -8,8 +8,6 @@
 # check if i really used unicode values and not html character values (upper,lower...) 
 # parameter checks in the constructors --> stamp out duplication
 # use ONE name pattern for the parameter checks in the constructors --> rename !
-# check all comments: "why" and not "what" !
-# mark private functions for File/String/Common
 
 # 0.40.1
 # -tput: color management
