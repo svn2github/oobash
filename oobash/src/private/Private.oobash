@@ -16,7 +16,7 @@
 # Index of content:
 # __getObjectPointer() returns pointer of given object
 # __getFileBase() returns file name without file extension
-# __checkForKeywords() checks if objectname argument for a constructor is a keyword
+# __keywordCheck() checks if objectname argument for a constructor is a keyword
 # __periodCheck() check if given string contains "." character
 # __slashCheck() check if given string contains "/" character
 # __throw() throws an exception with name of exception and message
@@ -24,7 +24,7 @@
 # __destructor() destroys a given object
 # __unalias() deletes all bash aliases for an object (object.method=object.method)
 # __alias() creates all bash aliases for an object (object.method=object.method)
-# __visible() check if given string is visible
+# __visibilityCheck() check if given string is visible
 # __strUpper() returns given string uppercase
 # __strLower() returns given string lowercase
 # __mathConverter() validates and converts input for valid input for the math methods
@@ -120,7 +120,7 @@ __registerFunction __getFileBase
 # for a constructor is a keyword
 # called by:
 # -every constructor
-__checkForKeywords() {
+__keywordCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local word="$1"
    local keyword
@@ -132,7 +132,7 @@ __checkForKeywords() {
    done
    return 0
 }
-__registerFunction __checkForKeywords
+__registerFunction __keywordCheck
 __registerVar __Keywords__
 
 # private
@@ -310,7 +310,7 @@ __registerFunction __alias
 # called by:
 # -every constructor
 # -isVisible (String method)
-__visible() {
+__visibilityCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local str="$1"
    local unsetAtEnd="$(Boolean.FALSE)" 
@@ -336,7 +336,7 @@ __visible() {
       return 1
    fi
 }
-__registerFunction __visible
+__registerFunction __visibilityCheck
 
 # private  
 # returns given string uppercase

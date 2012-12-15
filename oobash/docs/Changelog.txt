@@ -143,7 +143,7 @@
 #                         * autocompletion for help system args 
 #    -Some fixes
 # Version:      0.38.1   Date:         16.03.2011, 18.03.2011
-#    -Added private functions: __alias __checkForKeywords (not used at the moment)
+#    -Added private functions: __alias __keywordCheck (not used at the moment)
 #    -Some small fixes
 # Version:      0.38.2   Date:         22.04.2011, 24.04.2011, 02.05.2011
 #    -Added private functions: __unalias 
@@ -181,7 +181,7 @@
 #    -fixed "unalias hashCode" (was defined twice instead of once in the init arrays)
 #    -removed the shopt -u extglob code in all the string checks
 #    -corrected wrong file descriptor (no files with name 1 anymore)
-#    -new private function: __visible (called by: every constructor for parameter check now, isVisisble)
+#    -new private function: __visibilityCheck (called by: every constructor for parameter check now, isVisisble)
 #    -moved some forgotten functions to the Private.oobash file:__posixFilePermissionsConverter, __mathConverter, __strUpper, __strLower
 #    -a first really small README.txt file in the docs directory
 #    -changed filesystem structure
@@ -322,6 +322,8 @@
 #    -renamed __posixFilePermissionsConverter to __posixFilePermissionToOctal
 #    -renamed __terminalSupportsColours to __terminalSupportsColors
 #    -renamed __stackOrHelp to __handleErrorMessage
+#    -renamed __visible to __visibilityCheck
+#    -renamed __checkForKeywords to __keywordCheck
 #    -removed __stack function
 #    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
 #    -Math.random works without bc now
