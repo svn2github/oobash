@@ -2,6 +2,7 @@
 
 # TODO:
 # Fix in String.fromCharCode for all the characters that are not supported by bash printf unicode support
+# use of GNU /usr/bin/printf if availabe ?
 # check if i really used unicode values and not html character values (upper,lower...) 
 # parameter checks in the constructors --> stamp out duplication
 
