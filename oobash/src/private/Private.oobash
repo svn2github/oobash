@@ -619,7 +619,7 @@ __registerFunction __mathConverter
 # private
 # strips ending zeros
 # called by:
-__rstripFloatZeros() {
+__rstripDoubleZeros() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local str="$1" result="$1"
