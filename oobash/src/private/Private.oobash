@@ -635,6 +635,9 @@ __registerFunction __mathConverter
 # Math.log10 
 # Math.log1p 
 # Math.cbrt
+# Math.hypot
+# Math.toRadians
+# Math.toDegrees
 __rstripDoubleZeros() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
