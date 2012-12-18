@@ -80,49 +80,26 @@ $userClass() {
       do
          System.out.println "      local ${attributes[$i]}=\"\$$(( i + 2 ))\"" >> "${destination}"
       done
-      System.out.println "      
-      if ! __visibilityCheck \"\$this\"; then
-         __throw \"IllegalArgumentException\" \": Objectname '\$this' is not valid\"
-         returnValue=\$?
-         __handleErrorMessage \"\${FUNCNAME}\" \"\${FUNCNAME}\"
-         return \$returnValue
-      fi
+      System.out.println "
+      __objectnameCheck 
+      returnValue=\$?
+      if (( \$returnValue == 0 )); then
+         local pointer=\$((__OBJCOUNTER__++))
+         local class=\$FUNCNAME
 
-      if ! __keywordCheck \"\$this\"; then
-         __throw \"IllegalArgumentException\" \": Objectname '\$this' is a keyword\"
-         returnValue=\$?
-         __handleErrorMessage \"\${FUNCNAME}\" \"\${FUNCNAME}\"
-         return \$returnValue
-      fi
+         __destructor \"\$this\"
 
-      if ! __periodCheck \"\$this\"; then
-         __throw \"IllegalArgumentException\" \": No full stop character allowed in objectname\"
-         returnValue=\$?
-         __handleErrorMessage \"\${FUNCNAME}\" \"\${FUNCNAME}\"
-         return \$returnValue
-      fi
+         __alias \"\$this\" \"\$FUNCNAME\"
+         " >> "${destination}"
 
-      if ! __slashCheck \"\$this\"; then
-         __throw \"IllegalArgumentException\" \": No slash character allowed in objectname\"
-         returnValue=\$?
-         __handleErrorMessage \"\${FUNCNAME}\" \"\${FUNCNAME}\"
-         return \$returnValue
-      fi
-
-      local pointer=\$((__OBJCOUNTER__++))
-
-      local class=\$FUNCNAME
-
-      __destructor \"\$this\"
-
-      __alias \"\$this\" \"\$FUNCNAME\"
-
-      " >> "${destination}"
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "      __attribute ${attributes[$i]} \"\$${attributes[$i]}\"" >> "${destination}"
+         System.out.println "         __attribute ${attributes[$i]} \"\$${attributes[$i]}\"" >> "${destination}"
       done
       System.out.println "
+      else
+         __handleErrorMessage \"\${FUNCNAME}\" \"\${FUNCNAME}\"
+      fi
    else
       __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
       returnValue=\$?

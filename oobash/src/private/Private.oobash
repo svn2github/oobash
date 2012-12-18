@@ -16,15 +16,16 @@
 # Index of content:
 # __getObjectPointer() returns pointer of given object
 # __getFileBase() returns file name without file extension
+# __visibilityCheck() check if given string is visible
 # __keywordCheck() checks if objectname argument for a constructor is a keyword
 # __periodCheck() check if given string contains "." character
 # __slashCheck() check if given string contains "/" character
+# __constructorArgsCheck() checks all constructor args
 # __throw() throws an exception with name of exception and message
 # __attribute() stores an attribute of an object
 # __destructor() destroys a given object
 # __unalias() deletes all bash aliases for an object (object.method=object.method)
 # __alias() creates all bash aliases for an object (object.method=object.method)
-# __visibilityCheck() check if given string is visible
 # __strUpper() returns given string uppercase
 # __strLower() returns given string lowercase
 # __mathConverter() validates and converts input for valid input for the math methods
@@ -116,10 +117,43 @@ __getFileBase() {
 __registerFunction __getFileBase
 
 # private
+# check if given string is visible 
+# called by:
+# __objectnameCheck
+# -isVisible
+__visibilityCheck() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   local str="$1"
+   local unsetAtEnd="$(Boolean.FALSE)" 
+   local bool="$(Boolean.FALSE)" 
+   # is extglob set ?
+   shopt -q extglob
+   # if extglob not set already --> set it now and change boolean 
+   if (( $? == 1 )); then
+      shopt -s extglob
+      unsetAtEnd="$(Boolean.TRUE)"
+   fi 
+   if [[ "$str" != "" ]]; then
+      if [[ "${str##+([[:graph:]])}" == "" ]]; then
+         bool="$(Boolean.TRUE)"
+      fi      
+   fi       
+   if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
+      shopt -u extglob
+   fi
+   if [[  "${bool}" == "$(Boolean.TRUE)" ]]; then
+      return 0
+   else
+      return 1
+   fi
+}
+__registerFunction __visibilityCheck
+
+# private
 # checks if objectname argument 
 # for a constructor is a keyword
 # called by:
-# -every constructor
+# __objectnameCheck
 __keywordCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local word="$1"
@@ -138,7 +172,7 @@ __registerVar __Keywords__
 # private
 # check if given string contains "." character 
 # called by:
-# -every constructor
+# __objectnameCheck
 __periodCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local str="$1"
@@ -158,7 +192,7 @@ __registerFunction __periodCheck
 # private
 # check if given string contains "/" character 
 # called by:
-# -every constructor
+# __objectnameCheck
 __slashCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local str="$1"
@@ -175,6 +209,33 @@ __slashCheck() {
 }
 __registerFunction __slashCheck
 
+# private
+# checks all constructor args
+# cales by:
+# every constructor
+__objectnameCheck() {
+   if ! __visibilityCheck "$this"; then
+      __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
+      return $?
+   fi
+
+   if ! __keywordCheck "$this"; then
+      __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
+      return $?
+   fi
+
+   if ! __periodCheck "$this"; then
+      __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
+      return $?
+   fi
+   
+   if ! __slashCheck "$this"; then
+      __throw "IllegalArgumentException" ": No slash character allowed in objectname"
+      return $?
+   fi
+   return 0
+}
+ 
 # private
 # throws an exception with name of exception and message
 # called by:
@@ -219,9 +280,7 @@ __destructor() {
    local this="$1"
    local string="${__OBJECTPOOL__["${this}"]}"
    if [[ ! -z "${string}" ]]; then
-      local char
-      local pointer
-      local lastClass
+      local char pointer lastClass
       declare -i i=0
       for ((i=0; i < ${#string}; i++))
       do
@@ -304,39 +363,6 @@ else
    }
 fi
 __registerFunction __alias
-
-# private
-# check if given string is visible 
-# called by:
-# -every constructor
-# -isVisible (String method)
-__visibilityCheck() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   local str="$1"
-   local unsetAtEnd="$(Boolean.FALSE)" 
-   local bool="$(Boolean.FALSE)" 
-   # is extglob set ?
-   shopt -q extglob
-   # if extglob not set already --> set it now and change boolean 
-   if (( $? == 1 )); then
-      shopt -s extglob
-      unsetAtEnd="$(Boolean.TRUE)"
-   fi 
-   if [[ "$str" != "" ]]; then
-      if [[ "${str##+([[:graph:]])}" == "" ]]; then
-         bool="$(Boolean.TRUE)"
-      fi      
-   fi       
-   if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
-      shopt -u extglob
-   fi
-   if [[  "${bool}" == "$(Boolean.TRUE)" ]]; then
-      return 0
-   else
-      return 1
-   fi
-}
-__registerFunction __visibilityCheck
 
 # private  
 # returns given string uppercase
@@ -471,14 +497,7 @@ __mathConverter() {
       System.out.println "-Infinity"
       return 0  
    fi 
-   local unsetAtEnd=$(Boolean.FALSE) 
-   # is extglob set ?
-   shopt -q extglob
-   # if extglob not set already --> set it now and change boolean
-   if (( $? == 1 )); then
-      shopt -s extglob
-      unsetAtEnd=$(Boolean.TRUE)
-   fi 
+
    if [[ "${input}" =~ ^[-]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -f
       System.out.println "${input/[eE]/ * 10 ^ }"

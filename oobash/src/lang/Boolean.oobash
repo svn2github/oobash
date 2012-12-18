@@ -26,45 +26,21 @@ Boolean() {
    if (( $# == 2 )); then
       local this="$1"
 
-      if ! __visibilityCheck "$this"; then
-         __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
-         returnValue=$?
+      __objectnameCheck 
+      returnValue=$?
+      if (( $returnValue == 0 )); then
+         local pointer=$((__OBJCOUNTER__++))
+         local class=$FUNCNAME
+
+         __destructor "$this"
+
+         __alias "$this" $FUNCNAME
+
+         __attribute bool "$(Boolean.parseBoolean "$2")"  
+
+      else
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
-         return $returnValue
-      fi
-
-      if ! __keywordCheck "$this"; then
-         __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
-         returnValue=$?
-         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
-         return $returnValue
-      fi
-
-      if ! __periodCheck "$this"; then
-         __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
-         returnValue=$?
-         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
-         return $returnValue
-      fi
-
-      if ! __slashCheck "$this"; then
-         __throw "IllegalArgumentException" ": No slash character allowed in objectname"
-         returnValue=$?
-         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
-         return $returnValue
-      fi
-
-      local pointer=$((__OBJCOUNTER__++))
-
-      local bool=$(Boolean.parseBoolean "$2")
-      local class=$FUNCNAME
-
-      __destructor "$this"
-
-      __alias "$this" $FUNCNAME
-
-      __attribute bool "$bool"        
-
+      fi      
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
       returnValue=$?                                                                 
