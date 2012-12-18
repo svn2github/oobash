@@ -1441,7 +1441,7 @@ Math.help() {
       -Math.sqrt -Math.exp -Math.adder -Math.multiplier
       -Math.log -Math.log10 -Math.log1p -Math.cbrt
       -Math.floor -Math.ceil -Math.hypot -Math.toRadians
-      -Math.toDegrees
+      -Math.toDegrees -Math.cosh -Math.sinh Math.tanh
       Constructor: 
       None
       Constants:

@@ -620,24 +620,27 @@ __registerFunction __mathConverter
 # private
 # strips ending zeros
 # called by:
-# Math.random 
-# Math.cos 
-# Math.sin 
-# Math.tan 
-# Math.atan
-# Math.asin 
-# Math.acos 
-# Math.sqrt 
-# Math.exp 
-# Math.adder 
-# Math.multiplier
-# Math.log 
-# Math.log10 
-# Math.log1p 
-# Math.cbrt
-# Math.hypot
-# Math.toRadians
-# Math.toDegrees
+# -Math.random 
+# -Math.cos 
+# -Math.sin 
+# -Math.tan 
+# -Math.atan
+# -Math.asin 
+# -Math.acos 
+# -Math.sqrt 
+# -Math.exp 
+# -Math.adder 
+# -Math.multiplier
+# -Math.log 
+# -Math.log10 
+# -Math.log1p 
+# -Math.cbrt
+# -Math.hypot
+# -Math.toRadians
+# -Math.toDegrees
+# -Math.sinh
+# -Math.cosh
+# -Math.tanh
 __rstripDoubleZeros() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
