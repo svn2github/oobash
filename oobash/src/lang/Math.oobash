@@ -1440,6 +1440,7 @@ Math.help() {
       -Math.asin -Math.acos -Math.min -Math.max -Math.abs
       -Math.sqrt -Math.exp -Math.adder -Math.multiplier
       -Math.log -Math.log10 -Math.log1p -Math.cbrt
+      -Math.floor -Math.ceil
       Constructor: 
       None
       Constants:
