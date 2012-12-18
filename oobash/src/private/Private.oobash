@@ -29,6 +29,7 @@
 # __strUpper() returns given string uppercase
 # __strLower() returns given string lowercase
 # __mathConverter() validates and converts input for valid input for the math methods
+# __rstripDoubleZeros() strips ending zeros
 # __posixFilePermissionToOctal() converts a "rwxrwxrwx" file permission string to octal
 # __i18nMessage() translates and prints message to given channel
 # __cleanUpObjectsPool() destroys all objects
@@ -619,6 +620,21 @@ __registerFunction __mathConverter
 # private
 # strips ending zeros
 # called by:
+# Math.random 
+# Math.cos 
+# Math.sin 
+# Math.tan 
+# Math.atan
+# Math.asin 
+# Math.acos 
+# Math.sqrt 
+# Math.exp 
+# Math.adder 
+# Math.multiplier
+# Math.log 
+# Math.log10 
+# Math.log1p 
+# Math.cbrt
 __rstripDoubleZeros() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
