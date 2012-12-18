@@ -617,6 +617,37 @@ __mathConverter() {
 __registerFunction __mathConverter
 
 # private
+# strips ending zeros
+# called by:
+__rstripFloatZeros() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local str="$1" result="$1"
+   if [[ "$str" != "${str/./}" ]]; then
+      local unsetAtEnd=$(Boolean.FALSE) 
+      # is extglob set ?
+      shopt -q extglob
+      # if extglob not set already --> set it now and change boolean
+      if (( $? == 1 )); then
+         shopt -s extglob
+         unsetAtEnd=$(Boolean.TRUE)
+      fi 
+      shopt -s extglob
+      # trimming...
+      result="${str%%+(0)}"
+      if [[ ${result: -1} == "." ]]; then
+         result="${result}"0
+      fi
+      if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
+         shopt -u extglob
+      fi     
+   fi
+   System.out.println "${result}"
+   return $returnValue
+}
+__registerFunction __rstripFloatZeros
+
+# private
 # converts a "rwxrwxrwx" file permission
 # string to octal (eg 777)
 # called by:
