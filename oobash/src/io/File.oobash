@@ -25,6 +25,7 @@ File() {
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
+      local pathname="$2"
 
       __objectnameCheck 
       returnValue=$?
@@ -36,7 +37,7 @@ File() {
 
          __alias "$this" ${FUNCNAME}
 
-         __attribute pathname "$(__stripPath "$2")"
+         __attribute pathname "$(__stripPath "$pathname")"
 
       else
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
