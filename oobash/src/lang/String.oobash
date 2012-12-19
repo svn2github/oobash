@@ -27,7 +27,7 @@ String() {
       local this="$1"
       local string="$2"
 
-      __objectnameCheck 
+      __isObjectnameValid
       returnValue=$?
       if (( $returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))

@@ -214,7 +214,7 @@ __registerFunction __slashCheck
 # checks all constructor args
 # cales by:
 # every constructor
-__objectnameCheck() {
+__isObjectnameValid() {
    if ! __visibilityCheck "$this"; then
       __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
       return $?

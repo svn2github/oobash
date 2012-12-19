@@ -30,7 +30,7 @@ Process() {
          fi
       fi
       
-      __objectnameCheck 
+      __isObjectnameValid
       returnValue=$?
       if (( $returnValue != 0 )); then
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"

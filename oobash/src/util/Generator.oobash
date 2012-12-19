@@ -81,7 +81,7 @@ $userClass() {
          System.out.println "      local ${attributes[$i]}=\"\$$(( i + 2 ))\"" >> "${destination}"
       done
       System.out.println "
-      __objectnameCheck 
+      __isObjectnameValid 
       returnValue=\$?
       if (( \$returnValue == 0 )); then
          local pointer=\$((__OBJCOUNTER__++))
