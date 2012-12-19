@@ -1358,9 +1358,69 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
                __handleErrorMessage "String" "${FUNCNAME}"
                break
             else
-               local hexValue=$(printf %x "$1")
-               # Å å Ä ä Ö ö Å å Æ æ Ø ø ü Ü
-               local result="${result}""$(printf "%b" "\u${hexValue}")"
+               case $1 in
+                  # Why is my life so boring?...
+                  192) result="${result}"À;;                                                                                                                       
+                  193) result="${result}"Á;;                                                                                                                                 
+                  194) result="${result}"Â;;                                                                                                                                 
+                  196) result="${result}"Ä;;                                                                                                                                 
+                  197) result="${result}"Å;;                                                                                                                                 
+                  198) result="${result}"Æ;;                                                                                                                                 
+                  199) result="${result}"Ç;;                                                                                                                                 
+                  200) result="${result}"È;;                                                                                                                                 
+                  201) result="${result}"É;;                                                                                                                                 
+                  202) result="${result}"Ê;;                                                                                                                                 
+                  203) result="${result}"Ë;;                                                                                                                                 
+                  204) result="${result}"Ì;;                                                                                                                                 
+                  205) result="${result}"Í;;                                                                                                                                 
+                  206) result="${result}"Î;;                                                                                                                                 
+                  207) result="${result}"Ï;;                                                                                                                                 
+                  208) result="${result}"Ð;;                                                                                                                                 
+                  209) result="${result}"Ñ;;                                                                                                                                 
+                  210) result="${result}"Ò;;                                                                                                                                 
+                  211) result="${result}"Ó;;                                                                                                                                 
+                  212) result="${result}"Ô;;                                                                                                                                 
+                  214) result="${result}"Ö;;                                                                                                                                 
+                  216) result="${result}"Ø;;                                                                                                                                 
+                  217) result="${result}"Ù;;                                                                                                                                 
+                  218) result="${result}"Ú;;                                                                                                                                 
+                  219) result="${result}"Û;;                                                                                                                                 
+                  220) result="${result}"Ü;;                                                                                                                                 
+                  221) result="${result}"Ý;;                                                                                                                                 
+                  222) result="${result}"Þ;;                                                                                                                                 
+                  223) result="${result}"ß;;                                                                                                                                 
+                  224) result="${result}"à;;                                                                                                                                 
+                  225) result="${result}"á;;                                                                                                                                 
+                  226) result="${result}"â;;                                                                                                                                 
+                  228) result="${result}"ä;;                                                                                                                                 
+                  229) result="${result}"å;;                                                                                                                                 
+                  230) result="${result}"æ;;                                                                                                                                 
+                  231) result="${result}"ç;;                                                                                                                                 
+                  232) result="${result}"è;;                                                                                                                                 
+                  233) result="${result}"é;;                                                                                                                                 
+                  234) result="${result}"ê;;                                                                                                                                 
+                  235) result="${result}"ë;;                                                                                                                                 
+                  236) result="${result}"ì;;                                                                                                                                 
+                  237) result="${result}"í;;                                                                                                                                 
+                  238) result="${result}"î;;                                                                                                                                 
+                  239) result="${result}"ï;;                                                                                                                                
+                  240) result="${result}"ð;;                                                                                                                                 
+                  241) result="${result}"ñ;;
+                  242) result="${result}"ò;;
+                  243) result="${result}"ó;;
+                  244) result="${result}"ô;;
+                  246) result="${result}"ö;;
+                  248) result="${result}"ø;;
+                  249) result="${result}"ù;;
+                  250) result="${result}"ú;;
+                  251) result="${result}"û;;
+                  252) result="${result}"ü;;
+                  253) result="${result}"ý;;
+                  254) result="${result}"þ;;               
+                  *)
+                  hexValue=$(printf %x "$1")
+                  result="${result}""$(printf "%b" "\u${hexValue}")";;
+               esac
             fi
          fi
          shift
