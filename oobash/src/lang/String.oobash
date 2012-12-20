@@ -1359,7 +1359,6 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
                break
             else
                case $1 in
-                  # Why is my life so boring?...
                   192) result="${result}"À;;                                                                                                                       
                   193) result="${result}"Á;;                                                                                                                                 
                   194) result="${result}"Â;;                                                                                                                                 
