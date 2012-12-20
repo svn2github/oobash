@@ -1,10 +1,14 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# TODO:
-# Fix in String.fromCharCode for all the characters that are not supported by bash printf unicode support
-# use of GNU /usr/bin/printf if availabe ?
-# check if i really used unicode values and not html character values (upper,lower...) 
-# parameter checks in the constructors --> stamp out duplication
+# 0.39.11
+# Math.round, Math.rint, Math.signum
+# Process disown...
+# File: -extended file attributes: lsattr, chattr.. ?
+#       -split, merge ?
+# Private: convert between hex dec oct bin
+# Class.generator: comments like box with classname...
+# sort all functions and the help cases
+# Generators can use arg with path ?
 
 # 0.40 LOGGING
 # -Logging (coproc ?)
@@ -12,31 +16,9 @@
 # 0.40.1
 # -tput: color management
 # -optimize logging
-# -File:
-# * extended file attributes: lsattr, chattr.. ?
-# * File split, merge ?
-
-# 0.40.2
-# -Script.generator --> create log.properties file for the script ?
-# -optimize logging
-
-# 0.40.3
-# -optimize logging
-# Private:
-# convert between hex dec oct bin
-
-# 0.40.4
-# Try to be faster ?:
-# * use __getAttributeFromObject instead of eg "$("$this".toString)" ???
-# * use some Private functions for: canRead canWrite isFile exists...?
-# e.g.:
-# "if [[ "$("$this".exists)" == $(Boolean.TRUE) ]]; then"
-# would be faster, but not so pretty...
 
 # 0.41
-# -sort all functions and the help cases
 # -chained return values
-# -Generators can use arg with path ?
 # -check for gnu ps ?
 # -add some System functions
 
