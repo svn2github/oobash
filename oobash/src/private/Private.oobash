@@ -20,7 +20,7 @@
 # __keywordCheck() checks if objectname argument for a constructor is a keyword
 # __periodCheck() check if given string contains "." character
 # __slashCheck() check if given string contains "/" character
-# __constructorArgsCheck() checks all constructor args
+# __isObjectnameValid checks all constructor args
 # __throw() throws an exception with name of exception and message
 # __attribute() stores an attribute of an object
 # __destructor() destroys a given object

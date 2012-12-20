@@ -329,7 +329,7 @@
 #    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
 #    -Math.random works without bc now
 #    -Support for cyrillic characters
-#    -Fixes, refactoring and small improvements
+#    -Fixes and small improvements
 
 
 #################################################################
