@@ -23,7 +23,7 @@
 # __isObjectnameValid checks all constructor args
 # __throw() throws an exception with name of exception and message
 # __attribute() stores an attribute of an object
-# __destructor() destroys a given object
+# __destruct() destroys a given object
 # __unalias() deletes all bash aliases for an object (object.method=object.method)
 # __alias() creates all bash aliases for an object (object.method=object.method)
 # __strUpper() returns given string uppercase
@@ -276,7 +276,8 @@ __registerFunction __attribute
 # destroys a given object
 # called by:
 # -every constructor
-__destructor() {
+# __cleanUpObjectsPool
+__destruct() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local this="$1"
    local string="${__OBJECTPOOL__["${this}"]}"
@@ -307,7 +308,7 @@ __destructor() {
    fi
    return 0
 }
-__registerFunction __destructor
+__registerFunction __destruct
 
 # private
 # deletes all bash aliases for an object
@@ -667,7 +668,7 @@ __rstripDoubleZeros() {
    System.out.println "${result}"
    return $returnValue
 }
-__registerFunction __rstripFloatZeros
+__registerFunction __rstripDoubleZeros
 
 # private
 # converts a "rwxrwxrwx" file permission
@@ -773,7 +774,7 @@ __cleanUpObjectsPool() {
    local obj
    for obj in ${!__OBJECTPOOL__[@]} 
    do 
-      __destructor "${obj}"
+      __destruct "${obj}"
    done
    return 0
 }

@@ -325,6 +325,7 @@
 #    -renamed __stackOrHelp to __handleErrorMessage
 #    -renamed __visible to __visibilityCheck
 #    -renamed __checkForKeywords to __keywordCheck
+#    -renamed __destructor to __destruct
 #    -removed __stack function
 #    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
 #    -Math.random works without bc now

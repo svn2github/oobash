@@ -72,7 +72,7 @@ Ssh() {
       local pointer=$((__OBJCOUNTER__++))
       local class=$FUNCNAME
 
-      __destructor "$this"
+      __destruct "$this"
 
       __alias "$this" "$FUNCNAME"
 

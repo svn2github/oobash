@@ -35,7 +35,7 @@ Level() {
          local levelStr="$3"
          local syslogEquivalent="$4"
 
-         __destructor "$this"
+         __destruct "$this"
 
          __alias "$this" "$FUNCNAME"
 
