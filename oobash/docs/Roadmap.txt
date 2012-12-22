@@ -7,7 +7,7 @@
 #       -split, merge ?
 # Private: convert between hex dec oct bin
 # Class.generator: comments like box with classname...
-# sort all functions and the help cases
+# sort all functions and the help cases + manpages
 # Generators can use arg with path ?
 
 # 0.40 LOGGING
