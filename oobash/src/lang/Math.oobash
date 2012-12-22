@@ -1277,6 +1277,7 @@ Math.ceil() {
       val="$(__mathConverter "$1")"
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then
+            val="$(System.out.println "(${val})/1"|bc -l)"
             declare -i castInt="$(System.out.println "(${val})/1"|bc)"
             if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
@@ -1334,15 +1335,7 @@ Math.floor() {
             # http://phodd.net/gnu-bc/code/funcs.bc
             local floor_func="define floor(x) {auto os,xx;os=scale;scale=0; xx=x/1; if(xx>x)xx-=1;scale=os;return(xx)}"
             output=$(System.out.println "$floor_func;floor($val)" | bc)
-            if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
-               return $returnValue
-            fi
-            if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
-               return $returnValue 
-            fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "${output}".0
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
