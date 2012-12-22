@@ -1276,7 +1276,8 @@ Math.ceil() {
       local val
       val="$(__mathConverter "$1")"
       if (( $? == 0 )); then
-         if command -v bc >/dev/null 2>&1; then 
+         if command -v bc >/dev/null 2>&1; then
+            declare -i castInt="$(System.out.println "(${val})/1"|bc)"
             if [[ "${val}" == "NaN" ]]; then
                System.out.println "NaN"
                return $returnValue
@@ -1286,18 +1287,13 @@ Math.ceil() {
             elif [[ "${val}" == "-Infinity" ]]; then
                System.out.println "-Infinity"
                return $returnValue
-            fi 
+            elif [[ $(System.out.println "${val}==${castInt}" | bc -l) == 1 ]]; then
+               System.out.println "$castInt.0"
+               return $returnValue
+            fi           
             local ceil_func="define ceil(x) {if (x<0) {return x/1} else {if (scale(x)==0) {return x} else {return x/1 + 1 }}}"
             output=$(System.out.println "$ceil_func;ceil($val)" | bc)
-            if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
-               return $returnValue
-            fi
-            if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
-               return $returnValue 
-            fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "${output}".0
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
