@@ -328,7 +328,6 @@
 #    -renamed __destructor to __destruct
 #    -removed __stack function
 #    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
-#    -Math.random works without bc now
 #    -Support for cyrillic characters
 #    -Fixes and small improvements
 
