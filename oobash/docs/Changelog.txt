@@ -330,7 +330,8 @@
 #    -support for sticky bit, setuid and setgid in __posixFilePermissionToOctal
 #    -Support for cyrillic characters
 #    -Fixes and small improvements
-
+# Version:      0.39.11
+#    -use of bash globstar for sourcing own class files
 
 #################################################################
 # Features:

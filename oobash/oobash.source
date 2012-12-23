@@ -232,11 +232,22 @@ __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
 
 # source all your class files
-for class in "${__OODIR__}"/src/myClassFiles/*.oobash
+globstarActive=$(Boolean.FALSE) 
+# is extglob set ?
+shopt -q globstar
+# if extglob not set already --> set it now and change boolean 
+if (( $? == 1 )); then
+   shopt -s globstar
+   globstarActive="$(Boolean.TRUE)"
+fi 
+for class in "${__OODIR__}"/src/myClassFiles/**/*.oobash
 do
    source ${class} 2>/dev/null
 done
-unset class
+if [[ "${globstarActive}" == "$(Boolean.TRUE)" ]]; then
+   shopt -u globstar
+fi
+unset class globstarActive
 
 # Export scriptpath + scriptname if oobash is sourced by script
 if [[ -z "$PS1" ]]; then
