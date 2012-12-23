@@ -9,6 +9,7 @@
 # Class.generator: comments like box with classname...
 # sort all functions and the help cases + manpages
 # Generators can use arg with path ?
+# get rid of tail in __stacktrace (long-forgotten osx dependency)
 
 # 0.40 LOGGING
 # -Logging (coproc ?)
