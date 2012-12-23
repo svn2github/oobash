@@ -233,9 +233,7 @@ __registerVar TEXTDOMAIN
 
 # source all your class files
 globstarActive=$(Boolean.FALSE) 
-# is extglob set ?
 shopt -q globstar
-# if extglob not set already --> set it now and change boolean 
 if (( $? == 1 )); then
    shopt -s globstar
    globstarActive="$(Boolean.TRUE)"
