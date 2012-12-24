@@ -1419,11 +1419,13 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
                break
             else
                case $1 in
+                  161) result="${result}"¡;; 
                   163) result="${result}"£;; 
                   170) result="${result}"ª;;  
                   171) result="${result}"«;;  
                   186) result="${result}"º;;  
-                  187) result="${result}"»;;  
+                  187) result="${result}"»;; 
+                  191) result="${result}"¿;;  
                   192) result="${result}"À;;                                                                                                                       
                   193) result="${result}"Á;;                                                                                                                                 
                   194) result="${result}"Â;;                                                                                                                                 
