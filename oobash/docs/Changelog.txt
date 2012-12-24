@@ -41,7 +41,7 @@
 # Version:      0.24     Date:         03.09.2010
 #     - added support for french locale (special characters) 
 #     - fixed small sharp s forgotten in captitalize   
-#     - added "Optimized for german,french and polish locale." in help for isUpperCase/isLowerCase
+#     - added "Optimized for german,french and sh locale." in help for isUpperCase/isLowerCase
 #     - fixed equalsIgnoreCase/capitalize again (declare -u or -l from version 0.22 was a bad idea, it seems...)
 # Version:      0.25     Date:         05.09.2010
 #     - added support for polish locale (special characters)  
@@ -332,6 +332,7 @@
 #    -Fixes and small improvements
 # Version:      0.39.11
 #    -use of bash globstar for sourcing own class files
+#    -Fixes and small improvements
 
 #################################################################
 # Features:
