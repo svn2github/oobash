@@ -1419,6 +1419,7 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
                break
             else
                case $1 in
+                  163) result="${result}"£;; 
                   192) result="${result}"À;;                                                                                                                       
                   193) result="${result}"Á;;                                                                                                                                 
                   194) result="${result}"Â;;                                                                                                                                 
