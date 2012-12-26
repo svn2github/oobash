@@ -2640,7 +2640,7 @@ String.help() {
             System.${printStream}.println "
                String.fromCharCode
                   This function is only available, if bash4 has at least minor version number 2.
-                  Converts Unicode values into characters
+                  Converts Unicode decimal values into characters
                Parameters:
                   Unicode values
                Returns:
