@@ -96,7 +96,7 @@ want to use it at once after the creation, you certainly can source the file man
 Example:
 Class.generator Person name age city
 
-b) Create own manpages
+b) Create own scripts
 ------------------------
 
 If you want to make your own script
@@ -111,7 +111,7 @@ The tool will return the path and name of the created script file.
 Example:
 Script.generator greatScript.sh
 
-c) Create own scripts
+c) Create own manpages
 -----------------------
 
 If you want to make a manpage for a generated class file or a generated script, 
