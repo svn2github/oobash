@@ -1622,7 +1622,8 @@ String.help() {
             System.${printStream}.println "
                capitalize
                   Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale
+                  and cyrillic characters.
                Parameters:
                   None  
                Returns:
@@ -1915,7 +1916,8 @@ String.help() {
             System.${printStream}.println "
                equalsIgnoreCase
                   Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale
+                  and cyrillic characters.
                   Compares this String to another String, ignoring case considerations. Two strings 
                   are considered equal ignoring case if they are of the same length and corresponding 
                   characters in the two strings are equal ignoring case.
@@ -2146,7 +2148,8 @@ String.help() {
             System.${printStream}.println "
                isLowerCase
                   Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale
+                  and cyrillic characters.
                Parameters:
                   None
                Returns:
@@ -2217,7 +2220,8 @@ String.help() {
             System.${printStream}.println "
                isUpperCase
                   Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale
+                  and cyrillic characters.
                Parameters:
                   None
                Returns:
@@ -2466,7 +2470,8 @@ String.help() {
             System.${printStream}.println "
                toLowerCase
                   Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale
+                  and cyrillic characters.
                Parameters:
                   None
                Returns:
@@ -2501,7 +2506,8 @@ String.help() {
             System.${printStream}.println "
                toUpperCase
                   Optimized for german, french, polish, spanish, romanian, czech, slovak, slovenian, 
-                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale.
+                  swedish, finnish, danish, scottish gaelic, catalan, hungarian, norwegian and icelandic locale
+                  and cyrillic characters.
                Parameters:
                   None
                Returns:
