@@ -70,8 +70,9 @@ declare -a __${userClass}__=(\${__${userClass}Methods__[@]} \${__ObjectMethods__
 declare -i length=$(( ${#userClass} ))
 local line
 printf -v line '%*s' "$length"
-local frame1="$(System.out.println ${line// /#})"
-frame2="$(System.out.println "${line// / }")"
+local frame1="$(System.out.println "${line// /#}")"
+local frame2="$(System.out.println "${line// / }")"
+
 System.out.println "
 ###$frame1###
 ###$frame1###
