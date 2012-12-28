@@ -67,10 +67,26 @@ declare -a __${userClass}__=(\${__${userClass}Methods__[@]} \${__ObjectMethods__
 # Create constructor function:#
 ###############################
 
+declare -i length=$(( ${#userClass} ))
+local line
+printf -v line '%*s' "$length"
+local frame1="$(System.out.println ${line// /#})"
+frame2="$(System.out.println "${line// / }")"
 System.out.println "
+###$frame1###
+###$frame1###
+## $frame2 ##
+## ${userClass^^} ##
+## $frame2 ##
+###$frame1###
+###$frame1###
+
 #########################
-# constructor  function #
+#                       #
+#      CONSTRUCTOR      # 
+#                       #
 #########################
+
 $userClass() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i returnValue=0
@@ -115,9 +131,13 @@ __registerClass $userClass
 ###########################
 
 System.out.println "
-######################
-# getter function(s) #
-######################
+
+#####################
+#                   #
+#      METHODS      # 
+#                   #
+#####################
+
 " >> "${destination}"
 declare -i j
 for (( j=0; j < ${#attributes[@]}; j++))
@@ -149,8 +169,11 @@ System.out.println "
 complete -W  \"\$(echo \${__${userClass}__[@]}) all ${userClass}\" ${userClass}.help
 
 #################
-# help function #
+#               #
+#     HELP      # 
+#               #
 #################
+
 ${userClass}.help() {  
    local printStream=\${printStream:-out}  
    if (( \$# == 0 )); then
