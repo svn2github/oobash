@@ -5,9 +5,17 @@
 # Copyright (c) <2012> <andreas.gregor.frank@googlemail.com>
 #############################################################
 
-#########################
-# constructor  function #
-#########################
+
+####################
+####################
+##                ##
+##     PROCESS    ## 
+##                ##
+####################
+####################
+
+
+
 
 Process() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -83,9 +91,11 @@ Process() {
 }
 __registerClass Process
 
-###########
-# Methods #
-###########
+#####################
+#                   #
+#      METHODS      # 
+#                   #
+#####################
 
 __getPid() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -672,8 +682,11 @@ __registerFunction Process.create
 complete -W  "$(echo ${__Process__[@]}) create all Process" Process.help
 
 #################
-# help function #
+#               #
+#     HELP      # 
+#               #
 #################
+
 Process.help() {  
    local printStream=${printStream:-out}  
    if (( $# == 0 )); then
@@ -1085,5 +1098,3 @@ Process.help() {
       shift
    done 
 }
-
-
