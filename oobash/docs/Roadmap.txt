@@ -3,13 +3,21 @@
 # 0.39.11
 # Math.round, Math.rint, Math.signum
 # Process disown...
-# File: -extended file attributes: lsattr, chattr.. ?
-#       -split, merge ?
-# Private: convert between hex dec oct bin
-# sort all functions and the help cases + manpages
-# Generators can use arg with path ?
-# get rid of tail in __stacktrace (long-forgotten osx dependency)
-# histogram ?
+
+1)
+# Math:
+use:
+bc <<< 3+5
+8
+instead of:
+echo 3+5 | bc
+8
+
+2)
+fix i18nExample.sh --> check if locale is available on the system
+
+3)
+get rid of tail in __stacktrace (long-forgotten osx dependency)
 
 # 0.40 LOGGING
 # -Logging (coproc ?)
@@ -17,17 +25,22 @@
 # 0.40.1
 # -tput: color management
 # -optimize logging
+# -Private: convert between hex dec oct bin
 
 # 0.41
 # -chained return values
 # -check for gnu ps ?
 # -add some System functions
+# -sort all functions and the help cases + manpages
 
 # 0.42
 # -tput: terminal info
+# File: -extended file attributes: lsattr, chattr.. ?
+#       -split, merge ?
  
 # 0.43
 # -tput: cursor
+# -histogram
 
 # 0.5 UNITTESTING
 # -class Assert...
