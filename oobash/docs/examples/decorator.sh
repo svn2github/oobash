@@ -74,7 +74,7 @@ printer5() {
 @false
 printer6() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   System.out.println "My return value is $?, because of 2 times @false (sum)."
+   System.out.println "My return value is $?, because of $? times @false (sum)."
    System.out.println "i print printer6"
    System.out.println "---------------------------"
    System.out.println
