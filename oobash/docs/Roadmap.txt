@@ -16,9 +16,6 @@ echo 3+5 | bc
 2)
 fix i18nExample.sh --> check if locale is available on the system
 
-3)
-get rid of tail in __stacktrace (long-forgotten osx dependency)
-
 # 0.40 LOGGING
 # -Logging (coproc ?)
 
