@@ -13,9 +13,6 @@ instead of:
 echo 3+5 | bc
 8
 
-2)
-fix i18nExample.sh --> check if locale is available on the system
-
 # 0.40 LOGGING
 # -Logging (coproc ?)
 
