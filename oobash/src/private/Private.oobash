@@ -1284,6 +1284,7 @@ __registerFunction __lookForLoggingPropertiesFile
 # private
 # asks local terminal database if this terminal supports colours
 # called by:
+# __setPS4
 __terminalSupportsColors() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=1
@@ -1392,7 +1393,11 @@ __registerFunction __getFreeFD
 # sets PS4 prompt for a better prefix during tracing output
 # called by:
 __setPS4() {
-   export PS4='+${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}: '
+   if __terminalSupportsColors; then
+      export PS4=+'\[\033[1;31m\]:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): \[\033[0m\]'
+   else
+      export PS4='+:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): '
+   fi
    return 0
 }
 __registerFunction __setPS4
