@@ -102,16 +102,16 @@ $userClass() {
       returnValue=\$?
       if (( \$returnValue == 0 )); then
          local pointer=\$((__OBJCOUNTER__++))
-         local class=\$FUNCNAME
+         local class=\"\${FUNCNAME}\"
 
-         __destruct \"\$this\"
+         __destruct \"\${this}\"
 
-         __alias \"\$this\" \"\$FUNCNAME\"
+         __alias \"\${this}\" \"\${FUNCNAME}\"
          " >> "${destination}"
 
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "         __attribute ${attributes[$i]} \"\$${attributes[$i]}\"" >> "${destination}"
+         System.out.println "         __attribute ${attributes[$i]} \"\${${attributes[$i]}}\"" >> "${destination}"
       done
       System.out.println "
       else
