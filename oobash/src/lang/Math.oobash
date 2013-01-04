@@ -851,7 +851,7 @@ Math.random() {
       declare -i i
       for ((i=0;i<15;i++)); 
       do 
-         result=${result}$(printf "%s" "$(( $RANDOM % 10  ))")
+         result+=$(printf "%s" "$(( $RANDOM % 10  ))")
       done
       System.out.println $(__rstripDoubleZeros "${result}")
    else

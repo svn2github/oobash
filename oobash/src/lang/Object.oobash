@@ -69,10 +69,10 @@ __toString() {
       do
          if [[ "${key}" == "${pointer}"@* ]]; then
             if [[ ${first} == $(Boolean.TRUE) ]]; then
-               str="$str""${__ATTRIBUTEPOOL__["$key"]}"
+               str+="${__ATTRIBUTEPOOL__["$key"]}"
                first="$(Boolean.FALSE)"
             else
-               str="$str""|""${__ATTRIBUTEPOOL__["$key"]}"
+               str+="|${__ATTRIBUTEPOOL__["$key"]}"
             fi
          fi      
       done
