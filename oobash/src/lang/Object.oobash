@@ -65,7 +65,7 @@ __toString() {
          __handleErrorMessage "$2" "${FUNCNAME:2}"
          return $returnValue
       fi         
-      for key in $keys
+      for key in ${keys}
       do
          if [[ "${key}" == "${pointer}"@* ]]; then
             if [[ ${first} == $(Boolean.TRUE) ]]; then
@@ -92,18 +92,18 @@ __equals() {
       local this="$1"
       local argobject="$3"
       local argclass
-      argclass="$("$argobject".getClass 2>/dev/null)" 
+      argclass="$("${argobject}".getClass 2>/dev/null)" 
       if (( $? == 0 )); then
-         if [[ "$("$this".getClass)" == "$argclass" ]]; then
-            case $argclass in
+         if [[ "$("$this".getClass)" == "${argclass}" ]]; then
+            case ${argclass} in
             Level)
-               if [[ "$("$argobject".toInt)" == "$("$this".toInt)" ]]; then
+               if [[ "$("${argobject}".toInt)" == "$("$this".toInt)" ]]; then
                   Boolean.TRUE
                else
                   Boolean.FALSE
                fi;;            
             *)
-               if [[ "$("$argobject".toString)" == "$("$this".toString)" ]]; then
+               if [[ "$("${argobject}".toString)" == "$("$this".toString)" ]]; then
                   Boolean.TRUE
                else
                   Boolean.FALSE
@@ -141,17 +141,17 @@ __hashCode() {
          for ((i=0; i < ${#str}; i++))
          do    
             valueOf=$(__charCode "${str:i:1}")
-            hash=$(System.out.println "$hash*31+$valueOf" | bc)
+            hash=$(System.out.println "${hash}*31+${valueOf}" | bc)
          done
-         hash=$(System.out.println "$hash-((2^32)*($hash/(2^32)))" | bc) 
+         hash=$(System.out.println "${hash}-((2^32)*(${hash}/(2^32)))" | bc) 
          if (( ${hash} > 2147483647 )); then
             hash=$(System.out.println "${hash}-(2^32)" | bc)
          fi
          case ${class} in
             File)
-               System.out.println $(($hash^1234321));;
+               System.out.println $((${hash}^1234321));;
             Boolean)
-               if [[ "$str" == $(Boolean.TRUE) ]]; then
+               if [[ "${str}" == "$(Boolean.TRUE)" ]]; then
                   System.out.println 1231
                else
                   System.out.println 1237
