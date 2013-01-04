@@ -215,7 +215,7 @@ __title() {
          else
             next="$(Boolean.FALSE)"
          fi
-         result="${result}""${char}"
+         result+="${char}"
       done
       System.out.println "${result}"
    else
@@ -590,6 +590,7 @@ __isSpace() {
    return $returnValue
 }
 
+# TODO: Faster !!!
 __zfill() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -633,13 +634,13 @@ __swapCase() {
          case $char in
             # small sharp s
             ß)                  
-            swaped="$swaped""ẞ";;
+            swaped+="ẞ";;
             # big sharp s
             ẞ)
-            swaped="$swaped""ß";;
+            swaped+="ß";;
             # ignore case 
             *) 
-            swaped="$swaped""${char~}" ;;
+            swaped+="${char~}" ;;
          esac
       done
       System.out.println "${swaped}"
@@ -651,6 +652,7 @@ __swapCase() {
    return $returnValue
 }
 
+# TODO:Faster!!
 __center() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1202,7 +1204,7 @@ __replaceAll() {
          for ((i=0; i < ${#str}; i++))
          do
             local char="${str:i:1}"
-            result="$result""$char""${replacement}"
+            result+="${char}""${replacement}"
          done
          System.out.println "${result}"
       else
@@ -1281,7 +1283,7 @@ __reverse() {
       for ((i=$index; i >= 0; i--))
       do
          char="${str:i:1}"
-         result="$result""$char"
+         result+="$char"
       done
       System.out.println "${result}"
    else
@@ -1421,106 +1423,106 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
                case $1 in
                   # 128 to 159 (x0080 - x009F) are not printable ("C1 control codes")
                   160) result="${result} ";;
-                  161) result="${result}"¡;; 
-                  162) result="${result}"¢;;
-                  163) result="${result}"£;; 
-                  164) result="${result}"¤;;
-                  165) result="${result}"¥;;
-                  166) result="${result}"¦;;
-                  167) result="${result}"§;;
-                  168) result="${result}"¨;;
-                  169) result="${result}"©;;
-                  170) result="${result}"ª;;  
-                  171) result="${result}"«;;
-                  172) result="${result}"¬;;  
+                  161) result+=¡;; 
+                  162) result+=¢;;
+                  163) result+=£;; 
+                  164) result+=¤;;
+                  165) result+=¥;;
+                  166) result+=¦;;
+                  167) result+=§;;
+                  168) result+=¨;;
+                  169) result+=©;;
+                  170) result+=ª;;  
+                  171) result+=«;;
+                  172) result+=¬;;  
                   # http://www.cs.tut.fi/~jkorpela/shy.html 
                   # --> ??? for soft hyphen:                                                                                         
-                  173) result="${result}"-;;                                                                                                     
-                  174) result="${result}"®;;                                                                                                     
-                  175) result="${result}"¯;;                                                                                                     
-                  176) result="${result}"°;;                                                                                                     
-                  177) result="${result}"±;;                                                                                                     
-                  178) result="${result}"²;;                                                                                                     
-                  179) result="${result}"³;;                                                                                                     
-                  180) result="${result}"´;;                                                                                                     
-                  181) result="${result}"µ;;                                                                                                     
-                  182) result="${result}"¶;;                                                                                                     
-                  183) result="${result}"·;;                                                                                                     
-                  184) result="${result}"¸;;                                                                                                     
-                  185) result="${result}"¹;;      
-                  186) result="${result}"º;;  
-                  187) result="${result}"»;; 
-                  188) result="${result}"¼;;
-                  189) result="${result}"½;;
-                  190) result="${result}"¾;;
-                  191) result="${result}"¿;;  
-                  192) result="${result}"À;;                                                                                                                       
-                  193) result="${result}"Á;;                                                                                                                                 
-                  194) result="${result}"Â;;    
-                  195) result="${result}"Ã;;                                                                                                                             
-                  196) result="${result}"Ä;;                                                                                                                                 
-                  197) result="${result}"Å;;                                                                                                                                 
-                  198) result="${result}"Æ;;                                                                                                                                 
-                  199) result="${result}"Ç;;                                                                                                                                 
-                  200) result="${result}"È;;                                                                                                                                 
-                  201) result="${result}"É;;                                                                                                                                 
-                  202) result="${result}"Ê;;                                                                                                                                 
-                  203) result="${result}"Ë;;                                                                                                                                 
-                  204) result="${result}"Ì;;                                                                                                                                 
-                  205) result="${result}"Í;;                                                                                                                                 
-                  206) result="${result}"Î;;                                                                                                                                 
-                  207) result="${result}"Ï;;                                                                                                                                 
-                  208) result="${result}"Ð;;                                                                                                                                 
-                  209) result="${result}"Ñ;;                                                                                                                                 
-                  210) result="${result}"Ò;;                                                                                                                                 
-                  211) result="${result}"Ó;;                                                                                                                                 
-                  212) result="${result}"Ô;;  
-                  213) result="${result}"Õ;;                                                                                                                               
-                  214) result="${result}"Ö;; 
-                  215) result="${result}"×;;                                                                                                                                
-                  216) result="${result}"Ø;;                                                                                                                                 
-                  217) result="${result}"Ù;;                                                                                                                                 
-                  218) result="${result}"Ú;;                                                                                                                                 
-                  219) result="${result}"Û;;                                                                                                                                 
-                  220) result="${result}"Ü;;                                                                                                                                 
-                  221) result="${result}"Ý;;                                                                                                                                 
-                  222) result="${result}"Þ;;                                                                                                                                 
-                  223) result="${result}"ß;;                                                                                                                                 
-                  224) result="${result}"à;;                                                                                                                                 
-                  225) result="${result}"á;;                                                                                                                                 
-                  226) result="${result}"â;;   
-                  227) result="${result}"ã;;                                                                                                                              
-                  228) result="${result}"ä;;                                                                                                                                 
-                  229) result="${result}"å;;                                                                                                                                 
-                  230) result="${result}"æ;;                                                                                                                                 
-                  231) result="${result}"ç;;                                                                                                                                 
-                  232) result="${result}"è;;                                                                                                                                 
-                  233) result="${result}"é;;                                                                                                                                 
-                  234) result="${result}"ê;;                                                                                                                                 
-                  235) result="${result}"ë;;                                                                                                                                 
-                  236) result="${result}"ì;;                                                                                                                                 
-                  237) result="${result}"í;;                                                                                                                                 
-                  238) result="${result}"î;;                                                                                                                                 
-                  239) result="${result}"ï;;                                                                                                                                
-                  240) result="${result}"ð;;                                                                                                                                 
-                  241) result="${result}"ñ;;
-                  242) result="${result}"ò;;
-                  243) result="${result}"ó;;
-                  244) result="${result}"ô;;
-                  245) result="${result}"õ;;
-                  246) result="${result}"ö;;
-                  247) result="${result}"÷;;
-                  248) result="${result}"ø;;
-                  249) result="${result}"ù;;
-                  250) result="${result}"ú;;
-                  251) result="${result}"û;;
-                  252) result="${result}"ü;;
-                  253) result="${result}"ý;;
-                  254) result="${result}"þ;;  
-                  255) result="${result}"ÿ;;             
+                  173) result+=-;;                                                                                                     
+                  174) result+=®;;                                                                                                     
+                  175) result+=¯;;                                                                                                     
+                  176) result+=°;;                                                                                                     
+                  177) result+=±;;                                                                                                     
+                  178) result+=²;;                                                                                                     
+                  179) result+=³;;                                                                                                     
+                  180) result+=´;;                                                                                                     
+                  181) result+=µ;;                                                                                                     
+                  182) result+=¶;;                                                                                                     
+                  183) result+=·;;                                                                                                     
+                  184) result+=¸;;                                                                                                     
+                  185) result+=¹;;      
+                  186) result+=º;;  
+                  187) result+=»;; 
+                  188) result+=¼;;
+                  189) result+=½;;
+                  190) result+=¾;;
+                  191) result+=¿;;  
+                  192) result+=À;;                                                                                                                       
+                  193) result+=Á;;                                                                                                                                 
+                  194) result+=Â;;    
+                  195) result+=Ã;;                                                                                                                             
+                  196) result+=Ä;;                                                                                                                                 
+                  197) result+=Å;;                                                                                                                                 
+                  198) result+=Æ;;                                                                                                                                 
+                  199) result+=Ç;;                                                                                                                                 
+                  200) result+=È;;                                                                                                                                 
+                  201) result+=É;;                                                                                                                                 
+                  202) result+=Ê;;                                                                                                                                 
+                  203) result+=Ë;;                                                                                                                                 
+                  204) result+=Ì;;                                                                                                                                 
+                  205) result+=Í;;                                                                                                                                 
+                  206) result+=Î;;                                                                                                                                 
+                  207) result+=Ï;;                                                                                                                                 
+                  208) result+=Ð;;                                                                                                                                 
+                  209) result+=Ñ;;                                                                                                                                 
+                  210) result+=Ò;;                                                                                                                                 
+                  211) result+=Ó;;                                                                                                                                 
+                  212) result+=Ô;;  
+                  213) result+=Õ;;                                                                                                                               
+                  214) result+=Ö;; 
+                  215) result+=×;;                                                                                                                                
+                  216) result+=Ø;;                                                                                                                                 
+                  217) result+=Ù;;                                                                                                                                 
+                  218) result+=Ú;;                                                                                                                                 
+                  219) result+=Û;;                                                                                                                                 
+                  220) result+=Ü;;                                                                                                                                 
+                  221) result+=Ý;;                                                                                                                                 
+                  222) result+=Þ;;                                                                                                                                 
+                  223) result+=ß;;                                                                                                                                 
+                  224) result+=à;;                                                                                                                                 
+                  225) result+=á;;                                                                                                                                 
+                  226) result+=â;;   
+                  227) result+=ã;;                                                                                                                              
+                  228) result+=ä;;                                                                                                                                 
+                  229) result+=å;;                                                                                                                                 
+                  230) result+=æ;;                                                                                                                                 
+                  231) result+=ç;;                                                                                                                                 
+                  232) result+=è;;                                                                                                                                 
+                  233) result+=é;;                                                                                                                                 
+                  234) result+=ê;;                                                                                                                                 
+                  235) result+=ë;;                                                                                                                                 
+                  236) result+=ì;;                                                                                                                                 
+                  237) result+=í;;                                                                                                                                 
+                  238) result+=î;;                                                                                                                                 
+                  239) result+=ï;;                                                                                                                                
+                  240) result+=ð;;                                                                                                                                 
+                  241) result+=ñ;;
+                  242) result+=ò;;
+                  243) result+=ó;;
+                  244) result+=ô;;
+                  245) result+=õ;;
+                  246) result+=ö;;
+                  247) result+=÷;;
+                  248) result+=ø;;
+                  249) result+=ù;;
+                  250) result+=ú;;
+                  251) result+=û;;
+                  252) result+=ü;;
+                  253) result+=ý;;
+                  254) result+=þ;;  
+                  255) result+=ÿ;;             
                   *)
                      hexValue=$(printf %x "$1")
-                     result="${result}""$(printf "%b" "\u${hexValue}")";;
+                     result+="$(printf "%b" "\u${hexValue}")";;
                esac
             fi
          fi
