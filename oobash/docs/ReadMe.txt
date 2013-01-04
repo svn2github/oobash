@@ -39,7 +39,7 @@ you will not be able to use a setter function in a __function (separate executio
 B) Registry
 ###########
 Every variable, function, array, alias and class is registered in an associative array with the name __Registry__.
-With the pulic __cleanUp function this __Registry__ is used to clean the environment.
+With the pulic __cleanUp function this __Registry__ is used to clean the global namespace.
 Use the __cleanUp function after using the oobash.
 
 C) Objectpool and Attributepool
