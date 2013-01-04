@@ -1394,7 +1394,7 @@ __registerFunction __getFreeFD
 # called by:
 __setPS4() {
    if __terminalSupportsColors; then
-      export PS4=+'\[\033[1;31m\]:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): \[\033[0m\]'
+      export PS4='+\[\033[1;31m\]:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): \[\033[0m\]'
    else
       export PS4='+:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): '
    fi
