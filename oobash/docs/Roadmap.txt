@@ -13,6 +13,9 @@ instead of:
 echo 3+5 | bc
 8
 
+2)
+colors ???
+
 # 0.40 LOGGING
 # -Logging (coproc ?)
 

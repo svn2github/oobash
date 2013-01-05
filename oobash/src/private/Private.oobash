@@ -1392,7 +1392,7 @@ __registerFunction __getFreeFD
 # private
 # sets PS4 prompt for a better prefix during tracing output
 # called by:
-# TODO: argumnt color ?
+# TODO: argumnt color/nocolor ?
 __setPS4() {
    if __terminalSupportsColors; then
       export PS4='\[\033[1;31m\]<${BASH_SUBSHELL}>:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): \[\033[0m\]'
