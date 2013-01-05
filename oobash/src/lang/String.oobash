@@ -354,7 +354,7 @@ __count() {
          System.out.println $(( $("$this".length) + 1 ))
       else
          if command -v bc >/dev/null 2>&1; then 
-            declare -i count=$(System.out.println "($string_length-$replaced_length)/$pattern_length" | bc)
+            declare -i count=$(bc <<< "($string_length-$replaced_length)/$pattern_length")
             System.out.println "${count}"         
          else
             __throw "NotInPathException" ": bc not in path"

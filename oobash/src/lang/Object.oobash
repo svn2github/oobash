@@ -141,11 +141,11 @@ __hashCode() {
          for ((i=0; i < ${#str}; i++))
          do    
             valueOf=$(__charCode "${str:i:1}")
-            hash=$(System.out.println "${hash}*31+${valueOf}" | bc)
+            hash=$(bc <<< "${hash}*31+${valueOf}")
          done
-         hash=$(System.out.println "${hash}-((2^32)*(${hash}/(2^32)))" | bc) 
+         hash=$(bc <<< "${hash}-((2^32)*(${hash}/(2^32)))") 
          if (( ${hash} > 2147483647 )); then
-            hash=$(System.out.println "${hash}-(2^32)" | bc)
+            hash=$(bc <<< "${hash}-(2^32)")
          fi
          case ${class} in
             File)

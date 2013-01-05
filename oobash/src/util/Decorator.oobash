@@ -59,7 +59,7 @@
          testtimestamp="$(date "+%N" 2>/dev/null)"
          # is GNU date and is bc available ?
          if [[ "${testtimestamp: -1}" != "N" ]] && command -v bc >/dev/null 2>&1; then
-            local time="$(printf "%s\n" "$(date +"%s.%N")-${__STARTTIME__}" | bc -l)"
+            local time="$(bc -l <<< "$(date +"%s.%N")-${__STARTTIME__}")"
             if [[ "${time:0:1}" == "." ]]; then
                time=0"${time}"
             fi
