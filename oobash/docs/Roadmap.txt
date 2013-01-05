@@ -1,20 +1,13 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.11
-# Math.round, Math.rint, Math.signum
+# Math.round, Math.rint
+        
 # Process disown...
 
-1)
-# Math:
-use:
-bc <<< 3+5
-8
-instead of:
-echo 3+5 | bc
-8
+# colors ???
 
-2)
-colors ???
+
 
 # 0.40 LOGGING
 # -Logging (coproc ?)
@@ -54,7 +47,7 @@ colors ???
 # -sudo decorator for Ssh ?
 # ...
 
-# 0.70 DATE/IPv4+IPv6 ADDRESS/..
+# 0.70 DATE/IPv4+IPv6 ADDRESS/MAC ADDRESS
 # -Date functions..
 
 # 0.80 GUI

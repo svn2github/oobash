@@ -20,6 +20,47 @@
 #                #
 ##################
 
+Math.signum() {
+   __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      local val
+      val="$(__mathConverter "$1")"
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then
+				if [[ "${val}" == "NaN" ]]; then
+					System.out.println "NaN"
+					return $returnValue
+				fi
+				zerotest=$(bc -l <<< "${val}==0")
+				if (( zerotest == 1 )); then
+					System.out.println "0.0"
+					return $returnValue
+				fi          
+				if [[ "${val:0:1}" == "-" ]]; then
+					System.out.println "-1.0"
+				else
+					System.out.println "+1.0"
+				fi
+         else
+            __throw "NotInPathException" ": bc not in path"
+            returnValue=$?
+            __handleErrorMessage "Math" "${FUNCNAME}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         returnValue=$?
+         __handleErrorMessage "Math" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "Math" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction Math.signum
+
 Math.cbrt() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1419,7 +1460,7 @@ __registerFunction Math.hypot
 #               #
 #################
 
-complete -W  "random cos cbrt sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
+complete -W  "signum random cos cbrt sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
 
 Math.help() {  
    local printStream=${printStream:-out}
@@ -1433,6 +1474,7 @@ Math.help() {
       -Math.log -Math.log10 -Math.log1p -Math.cbrt
       -Math.floor -Math.ceil -Math.hypot -Math.toRadians
       -Math.toDegrees -Math.cosh -Math.sinh Math.tanh
+      -Mat.signum 
       Constructor: 
       None
       Constants:
@@ -1453,10 +1495,10 @@ Math.help() {
                   diameter.
                Parameters:
                   None
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
                Returns:
                   3.14159265358979323846
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Math.PI
                   >>>3.14159265358979323846
@@ -1471,10 +1513,10 @@ Math.help() {
                   e, the base of the natural logarithms.
                Parameters:
                   None
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
                Returns:
                   2.71828182845904523536
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
                Example:
                   Math.E
                   >>>2.71828182845904523536
@@ -1495,6 +1537,31 @@ Math.help() {
                   Math.random
                   >>>0.327545166015625
             ";;&
+         Math.signum|signum|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.signum
+                  Returns the signum function of the argument; zero if the argument is zero, 
+                  1.0 if the argument is greater than zero, -1.0 if the argument is less than zero.
+                  Special Cases:
+                  * If the argument is NaN, then the result is NaN.
+                  * If the argument is zero then the result is 0.0.
+               Parameters:
+                  a - a value whose signum is to be returned 
+               Returns:
+                  the signum function of the argument            
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.signum
+               Example:
+                  Math.signum NaN
+                  >>>NaN
+                  Math.signum -3E5
+                  >>>-1.0
+                  Math.signum 0
+                  >>>0.0
+            ";;&                
          Math.adder|adder|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
