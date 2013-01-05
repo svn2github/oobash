@@ -1422,7 +1422,7 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
             else
                case $1 in
                   # 128 to 159 (x0080 - x009F) are not printable ("C1 control codes")
-                  160) result="${result} ";;
+                  160) result=" ";;
                   161) result+=¡;; 
                   162) result+=¢;;
                   163) result+=£;; 
