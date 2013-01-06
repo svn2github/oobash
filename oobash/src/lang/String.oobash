@@ -590,7 +590,6 @@ __isSpace() {
    return $returnValue
 }
 
-# TODO: Faster !!!
 __zfill() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -652,7 +651,6 @@ __swapCase() {
    return $returnValue
 }
 
-# TODO:Faster!!
 __center() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
