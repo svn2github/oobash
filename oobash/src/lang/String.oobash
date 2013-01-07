@@ -1531,6 +1531,7 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
       fi
       return $returnValue
    }
+   __registerFunction String.fromCharCode
 fi
 
 #################
