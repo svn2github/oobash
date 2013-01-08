@@ -154,15 +154,10 @@ Math.cbrt() {
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then
             case "${val}" in
-            "NaN")        System.out.println "NaN"
-                          return $returnValue
-                          ;; 
-            "Infinity")   System.out.println "Infinity"
-                          return $returnValue
-                          ;;
-            "-Infinity")  System.out.println "-Infinity"
-                          return $returnValue
-                          ;;
+					"NaN"|"Infinity"|"-Infinity")        
+					   System.out.println "${val}"
+						return $returnValue
+						;; 
             esac
             zerocheck=$(bc -l <<< "scale=os+5;if(scale<5)scale=5;$val*$val==0")
             if (( zerocheck == 1 )); then
