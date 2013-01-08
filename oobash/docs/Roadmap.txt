@@ -1,13 +1,9 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.11
-# Math.round, Math.rint
-        
+# check docks for Math.round, Math.rint + manpages
 # Process disown...
-
 # colors ???
-
-
 
 # 0.40 LOGGING
 # -Logging (coproc ?)

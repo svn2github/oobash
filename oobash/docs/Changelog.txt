@@ -331,7 +331,7 @@
 #    -Support for cyrillic characters
 #    -Fixes and small improvements
 # Version:      0.39.11
-#    -Added to Math: Math.signum
+#    -Added to Math: Math.signum, Math.rint, Math.round
 #    -use of bash globstar for sourcing own class files
 #    -Fixes and small improvements
 

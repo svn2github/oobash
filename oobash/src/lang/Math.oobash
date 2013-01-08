@@ -61,6 +61,91 @@ Math.signum() {
 }
 __registerFunction Math.signum
 
+Math.round() {
+   __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      local val
+      val="$(__mathConverter "$1")"
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then
+            case "${val}" in
+            "NaN")        System.out.println "0"
+                          return $returnValue
+                          ;;
+            "Infinity")   System.out.println "Infinity"
+                          return $returnValue
+                          ;;
+            "-Infinity")  System.out.println "-Infinity"
+                          return $returnValue
+                          ;;
+            esac
+            val="$(bc -l <<< "${val}")"
+            if [[ "${val:0:1}" == "-" ]]; then
+               bc <<< "(${val}-0.5)/1"
+            else
+               bc <<< "(${val}+0.5)/1"
+            fi
+         else
+            __throw "NotInPathException" ": bc not in path"
+            returnValue=$?
+            __handleErrorMessage "Math" "${FUNCNAME}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         returnValue=$?
+         __handleErrorMessage "Math" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "Math" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction Math.round
+
+Math.rint() {
+   __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )); then
+      local val
+      val="$(__mathConverter "$1")"
+      if (( $? == 0 )); then
+         if command -v bc >/dev/null 2>&1; then
+            case "${val}" in
+               "NaN"|"Infinity"|"-Infinity")
+                  System.out.println "${val}"
+                  return $returnValue
+                  ;;
+            esac
+            val="$(bc -l <<< "${val}")"
+            if [[ "${val:0:1}" == "-" ]]; then
+               val=$(bc <<< "(${val}-0.5)/1")
+            else
+               val=$(bc <<< "(${val}+0.5)/1")
+            fi
+            System.out.println ${val}.0
+         else
+            __throw "NotInPathException" ": bc not in path"
+            returnValue=$?
+            __handleErrorMessage "Math" "${FUNCNAME}"
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+         returnValue=$?
+         __handleErrorMessage "Math" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "Math" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction Math.rint
+
+
 Math.cbrt() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1460,7 +1545,7 @@ __registerFunction Math.hypot
 #               #
 #################
 
-complete -W  "signum random cos cbrt sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
+complete -W  "round rint signum random cos cbrt sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
 
 Math.help() {  
    local printStream=${printStream:-out}
@@ -1474,7 +1559,7 @@ Math.help() {
       -Math.log -Math.log10 -Math.log1p -Math.cbrt
       -Math.floor -Math.ceil -Math.hypot -Math.toRadians
       -Math.toDegrees -Math.cosh -Math.sinh Math.tanh
-      -Mat.signum 
+      -Math.signum -Math.round -Math.rint
       Constructor: 
       None
       Constants:
@@ -1561,7 +1646,70 @@ Math.help() {
                   >>>-1.0
                   Math.signum 0
                   >>>0.0
-            ";;&                
+            ";;&
+         Math.round|round|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.round
+                  Returns the closest int to the argument. The result is rounded to an
+                  integer by adding 1/2, taking the floor of the result, and casting
+                  the result to type int.
+                  Special Cases:
+                  * If the argument is NaN, the result is 0. 
+                  * If the argument is negative infinity, the result is negative infinity
+                  * If the argument is positive infinity, the result is positive infinity
+               Parameters:
+                  a - a value whose round is to be returned
+               Returns:
+                  the rounded value of the argument
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.round
+               Example:
+                  Math.round NaN
+                  >>>0
+                  Math.round 3.756765756
+                  >>>4
+                  Math.round 3.356765756
+                  >>>3
+            ";;&
+         Math.rint|rint|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Math.rint
+                  Returns the double value that is closest in value to the argument and is
+                  equal to a mathematical integer. If two double values that are mathematical
+                  integers are equally close, the result is the integer value that is even.
+                  Special cases:
+                  * If the argument value is already equal to a mathematical integer,
+                    then the result is the same as the argument.
+                  * If the argument is NaN or an infinity or positive zero or negative zero,
+                    then the result is the same as the argument.
+               Parameters:
+                  a - a value whose rint is to be returned
+               Returns:
+                  the closest floating-point value to a that is equal to a mathematical integer.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if an argument cannot be handled by Math.rint
+               Example:
+                  Math.rint 0.0001
+                  >>>0.0
+                  Math.rint 0
+                  >>>0.0
+                  Math.rint 3.756765756
+                  >>>4.0
+                  Math.rint 3.343245
+                  3.0
+                  Math.rint -Infinity
+                  >>>-Infinity
+                  Math.rint Infinity
+                  >>>Infinity
+                  Math.rint NaN
+                  >>>NaN
+            ";;&             
          Math.adder|adder|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
