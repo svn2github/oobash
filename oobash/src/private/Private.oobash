@@ -96,6 +96,7 @@ __getObjectPointer() {
    System.out.println "${pointer}"
    return 0
 }
+__registerFunction __getObjectPointer
 
 # private
 # returns file name without file extension
@@ -236,7 +237,8 @@ __isObjectnameValid() {
    fi
    return 0
 }
- 
+__registerFunction __isObjectnameValid
+
 # private
 # throws an exception with name of exception and message
 # called by:
