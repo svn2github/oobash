@@ -70,15 +70,14 @@ Math.round() {
       if (( $? == 0 )); then
          if command -v bc >/dev/null 2>&1; then
             case "${val}" in
-            "NaN")        System.out.println "0"
-                          return $returnValue
-                          ;;
-            "Infinity")   System.out.println "Infinity"
-                          return $returnValue
-                          ;;
-            "-Infinity")  System.out.println "-Infinity"
-                          return $returnValue
-                          ;;
+               "NaN")  
+                  System.out.println "0"
+                  return $returnValue
+                  ;;
+               "Infinity"|"-Infinity")   
+                  System.out.println "${val}"
+                  return $returnValue
+                  ;;
             esac
             val="$(bc -l <<< "${val}")"
             if [[ "${val:0:1}" == "-" ]]; then
