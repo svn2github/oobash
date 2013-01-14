@@ -1399,7 +1399,7 @@ __setPS4() {
    if __terminalSupportsColors; then
       export PS4='\[\033[1;31m\]<${BASH_SUBSHELL}>:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): \[\033[0m\]'
    else
-      export PS4='+:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): '
+      export PS4='<${BASH_SUBSHELL}>:${SECONDS}sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): '
    fi
    return 0
 }
