@@ -1539,7 +1539,8 @@ __registerFunction Math.hypot
 #               #
 #################
 
-complete -W  "round rint signum random cos cbrt sin tan sqrt exp abs acos asin atan min max multiplier adder log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
+complete -W  "round rint signum random cos cbrt sin tan sqrt exp abs acos asin atan min max multiplier adder \
+              log10 log1p log expm1 cosh sinh tanh toDegrees toRadians hypot ceil floor E PI all" Math.help
 
 Math.help() {  
    local printStream=${printStream:-out}

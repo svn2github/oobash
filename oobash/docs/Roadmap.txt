@@ -1,8 +1,6 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.39.11
-# check docks for Math.round, Math.rint + manpages
-# Process disown...
 # colors ???
 
 # 0.40 LOGGING
@@ -12,6 +10,7 @@
 # -tput: color management
 # -optimize logging
 # -Private: convert between hex dec oct bin
+# -Process disown diffOutput
 
 # 0.41
 # -chained return values
