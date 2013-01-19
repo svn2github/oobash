@@ -90,11 +90,15 @@ then use the Class.generator tool.
 
 The tool will return the path and name of the created class file. 
 
-Next time you source the oobash.source, this file gets sourced too. But if you 
-want to use it at once after the creation, you certainly can source the file manually.
-
 Example:
 Class.generator Person name age city
+
+If needed, you can use subfolders under src/myClassFiles to organize your files
+Example:
+src/myClassFile/my/my.oobash
+
+Next time you source the oobash.source, this file gets sourced too. But if you 
+want to use it at once after the creation, you certainly can source the file manually.
 
 b) Create own scripts
 ------------------------
