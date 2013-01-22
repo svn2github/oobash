@@ -402,7 +402,7 @@ __registerFunction command_not_found_handle
 ###########################
 ###########################
 
-if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z "$PS1" ]]; then
+if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ -n "$PS1" ]]; then
    System.out.println 
    I18n.out.println " oo-style framework for bash 4"
    I18n.out.println ' Version:      ${__VERSION__}'
