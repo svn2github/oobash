@@ -42,7 +42,7 @@ if [ "${0##*/}" = "${__FILENAME__}" ]; then
    exit 0
 fi
 
-export __OODIR__=$(cd -P "${BASH_ARGV[0]%/*}" 2>/dev/null; echo "${PWD}")
+export __OODIR__="$(cd -P "${BASH_ARGV[0]%/*}" 2>/dev/null; echo ${PWD})"
 export TEXTDOMAINDIR="${__OODIR__}/locale"
 
 # you need a bash 4 
@@ -423,7 +423,6 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -lastIndexOf -matches -replaceAll -replaceFirst -reverse -startsWith -substring -swapCase"
    System.out.println "  -title -toLowerCase -toString -toUpperCase -trim -lstrip -zfill -rstrip -compareTo"
    System.out.println "  -compareToIgnoreCase -getClass -charCodeAt -containsOnly -containsNone -indexOfDifference"
-   I18n.out.println " Some String constants:"
    System.out.println "  -String.digits -String.asciiLetters -String.asciiLettersLowerCase"
    System.out.println "  -String.asciiLettersUpperCase -String.hexDigits -String.octDigits -String.fromCharCode"
    System.out.println " File:"
@@ -443,14 +442,12 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ ! -z 
    System.out.println "  -getClass -toString -equals -hashCode -getUser -getStatus -getCommand -getPid -getStartTime"
    System.out.println "  -threadCount -Process.create"
    System.out.println " Boolean:"
-   System.out.println "  -toString -getClass -hashCode -equals -Boolean.parseBoolean -compareTo"
-   I18n.out.println " Some Boolean constants: -Boolean.TRUE -Boolean.FALSE"
+   System.out.println "  -toString -getClass -hashCode -equals -compareTo -Boolean.parseBoolean -Boolean.TRUE -Boolean.FALSE"
    System.out.println " Math:"
-   System.out.println "  -Math.random -Math.cos -Math.sin -Math.tan -Math.sqrt -Math.exp -Math.abs -Math.acos"
-   System.out.println "  -Math.asin -Math.atan -Math.min -Math.max -Math.multiplier -Math.adder -Math.log10"
+   System.out.println "  -Math.random -Math.cos -Math.sin -Math.tan -Math.sqrt -Math.exp -Math.abs -Math.acos -Math.E"
+   System.out.println "  -Math.asin -Math.atan -Math.min -Math.max -Math.multiplier -Math.adder -Math.log10 -Math.PI"
    System.out.println "  -Math.log1p -Math.log -Math.expm1 -Math.cosh -Math.sinh -Math.tanh -Math.toDegrees -Math.rint"
    System.out.println "  -Math.toRadians -Math.hypot -Math.ceil -Math.floor -Math.cbrt -Math.signum -Math.round"
-   I18n.out.println " Some Math constants: -Math.E -Math.PI"
    System.out.println " System:"
    System.out.println "  -System.exit -System.currentTimeMillis -System.currentTimeNanos -System.out.println"
    System.out.println "  -System.err.println -System.out.print System.err.print -System.runtime"

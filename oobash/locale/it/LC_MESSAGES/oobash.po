@@ -57,18 +57,6 @@ msgstr " Utilizzo: String a teststring oppure File a testfile oppure Boolean a T
 msgid " Usage: a.toString"
 msgstr " Utilizzo: a.toString"
 
-#: oobash/oobash-0.38.5.source:253
-msgid " Some String constants:"
-msgstr " Qualche costante di String:"
-
-#: oobash/oobash-0.38.5.source:256
-msgid " Some Math constants: -Math.E -Math.PI"
-msgstr " Qualche costante di Math: -Math.E -Math.PI"
-
-#: oobash/oobash-0.38.5.source:257
-msgid " Some Boolean constants: -Boolean.TRUE -Boolean.FALSE"
-msgstr " Qualche costante Boolean: -Boolean.TRUE -Boolean.FALSE"
-
 #: oobash/oobash-0.38.5.source:259
 msgid " Available help systems: String.help, File.help, Math.help, System.help, Boolean.help ..."
 msgstr " Sistemi di aiuto disponibili: String.help, File.help, Math.help, System.help, Boolean.help ..."
