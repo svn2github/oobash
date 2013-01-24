@@ -74,11 +74,11 @@ Process() {
       fi
       
       local pointer=$((__OBJCOUNTER__++))
-      local class=$FUNCNAME
+      local class="${FUNCNAME}"
 
       __destruct "${this}"
 
-      __alias "$this" "${FUNCNAME}"      
+      __alias "${this}" "${FUNCNAME}"      
 
       __attribute pid "${pid}"
 

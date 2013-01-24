@@ -31,13 +31,13 @@ String() {
       returnValue=$?
       if (( $returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))
-         local class=$FUNCNAME
+         local class="${FUNCNAME}"
 
-         __destruct "$this"
+         __destruct "${this}"
 
-         __alias "$this" $FUNCNAME
-
-         __attribute string "$string" 
+         __alias "${this}" "${FUNCNAME}"
+         
+         __attribute string "${string}" 
        
       else
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"

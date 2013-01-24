@@ -31,13 +31,13 @@ Boolean() {
       returnValue=$?
       if (( $returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))
-         local class=$FUNCNAME
+         local class="${FUNCNAME}"
 
-         __destruct "$this"
+         __destruct "${this}"
 
-         __alias "$this" $FUNCNAME
+         __alias "${this}" "${FUNCNAME}"
 
-         __attribute bool "$(Boolean.parseBoolean "$bool")"  
+         __attribute bool "$(Boolean.parseBoolean "${bool}")"  
 
       else
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"

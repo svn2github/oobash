@@ -31,13 +31,13 @@ File() {
       returnValue=$?
       if (( $returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))
-         local class=$FUNCNAME
+         local class="${FUNCNAME}"
 
          __destruct "${this}"
 
-         __alias "$this" ${FUNCNAME}
+         __alias "${this}" "${FUNCNAME}"
 
-         __attribute pathname "$(__stripPath "$pathname")"
+         __attribute pathname "$(__stripPath "${pathname}")"
 
       else
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"

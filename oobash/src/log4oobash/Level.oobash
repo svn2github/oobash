@@ -29,21 +29,21 @@ Level() {
       returnValue=$?
       if (( $returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))
-         local class=$FUNCNAME
+         local class="${FUNCNAME}"
 
          local level="$2"
          local levelStr="$3"
          local syslogEquivalent="$4"
 
-         __destruct "$this"
+         __destruct "${this}"
 
-         __alias "$this" "$FUNCNAME"
+         __alias "${this}" "${FUNCNAME}"
 
-         __attribute level "$level"
-         __attribute levelStr "$levelStr"
-         __attribute syslogEquivalent "$syslogEquivalent"
+         __attribute level "${level}"
+         __attribute levelStr "${levelStr}"
+         __attribute syslogEquivalent "${syslogEquivalent}"
          
-         __Keywords__+=("$this")
+         __Keywords__+=("${this}")
       else
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
       fi

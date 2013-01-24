@@ -70,15 +70,15 @@ Ssh() {
       fi
  
       local pointer=$((__OBJCOUNTER__++))
-      local class=$FUNCNAME
+      local class="${FUNCNAME}"
 
-      __destruct "$this"
+      __destruct "${this}"
 
-      __alias "$this" "$FUNCNAME"
+      __alias "${this}" "${FUNCNAME}"
 
-      __attribute name "$name"
-      __attribute user "$user"
-      __attribute port "$port"
+      __attribute name "${name}"
+      __attribute user "${user}"
+      __attribute port "${port}"
 
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
