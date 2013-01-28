@@ -1196,7 +1196,6 @@ __getText() {
    if (( $# == 2 )); then
       local this="$1"
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local text
             local file="$("$this".toString)"
@@ -1351,7 +1350,6 @@ __linecount() {
    if (( $# == 2 )); then
       local this="$1"
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local file="$("$this".toString)"
             mapfile FILE < "$file"
@@ -1381,7 +1379,6 @@ __linematch() {
       local this="$1"
       local regex="$3"
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local file="$("$this".toString)"
             mapfile FILE < "$file"
@@ -1415,7 +1412,6 @@ __md5sum() {
    if (( $# == 2 )); then
       local this="$1"
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
             local file="$("$this".getAbsolutePath)"
@@ -1451,7 +1447,6 @@ __sha1sum() {
    if (( $# == 2 )); then
       local this="$1"
       if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         # try to avoid at least some problems...
          if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
             local result
             local file="$("$this".getAbsolutePath)"
@@ -1752,7 +1747,6 @@ __getLine() {
          declare -i line="$3"
          declare -i index=$((line-1))
          if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-            # try to avoid at least some problems...
             if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                local file="$("$this".toString)"
                mapfile FILE < "$file"
@@ -1795,7 +1789,6 @@ __delLine() {
          declare -i line="$3"
          declare -i index=$((line-1))
          if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-            # try to avoid at least some problems...
             if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                local file="$("$this".toString)"
                mapfile FILE < "$file"
@@ -1849,7 +1842,6 @@ __replaceLine() {
          if (( $? == 0 )); then
             if [[ "class String" == "$argclass" ]]; then
                if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-                  # try to avoid at least some problems...
                   if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                      local file="$("$this".toString)"
                      local text="$("$argobject".toString)"
@@ -1916,7 +1908,6 @@ __insertBeforeLine() {
          if (( $? == 0 )); then
             if [[ "class String" == "$argclass" ]]; then
                if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-                  # try to avoid at least some problems...
                   if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                      local file="$("$this".toString)"
                      local text="$("$argobject".toString)"
@@ -1984,7 +1975,6 @@ __insertAfterLine() {
          if (( $? == 0 )); then
             if [[ "class String" == "$argclass" ]]; then
                if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-                  # try to avoid at least some problems...
                   if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                      local file="$("$this".toString)"
                      local text="$("$argobject".toString)"
