@@ -751,6 +751,10 @@ fi
 ####################
 
 
+###########
+# FINALLY #
+###########
+
 # Close fd if logging xtrace mode
 if [[ -n \"\$BASH_XTRACEFD\" ]]; then
    set +x
