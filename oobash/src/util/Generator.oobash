@@ -623,6 +623,13 @@ help() {
    System.exit \$exitValue || System.exit \$?
 }
 
+stepper() {
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   declare -i returnValue=0
+   trap '(read -p \"[\${BASH_SOURCE##*/}:\${LINENO}] \$BASH_COMMAND?\")' DEBUG
+   return \$returnValue
+}
+
 version() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i exitValue=0
@@ -661,13 +668,6 @@ xtrace() {
    return \$returnValue
 }
 
-stepper() {
-   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
-   declare -i returnValue=0
-   trap '(read -p \"[\${BASH_SOURCE##*/}:\${LINENO}] \$BASH_COMMAND?\")' DEBUG
-   return \$returnValue
-}
-
 ##################
 # OPTION PARSING #
 ##################
@@ -675,7 +675,7 @@ stepper() {
 # Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
 
 # disable the verbose error handling by preceeding the whole option string with a colon (:): 
-optspec=\":hv-:\"
+optspec=\":hsvxX:-:\"
 while getopts \"\$optspec\" optchar
 do
    case \"\${optchar}\" in
@@ -685,14 +685,14 @@ do
             help)
                help
             ;;
+            stepper)
+               stepper
+            ;;
             version)
                version
             ;;
             xtrace)
                xtrace
-            ;;
-            stepper)
-               stepper
             ;;
             *)
                # Disable error handling by setting OPTERR=0
@@ -708,6 +708,9 @@ do
       h)
          help
       ;;
+      s)
+         stepper
+      ;;
       v)
          version
       ;;
@@ -716,9 +719,6 @@ do
       ;;
       X)
          xtrace \"\$OPTARG\"
-      ;;
-      s)
-         stepper
       ;;
       *)
          # Disable error handling by setting OPTERR=0
