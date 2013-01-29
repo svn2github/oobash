@@ -520,11 +520,29 @@ $1 [OPTION]
 
 =head1 OPTIONS AND ARGUMENTS
 
--h, --help 
+-h, --help
    :display this help and exit
+
+-s, --stepper
+   :enable code-stepping:
+    Informs the user about what command is
+    to be executed and waits for his
+    confirmation to do so.
 
 -v, --version
    :output version information and exit
+
+-x, --xtrace
+   :sets script in xtrace mode
+
+-X LOGFILE
+   :sets script in xtrace mode and uses
+    the given LOGFILE for xtrace output.
+    BASH_XTRACEFD has to be available
+    (bash version >= 4.1) and the LOGFILE
+    has to be writeable. Problems cause the
+    trace output to be sent to the standard
+    error.
 
 =head1 DESCRIPTION
 
@@ -624,6 +642,32 @@ version() {
    System.exit \$exitValue
 }
 
+xtrace() {
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   declare -i returnValue=0
+   local logfile fd
+   logfile=\"\$1\"
+   if [[ -n \"\${logfile}\" ]]; then
+      if __isXTRACEFDAvailable; then
+         fd=\"\$(__getFreeFD)\"
+         if (( \$? == 0 )); then
+            eval \"exec \${fd}<>\${logfile}\"
+            BASH_XTRACEFD=\"\${fd}\"
+         fi
+      fi
+   fi
+   __setPS4
+   set -o xtrace
+   return \$returnValue
+}
+
+stepper() {
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   declare -i returnValue=0
+   trap '(read -p \"[\${BASH_SOURCE##*/}:\${LINENO}] \$BASH_COMMAND?\")' DEBUG
+   return \$returnValue
+}
+
 ##################
 # OPTION PARSING #
 ##################
@@ -644,6 +688,12 @@ do
             version)
                version
             ;;
+            xtrace)
+               xtrace
+            ;;
+            stepper)
+               stepper
+            ;;
             *)
                # Disable error handling by setting OPTERR=0
                if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
@@ -660,6 +710,15 @@ do
       ;;
       v)
          version
+      ;;
+      x)
+         xtrace
+      ;;
+      X)
+         xtrace \"\$OPTARG\"
+      ;;
+      s)
+         stepper
       ;;
       *)
          # Disable error handling by setting OPTERR=0
@@ -688,6 +747,14 @@ if (( \$# == 0 )); then
 fi
 
 # Now your code...
+
+
+# Close fd if logging xtrace mode
+if [[ -n \"\$BASH_XTRACEFD\" ]]; then
+   set +x
+   eval \"exec $BASH_XTRACEFD<&-\"
+   unset BASH_XTRACEFD
+fi
 
 System.exit 0" >> "${destination}"
       chmod 755 "${destination}" 2>/dev/null
