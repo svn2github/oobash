@@ -746,7 +746,9 @@ if (( \$# == 0 )); then
    help \$returnValue
 fi
 
+####################
 # Now your code...
+####################
 
 
 # Close fd if logging xtrace mode
@@ -755,7 +757,6 @@ if [[ -n \"\$BASH_XTRACEFD\" ]]; then
    eval \"exec $BASH_XTRACEFD<&-\"
    unset BASH_XTRACEFD
 fi
-
 System.exit 0" >> "${destination}"
       chmod 755 "${destination}" 2>/dev/null
       System.out.println "${__OODIR__}/scripts/${scriptname}"
