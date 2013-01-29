@@ -758,7 +758,7 @@ fi
 # Close fd if logging xtrace mode
 if [[ -n \"\$BASH_XTRACEFD\" ]]; then
    set +x
-   eval \"exec $BASH_XTRACEFD<&-\"
+   eval \"exec \$BASH_XTRACEFD<&-\"
    unset BASH_XTRACEFD
 fi
 System.exit 0" >> "${destination}"
