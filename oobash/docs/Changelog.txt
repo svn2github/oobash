@@ -333,6 +333,8 @@
 # Version:      0.39.11
 #    -Added to Math: Math.signum, Math.rint, Math.round
 #    -Fixes and small improvements
+# Version:      0.40
+#    -Added stepper and xtrace option in script skeleton (Script.generator)
 
 #################################################################
 # Features:
