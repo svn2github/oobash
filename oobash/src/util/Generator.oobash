@@ -652,13 +652,13 @@ version() {
 xtrace() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i returnValue=0
-   local logfile fd
-   logfile=\"\$1\"
-   if [[ -n \"\${logfile}\" ]]; then
+   local tracefile fd
+   tracefile=\"\$1\"
+   if [[ -n \"\${tracefile}\" ]]; then
       if __isXTRACEFDAvailable; then
          fd=\"\$(__getFreeFD)\"
          if (( \$? == 0 )); then
-            eval \"exec \${fd}<>\${logfile}\"
+            eval \"exec \${fd}>>\${tracefile}\"
             BASH_XTRACEFD=\"\${fd}\"
          fi
       fi
