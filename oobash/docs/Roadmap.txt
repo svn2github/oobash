@@ -1,8 +1,37 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-# 0.40 LOGGING
-# -Logging (coproc ?)
-# -colors
+1a)
+clean startmessage ?
+
+1b) 
+script options: -- option delimiter ?
+
+1c)
+closeFD function in script template ?
+
+1d)
+__setPS4 argument is PS4 pattern ?
+
+1e)
+first check for no arg then option parsing ?
+
+
+2) 
+better docs for the private package ?
+
+3)
+sort all functions and the help cases + manpages ?
+
+4)
+colors: declare -A __COLORS__ ?
+
+5)
+Logging
+info in command_not_found_handle
+error in throw
+...
+
+
 
 # 0.40.1
 # -tput: color management
@@ -14,7 +43,6 @@
 # -chained return values
 # -check for gnu ps ?
 # -add some System functions
-# -sort all functions and the help cases + manpages
 
 # 0.42
 # -tput: terminal info
@@ -41,7 +69,7 @@
 # ...
 
 # 0.70 DATE/IPv4+IPv6 ADDRESS/MAC ADDRESS
-# -Date functions..
+# functions...
 
 # 0.80 GUI
 # -Facade for some GUI libs:
@@ -58,4 +86,4 @@
 # Facade for some version control systems ?
 
 # 1.0
-# HAL 9000 integration
+# connect HAL 9000 with Skynet for a better world
