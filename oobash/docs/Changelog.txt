@@ -335,6 +335,7 @@
 #    -Fixes and small improvements
 # Version:      0.40
 #    -Added stepper and xtrace option in script skeleton (Script.generator)
+#    -Fixes and small improvements
 
 #################################################################
 # Features:

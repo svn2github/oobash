@@ -599,7 +599,7 @@ __threadCount() {
          if (( $returnValue == 0 )); then
             local thcount
             if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
-               thcount="$(ps -o thcount --no-header --pid "${pId}" 2>/dev/null)"
+               thcount="$(ps -o nlwp --no-header --pid "${pId}" 2>/dev/null)"
                if (( $? != 0 )); then
                   __throw "ProcessException" ": Process with pid: \"$pId\" can't be managed"
                   returnValue=$?
