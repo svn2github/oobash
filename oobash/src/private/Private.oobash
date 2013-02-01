@@ -503,73 +503,73 @@ __mathConverter() {
    fi 
 
    if [[ "${input}" =~ ^[-]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       System.out.println "${input/[eE]/ * 10 ^ }"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       output="${input/[eE]/ * 10 ^ }"
       System.out.println "${output:1}"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
       return 0
    elif [[ "${input}" =~ ^[-]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       output="${input/[eE]/ * 10 ^ }"
       System.out.println "${output/,/.}"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       output="${input/[eE]/ * 10 ^ }"
       output="${output:1}"
       System.out.println "${output/,/.}"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
       return 0
    elif [[ "${input}" =~ ^[-]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       System.out.println "${input/[eE]+/ * 10 ^ }"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       output="${input/[eE]+/ * 10 ^ }"
       System.out.println "${output:1}"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
       return 0
    elif [[ "${input}" =~ ^[-]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       output="${input/[eE]+/ * 10 ^ }"
       System.out.println "${output/,/.}"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
-      set -f
+      set -o noglob
       output="${input/[eE]+/ * 10 ^ }"
       output="${output:1}"
       System.out.println "${output/,/.}"
-      set +f 
+      set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
@@ -792,7 +792,7 @@ __cleanUpFunctions() {
    for value in ${!__Registry__[@]}
    do 
       if [[ "${__Registry__[$value]}" == "function" ]]; then
-         unset -f "${value}" 
+         unset -o noglob "${value}" 
       fi
    done
    return 0
@@ -812,10 +812,10 @@ __cleanUpClasses() {
       if [[ "${__Registry__[$value]}" == "class" ]]; then
          for meth in $(eval echo \${__${value}__[@]})
          do 
-            unset -f __${meth}
+            unset -o noglob __${meth}
          done
          unset $(eval echo __${value}__  __${value}Methods__)
-         unset -f $(eval echo $value ${value}.help)
+         unset -o noglob $(eval echo $value ${value}.help)
       fi
    done
    return 0

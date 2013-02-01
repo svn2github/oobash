@@ -137,10 +137,10 @@ __getTotalSpace() {
       local file="$("$this".toString)"
       if [[ -e "${file}" ]]; then
          if __gnustatCheck; then
-            set -f
+            set -o noglob
             local totalFormula
             totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" -- "${file}" 2>/dev/null)
-            set + f
+            set +o noglob
             System.out.println "$(eval System.out.print "${totalFormula}")"
          else
             __throw "NotInPathException" ": GNU stat not in path"
@@ -166,10 +166,10 @@ __getUsableSpace() {
       local file="$("$this".toString)"
       if [[ -e "${file}" ]]; then
          if __gnustatCheck; then
-            set -f
+            set -o noglob
             local usableFormula
             usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" -- "${file}" 2>/dev/null)
-            set + f
+            set +o noglob
             System.out.println "$(eval System.out.print "${usableFormula}")"
          else
             __throw "NotInPathException" ": GNU stat not in path"
@@ -195,10 +195,10 @@ __getFreeSpace() {
       local file="$("$this".toString)"
       if [[ -e "${file}" ]]; then
          if __gnustatCheck; then
-            set -f
+            set -o noglob
             local freeFormula
             freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" -- "${file}" 2>/dev/null)
-            set + f
+            set +o noglob
             System.out.println "$(eval System.out.print "${freeFormula}")"
          else
             __throw "NotInPathException" ": GNU stat not in path"

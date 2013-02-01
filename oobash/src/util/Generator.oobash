@@ -672,6 +672,16 @@ xtrace() {
 # OPTION PARSING #
 ##################
 
+# To avoid accidents: exit if no arguments
+if (( \$# == 0 )); then
+   System.err.println
+   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+   returnValue=\$?
+   __handleErrorMessage
+   System.err.println
+   help \$returnValue
+fi
+
 # Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
 
 # disable the verbose error handling by preceeding the whole option string with a colon (:): 
@@ -736,19 +746,7 @@ done
 # MAIN #
 ########
 
-# To avoid accidents: exit if no arguments
-if (( \$# == 0 )); then
-   System.err.println
-   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
-   returnValue=\$?
-   __handleErrorMessage
-   System.err.println
-   help \$returnValue
-fi
-
-####################
 # Now your code...
-####################
 
 
 ###########
@@ -757,7 +755,7 @@ fi
 
 # Close fd if logging xtrace mode
 if [[ -n \"\$BASH_XTRACEFD\" ]]; then
-   set +x
+   set +o xtrace
    eval \"exec \$BASH_XTRACEFD<&-\"
    unset BASH_XTRACEFD
 fi
