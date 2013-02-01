@@ -15,6 +15,9 @@ __setPS4 argument is PS4 pattern ?
 1e)
 first check for no arg then option parsing ?
 
+1f)
+use long options for "set" everywhere
+
 
 2) 
 better docs for the private package ?
