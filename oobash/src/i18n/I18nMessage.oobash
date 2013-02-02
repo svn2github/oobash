@@ -99,8 +99,8 @@ I18n.help() {
       System.${printStream}.println "
       Usage: I18n.help all|methodname
       Available methods:
-      -I18n.out.println -I18n.err.println
-      -I18n.out.print -I18n.err.print
+      -I18n.err.print -I18n.err.println
+      -I18n.out.print -I18n.out.println
       Constructor: 
       None
                  "
