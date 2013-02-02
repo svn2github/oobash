@@ -13,22 +13,23 @@
 #################
 #################
 
-I18n.out.println() {
+I18n.err.print() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
+   local printStream=err
    if (( $# <= 1  )); then
-      local printStream=out
       local message="$1"
-      local print=println
+      local print=print
       __i18nMessage "${message}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
       __handleErrorMessage "I18n" "${FUNCNAME}"
    fi
-   return $returnValue
+   return $returnValue   
 }
-__registerFunction I18n.out.println
+__registerFunction I18n.err.print
+
 
 I18n.err.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
@@ -47,6 +48,7 @@ I18n.err.println() {
 }
 __registerFunction I18n.err.println
 
+
 I18n.out.print() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -64,22 +66,24 @@ I18n.out.print() {
 }
 __registerFunction I18n.out.print
 
-I18n.err.print() {
+
+I18n.out.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   local printStream=err
    if (( $# <= 1  )); then
+      local printStream=out
       local message="$1"
-      local print=print
+      local print=println
       __i18nMessage "${message}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
       __handleErrorMessage "I18n" "${FUNCNAME}"
    fi
-   return $returnValue   
+   return $returnValue
 }
-__registerFunction I18n.err.print
+__registerFunction I18n.out.println
+
 
 #################
 #               #
@@ -105,23 +109,22 @@ I18n.help() {
    while (($#))
    do
       local match=$(Boolean.FALSE)  
-      case $1 in 
-         I18n.out.println|out.println|all)
+      case $1 in
+			I18n.err.print|err.print|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            I18n.out.println
+            I18n.err.print
                Translates a natural language message into the user’s language, by looking 
-               up the translation in a message catalog and prints the message and then terminates 
-               to stdout.
+               up the translation in a message catalog and prints the message to stderr.
             Parameters:
                x - The message to be translated and printed.
             Throws:
                IllegalArgumentException - if number of arguments > 1
             Example:
-               I18n.out.println \" oo-style framework for bash 4\"
-               I18n.out.println ' Version:      \${__VERSION__}'
-               I18n.out.println \"Sorry, no valid classname: '\\\$userClass'\"
-            ";;&
+               I18n.err.print \" oo-style framework for bash 4\"
+               I18n.err.print ' Version:      \${__VERSION__}'
+               I18n.err.print \"Sorry, no valid classname: '\\\$userClass'\"
+            ";;& 
          I18n.err.println|err.println|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -153,21 +156,22 @@ I18n.help() {
                I18n.out.print ' Version:      \${__VERSION__}'
                I18n.out.print \"Sorry, no valid classname: '\\\$userClass'\"
             ";;&
-         I18n.err.print|err.print|all)
+         I18n.out.println|out.println|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-            I18n.err.print
+            I18n.out.println
                Translates a natural language message into the user’s language, by looking 
-               up the translation in a message catalog and prints the message to stderr.
+               up the translation in a message catalog and prints the message and then terminates 
+               to stdout.
             Parameters:
                x - The message to be translated and printed.
             Throws:
                IllegalArgumentException - if number of arguments > 1
             Example:
-               I18n.err.print \" oo-style framework for bash 4\"
-               I18n.err.print ' Version:      \${__VERSION__}'
-               I18n.err.print \"Sorry, no valid classname: '\\\$userClass'\"
-            ";;& 
+               I18n.out.println \" oo-style framework for bash 4\"
+               I18n.out.println ' Version:      \${__VERSION__}'
+               I18n.out.println \"Sorry, no valid classname: '\\\$userClass'\"
+            ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
