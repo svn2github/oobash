@@ -6,9 +6,6 @@ clean startmessage ?
 1b) 
 script options: -- option delimiter ?
 
-1d)
-__setPS4 argument is PS4 pattern ?
-
 2) 
 better docs for the private package ?
 
