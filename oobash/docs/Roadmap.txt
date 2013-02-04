@@ -6,6 +6,15 @@ clean startmessage ?
 1b) 
 script options: -- option delimiter ?
 
+1c) 
+Man.generator instead of 'all' some kind of sort for the methods ?
+
+1d) 
+Class.generator sort getternames then write them ?
+
+1e)
+Class.generator avoid not uniq attributes
+
 2) 
 better docs for the private package ?
 
@@ -13,6 +22,8 @@ better docs for the private package ?
 sort all functions and the help cases + manpages ?
 
 use list in startmessage too:
+
+String String.asciiLetters String.asciiLettersLowerCase String.asciiLettersUpperCase String.digits String.fromCharCode String.hexDigits String.octDigits base64Decode base64Encode capitalize center charAt charCodeAt compareToIgnoreCase concat contains containsNone containsOnly count endsWith equals equalsIgnoreCase getClass hashCode indexOf indexOfDifference isAlnum isAlpha isAscii isDigit isEmpty isHexDigit isLowerCase isPrintable isSpace isTitle isUpperCase isVisible lastIndexOf length lstrip matches replaceAll replaceFirst reverse rstrip startsWith substring swapCase title toLowerCase toString toUpperCase trim zfill
 
 String
 String.asciiLetters
@@ -22,7 +33,6 @@ String.digits
 String.fromCharCode
 String.hexDigits
 String.octDigits
-
 base64Decode
 base64Encode 
 capitalize
@@ -36,7 +46,10 @@ containsNone
 containsOnly
 count
 endsWith
+equals
 equalsIgnoreCase
+getClass
+hashCode
 indexOf
 indexOfDifference
 isAlnum
@@ -64,17 +77,18 @@ substring
 swapCase
 title
 toLowerCase
+toString
 toUpperCase
 trim
 zfill
 
+File File.createTempDir File.createTempFile File.createTemporaryDir File.createTemporaryFile append canExecute canRead canWrite clear createNewFile delete deleteRecursively delLine equals exists fileLength getAbsolutePath getBase getCanonicalPath getClass getExtension getFreeSpace getGroup getInode getLine getName getOwner getParent getPath getPosixFilePermissions getText getTotalSpace getUsableSpace hasGidBit hashCode hasStickyBit hasUidBit indexOfExtension indexOfLastSeparator insertAfterLine insertBeforeLine isAbsolute isBlockSpecial isCharacterSpecial isDirectory isFile isHidden isNamedPipe isNewerThan isOlderThan isSocket isSymbolicLink lastAccessed lastChanged lastModified linecount linematch md5sum mkdir mkdirs replaceLine setExecutable setgid setLastAccessed setLastModified setPosixFilePermissions setReadable setReadOnly setStickyBit setText setuid setWritable sha1sum toString touch
 
 File
 File.createTempDir
 File.createTempFile 
 File.createTemporaryDir 
 File.createTemporaryFile 
-
 append
 canExecute 
 canRead
@@ -84,11 +98,13 @@ createNewFile
 delete
 deleteRecursively
 delLine
+equals
 exists    
 fileLength 
 getAbsolutePath
 getBase
 getCanonicalPath
+getClass
 getExtension
 getFreeSpace 
 getGroup
@@ -103,12 +119,13 @@ getText
 getTotalSpace 
 getUsableSpace 
 hasGidBit
+hashCode
 hasStickyBit 
 hasUidBit
 indexOfExtension
 indexOfLastSeparator
 insertAfterLine 
-insertBeforeLine 
+insertBeforeLine #
 isAbsolute
 isBlockSpecial
 isCharacterSpecial 
@@ -140,7 +157,8 @@ setStickyBit
 setText 
 setuid
 setWritable 
-sha1sum 
+sha1sum
+toString
 touch
 
 4)
@@ -158,7 +176,7 @@ error in throw
 # -tput: color management
 # -optimize logging
 # -Private: convert between hex dec oct bin
-# -Process disown diffOutput
+# -Process: disown diffOutput
 
 # 0.41
 # -chained return values
@@ -196,7 +214,7 @@ error in throw
 # -Facade for some GUI libs:
 # yad zenity kdialog Xdialog dialog whiptail cocoaDialog
 # -Visualization package:
-# spinner, histogram...
+# -spinner, histogram...
 
 # 0.90 EXTERNAL TOOLS
 # -jmxterm http://wiki.cyclopsgroup.org/jmxterm ? 
@@ -204,7 +222,7 @@ error in throw
 # -xslt with http://xml.apache.org/xalan-j/commandline.html ?
 # -oobash.freeze --> conservation of the status quo
 # -oobash.onlineUpdate
-# Facade for some version control systems ?
+# -Facade for some version control systems ?
 
 # 1.0
 # connect HAL 9000 with Skynet for a better world
