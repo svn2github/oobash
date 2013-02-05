@@ -171,6 +171,8 @@ info in command_not_found_handle
 error in throw
 ...
 
+6)
+Remove sort dependeny ?
 
 # 0.40.1
 # -tput: color management
