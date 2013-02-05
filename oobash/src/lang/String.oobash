@@ -51,51 +51,263 @@ String() {
 }
 __registerClass String
 
+##################
+#                #
+#     STATICS    #
+#                #
+##################
+
+String.asciiLetters() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.asciiLetters
+
+String.asciiLettersLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println 'abcdefghijklmnopqrstuvwxyz'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.asciiLettersLowerCase
+
+String.asciiLettersUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.asciiLettersUpperCase
+
+String.digits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println '0123456789'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.digits
+
+if (( ${BASH_VERSINFO[1]} >= 2 )); then
+   String.fromCharCode() {
+      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+      declare -i returnValue=0
+      local hexValue
+      local result=""
+      while (($#))
+      do
+         if ! __isBashInteger "$1"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+            returnValue=$?
+            __handleErrorMessage "String" "${FUNCNAME}"
+            break
+         else
+            if (( "$1" < 0 )) || (( "$1" > 65535 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+               returnValue=$?
+               __handleErrorMessage "String" "${FUNCNAME}"
+               break
+            else
+               case $1 in
+                  10)  result+="
+"
+                  ;;
+                  # 128 to 159 (x0080 - x009F) are not printable ("C1 control codes")
+                  160) result+=" ";;
+                  161) result+=¡;;
+                  162) result+=¢;;
+                  163) result+=£;;
+                  164) result+=¤;;
+                  165) result+=¥;;
+                  166) result+=¦;;
+                  167) result+=§;;
+                  168) result+=¨;;
+                  169) result+=©;;
+                  170) result+=ª;;
+                  171) result+=«;;
+                  172) result+=¬;;
+                  # http://www.cs.tut.fi/~jkorpela/shy.html
+                  # --> ??? for soft hyphen:
+                  173) result+=-;;
+                  174) result+=®;;
+                  175) result+=¯;;
+                  176) result+=°;;
+                  177) result+=±;;
+                  178) result+=²;;
+                  179) result+=³;;
+                  180) result+=´;;
+                  181) result+=µ;;
+                  182) result+=¶;;
+                  183) result+=·;;
+                  184) result+=¸;;
+                  185) result+=¹;;
+                  186) result+=º;;
+                  187) result+=»;;
+                  188) result+=¼;;
+                  189) result+=½;;
+                  190) result+=¾;;
+                  191) result+=¿;;
+                  192) result+=À;;
+                  193) result+=Á;;
+                  194) result+=Â;;
+                  195) result+=Ã;;
+                  196) result+=Ä;;
+                  197) result+=Å;;
+                  198) result+=Æ;;
+                  199) result+=Ç;;
+                  200) result+=È;;
+                  201) result+=É;;
+                  202) result+=Ê;;
+                  203) result+=Ë;;
+                  204) result+=Ì;;
+                  205) result+=Í;;
+                  206) result+=Î;;
+                  207) result+=Ï;;
+                  208) result+=Ð;;
+                  209) result+=Ñ;;
+                  210) result+=Ò;;
+                  211) result+=Ó;;
+                  212) result+=Ô;;
+                  213) result+=Õ;;
+                  214) result+=Ö;;
+                  215) result+=×;;
+                  216) result+=Ø;;
+                  217) result+=Ù;;
+                  218) result+=Ú;;
+                  219) result+=Û;;
+                  220) result+=Ü;;
+                  221) result+=Ý;;
+                  222) result+=Þ;;
+                  223) result+=ß;;
+                  224) result+=à;;
+                  225) result+=á;;
+                  226) result+=â;;
+                  227) result+=ã;;
+                  228) result+=ä;;
+                  229) result+=å;;
+                  230) result+=æ;;
+                  231) result+=ç;;
+                  232) result+=è;;
+                  233) result+=é;;
+                  234) result+=ê;;
+                  235) result+=ë;;
+                  236) result+=ì;;
+                  237) result+=í;;
+                  238) result+=î;;
+                  239) result+=ï;;
+                  240) result+=ð;;
+                  241) result+=ñ;;
+                  242) result+=ò;;
+                  243) result+=ó;;
+                  244) result+=ô;;
+                  245) result+=õ;;
+                  246) result+=ö;;
+                  247) result+=÷;;
+                  248) result+=ø;;
+                  249) result+=ù;;
+                  250) result+=ú;;
+                  251) result+=û;;
+                  252) result+=ü;;
+                  253) result+=ý;;
+                  254) result+=þ;;
+                  255) result+=ÿ;;
+                  *)
+                     hexValue=$(printf %x "$1")
+                     result+="$(printf "%b" "\u${hexValue}")";;
+               esac
+            fi
+         fi
+         shift
+      done
+      if (( $returnValue == 0 )); then
+         System.out.println "${result}"
+      fi
+      return $returnValue
+   }
+   __registerFunction String.fromCharCode
+fi
+
+String.hexDigits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println '0123456789abcdefABCDEF'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.hexDigits
+
+String.octDigits() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 0 )); then
+      System.out.println '01234567'
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "String" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction String.octDigits
+
+
 #####################
 #                   #
 #      METHODS      # 
 #                   #
 #####################
 
-__compareToIgnoreCase() {
+__base64Decode() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 3 )); then
+   if (( $# == 2 )); then
       local this="$1"
-      local str1="$("$this".toUpperCase)"
-      local str2="$(__strUpper "$3")"
-      declare -i result
-      if [[ "$str1" == "$str2" ]]; then
-         result=0
-      else
-         declare -i length=-1
-         if (( ${#str1} == ${#str2} )); then
-            length=${#str2}
+      if command -v openssl >/dev/null 2>&1; then
+         local output input
+         input="$("$this".toString)"
+         output="$(System.out.println "${input}" | openssl enc -base64 -d 2>/dev/null)"
+         if (( "${#input}" != 0 && "${#output}" == 0 )); then
+            __throw "DecoderException" ": Decoding problem with: ""'${input}'"" "
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         else
+            System.out.println "${output}"
          fi
-         if (( $length == -1 )); then
-            result=$((${#str1}-${#str2}))
-            if (( ${#str1} < ${#str} )); then
-               length=${#str1}
-            else
-               length=${#str2}
-            fi
-         fi	
-         declare -i i=0
-         local charStr1 charStr2
-         declare -i valueStr1 valueStr2
-         for ((i=0; i < $length; i++))
-         do
-            charStr1="${str1:i:1}"
-            valueStr1=$(__charCode "$charStr1")
-            charStr2="${str2:i:1}"
-            valueStr2=$(__charCode "$charStr2")
-            if (( $valueStr1 != $valueStr2 )); then
-               result=$((valueStr1-valueStr2))
-               break
-            fi		
-         done
+      else
+         __throw "NotInPathException" ": openssl not in path"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
-      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -128,521 +340,15 @@ __base64Encode() {
    return $returnValue
 }
 
-__base64Decode() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      if command -v openssl >/dev/null 2>&1; then       
-         local output input
-         input="$("$this".toString)"
-         output="$(System.out.println "${input}" | openssl enc -base64 -d 2>/dev/null)"
-         if (( "${#input}" != 0 && "${#output}" == 0 )); then
-            __throw "DecoderException" ": Decoding problem with: ""'${input}'"" "
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         else
-            System.out.println "${output}"
-         fi
-      else
-         __throw "NotInPathException" ": openssl not in path"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__rstrip() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      # trimming...
-      result="${str%%+([[:space:]])}"
-      System.out.println "${result}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__lstrip() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      # trimming...
-      local result="${str##+([[:space:]])}"    
-      System.out.println "${result}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__title() {
+__capitalize() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toLowerCase)"
-      local output="${str~}"
-      # "${str~}" does not work with big sharp s --> let's loop ;-(
-      local next="$(Boolean.TRUE)"
-      local result=''
-      local char
-      for ((i=0; i < ${#output}; i++))
-      do
-         char="${output:i:1}"
-         if [[ "${next}" == "$(Boolean.TRUE)" && "${char}" == "ß" ]]; then
-            char="ẞ"
-         fi
-         if [[ "$(__strUpper  "${char}")" == "$(__strLower  "${char}")" ]]; then
-            next="$(Boolean.TRUE)"
-         else
-            next="$(Boolean.FALSE)"
-         fi
-         result+="${char}"
-      done
-      System.out.println "${result}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isTitle() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"   
-      if [[ "$("$this".toLowerCase)" == "$("$this".toUpperCase)" ]]; then
-         Boolean.FALSE
-      else
-         if [[ "$("$this".title)" == "$("$this".toString)" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isAscii() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      shopt -s extglob
-      local str="$("$this".toString)"
-      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
-         if [[ "${str##+([[:ascii:]])}" == "" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      else
-         Boolean.FALSE
-      fi   
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isHexDigit() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
-         if [[ "${str##+([[:xdigit:]])}" == "" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi      
-      else
-         Boolean.FALSE
-      fi       
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isPrintable() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
-         if [[ "${str##+([[:print:]])}" == "" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi      
-      else
-         Boolean.FALSE
-      fi       
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isVisible() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      __visibilityCheck "$str"
-      if (( $? == 0 )); then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-      fi        
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__count() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local pattern="$3"
-      local replaced="$("$this".replaceAll "$pattern" "")"
-      declare -i pattern_length=${#pattern}
-      declare -i replaced_length=${#replaced}
-      declare -i string_length=$("$this".length)
-      if (( $pattern_length == 0 )); then
-         System.out.println $(( $("$this".length) + 1 ))
-      else
-         if command -v bc >/dev/null 2>&1; then 
-            declare -i count=$(bc <<< "($string_length-$replaced_length)/$pattern_length")
-            System.out.println "${count}"         
-         else
-            __throw "NotInPathException" ": bc not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         fi
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isLowerCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)" 
-      local lower=$(Boolean.FALSE)
-      declare -i i=0
-      local char valueOf
-      for ((i=0; i < ${#str}; i++))
-      do
-         char="${str:i:1}"
-         valueOf=$(__charCode "$char")
-         case $valueOf in
-            # upper case us ascii + german umlauts + franch + polish + 
-            # spanish + romanian + czech + slovak + slovenian + slovenian + 
-            # swedish + finnish + danish + norwegian + scottish gaelic + catalan +
-            # hungarian + icelandic special characters + uppercase sharp s + cyrillic characters
-            65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|\
-            80|81|82|83|84|85|86|87|88|89|90|196|214|220|\
-            140|192|194|198|199|200|201|202|203|206|207|212|\
-            217|219|260|280|211|262|321|323|346|377|379|193|\
-            205|209|218|258|350|354|536|538|381|352|344|340|\
-            327|313|268|221|366|282|270|356|216|197|336|368|\
-            204|210|208|222|7838|\
-            1024|1025|1026|1027|1028|1029|1030|1031|\
-            1032|1033|1034|1035|1036|1037|1038|1039|\
-            1040|1041|1042|1043|1044|1045|1046|1047|\
-            1048|1049|1050|1051|1052|1053|1054|1055|\
-            1056|1057|1058|1059|1060|1061|1062|1063|\
-            1064|1065|1066|1067|1068|1069|1070|1071)
-               lower=$(Boolean.FALSE)
-               break;;
-            # lower case us ascii + german umlauts + franch + polish + 
-            # spanish + romanian + czech + slovak + slovenian + slovenian + 
-            # swedish + finnish + danish + nowegian + scottish gaelic + catalan + 
-            # hungarian + icelandic special characters + cyrillic characters
-            97|98|99|100|101|102|103|104|105|106|107|108|\
-            109|110|111|112|113|114|115|116|117|118|119|120|\
-            121|122|223|228|246|252|156|224|226|230|231|232|\
-            233|234|235|238|239|244|249|251|261|281|243|263|\
-            322|324|347|378|380|225|237|241|250|259|351|355|\
-            537|539|382|353|345|341|328|314|269|253|367|283|\
-            271|357|248|229|337|369|236|242|240|254|\
-            1072|1073|1074|1075|1076|1077|1078|1079|\
-            1080|1081|1082|1083|1084|1085|1086|1087|\
-            1088|1089|1090|1091|1092|1093|1094|1095|\
-            1096|1097|1098|1099|1100|1101|1102|1103|\
-            1104|1105|1106|1107|1108|1109|1110|1111|\
-            1112|1113|1114|1115|1116|1117|1118|1119)  
-               lower=$(Boolean.TRUE);;
-         esac
-      done
-      System.out.println "${lower}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi 
-   return $returnValue
-}
-
-__isUpperCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)" 
-      local upper=$(Boolean.FALSE)
-      declare -i i=0
-      local char valueOf
-      for ((i=0; i < ${#str}; i++))
-      do
-         char="${str:i:1}"
-         valueOf=$(__charCode "$char")
-         case $valueOf in
-            # upper case us ascii + german umlauts + franch + polish + 
-            # spanish + romanian + czech + slovak + slovenian + slovenian + 
-            # swedish + finnish + danish + norwegian + scottish gaelic + catalan +
-            # hungarian + icelandic special characters + uppercase sharp s + cyrillic characters
-            65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|\
-            80|81|82|83|84|85|86|87|88|89|90|196|214|220|\
-            140|192|194|198|199|200|201|202|203|206|207|212|\
-            217|219|260|280|211|262|321|323|346|377|379|193|\
-            205|209|218|258|350|354|536|538|381|352|344|340|\
-            327|313|268|221|366|282|270|356|216|197|336|368|\
-            204|210|208|222|7838|\
-            1024|1025|1026|1027|1028|1029|1030|1031|\
-            1032|1033|1034|1035|1036|1037|1038|1039|\
-            1040|1041|1042|1043|1044|1045|1046|1047|\
-            1048|1049|1050|1051|1052|1053|1054|1055|\
-            1056|1057|1058|1059|1060|1061|1062|1063|\
-            1064|1065|1066|1067|1068|1069|1070|1071)
-               upper=$(Boolean.TRUE);;
-            # lower case us ascii + german umlauts + franch + polish + 
-            # spanish + romanian + czech + slovak + slovenian + slovenian + 
-            # swedish + finnish + danish + nowegian + scottish gaelic + catalan + 
-            # hungarian + icelandic special characters + cyrillic characters
-            97|98|99|100|101|102|103|104|105|106|107|108|\
-            109|110|111|112|113|114|115|116|117|118|119|120|\
-            121|122|223|228|246|252|156|224|226|230|231|232|\
-            233|234|235|238|239|244|249|251|261|281|243|263|\
-            322|324|347|378|380|225|237|241|250|259|351|355|\
-            537|539|382|353|345|341|328|314|269|253|367|283|\
-            271|357|248|229|337|369|236|242|240|254|\
-            1072|1073|1074|1075|1076|1077|1078|1079|\
-            1080|1081|1082|1083|1084|1085|1086|1087|\
-            1088|1089|1090|1091|1092|1093|1094|1095|\
-            1096|1097|1098|1099|1100|1101|1102|1103|\
-            1104|1105|1106|1107|1108|1109|1110|1111|\
-            1112|1113|1114|1115|1116|1117|1118|1119)  
-               upper=$(Boolean.FALSE)
-               break;;
-         esac
-      done
-      System.out.println "${upper}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isAlnum() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
-         if [[ "${str##+([[:alnum:]])}" == "" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi 
-      else
-         Boolean.FALSE
-      fi      
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isAlpha() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      shopt -s extglob
-      local str="$("$this".toString)"
-      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
-         if [[ "${str##+([[:alpha:]])}" == "" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      else
-         Boolean.FALSE
-      fi   
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isDigit() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
-         if [[ "${str##+([[:digit:]])}" == "" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi      
-      else
-         Boolean.FALSE
-      fi       
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isSpace() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
-         if [[ "${str##+([[:space:]])}" == "" ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi      
-      else
-         Boolean.FALSE
-      fi       
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi 
-   return $returnValue
-}
-
-__zfill() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      if ! __isBashInteger "$3"; then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-      else
-         declare -i width=$3
-         length=$("$this".length)
-         if (( $length < $width )); then
-            local left=$(($width-$("$this".length)))
-            printf -v pad "%."$left"d"
-            System.out.println "$pad""$("$this".toString)"
-         else
-            System.out.println "$("$this".toString)"
-         fi
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__swapCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      local swaped=''
-      declare -i i=0
-      local char
-      for ((i=0; i < ${#str}; i++))
-      do
-         char="${str:i:1}"
-         case $char in
-            # small sharp s
-            ß)                  
-            swaped+="ẞ";;
-            # big sharp s
-            ẞ)
-            swaped+="ß";;
-            # ignore case 
-            *) 
-            swaped+="${char~}" ;;
-         esac
-      done
-      System.out.println "${swaped}"
+      local firstchar="${str:0:1}"
+      firstchar="$(__strUpper "$firstchar")"
+      System.out.println "$firstchar""${str:1}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -659,7 +365,7 @@ __center() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i width=$3
          if (( $("$this".length) < $width )); then
@@ -693,393 +399,6 @@ __center() {
    return $returnValue
 }
 
-__equalsIgnoreCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local argobject="$3"
-      local argclass
-      argclass="$("$argobject".getClass 2>/dev/null)" 
-      if (( $? == 0 )); then
-         if [[ "$("$this".getClass)" == "$argclass" ]]; then
-            if [[ "$("$argobject".toUpperCase)" == "$("$this".toUpperCase)" ]]; then
-               Boolean.TRUE
-            else
-               Boolean.FALSE
-            fi
-         else
-            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__toUpperCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      local upper="$(__strUpper "$str")" 
-      System.out.println "${upper}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__toLowerCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      local lower="$(__strLower "$str")"
-      System.out.println "${lower}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__capitalize() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toLowerCase)"
-      local firstchar="${str:0:1}"
-      firstchar="$(__strUpper "$firstchar")"
-      System.out.println "$firstchar""${str:1}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__concat() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      System.out.println "$str""$3"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-} 
-
-__trim() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      shopt -s extglob
-      # trimming...
-      local result="${str##+([[:space:]])}"    
-      result="${result%%+([[:space:]])}"
-      System.out.println "${result}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__contains() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local var="$3"
-      local str="$("$this".toString)"
-      if [[ "$str" != "${str/"$var"/}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__containsOnly() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local var="$3"
-      local str="$("$this".toString)"
-      local char
-      local bool="$(Boolean.TRUE)"
-      for ((i=0; i < ${#str}; i++))
-      do
-         char="${str:i:1}"
-         if [[ "$var" == "${var/"$char"/}" ]]; then
-            bool="$(Boolean.FALSE)"
-            break
-         fi
-      done
-      Boolean.parseBoolean "${bool}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__containsNone() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local var="$3"
-      local str="$("$this".toString)"
-      local char
-      local bool="$(Boolean.TRUE)"
-      for ((i=0; i < ${#var}; i++))
-      do
-         char="${var:i:1}"
-         if [[ "$str" != "${str/"$char"/}" ]]; then
-            bool="$(Boolean.FALSE)"
-            break
-         fi
-      done
-      Boolean.parseBoolean "${bool}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__indexOfDifference() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local str1="$("$this".toString)"
-      local str2="$3"
-      declare -i maxindex
-      if (( ${#str1} < ${#str2} )); then
-         maxindex=${#str2}
-      else
-         maxindex=${#str1}         
-      fi
-      local char1 char2
-      declare -i index=-1
-      for ((i=0; i < $maxindex; i++))
-      do
-         char1="${str1:i:1}"
-         char2="${str2:i:1}"
-         if [[ "$char1" != "${char2}" ]]; then
-            index=$i
-            break
-         fi
-      done
-      System.out.println "${index}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__matches() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"   
-      local regex="$3"
-      shopt -s extglob
-      if [[ "$("$this".toString)" =~ $regex ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isEmpty() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      declare -i length=$("$this".length)
-      if (( $length == 0 )); then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__startsWith() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   case $# in 
-      3) declare -i toffset=0;;
-      4) if ! __isBashInteger "$4"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         fi
-         declare -i toffset=$4;;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}";;
-   esac
-   if (( $returnValue == 0 )); then
-      local this="$1"
-      declare -i length=$("$this".length)
-      local sub
-      sub="$("$this".substring $toffset $(($length-1)))"
-      returnValue=$?
-      if (( $returnValue == 0 )); then
-         if [[ "${sub}" == "$3"* ]]; then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      fi
-   fi
-   return $returnValue
-}
-
-__lastIndexOf() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   local this="$1"
-   case $# in
-      3) local pattern="$3"
-         declare -i to=$("$this".length);;
-      4) local pattern="$3"
-         if ! __isBashInteger "$4"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}" 
-            return $returnValue
-         fi
-         declare -i to=$(($4+1))
-         # negative index ?
-         if (( 0 > $4 )); then
-            System.out.println -1
-            return $returnValue
-         fi;;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         return $returnValue;;
-   esac
-   local str="$("$this".toString)"
-   str="${str:0:$to}"
-   shopt -s extglob
-   local replaced="${str//*$pattern/}"
-   declare -i pattern_length=${#pattern}
-   declare -i replaced_length=${#replaced}
-   declare -i string_length=${#str}
-   declare -i lastindex=$(($string_length-$replaced_length))
-   # nothing modified --> no match --> no index
-   if (( $replaced_length == $string_length )); then
-      System.out.println -1
-      return $returnValue
-   fi   
-   if (( $pattern_length == 0 )) && (( $string_length < $("$this".length) )); then
-      pattern_length=$pattern_length+1
-   fi 
-   # ok if match is existing and if no substring neccessary
-   System.out.println $(($lastindex-$pattern_length))
-   return $returnValue
-}
-
-__indexOf() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   case $# in
-      3) local pattern="$3"
-         declare -i from=0;;
-      4) local pattern="$3"
-         if ! __isBashInteger "$4"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}" 
-            return $returnValue
-         fi
-         declare -i from=$4
-         # negative index ?
-         if (( 0 > $4 )); then
-            from=0
-         fi;;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         return $returnValue;;
-   esac
-   local this="$1" 
-   declare -i pattern_length=${#pattern}
-   local str="$("$this".toString)"
-   str="${str:$from}"
-   declare -i strlength=${#str}
-   local newstr="${str%%$pattern*}"
-   declare -i newstrlength=${#newstr}
-   # Java API:  
-   # k >= Math.min(fromIndex, str.length()) && this.startsWith(str, k)
-   # --> looking for empty string '' out of index returns stringlength instead of -1 
-   if (( $pattern_length == 0 )); then 
-      if (( $from <= $("$this".length) )); then
-         System.out.println $from
-      else
-         System.out.println $("$this".length)
-      fi  
-      return $returnValue 
-   fi 
-   if (( $strlength == $newstrlength )); then
-      System.out.println -1
-   else
-      System.out.println $(($newstrlength+$from))
-   fi
-   return $returnValue
-}
-
 __charAt() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1088,7 +407,7 @@ __charAt() {
       if ! __isBashInteger "$3"; then
          __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       else
          declare -i pos="$3"
          if  (( $pos <= ($("$this".length)-1) )) && (( $pos >= 0 )); then
@@ -1146,6 +465,170 @@ __charCodeAt() {
    return $returnValue
 }
 
+__compareToIgnoreCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local str1="$("$this".toUpperCase)"
+      local str2="$(__strUpper "$3")"
+      declare -i result
+      if [[ "$str1" == "$str2" ]]; then
+         result=0
+      else
+         declare -i length=-1
+         if (( ${#str1} == ${#str2} )); then
+            length=${#str2}
+         fi
+         if (( $length == -1 )); then
+            result=$((${#str1}-${#str2}))
+            if (( ${#str1} < ${#str} )); then
+               length=${#str1}
+            else
+               length=${#str2}
+            fi
+         fi	
+         declare -i i=0
+         local charStr1 charStr2
+         declare -i valueStr1 valueStr2
+         for ((i=0; i < $length; i++))
+         do
+            charStr1="${str1:i:1}"
+            valueStr1=$(__charCode "$charStr1")
+            charStr2="${str2:i:1}"
+            valueStr2=$(__charCode "$charStr2")
+            if (( $valueStr1 != $valueStr2 )); then
+               result=$((valueStr1-valueStr2))
+               break
+            fi		
+         done
+      fi
+      System.out.println "${result}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__concat() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      System.out.println "$str""$3"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__contains() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local var="$3"
+      local str="$("$this".toString)"
+      if [[ "$str" != "${str/"$var"/}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__containsNone() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local var="$3"
+      local str="$("$this".toString)"
+      local char
+      local bool="$(Boolean.TRUE)"
+      for ((i=0; i < ${#var}; i++))
+      do
+         char="${var:i:1}"
+         if [[ "$str" != "${str/"$char"/}" ]]; then
+            bool="$(Boolean.FALSE)"
+            break
+         fi
+      done
+      Boolean.parseBoolean "${bool}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__containsOnly() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local var="$3"
+      local str="$("$this".toString)"
+      local char
+      local bool="$(Boolean.TRUE)"
+      for ((i=0; i < ${#str}; i++))
+      do
+         char="${str:i:1}"
+         if [[ "$var" == "${var/"$char"/}" ]]; then
+            bool="$(Boolean.FALSE)"
+            break
+         fi
+      done
+      Boolean.parseBoolean "${bool}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__count() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local pattern="$3"
+      local replaced="$("$this".replaceAll "$pattern" "")"
+      declare -i pattern_length=${#pattern}
+      declare -i replaced_length=${#replaced}
+      declare -i string_length=$("$this".length)
+      if (( $pattern_length == 0 )); then
+         System.out.println $(( $("$this".length) + 1 ))
+      else
+         if command -v bc >/dev/null 2>&1; then
+            declare -i count=$(bc <<< "($string_length-$replaced_length)/$pattern_length")
+            System.out.println "${count}"
+         else
+            __throw "NotInPathException" ": bc not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 __endsWith() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -1166,19 +649,565 @@ __endsWith() {
    return $returnValue
 }
 
-__replaceFirst() {
+__equalsIgnoreCase() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 4 )); then
+   if (( $# == 3 )); then
       local this="$1"
-      local substring="$3"
-      local replacement="$4"
-      local str="$("$this".toString)"
-      if [[ -z "${substring}" ]]; then
-         System.out.println "${replacement}""${str}"
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "$("$this".getClass)" == "$argclass" ]]; then
+            if [[ "$("$argobject".toUpperCase)" == "$("$this".toUpperCase)" ]]; then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
       else
-         shopt -s extglob
-         System.out.println "${str/$substring/$replacement}"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__indexOf() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   case $# in
+      3) local pattern="$3"
+         declare -i from=0;;
+      4) local pattern="$3"
+         if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i from=$4
+         # negative index ?
+         if (( 0 > $4 )); then
+            from=0
+         fi;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue;;
+   esac
+   local this="$1"
+   declare -i pattern_length=${#pattern}
+   local str="$("$this".toString)"
+   str="${str:$from}"
+   declare -i strlength=${#str}
+   local newstr="${str%%$pattern*}"
+   declare -i newstrlength=${#newstr}
+   # Java API:
+   # k >= Math.min(fromIndex, str.length()) && this.startsWith(str, k)
+   # --> looking for empty string '' out of index returns stringlength instead of -1
+   if (( $pattern_length == 0 )); then
+      if (( $from <= $("$this".length) )); then
+         System.out.println $from
+      else
+         System.out.println $("$this".length)
+      fi
+      return $returnValue
+   fi
+   if (( $strlength == $newstrlength )); then
+      System.out.println -1
+   else
+      System.out.println $(($newstrlength+$from))
+   fi
+   return $returnValue
+}
+
+__indexOfDifference() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local str1="$("$this".toString)"
+      local str2="$3"
+      declare -i maxindex
+      if (( ${#str1} < ${#str2} )); then
+         maxindex=${#str2}
+      else
+         maxindex=${#str1}
+      fi
+      local char1 char2
+      declare -i index=-1
+      for ((i=0; i < $maxindex; i++))
+      do
+         char1="${str1:i:1}"
+         char2="${str2:i:1}"
+         if [[ "$char1" != "${char2}" ]]; then
+            index=$i
+            break
+         fi
+      done
+      System.out.println "${index}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAlnum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:alnum:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAlpha() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      shopt -s extglob
+      local str="$("$this".toString)"
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:alpha:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAscii() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      shopt -s extglob
+      local str="$("$this".toString)"
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:ascii:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isDigit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:digit:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isEmpty() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      declare -i length=$("$this".length)
+      if (( $length == 0 )); then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isHexDigit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:xdigit:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local lower=$(Boolean.FALSE)
+      declare -i i=0
+      local char valueOf
+      for ((i=0; i < ${#str}; i++))
+      do
+         char="${str:i:1}"
+         valueOf=$(__charCode "$char")
+         case $valueOf in
+            # upper case us ascii + german umlauts + franch + polish +
+            # spanish + romanian + czech + slovak + slovenian + slovenian +
+            # swedish + finnish + danish + norwegian + scottish gaelic + catalan +
+            # hungarian + icelandic special characters + uppercase sharp s + cyrillic characters
+            65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|\
+            80|81|82|83|84|85|86|87|88|89|90|196|214|220|\
+            140|192|194|198|199|200|201|202|203|206|207|212|\
+            217|219|260|280|211|262|321|323|346|377|379|193|\
+            205|209|218|258|350|354|536|538|381|352|344|340|\
+            327|313|268|221|366|282|270|356|216|197|336|368|\
+            204|210|208|222|7838|\
+            1024|1025|1026|1027|1028|1029|1030|1031|\
+            1032|1033|1034|1035|1036|1037|1038|1039|\
+            1040|1041|1042|1043|1044|1045|1046|1047|\
+            1048|1049|1050|1051|1052|1053|1054|1055|\
+            1056|1057|1058|1059|1060|1061|1062|1063|\
+            1064|1065|1066|1067|1068|1069|1070|1071)
+               lower=$(Boolean.FALSE)
+               break;;
+            # lower case us ascii + german umlauts + franch + polish +
+            # spanish + romanian + czech + slovak + slovenian + slovenian +
+            # swedish + finnish + danish + nowegian + scottish gaelic + catalan +
+            # hungarian + icelandic special characters + cyrillic characters
+            97|98|99|100|101|102|103|104|105|106|107|108|\
+            109|110|111|112|113|114|115|116|117|118|119|120|\
+            121|122|223|228|246|252|156|224|226|230|231|232|\
+            233|234|235|238|239|244|249|251|261|281|243|263|\
+            322|324|347|378|380|225|237|241|250|259|351|355|\
+            537|539|382|353|345|341|328|314|269|253|367|283|\
+            271|357|248|229|337|369|236|242|240|254|\
+            1072|1073|1074|1075|1076|1077|1078|1079|\
+            1080|1081|1082|1083|1084|1085|1086|1087|\
+            1088|1089|1090|1091|1092|1093|1094|1095|\
+            1096|1097|1098|1099|1100|1101|1102|1103|\
+            1104|1105|1106|1107|1108|1109|1110|1111|\
+            1112|1113|1114|1115|1116|1117|1118|1119)
+               lower=$(Boolean.TRUE);;
+         esac
+      done
+      System.out.println "${lower}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isPrintable() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:print:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      if [[ "$("$this".isEmpty)" == $(Boolean.FALSE) ]]; then
+         if [[ "${str##+([[:space:]])}" == "" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isTitle() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".toLowerCase)" == "$("$this".toUpperCase)" ]]; then
+         Boolean.FALSE
+      else
+         if [[ "$("$this".title)" == "$("$this".toString)" ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local upper=$(Boolean.FALSE)
+      declare -i i=0
+      local char valueOf
+      for ((i=0; i < ${#str}; i++))
+      do
+         char="${str:i:1}"
+         valueOf=$(__charCode "$char")
+         case $valueOf in
+            # upper case us ascii + german umlauts + franch + polish +
+            # spanish + romanian + czech + slovak + slovenian + slovenian +
+            # swedish + finnish + danish + norwegian + scottish gaelic + catalan +
+            # hungarian + icelandic special characters + uppercase sharp s + cyrillic characters
+            65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|\
+            80|81|82|83|84|85|86|87|88|89|90|196|214|220|\
+            140|192|194|198|199|200|201|202|203|206|207|212|\
+            217|219|260|280|211|262|321|323|346|377|379|193|\
+            205|209|218|258|350|354|536|538|381|352|344|340|\
+            327|313|268|221|366|282|270|356|216|197|336|368|\
+            204|210|208|222|7838|\
+            1024|1025|1026|1027|1028|1029|1030|1031|\
+            1032|1033|1034|1035|1036|1037|1038|1039|\
+            1040|1041|1042|1043|1044|1045|1046|1047|\
+            1048|1049|1050|1051|1052|1053|1054|1055|\
+            1056|1057|1058|1059|1060|1061|1062|1063|\
+            1064|1065|1066|1067|1068|1069|1070|1071)
+               upper=$(Boolean.TRUE);;
+            # lower case us ascii + german umlauts + franch + polish +
+            # spanish + romanian + czech + slovak + slovenian + slovenian +
+            # swedish + finnish + danish + nowegian + scottish gaelic + catalan +
+            # hungarian + icelandic special characters + cyrillic characters
+            97|98|99|100|101|102|103|104|105|106|107|108|\
+            109|110|111|112|113|114|115|116|117|118|119|120|\
+            121|122|223|228|246|252|156|224|226|230|231|232|\
+            233|234|235|238|239|244|249|251|261|281|243|263|\
+            322|324|347|378|380|225|237|241|250|259|351|355|\
+            537|539|382|353|345|341|328|314|269|253|367|283|\
+            271|357|248|229|337|369|236|242|240|254|\
+            1072|1073|1074|1075|1076|1077|1078|1079|\
+            1080|1081|1082|1083|1084|1085|1086|1087|\
+            1088|1089|1090|1091|1092|1093|1094|1095|\
+            1096|1097|1098|1099|1100|1101|1102|1103|\
+            1104|1105|1106|1107|1108|1109|1110|1111|\
+            1112|1113|1114|1115|1116|1117|1118|1119)
+               upper=$(Boolean.FALSE)
+               break;;
+         esac
+      done
+      System.out.println "${upper}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isVisible() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      __visibilityCheck "$str"
+      if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__lastIndexOf() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local this="$1"
+   case $# in
+      3) local pattern="$3"
+         declare -i to=$("$this".length);;
+      4) local pattern="$3"
+         if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i to=$(($4+1))
+         # negative index ?
+         if (( 0 > $4 )); then
+            System.out.println -1
+            return $returnValue
+         fi;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue;;
+   esac
+   local str="$("$this".toString)"
+   str="${str:0:$to}"
+   shopt -s extglob
+   local replaced="${str//*$pattern/}"
+   declare -i pattern_length=${#pattern}
+   declare -i replaced_length=${#replaced}
+   declare -i string_length=${#str}
+   declare -i lastindex=$(($string_length-$replaced_length))
+   # nothing modified --> no match --> no index
+   if (( $replaced_length == $string_length )); then
+      System.out.println -1
+      return $returnValue
+   fi
+   if (( $pattern_length == 0 )) && (( $string_length < $("$this".length) )); then
+      pattern_length=$pattern_length+1
+   fi
+   # ok if match is existing and if no substring neccessary
+   System.out.println $(($lastindex-$pattern_length))
+   return $returnValue
+}
+
+__length() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      System.out.println ${#str}
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__lstrip() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      # trimming...
+      local result="${str##+([[:space:]])}"
+      System.out.println "${result}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__matches() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local regex="$3"
+      shopt -s extglob
+      if [[ "$("$this".toString)" =~ $regex ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -1217,53 +1246,24 @@ __replaceAll() {
    return $returnValue
 }
 
-__substring() {
+__replaceFirst() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   local this="$1" 
-   declare -i count=$("$this".length)
-   case $# in
-      3) declare -i endIndex=$count;;
-      4) if ! __isBashInteger "$4"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}" 
-            return $returnValue
-         fi
-         declare -i endIndex=$4;;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         return $returnValue;;
-   esac
-
-   if ! __isBashInteger "$3"; then
-      __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}" 
-   else
-      declare -i beginIndex=$3
-      if (( $beginIndex < 0 )); then
-         __throw "IndexOutOfBoundsException" ": String index out of range: $beginIndex"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         return $returnValue
-      fi
-      if (( $endIndex > $count )); then
-         __throw "IndexOutOfBoundsException" ": String index out of range: $endIndex"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         return $returnValue
-      fi       
-      if (( $beginIndex > $endIndex )); then
-         __throw "IndexOutOfBoundsException" ": String index out of range: $(($endIndex-$beginIndex))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-         return $returnValue
-      fi  
+   if (( $# == 4 )); then
+      local this="$1"
+      local substring="$3"
+      local replacement="$4"
       local str="$("$this".toString)"
-      declare -i length=$(($endIndex-beginIndex))
-      System.out.println "${str:$beginIndex:$length}"
+      if [[ -z "${substring}" ]]; then
+         System.out.println "${replacement}""${str}"
+      else
+         shopt -s extglob
+         System.out.println "${str/$substring/$replacement}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
@@ -1292,14 +1292,16 @@ __reverse() {
    return $returnValue
 }
 
-__length() {
+__rstrip() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   local class="$2"
    if (( $# == 2 )); then
       local this="$1"
       local str="$("$this".toString)"
-      System.out.println ${#str} 
+      shopt -s extglob
+      # trimming...
+      result="${str%%+([[:space:]])}"
+      System.out.println "${result}"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -1308,234 +1310,234 @@ __length() {
    return $returnValue
 }
 
-##################
-#                #
-#     STATICS    # 
-#                #
-##################
-
-String.digits() {
+__startsWith() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println '0123456789'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction String.digits
-
-String.asciiLetters() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction String.asciiLetters
-
-String.asciiLettersLowerCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'abcdefghijklmnopqrstuvwxyz'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
-   fi 
-   return $returnValue
-}
-__registerFunction String.asciiLettersLowerCase
-
-String.asciiLettersUpperCase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction String.asciiLettersUpperCase
-
-String.hexDigits() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println '0123456789abcdefABCDEF'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction String.hexDigits
-
-String.octDigits() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println '01234567'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
-   fi 
-   return $returnValue
-}
-__registerFunction String.octDigits
-
-if (( ${BASH_VERSINFO[1]} >= 2 )); then
-   String.fromCharCode() {
-      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-      declare -i returnValue=0
-      local hexValue
-      local result=""
-      while (($#))
-      do     
-         if ! __isBashInteger "$1"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+   case $# in
+      3) declare -i toffset=0;;
+      4) if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
             returnValue=$?
-            __handleErrorMessage "String" "${FUNCNAME}"
-            break
-         else
-            if (( "$1" < 0 )) || (( "$1" > 65535 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-               returnValue=$?
-               __handleErrorMessage "String" "${FUNCNAME}"
-               break
-            else
-               case $1 in
-                  10)  result+="
-"
-                  ;;
-                  # 128 to 159 (x0080 - x009F) are not printable ("C1 control codes")
-                  160) result+=" ";;
-                  161) result+=¡;; 
-                  162) result+=¢;;
-                  163) result+=£;; 
-                  164) result+=¤;;
-                  165) result+=¥;;
-                  166) result+=¦;;
-                  167) result+=§;;
-                  168) result+=¨;;
-                  169) result+=©;;
-                  170) result+=ª;;  
-                  171) result+=«;;
-                  172) result+=¬;;  
-                  # http://www.cs.tut.fi/~jkorpela/shy.html 
-                  # --> ??? for soft hyphen:                                                                                         
-                  173) result+=-;;                                                                                                     
-                  174) result+=®;;                                                                                                     
-                  175) result+=¯;;                                                                                                     
-                  176) result+=°;;                                                                                                     
-                  177) result+=±;;                                                                                                     
-                  178) result+=²;;                                                                                                     
-                  179) result+=³;;                                                                                                     
-                  180) result+=´;;                                                                                                     
-                  181) result+=µ;;                                                                                                     
-                  182) result+=¶;;                                                                                                     
-                  183) result+=·;;                                                                                                     
-                  184) result+=¸;;                                                                                                     
-                  185) result+=¹;;      
-                  186) result+=º;;  
-                  187) result+=»;; 
-                  188) result+=¼;;
-                  189) result+=½;;
-                  190) result+=¾;;
-                  191) result+=¿;;  
-                  192) result+=À;;                                                                                                                       
-                  193) result+=Á;;                                                                                                                                 
-                  194) result+=Â;;    
-                  195) result+=Ã;;                                                                                                                             
-                  196) result+=Ä;;                                                                                                                                 
-                  197) result+=Å;;                                                                                                                                 
-                  198) result+=Æ;;                                                                                                                                 
-                  199) result+=Ç;;                                                                                                                                 
-                  200) result+=È;;                                                                                                                                 
-                  201) result+=É;;                                                                                                                                 
-                  202) result+=Ê;;                                                                                                                                 
-                  203) result+=Ë;;                                                                                                                                 
-                  204) result+=Ì;;                                                                                                                                 
-                  205) result+=Í;;                                                                                                                                 
-                  206) result+=Î;;                                                                                                                                 
-                  207) result+=Ï;;                                                                                                                                 
-                  208) result+=Ð;;                                                                                                                                 
-                  209) result+=Ñ;;                                                                                                                                 
-                  210) result+=Ò;;                                                                                                                                 
-                  211) result+=Ó;;                                                                                                                                 
-                  212) result+=Ô;;  
-                  213) result+=Õ;;                                                                                                                               
-                  214) result+=Ö;; 
-                  215) result+=×;;                                                                                                                                
-                  216) result+=Ø;;                                                                                                                                 
-                  217) result+=Ù;;                                                                                                                                 
-                  218) result+=Ú;;                                                                                                                                 
-                  219) result+=Û;;                                                                                                                                 
-                  220) result+=Ü;;                                                                                                                                 
-                  221) result+=Ý;;                                                                                                                                 
-                  222) result+=Þ;;                                                                                                                                 
-                  223) result+=ß;;                                                                                                                                 
-                  224) result+=à;;                                                                                                                                 
-                  225) result+=á;;                                                                                                                                 
-                  226) result+=â;;   
-                  227) result+=ã;;                                                                                                                              
-                  228) result+=ä;;                                                                                                                                 
-                  229) result+=å;;                                                                                                                                 
-                  230) result+=æ;;                                                                                                                                 
-                  231) result+=ç;;                                                                                                                                 
-                  232) result+=è;;                                                                                                                                 
-                  233) result+=é;;                                                                                                                                 
-                  234) result+=ê;;                                                                                                                                 
-                  235) result+=ë;;                                                                                                                                 
-                  236) result+=ì;;                                                                                                                                 
-                  237) result+=í;;                                                                                                                                 
-                  238) result+=î;;                                                                                                                                 
-                  239) result+=ï;;                                                                                                                                
-                  240) result+=ð;;                                                                                                                                 
-                  241) result+=ñ;;
-                  242) result+=ò;;
-                  243) result+=ó;;
-                  244) result+=ô;;
-                  245) result+=õ;;
-                  246) result+=ö;;
-                  247) result+=÷;;
-                  248) result+=ø;;
-                  249) result+=ù;;
-                  250) result+=ú;;
-                  251) result+=û;;
-                  252) result+=ü;;
-                  253) result+=ý;;
-                  254) result+=þ;;  
-                  255) result+=ÿ;;             
-                  *)
-                     hexValue=$(printf %x "$1")
-                     result+="$(printf "%b" "\u${hexValue}")";;
-               esac
-            fi
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
-         shift
-      done
+         declare -i toffset=$4;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}";;
+   esac
+   if (( $returnValue == 0 )); then
+      local this="$1"
+      declare -i length=$("$this".length)
+      local sub
+      sub="$("$this".substring $toffset $(($length-1)))"
+      returnValue=$?
       if (( $returnValue == 0 )); then
-         System.out.println "${result}"
+         if [[ "${sub}" == "$3"* ]]; then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
       fi
-      return $returnValue
-   }
-   __registerFunction String.fromCharCode
-fi
+   fi
+   return $returnValue
+}
+
+__substring() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local this="$1"
+   declare -i count=$("$this".length)
+   case $# in
+      3) declare -i endIndex=$count;;
+      4) if ! __isBashInteger "$4"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$4\""
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i endIndex=$4;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue;;
+   esac
+
+   if ! __isBashInteger "$3"; then
+      __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   else
+      declare -i beginIndex=$3
+      if (( $beginIndex < 0 )); then
+         __throw "IndexOutOfBoundsException" ": String index out of range: $beginIndex"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+      if (( $endIndex > $count )); then
+         __throw "IndexOutOfBoundsException" ": String index out of range: $endIndex"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+      if (( $beginIndex > $endIndex )); then
+         __throw "IndexOutOfBoundsException" ": String index out of range: $(($endIndex-$beginIndex))"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue
+      fi
+      local str="$("$this".toString)"
+      declare -i length=$(($endIndex-beginIndex))
+      System.out.println "${str:$beginIndex:$length}"
+   fi
+   return $returnValue
+}
+
+__swapCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local swaped=''
+      declare -i i=0
+      local char
+      for ((i=0; i < ${#str}; i++))
+      do
+         char="${str:i:1}"
+         case $char in
+            # small sharp s
+            ß)
+            swaped+="ẞ";;
+            # big sharp s
+            ẞ)
+            swaped+="ß";;
+            # ignore case
+            *)
+            swaped+="${char~}" ;;
+         esac
+      done
+      System.out.println "${swaped}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+
+__title() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toLowerCase)"
+      local output="${str~}"
+      # "${str~}" does not work with big sharp s --> let's loop ;-(
+      local next="$(Boolean.TRUE)"
+      local result=''
+      local char
+      for ((i=0; i < ${#output}; i++))
+      do
+         char="${output:i:1}"
+         if [[ "${next}" == "$(Boolean.TRUE)" && "${char}" == "ß" ]]; then
+            char="ẞ"
+         fi
+         if [[ "$(__strUpper  "${char}")" == "$(__strLower  "${char}")" ]]; then
+            next="$(Boolean.TRUE)"
+         else
+            next="$(Boolean.FALSE)"
+         fi
+         result+="${char}"
+      done
+      System.out.println "${result}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__toLowerCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local lower="$(__strLower "$str")"
+      System.out.println "${lower}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__toUpperCase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      local upper="$(__strUpper "$str")" 
+      System.out.println "${upper}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__trim() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      shopt -s extglob
+      # trimming...
+      local result="${str##+([[:space:]])}"    
+      result="${result%%+([[:space:]])}"
+      System.out.println "${result}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__zfill() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      else
+         declare -i width=$3
+         length=$("$this".length)
+         if (( $length < $width )); then
+            local left=$(($width-$("$this".length)))
+            printf -v pad "%."$left"d"
+            System.out.println "$pad""$("$this".toString)"
+         else
+            System.out.println "$("$this".toString)"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
 
 #################
 #               #
