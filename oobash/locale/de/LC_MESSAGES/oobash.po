@@ -77,6 +77,10 @@ msgstr "Tut mir leid, aber der Klassenname '$userClass' ist nicht gültig."
 msgid "Sorry, no valid attribute name: '$attribute'"
 msgstr "Tut mir leid, aber der Attributname '$attribute' ist nicht gültig."
 
+#: oobash/src/util/Generator.oobash
+msgid "Sorry, attributes have to be unique"
+msgstr "Tut mir leid, aber die Attribute müssen eindeutig sein."
+
 #: oobash/src/util/Generator.oobash:263
 msgid "   Please enter one class name and the attributes"
 msgstr "   Bitte geben Sie einen Klassennamen und die Attribute ein."

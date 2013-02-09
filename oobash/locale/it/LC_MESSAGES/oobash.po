@@ -77,6 +77,10 @@ msgstr "Spiacente, nome di classe non valido: '$userClass'."
 msgid "Sorry, no valid attribute name: '$attribute'"
 msgstr "Spiacente, nome attributo non valido: '$attribute'."
 
+#: oobash/src/util/Generator.oobash
+msgid "Sorry, attributes have to be unique"
+msgstr "Spiacente, gli attributi devono essere univoci."
+
 #: oobash/src/util/Generator.oobash:263
 msgid "   Please enter one class name and the attributes"
 msgstr "   Inserire il nome della classe e gli attributi"
