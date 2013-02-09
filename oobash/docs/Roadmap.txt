@@ -12,9 +12,6 @@ Man.generator instead of 'all' some kind of sort for the methods ?
 1d) 
 Class.generator sort getternames then write them ?
 
-1e)
-Class.generator avoid not uniq attributes
-
 2) 
 better docs for the private package ?
 
