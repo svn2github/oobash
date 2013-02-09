@@ -25,9 +25,9 @@ Class.generator() {
          return 1
       fi         
       
+      declare -a getters
+      # check for valid attribute name + generate array of getters
       declare -a  attributes=("$@")
-      declare -A unique
-      # check for valid attribute name + make attributes uniq
       declare -i i
       for ((i=0; i < ${#attributes[@]}; i++))
       do
@@ -37,19 +37,10 @@ Class.generator() {
             I18n.err.println "Sorry, no valid attribute name: '\$attribute'"
             return 1
          else
-            unique["${attributes[$i]}"]=''            
+            getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
          fi             
       done
-      # attributes are unique now
-      attributes=("${!unique[@]}")
-      # generate array of getters
-      local arg
-      declare -a getters
-      for arg in ${!unique[@]}
-      do 
-         getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${arg:0:1})${arg:1}")
-      done
-      
+     
       local user=${__AUTHOR__:-$USER}
       local mail=${__EMAIL__:-$user}
       local destination=""${__OODIR__}"/src/myClassFiles/${userClass}.oobash"

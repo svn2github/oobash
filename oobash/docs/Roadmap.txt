@@ -4,13 +4,13 @@
 clean startmessage ?
 
 1b) 
-script options: -- option delimiter ?
-
-1c) 
-Man.generator instead of 'all' some kind of sort for the methods ?
+script skeleton options: -- option delimiter ?
 
 1d) 
 Class.generator sort getternames then write them ?
+
+-1e)
+Class.generator avoid not uniq attributes
 
 2) 
 better docs for the private package ?
@@ -158,23 +158,15 @@ sha1sum
 toString
 touch
 
-4)
-colors: declare -A __COLORS__ ?
-use in ps4 ?
-
 5)
 Logging
 info in command_not_found_handle
 error in throw
 ...
 
-6)
-Remove sort dependeny ?
-
 # 0.40.1
 # -tput: color management
 # -optimize logging
-# -Private: convert between hex dec oct bin
 # -Process: disown diffOutput
 
 # 0.41
@@ -188,6 +180,10 @@ Remove sort dependeny ?
 #       -split, merge ?
  
 # 0.43
+# -Remove sort dependeny ?
+# -Private: convert between hex dec oct bin
+
+# 0.44
 # -tput: cursor
 # -histogram
 
