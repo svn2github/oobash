@@ -26,19 +26,23 @@ Class.generator() {
       fi         
       
       declare -a getters
-      declare -A unique
+      declare -Au unique
       # check for valid attribute name + generate array of getters
       declare -a  attributes=("$@")
       declare -i i
       for ((i=0; i < ${#attributes[@]}; i++))
       do
+         echo do 1 "${attributes[$i]}"
          eval local \'"${attributes[$i]}"\'=test 2>/dev/null
          if (( $? != 0 )); then
+            echo if 2 "${attributes[$i]}"
             local attribute="${attributes[$i]}"
             I18n.err.println "Sorry, no valid attribute name: '\$attribute'"
             return 1
          else
-            unique["${attributes[$i]}"]='' 
+            echo else 2 "${attributes[$i]}"
+            # name and Name is same, because of getter naming
+            unique["$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}"]="${attributes[$i]}" 
             getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
          fi             
       done
@@ -147,10 +151,16 @@ System.out.println "
 #####################
 
 " >> "${destination}"
-declare -i j
-for (( j=0; j < ${#attributes[@]}; j++))
+      
+if command -v sort  >/dev/null 2>&1; then      
+   local list="$(printf '%s\n' ${attributes[@]} | sort)"
+else
+   local list="$(printf '%s\n' ${attributes[@]})"
+fi
+local att
+for att in ${list}
 do
-   System.out.println "__get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$j]:0:1})${attributes[$j]:1}() {
+   System.out.println "__get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${att:0:1})${att:1}() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i returnValue=0
    local class=\"\$2\"
@@ -158,7 +168,7 @@ do
       local this=\"\$1\"
       local pointer
       pointer=\"\$(__getObjectPointer \"\${this}\")\"
-      System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${attributes[$j]}]}\" 
+      System.out.println \"\${__ATTRIBUTEPOOL__[\${pointer}@${att}]}\" 
    else
       __throw \"IllegalArgumentException\" \": Wrong number of arguments \$((\$#-2))\"
       returnValue=\$?
@@ -168,7 +178,7 @@ do
 }
 " >> "${destination}"
 done
-
+      
 ########################
 # Create help function:#
 ########################
@@ -188,14 +198,18 @@ ${userClass}.help() {
       System.\${printStream}.println \"
                     Usage: ${userClass}.help all|methodname
                     Available methods:
-                    -getClass
-                    -toString
-                    -equals
-                    -hashCode" >> "${destination}"
-      for (( i=0; i < ${#attributes[@]}; i++))
-      do
-         System.out.println "                    -get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}" >> "${destination}" 
-      done
+                    -equals" >> "${destination}"
+		if command -v sort  >/dev/null 2>&1; then      
+			list="$(printf '%s\n' getClass $(for att in ${attributes[@]}; do printf '%s '  get${userClass}$(__strUpper ${att:0:1})${att:1}; done) | sort )"
+		else
+			list="$(printf '%s\n' getClass $(for att in ${attributes[@]}; do printf '%s '  get${userClass}$(__strUpper ${att:0:1})${att:1}; done))"
+		fi
+		for att in ${list}
+		do
+         System.out.println "                    -${att}" >> "${destination}" 
+      done                      
+System.out.println "                    -hashCode
+                    -toString" >> "${destination}"
       System.out.println "                    Constructor: 
                     -${userClass}
       \" 
@@ -232,30 +246,59 @@ ${userClass}.help() {
       System.out.print  "<${attributes[$i]}> " >> "${destination}"
    done
    System.out.println "
-            \";;& " >> "${destination}"
-   declare -i count=0
-   declare -a values=($(eval echo {1..${#attributes[@]}}))
-   for (( i=0; i < ${#attributes[@]}; i++))
-   do
-      System.out.println "         get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}|all)
+            \";;& 
+         equals|all)
             match=\$(Boolean.TRUE)
             System.\${printStream}.println \"
-               get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
-                  Returns the value of ${attributes[$i]}
+               equals
+                  Returns true if and only if the argument is a ${userClass} object that 
+                  represents the same ${userClass} value as this object. 
+               Parameters:
+                  anObject - The object to compare this ${userClass} against
+               Returns:
+                  true if the ${userClass} objects represent the same value; false otherwise.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if arguent is no object
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  ${userClass} c $(eval echo {1..${#attributes[@]}})
+                  b.equals c
+                  >>>true
+            \";;&" >> "${destination}"   
+for getter in ${list}
+do
+   if [[ "${getter}" != "getClass" ]]; then
+      declare -i count=0
+      declare -a values=($(eval echo {1..${#attributes[@]}}))
+      declare -i offset=$(( 3 + ${#userClass} ))
+      local att=${getter:$offset}
+      
+      for key in ${!attributes[@]}
+      do
+      echo key is $key of ${!attributes[@]}
+      echo this is ${attributes[$key]} of ${attributes[@]}
+      done
+      
+      System.out.println "         ${getter}|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               ${getter}
+                  Returns the value of ${att,,}.
                Parameters:
                   None
                Returns:
-                  The value of ${attributes[$i]}.
+                  The value of ${att,,}.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
-                  b.get${userClass}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}
-                  >>>$(echo ${values[$count]})
+                  b.${getter}
+                  >>>$(echo ${!attributes[${att,,}]})
             \";;& " >> "${destination}"
       ((count++))
-   done
-   System.out.println "         getClass|all)
+   else
+      System.out.println "         getClass|all)
             match=\$(Boolean.TRUE)
             System.\${printStream}.println \"
                getClass
@@ -270,6 +313,24 @@ ${userClass}.help() {
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.getClass
                   >>>class ${userClass}
+            \";;&	">> "${destination}"
+   fi
+done      
+   System.out.println "         hashCode|all)
+            match=\$(Boolean.TRUE)
+            System.\${printStream}.println \"
+               hashCode
+                  Returns a hash code for this ${userClass} object.
+               Parameters:
+                  None
+               Returns:
+                  a hash code for this ${userClass}.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  ${userClass} b $(eval echo {1..${#attributes[@]}})
+                  b.hashCode
             \";;&
          toString|all)
             match=\$(Boolean.TRUE)
@@ -306,41 +367,6 @@ ${userClass}.help() {
          fi
       done
    System.out.println "
-            \";;&
-         hashCode|all)
-            match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
-               hashCode
-                  Returns a hash code for this ${userClass} object.
-               Parameters:
-                  None
-               Returns:
-                  a hash code for this ${userClass}.
-               Throws:
-                  NotInPathException - if bc not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  ${userClass} b $(eval echo {1..${#attributes[@]}})
-                  b.hashCode
-            \";;&
-         equals|all)
-            match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
-               equals
-                  Returns true if and only if the argument is a ${userClass} object that 
-                  represents the same ${userClass} value as this object. 
-               Parameters:
-                  anObject - The object to compare this ${userClass} against
-               Returns:
-                  true if the ${userClass} objects represent the same value; false otherwise.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1
-                                           - if arguent is no object
-               Example:
-                  ${userClass} b $(eval echo {1..${#attributes[@]}})
-                  ${userClass} c $(eval echo {1..${#attributes[@]}})
-                  b.equals c
-                  >>>true
             \";;&
          *)   if [[ \"\${match}\" == \"\$(Boolean.FALSE)\" ]]; then
                  System.\${printStream}.println \"                                  

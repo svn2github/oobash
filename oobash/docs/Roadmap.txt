@@ -3,14 +3,8 @@
 1a)
 clean startmessage ?
 
-1b) 
-script skeleton options: -- option delimiter ?
-
 1d) 
 Class.generator sort getternames then write them ?
-
-2) 
-better docs for the private package ?
 
 3)
 sort all functions and the help cases + manpages ?
@@ -162,14 +156,16 @@ error in throw
 ...
 
 # 0.40.1
-# -tput: color management
 # -optimize logging
-# -Process: disown diffOutput
+# -script skeleton options: -- option delimiter ?
+# -tput: color management (use in PS4?)
+# -better docs for the private package ?
 
 # 0.41
 # -chained return values
 # -check for gnu ps ?
 # -add some System functions
+# -Process: disown diffOutput
 
 # 0.42
 # -tput: terminal info
@@ -178,7 +174,6 @@ error in throw
  
 # 0.43
 # -Remove sort dependeny ?
-# -Private: convert between hex dec oct bin
 
 # 0.44
 # -tput: cursor
@@ -200,7 +195,8 @@ error in throw
 # ...
 
 # 0.70 DATE/IPv4+IPv6 ADDRESS/MAC ADDRESS
-# functions...
+# -functions...
+# -Private: convert between hex dec oct bin
 
 # 0.80 GUI
 # -Facade for some GUI libs:
