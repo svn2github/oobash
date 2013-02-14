@@ -160,6 +160,7 @@ error in throw
 # -script skeleton options: -- option delimiter ?
 # -tput: color management (use in PS4?)
 # -better docs for the private package ?
+# -cleanup generator code (really ugly)
 
 # 0.41
 # -chained return values
