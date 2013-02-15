@@ -1551,27 +1551,31 @@ String.help() {
    local printStream=${printStream:-out}
    if (( $# == 0 )); then
       System.${printStream}.println "
-      Usage: String.help all|methodname|constructor|constant
+      Usage: String.help all|methodname|constructor|static
       Available methods:
-      -base64Decode      -base64Encode  -capitalize        -center                
-      -charAt            -concat        -contains          -count      
-      -endsWith          -equals        -equalsIgnoreCase  -reverse                                  
-      -hashCode          -indexOf       -isAlnum           -isAlpha      
-      -isAscii           -isDigit       -isEmpty           -isHexDigit                
-      -isLowerCase       -isSpace       -isPrintable       -isUpperCase    
-      -isVisible         -lastIndexOf   -length            -matches       
-      -replaceAll        -replaceFirst  -startsWith        -substring
-      -swapCase          -toLowerCase   -toString          -toUpperCase       
-      -trim              -title         -zfill             -compareTo
-      -containsOnly      -containsNone  -indexOfDifference -charCodeAt
-      -compareToIgnoreCase              -getClass          
+      -base64Decode -base64Encode -capitalize
+      -center -charAt -charCodeAt
+      -compareToIgnoreCase -concat -contains
+      -containsNone -containsOnly -count
+      -endsWith -equals -equalsIgnoreCase
+      -getClass -hashCode -indexOf
+      -indexOfDifference -isAlnum -isAlpha
+      -isAscii -isDigit -isEmpty
+      -isHexDigit -isLowerCase -isPrintable
+      -isSpace -isTitle -isUpperCase
+      -isVisible -lastIndexOf -length
+      -lstrip -matches -replaceAll
+      -replaceFirst -reverse -rstrip
+      -startsWith -substring -swapCase
+      -title -toLowerCase -toString
+      -toUpperCase -trim -zfill
       Constructor: 
       -String
-      Constants:
-      -String.digits                  -String.asciiLetters  
-      -String.asciiLettersLowerCase   -String.asciiLettersUpperCase 
-      -String.hexDigits               -String.octDigits
-      -String.fromCharCode
+      Statics:
+      -String.asciiLetters -String.asciiLettersLowerCase
+      -String.asciiLettersUpperCase -String.digits
+      -String.fromCharCode -String.hexDigits
+      -String.octDigits
                "
       return 0
    fi

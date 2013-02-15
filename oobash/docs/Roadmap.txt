@@ -3,9 +3,6 @@
 1a)
 clean startmessage ?
 
-1d) 
-Class.generator sort getternames then write them ?
-
 3)
 sort all functions and the help cases + manpages ?
 
@@ -113,7 +110,7 @@ hasUidBit
 indexOfExtension
 indexOfLastSeparator
 insertAfterLine 
-insertBeforeLine #
+insertBeforeLine
 isAbsolute
 isBlockSpecial
 isCharacterSpecial 
