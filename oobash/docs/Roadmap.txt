@@ -8,65 +8,6 @@ sort all functions and the help cases + manpages ?
 
 use list in startmessage too:
 
-String String.asciiLetters String.asciiLettersLowerCase String.asciiLettersUpperCase String.digits String.fromCharCode String.hexDigits String.octDigits base64Decode base64Encode capitalize center charAt charCodeAt compareToIgnoreCase concat contains containsNone containsOnly count endsWith equals equalsIgnoreCase getClass hashCode indexOf indexOfDifference isAlnum isAlpha isAscii isDigit isEmpty isHexDigit isLowerCase isPrintable isSpace isTitle isUpperCase isVisible lastIndexOf length lstrip matches replaceAll replaceFirst reverse rstrip startsWith substring swapCase title toLowerCase toString toUpperCase trim zfill
-
-String
-String.asciiLetters
-String.asciiLettersLowerCase
-String.asciiLettersUpperCase
-String.digits
-String.fromCharCode
-String.hexDigits
-String.octDigits
-base64Decode
-base64Encode 
-capitalize
-center
-charAt
-charCodeAt
-compareToIgnoreCase
-concat
-contains
-containsNone
-containsOnly
-count
-endsWith
-equals
-equalsIgnoreCase
-getClass
-hashCode
-indexOf
-indexOfDifference
-isAlnum
-isAlpha
-isAscii
-isDigit
-isEmpty
-isHexDigit
-isLowerCase
-isPrintable
-isSpace
-isTitle
-isUpperCase
-isVisible
-lastIndexOf
-length
-lstrip
-matches
-replaceAll
-replaceFirst
-reverse
-rstrip
-startsWith
-substring
-swapCase
-title
-toLowerCase
-toString
-toUpperCase
-trim
-zfill
-
 File File.createTempDir File.createTempFile File.createTemporaryDir File.createTemporaryFile append canExecute canRead canWrite clear createNewFile delete deleteRecursively delLine equals exists fileLength getAbsolutePath getBase getCanonicalPath getClass getExtension getFreeSpace getGroup getInode getLine getName getOwner getParent getPath getPosixFilePermissions getText getTotalSpace getUsableSpace hasGidBit hashCode hasStickyBit hasUidBit indexOfExtension indexOfLastSeparator insertAfterLine insertBeforeLine isAbsolute isBlockSpecial isCharacterSpecial isDirectory isFile isHidden isNamedPipe isNewerThan isOlderThan isSocket isSymbolicLink lastAccessed lastChanged lastModified linecount linematch md5sum mkdir mkdirs replaceLine setExecutable setgid setLastAccessed setLastModified setPosixFilePermissions setReadable setReadOnly setStickyBit setText setuid setWritable sha1sum toString touch
 
 File
