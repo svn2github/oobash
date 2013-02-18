@@ -1896,7 +1896,7 @@ Math.help() {
                   >>>-1
                   Math.expm1 0
                   >>>0
-            ";
+            ";;
          Math.floor|floor|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println " 
@@ -1932,7 +1932,7 @@ Math.help() {
             ";;&
          Math.hypot|hypot|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println " 
+            System.${printStream}.println "
                Math.hypot
                   Returns sqrt(x^2 + y^2) without intermediate overflow or underflow.
                   Special cases:

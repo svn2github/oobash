@@ -155,10 +155,7 @@ __hashCode() {
                   System.out.println 1231
                else
                   System.out.println 1237
-               fi;;    
-            String)
-               System.out.println ${hash};; 
-            # Default for user created classes                
+               fi;;
             *)
                System.out.println ${hash};;   
          esac  
