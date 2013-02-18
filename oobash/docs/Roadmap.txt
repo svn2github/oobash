@@ -98,21 +98,23 @@ error in throw
 # -script skeleton options: -- option delimiter ?
 # -tput: color management (use in PS4?)
 # -better docs for the private package ?
-# -cleanup generator code (really ugly)
+# -cleanup generator code
 
 # 0.41
 # -chained return values
 # -check for gnu ps ?
-# -add some System functions
-# -Process: disown diffOutput
+# -add some System functions (use of global arrays ?)
 
 # 0.42
-# -tput: terminal info
 # File: -extended file attributes: lsattr, chattr.. ?
 #       -split, merge ?
+#       -convert encoding: iconv
+# -Process: disown diffOutput
+
  
 # 0.43
 # -Remove sort dependeny ?
+# -tput: terminal info
 
 # 0.44
 # -tput: cursor
@@ -120,6 +122,7 @@ error in throw
 
 # 0.5 UNITTESTING
 # -class Assert...
+# -Test Anything Protocol
 
 # 0.60 NETWORK
 # -Use of /dev/tcp and /dev/udp
