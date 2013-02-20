@@ -51,104 +51,200 @@ File() {
 }
 __registerClass File
 
+##################
+#                #
+#     STATICS    # 
+#                #
+##################
+
+File.createTempDir() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )) || (( $# == 2 )); then
+      local prefix="$1"
+      local suffix=${2:-.tmp}
+      File.createTemporaryDir "${prefix}" "${suffix}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTempDir
+
+File.createTempFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 1 )) || (( $# == 2 )); then
+      local prefix="$1"
+      local suffix=${2:-.tmp}
+      File.createTemporaryFile "${prefix}" "${suffix}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTempFile
+
+File.createTemporaryDir() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )) || (( $# == 3 )); then
+      if command -v mktemp >/dev/null 2>&1; then
+         if command -v chmod >/dev/null 2>&1; then
+            local tempdir=${TMPDIR:-/tmp};
+            local prefix="$1"
+            if (( ${#prefix} < 3 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
+               returnValue=$?
+               __handleErrorMessage "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            local suffix="$2"
+            if (( $# == 3 )); then
+               local permissions=''
+               permissions=$(__posixFilePermissionToOctal "$3")
+               if (( $? != 0 )); then
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+                  returnValue=$?
+                  __handleErrorMessage "File" "${FUNCNAME}"
+                  return $returnValue
+               fi
+            fi
+            local temporaryFile
+            temporaryFile=$(mktemp -d --tmpdir="${tempdir}" --suffix="${suffix}" "${prefix}"XXXXXXXXXXXXXXXXXX 2>/dev/null)
+            if (( $? != 0 )); then
+               __throw "IOException" ": Directory could not be created"
+               returnValue=$?
+               __handleErrorMessage "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            if [[ -n ${permissions} ]]; then
+               chmod ${permissions} "${temporaryFile}"
+            fi
+            System.out.println "${temporaryFile}"
+         else
+            __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __handleErrorMessage "File" "${FUNCNAME}"
+         fi
+      else
+         __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __handleErrorMessage "File" "${FUNCNAME}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTemporaryDir
+
+File.createTemporaryFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )) || (( $# == 3 )); then
+      if command -v mktemp >/dev/null 2>&1; then
+         if command -v chmod >/dev/null 2>&1; then
+            local tempdir=${TMPDIR:-/tmp};
+            local prefix="$1"
+            if (( ${#prefix} < 3 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
+               returnValue=$?
+               __handleErrorMessage "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            local suffix="$2"
+            if (( $# == 3 )); then
+               local permissions=''
+               permissions=$(__posixFilePermissionToOctal "$3")
+               if (( $? != 0 )); then
+                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+                  returnValue=$?
+                  __handleErrorMessage "File" "${FUNCNAME}"
+                  return $returnValue
+               fi
+            fi
+            local temporaryFile
+            temporaryFile=$(mktemp --tmpdir="${tempdir}" --suffix="${suffix}" "${prefix}"XXXXXXXXXXXXXXXXXX 2>/dev/null)
+            if (( $? != 0 )); then
+               __throw "IOException" ": File could not be created"
+               returnValue=$?
+               __handleErrorMessage "File" "${FUNCNAME}"
+               return $returnValue
+            fi
+            if [[ -n "${permissions}" ]]; then
+               chmod "${permissions}" "${temporaryFile}"
+            fi
+            System.out.println "${temporaryFile}"
+         else
+            __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __handleErrorMessage "File" "${FUNCNAME}"            
+         fi
+      else
+         __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __handleErrorMessage "File" "${FUNCNAME}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      returnValue=$?
+      __handleErrorMessage "File" "${FUNCNAME}"
+   fi
+   return $returnValue
+}
+__registerFunction File.createTemporaryFile
+
 #####################
 #                   #
 #      METHODS      # 
 #                   #
 #####################
 
-__hasUidBit() {
+__append() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 2 )); then
+   if (( $# == 3 )); then
       local this="$1"
-      local perm="$("$this".getPosixFilePermissions 2>/dev/null)"
-      local octal="$(__posixFilePermissionToOctal "$perm")"
-      case ${octal:0:1} in
-         4|5|6|7) Boolean.TRUE;;
-         *)       Boolean.FALSE;;
-      esac
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__hasGidBit() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local perm="$("$this".getPosixFilePermissions  2>/dev/null)"
-      local octal="$(__posixFilePermissionToOctal "$perm")"
-      case ${octal:0:1} in
-         2|3|6|7) Boolean.TRUE;;
-         *)       Boolean.FALSE;;
-      esac
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getBase() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      __getFileBase "$("$this".toString)"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getExtension() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$(__basename "$("$this".toString)")"
-      local extension="${file##*.}"
-      local output=""
-      if [[ ."${extension}" != "${file}" && "${extension}" != "${file}" ]]; then
-         output="${extension}"  
-      fi 
-      System.out.println "${output}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getTotalSpace() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if __gnustatCheck; then
-            set -o noglob
-            local totalFormula
-            totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" -- "${file}" 2>/dev/null)
-            set +o noglob
-            System.out.println "$(eval System.out.print "${totalFormula}")"
-         else
-            __throw "NotInPathException" ": GNU stat not in path"
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class String" == "$argclass" ]]; then
+            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+               if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                  local text="$("$argobject".toString)"
+                  2>/dev/null System.out.println "$text" >> "$("$this".toString)"
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
+               fi
+            else
+               __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"               
+            fi            
+         else 
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
             returnValue=$?
             __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
-         System.out.println "0"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -158,55 +254,16 @@ __getTotalSpace() {
    return $returnValue
 }
 
-__getUsableSpace() {
+__canExecute() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if __gnustatCheck; then
-            set -o noglob
-            local usableFormula
-            usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" -- "${file}" 2>/dev/null)
-            set +o noglob
-            System.out.println "$(eval System.out.print "${usableFormula}")"
-         else
-            __throw "NotInPathException" ": GNU stat not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
+      if [[ -x "${file}" ]]; then
+         Boolean.TRUE
       else
-         System.out.println "0"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getFreeSpace() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if __gnustatCheck; then
-            set -o noglob
-            local freeFormula
-            freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" -- "${file}" 2>/dev/null)
-            set +o noglob
-            System.out.println "$(eval System.out.print "${freeFormula}")"
-         else
-            __throw "NotInPathException" ": GNU stat not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      else
-         System.out.println "0"
+         Boolean.FALSE
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -254,460 +311,28 @@ __canWrite() {
    return $returnValue
 }
 
-__canExecute() {
+__clear() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      local file="$("$this".toString)"
-      if [[ -x "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getName() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      __basename "$("$this".toString)"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isDirectory() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -d "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__exists() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isFile() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -f "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isHidden() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      file=${file##*/}
-      if [[ "${file:0:1}" == "." ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__mkdir() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if command -v mkdir >/dev/null 2>&1; then 
-         mkdir -- "${file}" >/dev/null 2>&1
-         returnValue=$?
-         if (( $returnValue == 0 )); then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      else
-         __throw "NotInPathException" ": mkdir not in path"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__mkdirs() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if command -v mkdir >/dev/null 2>&1; then 
-         mkdir -p -- "${file}" >/dev/null 2>&1
-         returnValue=$?
-         if (( $returnValue == 0 )); then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      else
-         __throw "NotInPathException" ": mkdir not in path"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getParent() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      __dirname "$("$this".toString)"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isSymbolicLink() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -L "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isNamedPipe() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -p "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__hasStickyBit() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -k "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isSocket() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -S "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isCharacterSpecial() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -c "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isBlockSpecial() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -b "${file}" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setReadable() {   
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   case $# in
-      3) local readable=$(Boolean.parseBoolean "$3")
-         local ownerOnly=$(Boolean.TRUE)
-         ;;
-      4) local readable=$(Boolean.parseBoolean "$3")
-         local ownerOnly=$(Boolean.parseBoolean "$4")
-         ;;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-         return $returnValue
-         ;;
-   esac
-   if command -v chmod >/dev/null 2>&1; then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ "${readable}" == $(Boolean.TRUE) ]]; then
-         local setOrDenyPermission="+"
-      else
-         local setOrDenyPermission="-"   
-      fi
-      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
-         # owner
-         local ownerOrAll="u"
-      else
-         # all
-         local ownerOrAll="a"
-      fi
-      chmod ${ownerOrAll}${setOrDenyPermission}r "${file}" 2>/dev/null
-      if (( $? == 0 )); then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setWritable() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   case $# in
-      3) local writable=$(Boolean.parseBoolean "$3")
-         local ownerOnly=$(Boolean.TRUE)
-         ;;
-      4) local writable=$(Boolean.parseBoolean "$3")
-         local ownerOnly=$(Boolean.parseBoolean "$4")
-         ;;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-         return $returnValue
-         ;;
-   esac
-   if command -v chmod >/dev/null 2>&1; then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ "$writable" == $(Boolean.TRUE) ]]; then
-         local setOrDenyPermission="+"
-      else
-         local setOrDenyPermission="-"   
-      fi
-      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
-         # owner
-         local ownerOrAll="u"
-      else
-         # all
-         local ownerOrAll="a"
-      fi
-      chmod ${ownerOrAll}${setOrDenyPermission}w "${file}" 2>/dev/null
-      if (( $? == 0 )); then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setExecutable() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   case $# in
-      3) local executable=$(Boolean.parseBoolean "$3")
-         local ownerOnly=$(Boolean.TRUE)
-         ;;
-      4) local executable=$(Boolean.parseBoolean "$3")
-         local ownerOnly=$(Boolean.parseBoolean "$4")
-         ;;
-      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-         return $returnValue
-         ;;
-   esac
-   if command -v chmod >/dev/null 2>&1; then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ "$executable" == $(Boolean.TRUE) ]]; then
-         local setOrDenyPermission="+"
-      else
-         local setOrDenyPermission="-"   
-      fi
-      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
-         # owner
-         local ownerOrAll="u"
-      else
-         # all
-         local ownerOrAll="a"
-      fi
-      chmod ${ownerOrAll}${setOrDenyPermission}x "${file}" 2>/dev/null
-      if (( $? == 0 )); then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
-      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getCanonicalPath() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".getAbsolutePath)"
-      if __gnureadlinkCheck; then 
-         local result=''
-         result=$(readlink -e -- "${file}" 2>/dev/null)
-         if (( $? == 0 )); then
-            System.out.println "$result"
-         else
-            if command -v pwd >/dev/null 2>&1; then
-               cd -P -- "$(__dirname "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(__basename "${file}")"
-               if (( $? != 0 )); then
-                  readlink -m -- "${file}" 2>/dev/null
-               fi
+      if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            2>/dev/null > "$("$this".toString)"
+            if (( $? == 0 )); then
+               Boolean.TRUE
             else
-               __throw "NotInPathException" ": pwd not in path"
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
+               Boolean.FALSE
             fi
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
          fi
       else
-         __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
+         __throw "IOException" ": Cannot write file \"$("$this".toString)\""
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -717,50 +342,27 @@ __getCanonicalPath() {
    return $returnValue
 }
 
-__getAbsolutePath() {
+__createNewFile() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ ${file:0:1} == "/" ]]; then
-         System.out.println "${file}"
+      if command -v touch >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         if [[ "$("$this".exists)" == "$(Boolean.FALSE)" ]]; then 
+            touch -- "${file}" 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            Boolean.FALSE
+         fi
       else
-         System.out.println "${PWD}"/"${file}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getPath() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      System.out.println "${file}" 
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__isAbsolute() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ ${file:0:1} == "/" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -836,27 +438,915 @@ __deleteRecursively() {
    return $returnValue
 }
 
-__createNewFile() {
+__delLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+            if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+               local file="$("$this".toString)"
+               mapfile FILE < "$file"
+               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                  __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
+               else
+                  > "$file" 1>/dev/null 2>/dev/null
+                  for indx in "${!FILE[@]}"
+                  do
+                     if (( $(($indx+1)) != $line)); then
+                        System.out.print "${FILE[indx]}" >> "$file"
+                     fi
+                  done
+               fi
+            else
+               __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__exists() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
-      if command -v touch >/dev/null 2>&1; then
-         local this="$1"
-         local file="$("$this".toString)"
-         if [[ "$("$this".exists)" == "$(Boolean.FALSE)" ]]; then 
-            touch -- "${file}" 2>/dev/null
-            if (( $? == 0 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__fileLength() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      if command -v wc >/dev/null 2>&1; then
+         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+            result="$(wc -c -- < "${str}")"
+            shopt -s extglob
+            # trimming...
+            local result="${result##+([[:space:]])}"
+            System.out.println "$result"
+         else
+            System.out.println 0
+         fi
+      else
+         __throw "NotInPathException" ": wc not in path"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getAbsolutePath() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ ${file:0:1} == "/" ]]; then
+         System.out.println "${file}"
+      else
+         System.out.println "${PWD}"/"${file}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getBase() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      __getFileBase "$("$this".toString)"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getCanonicalPath() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".getAbsolutePath)"
+      if __gnureadlinkCheck; then 
+         local result=''
+         result=$(readlink -e -- "${file}" 2>/dev/null)
+         if (( $? == 0 )); then
+            System.out.println "$result"
+         else
+            if command -v pwd >/dev/null 2>&1; then
+               cd -P -- "$(__dirname "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(__basename "${file}")"
+               if (( $? != 0 )); then
+                  readlink -m -- "${file}" 2>/dev/null
+               fi
+            else
+               __throw "NotInPathException" ": pwd not in path"
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
+            fi
+         fi
+      else
+         __throw "NotInPathException" ": GNU readlink not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getExtension() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$(__basename "$("$this".toString)")"
+      local extension="${file##*.}"
+      local output=""
+      if [[ ."${extension}" != "${file}" && "${extension}" != "${file}" ]]; then
+         output="${extension}"  
+      fi 
+      System.out.println "${output}"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getFreeSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if __gnustatCheck; then
+            set -o noglob
+            local freeFormula
+            freeFormula=$(stat --file-system --printf  "\$(( %f * %S ))\n" -- "${file}" 2>/dev/null)
+            set +o noglob
+            System.out.println "$(eval System.out.print "${freeFormula}")"
+         else
+            __throw "NotInPathException" ": GNU stat not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      else
+         System.out.println "0"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getGroup() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         if command -v stat >/dev/null 2>&1; then
+            local file="$("$this".toString)"
+            local group
+            if __gnustatCheck; then
+               group=$(stat -L -c  "%G" -- "${file}" 2>/dev/null)
+            else
+               group=$(stat -L -f '%Sg' -- "${file}" 2>/dev/null)
+            fi
+            System.out.println "${group}"
+         else
+            __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"        
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getInode() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if command -v stat >/dev/null 2>&1; then
+            if __gnustatCheck; then
+               stat -c '%i' "$file" 2>/dev/null
+            else
+               stat -f '%i' "$file" 2>/dev/null
+            fi
+         else
+            __throw "NotInPathException" ": stat not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+            if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+               local file="$("$this".toString)"
+               mapfile FILE < "$file"
+               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                  __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
+               else
+                  System.out.print "${FILE[index]}"
+               fi
+            else
+               __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getName() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      __basename "$("$this".toString)"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getOwner() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+         if command -v stat >/dev/null 2>&1; then
+            local file="$("$this".toString)"
+            local owner
+            if __gnustatCheck; then
+               owner=$(stat -L -c  "%U" -- "${file}" 2>/dev/null)
+            else
+               owner=$(stat -L -f '%Su' -- "${file}" 2>/dev/null)
+            fi
+            System.out.println "${owner}"
+         else
+            __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"        
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getParent() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      __dirname "$("$this".toString)"
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getPath() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      System.out.println "${file}" 
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getPosixFilePermissions() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         local result
+         if command -v stat >/dev/null 2>&1; then
+            local output
+            if __gnustatCheck; then
+               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
+            else
+               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
+            fi
+            System.out.println "${output: -9}"
+         else
+            __throw "NotInPathException" ": stat not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      else
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getText() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local text
+            local file="$("$this".toString)"
+            text="$(<"$file")"
+            System.out.println "$text"
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getTotalSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if __gnustatCheck; then
+            set -o noglob
+            local totalFormula
+            totalFormula=$(stat --file-system --printf  "\$(( %b * %S ))\n" -- "${file}" 2>/dev/null)
+            set +o noglob
+            System.out.println "$(eval System.out.print "${totalFormula}")"
+         else
+            __throw "NotInPathException" ": GNU stat not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      else
+         System.out.println "0"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__getUsableSpace() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if __gnustatCheck; then
+            set -o noglob
+            local usableFormula
+            usableFormula=$(stat --file-system --printf  "\$(( %a * %S ))\n" -- "${file}" 2>/dev/null)
+            set +o noglob
+            System.out.println "$(eval System.out.print "${usableFormula}")"
+         else
+            __throw "NotInPathException" ": GNU stat not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+         fi
+      else
+         System.out.println "0"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__hasGidBit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local perm="$("$this".getPosixFilePermissions  2>/dev/null)"
+      local octal="$(__posixFilePermissionToOctal "$perm")"
+      case ${octal:0:1} in
+         2|3|6|7) Boolean.TRUE;;
+         *)       Boolean.FALSE;;
+      esac
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__hasStickyBit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -k "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__hasUidBit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local perm="$("$this".getPosixFilePermissions 2>/dev/null)"
+      local octal="$(__posixFilePermissionToOctal "$perm")"
+      case ${octal:0:1} in
+         4|5|6|7) Boolean.TRUE;;
+         *)       Boolean.FALSE;;
+      esac
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__indexOfExtension() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      String "${this}" "$("${this}".toString)"
+      declare -i sep
+      declare -i dot
+      sep=$("${this}".lastIndexOf "/")
+      dot=$("${this}".lastIndexOf ".")
+      if (( $dot > $sep )); then
+         System.out.println $dot
+      else
+         System.out.println -1
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__indexOfLastSeparator() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      String "${this}" "$("${this}".toString)"
+      declare -i sep
+      sep=$("${this}".lastIndexOf "/")
+      System.out.println $sep
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__insertAfterLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
+                     local text="$("$argobject".toString)"
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __handleErrorMessage "$2" "${FUNCNAME:2}"
+                     else
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.print "${FILE[indx]}" >> "$file"
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                           fi
+                        done
+                     fi                     
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __handleErrorMessage "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__insertBeforeLine() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 4 )); then
+      local this="$1"
+      if ! __isBashInteger "$3"; then
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      else
+         declare -i line="$3"
+         declare -i index=$((line-1))
+         local argobject="$4"
+         local argclass
+         argclass="$("$argobject".getClass 2>/dev/null)"
+         if (( $? == 0 )); then
+            if [[ "class String" == "$argclass" ]]; then
+               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                     local file="$("$this".toString)"
+                     local text="$("$argobject".toString)"
+                     mapfile FILE < "$file"
+                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
+                        returnValue=$?
+                        __handleErrorMessage "$2" "${FUNCNAME:2}"
+                     else
+                        > "$file" 1>/dev/null 2>/dev/null
+                        for indx in "${!FILE[@]}"
+                        do
+                           if (( $(($indx+1)) != $line)); then
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           else
+                              System.out.println "$("${argobject}".toString)" >> "$file"
+                              System.out.print "${FILE[indx]}" >> "$file"
+                           fi
+                        done
+                     fi                     
+                  else
+                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                     returnValue=$?
+                     __handleErrorMessage "$2" "${FUNCNAME:2}"
+                  fi
+               else
+                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"               
+               fi            
+            else 
+               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"         
+         fi
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isAbsolute() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ ${file:0:1} == "/" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isBlockSpecial() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -b "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isCharacterSpecial() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -c "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isDirectory() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -d "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isFile() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -f "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isHidden() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      file=${file##*/}
+      if [[ "${file:0:1}" == "." ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isNamedPipe() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -p "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isNewerThan() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local that="$3"
+      local thatclass
+      thatclass="$("$that".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class File" == "$thatclass" ]]; then
+            local thisFile="$($this.toString)"
+            local thatFile="$($that.toString)"
+            if [[ "${thisFile}" -nt "${thatFile}" ]]; then
                Boolean.TRUE
             else
                Boolean.FALSE
             fi
          else
-            Boolean.FALSE
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
-         __throw "NotInPathException" ": touch not in path"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -866,116 +1356,70 @@ __createNewFile() {
    return $returnValue
 }
 
-__lastModified() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      if command -v stat >/dev/null 2>&1; then
-         local this="$1"
-         local file="$("$this".toString)"
-         local result
-         if __gnustatCheck; then
-            result=$(stat -L -c  "+%Y" -- "${file}" 2>/dev/null)
-            if (( $? == 0 )); then
-               if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
-                     System.out.println "${result:1}000"
-                  else
-                     System.out.println "0"
-                  fi
-               else
-                  if (( ${result} != 0 )); then
-                     System.out.println "${result}000"
-                  else
-                     System.out.println "0"
-                  fi
-               fi
-            else
-               System.out.println "0"
-            fi
-         else
-            result=$(stat -L -f '%m' -t '+%Y' -- "${file}" 2>/dev/null)
-            if (( $? == 0 )); then
-               if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
-                     System.out.println "${result:1}000"
-                  else
-                     System.out.println "0"
-                  fi
-               else
-                  if (( ${result} != 0 )); then
-                     System.out.println "${result}000"
-                  else
-                     System.out.println "0"
-                  fi
-               fi
-            else
-               System.out.println "0"
-            fi
-         fi
-      else
-         __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"        
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setLastModified() {
+__isOlderThan() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 3 )); then
-      if command -v touch >/dev/null 2>&1; then
-         local this="$1"
-         local file="$("$this".toString)"
-         if ! __isBashInteger "$3"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         declare -i milliSeconds="$3"
-         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
-            declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
-            declare -i epochSeconds=${milliSeconds:0:secondsLength}
-         else
-            declare -i epochSeconds=0
-         fi
-         local timestamp
-         if command -v date >/dev/null 2>&1; then
-            if __gnudateCheck; then
-               timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
-               # check if this gnu date is too old to do the -d @.... job
-               if (( $? != 0 )); then
-                  # better than a TooOldGnuDateException ;-)
-                  Boolean.FALSE
-                  return $returnValue
-               fi
+      local this="$1"
+      local that="$3"
+      local thatclass
+      thatclass="$("$that".getClass 2>/dev/null)"
+      if (( $? == 0 )); then
+         if [[ "class File" == "$thatclass" ]]; then
+            local thisFile="$($this.toString)"
+            local thatFile="$($that.toString)"
+            if [[ "${thisFile}" -ot "${thatFile}" ]]; then
+               Boolean.TRUE
             else
-               # bsd date
-               timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
+               Boolean.FALSE
             fi
          else
-            __throw "NotInPathException" ": date not in path"
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
             returnValue=$?
             __handleErrorMessage "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         touch -m -t ${timestamp} -- "${file}" 2>/dev/null
-         if (( $? == 0 )); then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
          fi
       else
-         __throw "NotInPathException" ": touch not in path"
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isSocket() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -S "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__isSymbolicLink() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -L "${file}" ]]; then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -1034,65 +1478,6 @@ __lastAccessed() {
          fi
       else
          __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setLastAccessed() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      if command -v touch >/dev/null 2>&1; then
-         local this="$1"
-         local file="$("$this".toString)"
-         if ! __isBashInteger "$3"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         declare -i milliSeconds="$3"
-         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
-            declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
-            declare -i epochSeconds=${milliSeconds:0:secondsLength}
-         else
-            declare -i epochSeconds=0
-         fi
-         local timestamp
-         if command -v date >/dev/null 2>&1; then
-            if __gnudateCheck; then
-               timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
-               # check if this gnu date is too old to do the -d @.... job
-               if (( $? != 0 )); then
-                  # better than a TooOldGnuDateException ;-)
-                  Boolean.FALSE
-                  return $returnValue
-               fi
-            else
-               # bsd date
-               timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
-            fi
-         else
-            __throw "NotInPathException" ": date not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-         touch -a -t ${timestamp} -- "${file}" 2>/dev/null
-         if (( $? == 0 )); then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      else
-         __throw "NotInPathException" ": touch not in path"
          returnValue=$?
          __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
@@ -1164,177 +1549,57 @@ __lastChanged() {
    return $returnValue
 }
 
-__setReadOnly() {
+__lastModified() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
-      if command -v chmod >/dev/null 2>&1; then
+      if command -v stat >/dev/null 2>&1; then
          local this="$1"
          local file="$("$this".toString)"
-         chmod 444 "$file" >/dev/null 2>&1
-         if (( $? == 0 )); then
-            Boolean.TRUE
-         else
-            Boolean.FALSE
-         fi
-      else
-         __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getText() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            local text
-            local file="$("$this".toString)"
-            text="$(<"$file")"
-            System.out.println "$text"
-         else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"            
-         fi
-      else
-         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"   
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setText() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local argobject="$3"
-      local argclass
-      argclass="$("$argobject".getClass 2>/dev/null)"
-      if (( $? == 0 )); then
-         if [[ "class String" == "$argclass" ]]; then
-            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-               if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-                  local text="$("$argobject".toString)"
-                  2>/dev/null System.out.println "$text" > "$("$this".toString)"
-                  if (( $? == 0 )); then
-                     Boolean.TRUE
-                  else
-                     Boolean.FALSE
-                  fi
-               else
-                  __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"                  
-               fi
-            else
-               __throw "IOException" ": Cannot write file \"$("$this".toString)\""
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
-            fi
-         else 
-            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"           
-         fi
-      else
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__append() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local argobject="$3"
-      local argclass
-      argclass="$("$argobject".getClass 2>/dev/null)"
-      if (( $? == 0 )); then
-         if [[ "class String" == "$argclass" ]]; then
-            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-               if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-                  local text="$("$argobject".toString)"
-                  2>/dev/null System.out.println "$text" >> "$("$this".toString)"
-                  if (( $? == 0 )); then
-                     Boolean.TRUE
-                  else
-                     Boolean.FALSE
-                  fi
-               else
-                  __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"
-               fi
-            else
-               __throw "IOException" ": Cannot write file \"$("$this".toString)\""
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"               
-            fi            
-         else 
-            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__clear() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            2>/dev/null > "$("$this".toString)"
+         local result
+         if __gnustatCheck; then
+            result=$(stat -L -c  "+%Y" -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
-               Boolean.TRUE
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
             else
-               Boolean.FALSE
+               System.out.println "0"
             fi
          else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"            
+            result=$(stat -L -f '%m' -t '+%Y' -- "${file}" 2>/dev/null)
+            if (( $? == 0 )); then
+               if [[ ${result:0:1} == "+" ]]; then
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result:1}000"
+                  else
+                     System.out.println "0"
+                  fi
+               else
+                  if (( ${result} != 0 )); then
+                     System.out.println "${result}000"
+                  else
+                     System.out.println "0"
+                  fi
+               fi
+            else
+               System.out.println "0"
+            fi
          fi
       else
-         __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+         __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"        
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -1441,61 +1706,22 @@ __md5sum() {
    return $returnValue
 }
 
-__sha1sum() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-            local result
-            local file="$("$this".getAbsolutePath)"
-            if command -v openssl >/dev/null 2>&1; then
-               result=$(openssl dgst -sha1 "$file" 2>/dev/null)
-               System.out.println "${result/* /}"
-            else
-               __throw "NotInPathException" ": openssl not in path"
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
-            fi
-         else
-            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"            
-         fi
-      else
-         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getInode() {
+__mkdir() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if command -v stat >/dev/null 2>&1; then
-            if __gnustatCheck; then
-               stat -c '%i' "$file" 2>/dev/null
-            else
-               stat -f '%i' "$file" 2>/dev/null
-            fi
+      if command -v mkdir >/dev/null 2>&1; then 
+         mkdir -- "${file}" >/dev/null 2>&1
+         returnValue=$?
+         if (( $returnValue == 0 )); then
+            Boolean.TRUE
          else
-            __throw "NotInPathException" ": stat not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            Boolean.FALSE
          fi
       else
-         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         __throw "NotInPathException" ": mkdir not in path"
          returnValue=$?
          __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
@@ -1507,314 +1733,24 @@ __getInode() {
    return $returnValue
 }
 
-__getPosixFilePermissions() {
+__mkdirs() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
       local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         local result
-         if command -v stat >/dev/null 2>&1; then
-            local output
-            if __gnustatCheck; then
-               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
-            else
-               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
-            fi
-            System.out.println "${output: -9}"
+      if command -v mkdir >/dev/null 2>&1; then 
+         mkdir -p -- "${file}" >/dev/null 2>&1
+         returnValue=$?
+         if (( $returnValue == 0 )); then
+            Boolean.TRUE
          else
-            __throw "NotInPathException" ": stat not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            Boolean.FALSE
          fi
       else
-         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         __throw "NotInPathException" ": mkdir not in path"
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setPosixFilePermissions() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if command -v chmod >/dev/null 2>&1; then
-            local permissions=''
-            permissions=$(__posixFilePermissionToOctal "$3")
-            if (( $? != 0 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
-               returnValue=$?
-               __handleErrorMessage "File" "${FUNCNAME:2}"
-               return $returnValue
-            fi
-            chmod "${permissions}" "${file}" 2>/dev/null
-            if (( $? == 0 )); then
-               Boolean.TRUE
-            else
-               Boolean.FALSE
-            fi
-         else
-            __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setuid() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if command -v stat >/dev/null 2>&1; then
-            local statoutput posixFilePermission highOrderOctal
-            if __gnustatCheck; then
-               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
-            else
-               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
-            fi
-            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
-            highOrderOctal=${posixFilePermission:0:1}
-            case ${highOrderOctal} in
-               0|1|2|3)
-               highOrderOctal=$((${highOrderOctal}+4))
-               if command -v chmod >/dev/null 2>&1; then
-                  chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
-                  if (( $? == 0 )); then
-                     Boolean.TRUE
-                  else
-                     Boolean.FALSE
-                  fi
-               else
-                  __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"
-               fi;;   
-               *) Boolean.FALSE;;
-            esac     
-         else
-            __throw "NotInPathException" ": stat not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setgid() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if command -v stat >/dev/null 2>&1; then
-            local statoutput posixFilePermission highOrderOctal
-            if __gnustatCheck; then
-               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
-            else
-               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
-            fi
-            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
-            highOrderOctal=${posixFilePermission:0:1}
-            case ${highOrderOctal} in
-               0|1|4|5)
-               highOrderOctal=$((${highOrderOctal}+2))
-               if command -v chmod >/dev/null 2>&1; then
-                  chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
-                  if (( $? == 0 )); then
-                     Boolean.TRUE
-                  else
-                     Boolean.FALSE
-                  fi
-               else
-                  __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"
-               fi;;   
-               *) Boolean.FALSE;;
-            esac           
-         else
-            __throw "NotInPathException" ": stat not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__setStickyBit() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local file="$("$this".toString)"
-      if [[ -e "${file}" ]]; then
-         if command -v stat >/dev/null 2>&1; then
-            local statoutput posixFilePermission highOrderOctal
-            if __gnustatCheck; then
-               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
-            else
-               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
-            fi
-            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
-            highOrderOctal=${posixFilePermission:0:1}
-            if (( $((highOrderOctal%2)) == 0 )); then
-               ((highOrderOctal++))
-               if command -v chmod >/dev/null 2>&1; then
-                  chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
-                  if (( $? == 0 )); then
-                     Boolean.TRUE
-                  else
-                     Boolean.FALSE
-                  fi
-               else
-                  __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"
-               fi               
-            else
-               Boolean.FALSE 
-            fi
-         else
-            __throw "NotInPathException" ": stat not in path"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      else
-         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getLine() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      if ! __isBashInteger "$3"; then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      else
-         declare -i line="$3"
-         declare -i index=$((line-1))
-         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
-            if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-               local file="$("$this".toString)"
-               mapfile FILE < "$file"
-               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
-                  __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"
-               else
-                  System.out.print "${FILE[index]}"
-               fi
-            else
-               __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
-            fi
-         else
-            __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__delLine() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 3 )); then
-      local this="$1"
-      if ! __isBashInteger "$3"; then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-      else
-         declare -i line="$3"
-         declare -i index=$((line-1))
-         if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-            if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-               local file="$("$this".toString)"
-               mapfile FILE < "$file"
-               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
-                  __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"
-               else
-                  > "$file" 1>/dev/null 2>/dev/null
-                  for indx in "${!FILE[@]}"
-                  do
-                     if (( $(($indx+1)) != $line)); then
-                        System.out.print "${FILE[indx]}" >> "$file"
-                     fi
-                  done
-               fi
-            else
-               __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
-            fi
-         else
-            __throw "IOException" ": Cannot read file \"$("$this".toString)\""
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-         fi
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -1890,229 +1826,88 @@ __replaceLine() {
    return $returnValue
 }
 
-__insertBeforeLine() {
+__setExecutable() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 4 )); then
-      local this="$1"
-      if ! __isBashInteger "$3"; then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+   case $# in
+      3) local executable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.TRUE)
+         ;;
+      4) local executable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.parseBoolean "$4")
+         ;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
          returnValue=$?
          __handleErrorMessage "$2" "${FUNCNAME:2}"
-      else
-         declare -i line="$3"
-         declare -i index=$((line-1))
-         local argobject="$4"
-         local argclass
-         argclass="$("$argobject".getClass 2>/dev/null)"
-         if (( $? == 0 )); then
-            if [[ "class String" == "$argclass" ]]; then
-               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-                     local file="$("$this".toString)"
-                     local text="$("$argobject".toString)"
-                     mapfile FILE < "$file"
-                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
-                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
-                        returnValue=$?
-                        __handleErrorMessage "$2" "${FUNCNAME:2}"
-                     else
-                        > "$file" 1>/dev/null 2>/dev/null
-                        for indx in "${!FILE[@]}"
-                        do
-                           if (( $(($indx+1)) != $line)); then
-                              System.out.print "${FILE[indx]}" >> "$file"
-                           else
-                              System.out.println "$("${argobject}".toString)" >> "$file"
-                              System.out.print "${FILE[indx]}" >> "$file"
-                           fi
-                        done
-                     fi                     
-                  else
-                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-                     returnValue=$?
-                     __handleErrorMessage "$2" "${FUNCNAME:2}"
-                  fi
-               else
-                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"               
-               fi            
-            else 
-               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
-            fi
-         else
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"         
-         fi
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__insertAfterLine() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 4 )); then
+         return $returnValue
+         ;;
+   esac
+   if command -v chmod >/dev/null 2>&1; then
       local this="$1"
-      if ! __isBashInteger "$3"; then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      local file="$("$this".toString)"
+      if [[ "$executable" == $(Boolean.TRUE) ]]; then
+         local setOrDenyPermission="+"
       else
-         declare -i line="$3"
-         declare -i index=$((line-1))
-         local argobject="$4"
-         local argclass
-         argclass="$("$argobject".getClass 2>/dev/null)"
-         if (( $? == 0 )); then
-            if [[ "class String" == "$argclass" ]]; then
-               if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
-                  if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
-                     local file="$("$this".toString)"
-                     local text="$("$argobject".toString)"
-                     mapfile FILE < "$file"
-                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
-                        __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
-                        returnValue=$?
-                        __handleErrorMessage "$2" "${FUNCNAME:2}"
-                     else
-                        > "$file" 1>/dev/null 2>/dev/null
-                        for indx in "${!FILE[@]}"
-                        do
-                           if (( $(($indx+1)) != $line)); then
-                              System.out.print "${FILE[indx]}" >> "$file"
-                           else
-                              System.out.print "${FILE[indx]}" >> "$file"
-                              System.out.println "$("${argobject}".toString)" >> "$file"
-                           fi
-                        done
-                     fi                     
-                  else
-                     __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
-                     returnValue=$?
-                     __handleErrorMessage "$2" "${FUNCNAME:2}"
-                  fi
-               else
-                  __throw "IOException" ": Cannot write file \"$("$this".toString)\""
-                  returnValue=$?
-                  __handleErrorMessage "$2" "${FUNCNAME:2}"               
-               fi            
-            else 
-               __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
-            fi
-         else
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"         
-         fi
+         local setOrDenyPermission="-"   
+      fi
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
+         # owner
+         local ownerOrAll="u"
+      else
+         # all
+         local ownerOrAll="a"
+      fi
+      chmod ${ownerOrAll}${setOrDenyPermission}x "${file}" 2>/dev/null
+      if (( $? == 0 )); then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
       fi
    else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
       returnValue=$?
       __handleErrorMessage "$2" "${FUNCNAME:2}"
    fi
    return $returnValue
 }
 
-__indexOfExtension() {
+__setgid() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 2 )); then
       local this="$1"
-      String "${this}" "$("${this}".toString)"
-      declare -i sep
-      declare -i dot
-      sep=$("${this}".lastIndexOf "/")
-      dot=$("${this}".lastIndexOf ".")
-      if (( $dot > $sep )); then
-         System.out.println $dot
-      else
-         System.out.println -1
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__indexOfLastSeparator() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      String "${this}" "$("${this}".toString)"
-      declare -i sep
-      sep=$("${this}".lastIndexOf "/")
-      System.out.println $sep
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__fileLength() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   local class="$2"
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      if command -v wc >/dev/null 2>&1; then
-         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
-            result="$(wc -c -- < "${str}")"
-            shopt -s extglob
-            # trimming...
-            local result="${result##+([[:space:]])}"
-            System.out.println "$result"
-         else
-            System.out.println 0
-         fi
-      else
-         __throw "NotInPathException" ": wc not in path"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
-__getOwner() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
          if command -v stat >/dev/null 2>&1; then
-            local file="$("$this".toString)"
-            local owner
+            local statoutput posixFilePermission highOrderOctal
             if __gnustatCheck; then
-               owner=$(stat -L -c  "%U" -- "${file}" 2>/dev/null)
+               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
             else
-               owner=$(stat -L -f '%Su' -- "${file}" 2>/dev/null)
+               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
             fi
-            System.out.println "${owner}"
+            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
+            highOrderOctal=${posixFilePermission:0:1}
+            case ${highOrderOctal} in
+               0|1|4|5)
+               highOrderOctal=$((${highOrderOctal}+2))
+               if command -v chmod >/dev/null 2>&1; then
+                  chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
+               fi;;   
+               *) Boolean.FALSE;;
+            esac           
          else
-            __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+            __throw "NotInPathException" ": stat not in path"
             returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"        
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
@@ -2127,25 +1922,150 @@ __getOwner() {
    return $returnValue
 }
 
-__getGroup() {
+__setLastAccessed() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      if [[ "$("$this".exists)" == "$(Boolean.TRUE)" ]]; then
-         if command -v stat >/dev/null 2>&1; then
-            local file="$("$this".toString)"
-            local group
-            if __gnustatCheck; then
-               group=$(stat -L -c  "%G" -- "${file}" 2>/dev/null)
-            else
-               group=$(stat -L -f '%Sg' -- "${file}" 2>/dev/null)
-            fi
-            System.out.println "${group}"
-         else
-            __throw "NotInPathException" ": stat not in path (install the GNU coreutils ?)"
+   if (( $# == 3 )); then
+      if command -v touch >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         if ! __isBashInteger "$3"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
             returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"        
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i milliSeconds="$3"
+         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+            declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
+            declare -i epochSeconds=${milliSeconds:0:secondsLength}
+         else
+            declare -i epochSeconds=0
+         fi
+         local timestamp
+         if command -v date >/dev/null 2>&1; then
+            if __gnudateCheck; then
+               timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
+               # check if this gnu date is too old to do the -d @.... job
+               if (( $? != 0 )); then
+                  # better than a TooOldGnuDateException ;-)
+                  Boolean.FALSE
+                  return $returnValue
+               fi
+            else
+               # bsd date
+               timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
+            fi
+         else
+            __throw "NotInPathException" ": date not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         touch -a -t ${timestamp} -- "${file}" 2>/dev/null
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setLastModified() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      if command -v touch >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         if ! __isBashInteger "$3"; then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$3\""
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         declare -i milliSeconds="$3"
+         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+            declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
+            declare -i epochSeconds=${milliSeconds:0:secondsLength}
+         else
+            declare -i epochSeconds=0
+         fi
+         local timestamp
+         if command -v date >/dev/null 2>&1; then
+            if __gnudateCheck; then
+               timestamp=$(date "+%y%m%d%H%M.%S" -d @${epochSeconds} 2>/dev/null)
+               # check if this gnu date is too old to do the -d @.... job
+               if (( $? != 0 )); then
+                  # better than a TooOldGnuDateException ;-)
+                  Boolean.FALSE
+                  return $returnValue
+               fi
+            else
+               # bsd date
+               timestamp=$(date -r ${epochSeconds} "+%y%m%d%H%M.%S" 2>/dev/null)
+            fi
+         else
+            __throw "NotInPathException" ": date not in path"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
+            return $returnValue
+         fi
+         touch -m -t ${timestamp} -- "${file}" 2>/dev/null
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": touch not in path"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setPosixFilePermissions() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 3 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if command -v chmod >/dev/null 2>&1; then
+            local permissions=''
+            permissions=$(__posixFilePermissionToOctal "$3")
+            if (( $? != 0 )); then
+               __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
+               returnValue=$?
+               __handleErrorMessage "File" "${FUNCNAME:2}"
+               return $returnValue
+            fi
+            chmod "${permissions}" "${file}" 2>/dev/null
+            if (( $? == 0 )); then
+               Boolean.TRUE
+            else
+               Boolean.FALSE
+            fi
+         else
+            __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": File \"$("$this".toString)\" does not exist."
@@ -2160,30 +2080,117 @@ __getGroup() {
    return $returnValue
 }
 
-__isNewerThan() {
+__setReadable() {   
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
-   if (( $# == 3 )); then
+   case $# in
+      3) local readable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.TRUE)
+         ;;
+      4) local readable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.parseBoolean "$4")
+         ;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue
+         ;;
+   esac
+   if command -v chmod >/dev/null 2>&1; then
       local this="$1"
-      local that="$3"
-      local thatclass
-      thatclass="$("$that".getClass 2>/dev/null)"
+      local file="$("$this".toString)"
+      if [[ "${readable}" == $(Boolean.TRUE) ]]; then
+         local setOrDenyPermission="+"
+      else
+         local setOrDenyPermission="-"   
+      fi
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
+         # owner
+         local ownerOrAll="u"
+      else
+         # all
+         local ownerOrAll="a"
+      fi
+      chmod ${ownerOrAll}${setOrDenyPermission}r "${file}" 2>/dev/null
       if (( $? == 0 )); then
-         if [[ "class File" == "$thatclass" ]]; then
-            local thisFile="$($this.toString)"
-            local thatFile="$($that.toString)"
-            if [[ "${thisFile}" -nt "${thatFile}" ]]; then
-               Boolean.TRUE
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setReadOnly() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      if command -v chmod >/dev/null 2>&1; then
+         local this="$1"
+         local file="$("$this".toString)"
+         chmod 444 "$file" >/dev/null 2>&1
+         if (( $? == 0 )); then
+            Boolean.TRUE
+         else
+            Boolean.FALSE
+         fi
+      else
+         __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setStickyBit() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if command -v stat >/dev/null 2>&1; then
+            local statoutput posixFilePermission highOrderOctal
+            if __gnustatCheck; then
+               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
             else
-               Boolean.FALSE
+               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
+            fi
+            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
+            highOrderOctal=${posixFilePermission:0:1}
+            if (( $((highOrderOctal%2)) == 0 )); then
+               ((highOrderOctal++))
+               if command -v chmod >/dev/null 2>&1; then
+                  chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
+               fi               
+            else
+               Boolean.FALSE 
             fi
          else
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
+            __throw "NotInPathException" ": stat not in path"
             returnValue=$?
             __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
          returnValue=$?
          __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
@@ -2195,30 +2202,173 @@ __isNewerThan() {
    return $returnValue
 }
 
-__isOlderThan() {
+__setText() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    if (( $# == 3 )); then
       local this="$1"
-      local that="$3"
-      local thatclass
-      thatclass="$("$that".getClass 2>/dev/null)"
+      local argobject="$3"
+      local argclass
+      argclass="$("$argobject".getClass 2>/dev/null)"
       if (( $? == 0 )); then
-         if [[ "class File" == "$thatclass" ]]; then
-            local thisFile="$($this.toString)"
-            local thatFile="$($that.toString)"
-            if [[ "${thisFile}" -ot "${thatFile}" ]]; then
-               Boolean.TRUE
+         if [[ "class String" == "$argclass" ]]; then
+            if [[ "$("$this".canWrite)" == "$(Boolean.TRUE)" ]]; then
+               if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+                  local text="$("$argobject".toString)"
+                  2>/dev/null System.out.println "$text" > "$("$this".toString)"
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"                  
+               fi
             else
-               Boolean.FALSE
+               __throw "IOException" ": Cannot write file \"$("$this".toString)\""
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
             fi
+         else 
+            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass), \"class String\" expected"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"           
+         fi
+      else
+         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setuid() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ -e "${file}" ]]; then
+         if command -v stat >/dev/null 2>&1; then
+            local statoutput posixFilePermission highOrderOctal
+            if __gnustatCheck; then
+               output="$(stat -Lc '%A' "$file" 2>/dev/null)"
+            else
+               output="$(stat -Lf '%Sp' "$file" 2>/dev/null)"
+            fi
+            posixFilePermission=$(__posixFilePermissionToOctal "${output: -9}")
+            highOrderOctal=${posixFilePermission:0:1}
+            case ${highOrderOctal} in
+               0|1|2|3)
+               highOrderOctal=$((${highOrderOctal}+4))
+               if command -v chmod >/dev/null 2>&1; then
+                  chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
+                  if (( $? == 0 )); then
+                     Boolean.TRUE
+                  else
+                     Boolean.FALSE
+                  fi
+               else
+                  __throw "NotInPathException" ":  chmod not in path (install the GNU coreutils ?)"
+                  returnValue=$?
+                  __handleErrorMessage "$2" "${FUNCNAME:2}"
+               fi;;   
+               *) Boolean.FALSE;;
+            esac     
          else
-            __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no File object"
+            __throw "NotInPathException" ": stat not in path"
             returnValue=$?
             __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+         __throw "IOException" ": File \"$("$this".toString)\" does not exist."
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__setWritable() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   case $# in
+      3) local writable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.TRUE)
+         ;;
+      4) local writable=$(Boolean.parseBoolean "$3")
+         local ownerOnly=$(Boolean.parseBoolean "$4")
+         ;;
+      *) __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
+         return $returnValue
+         ;;
+   esac
+   if command -v chmod >/dev/null 2>&1; then
+      local this="$1"
+      local file="$("$this".toString)"
+      if [[ "$writable" == $(Boolean.TRUE) ]]; then
+         local setOrDenyPermission="+"
+      else
+         local setOrDenyPermission="-"   
+      fi
+      if [[ "$ownerOnly" == $(Boolean.TRUE) ]]; then
+         # owner
+         local ownerOrAll="u"
+      else
+         # all
+         local ownerOrAll="a"
+      fi
+      chmod ${ownerOrAll}${setOrDenyPermission}w "${file}" 2>/dev/null
+      if (( $? == 0 )); then
+         Boolean.TRUE
+      else
+         Boolean.FALSE
+      fi
+   else
+      __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
+__sha1sum() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" ]]; then
+         if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
+            local result
+            local file="$("$this".getAbsolutePath)"
+            if command -v openssl >/dev/null 2>&1; then
+               result=$(openssl dgst -sha1 "$file" 2>/dev/null)
+               System.out.println "${result/* /}"
+            else
+               __throw "NotInPathException" ": openssl not in path"
+               returnValue=$?
+               __handleErrorMessage "$2" "${FUNCNAME:2}"
+            fi
+         else
+            __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
+            returnValue=$?
+            __handleErrorMessage "$2" "${FUNCNAME:2}"            
+         fi
+      else
+         __throw "IOException" ": Cannot read file \"$("$this".toString)\""
          returnValue=$?
          __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
@@ -2255,156 +2405,6 @@ __touch() {
    fi
    return $returnValue
 }
-
-##################
-#                #
-#     STATICS    # 
-#                #
-##################
-
-File.createTemporaryFile() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )) || (( $# == 3 )); then
-      if command -v mktemp >/dev/null 2>&1; then
-         if command -v chmod >/dev/null 2>&1; then
-            local tempdir=${TMPDIR:-/tmp};
-            local prefix="$1"
-            if (( ${#prefix} < 3 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
-               returnValue=$?
-               __handleErrorMessage "File" "${FUNCNAME}"
-               return $returnValue
-            fi
-            local suffix="$2"
-            if (( $# == 3 )); then
-               local permissions=''
-               permissions=$(__posixFilePermissionToOctal "$3")
-               if (( $? != 0 )); then
-                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
-                  returnValue=$?
-                  __handleErrorMessage "File" "${FUNCNAME}"
-                  return $returnValue
-               fi
-            fi
-            local temporaryFile
-            temporaryFile=$(mktemp --tmpdir="${tempdir}" --suffix="${suffix}" "${prefix}"XXXXXXXXXXXXXXXXXX 2>/dev/null)
-            if (( $? != 0 )); then
-               __throw "IOException" ": File could not be created"
-               returnValue=$?
-               __handleErrorMessage "File" "${FUNCNAME}"
-               return $returnValue
-            fi
-            if [[ -n "${permissions}" ]]; then
-               chmod "${permissions}" "${temporaryFile}"
-            fi
-            System.out.println "${temporaryFile}"
-         else
-            __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-            returnValue=$?
-            __handleErrorMessage "File" "${FUNCNAME}"            
-         fi
-      else
-         __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
-         returnValue=$?
-         __handleErrorMessage "File" "${FUNCNAME}"         
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "File" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction File.createTemporaryFile
-
-File.createTempFile() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 1 )) || (( $# == 2 )); then
-      local prefix="$1"
-      local suffix=${2:-.tmp}
-      File.createTemporaryFile "${prefix}" "${suffix}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "File" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction File.createTempFile
-
-File.createTemporaryDir() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )) || (( $# == 3 )); then
-      if command -v mktemp >/dev/null 2>&1; then
-         if command -v chmod >/dev/null 2>&1; then
-            local tempdir=${TMPDIR:-/tmp};
-            local prefix="$1"
-            if (( ${#prefix} < 3 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: \"${prefix}\" - Prefix has to be at least three characters long"
-               returnValue=$?
-               __handleErrorMessage "File" "${FUNCNAME}"
-               return $returnValue
-            fi
-            local suffix="$2"
-            if (( $# == 3 )); then
-               local permissions=''
-               permissions=$(__posixFilePermissionToOctal "$3")
-               if (( $? != 0 )); then
-                  __throw "IllegalArgumentException" ": Illegal argument: \"$3\" - is no posixFilePermission"
-                  returnValue=$?
-                  __handleErrorMessage "File" "${FUNCNAME}"
-                  return $returnValue
-               fi
-            fi
-            local temporaryFile
-            temporaryFile=$(mktemp -d --tmpdir="${tempdir}" --suffix="${suffix}" "${prefix}"XXXXXXXXXXXXXXXXXX 2>/dev/null)
-            if (( $? != 0 )); then
-               __throw "IOException" ": Directory could not be created"
-               returnValue=$?
-               __handleErrorMessage "File" "${FUNCNAME}"
-               return $returnValue
-            fi
-            if [[ -n ${permissions} ]]; then
-               chmod ${permissions} "${temporaryFile}"
-            fi
-            System.out.println "${temporaryFile}"
-         else
-            __throw "NotInPathException" ": chmod not in path (install the GNU coreutils ?)"
-            returnValue=$?
-            __handleErrorMessage "File" "${FUNCNAME}"
-         fi
-      else
-         __throw "NotInPathException" ": mktemp not in path (install the GNU coreutils ?)"
-         returnValue=$?
-         __handleErrorMessage "File" "${FUNCNAME}"
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "File" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction File.createTemporaryDir
-
-File.createTempDir() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 1 )) || (( $# == 2 )); then
-      local prefix="$1"
-      local suffix=${2:-.tmp}
-      File.createTemporaryDir "${prefix}" "${suffix}"
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "File" "${FUNCNAME}"
-   fi
-   return $returnValue
-}
-__registerFunction File.createTempDir
 
 #################
 #               #

@@ -1582,7 +1582,132 @@ String.help() {
    while (($#))
    do
       local match=$(Boolean.FALSE)  
-      case $1 in 
+      case $1 in
+         String|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String
+                  Constructor for the String objects.
+               Parameters:
+                  objectname 
+                  string
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if objectname contains full stop character
+                                           - if objectname contains slash character
+               Example:
+                  String a teststring
+            ";;& 
+         String.asciiLetters|asciiLetters|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.asciiLetters
+               Parameters:
+                  None
+               Returns:
+                  The concatenation of the String.asciiLettersLowerCase and 
+                  String.asciiLettersUpperCase. 
+                  This value is not locale-dependent.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.asciiLetters
+                  >>>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ  
+               ";;&
+         String.asciiLettersLowerCase|asciiLettersLowerCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.asciiLettersLowerCase
+               Parameters:
+                  None
+               Returns:
+                  The lowercase letters 'abcdefghijklmnopqrstuvwxyz'. 
+                  This value is not locale-dependent and will not change.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.asciiLettersLowerCase
+                  >>>abcdefghijklmnopqrstuvwxyz    
+               ";;&
+         String.asciiLettersUpperCase|asciiLettersUpperCase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.asciiLettersUpperCase
+               Parameters:
+                  None
+               Returns:
+                  The uppercase letters 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'. 
+                  This value is not locale-dependent and will not change.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.asciiLettersUpperCase
+                  >>>ABCDEFGHIJKLMNOPQRSTUVWXYZ
+               ";;&
+          String.digits|digits|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.digits
+               Parameters:
+                  None
+               Returns:
+                  The string '0123456789'
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example
+                  String.digits
+                  >>>0123456789
+               ";;&
+         String.fromCharCode|fromCharCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.fromCharCode
+                  This function is only available, if bash4 has at least minor version number 2.
+                  Converts Unicode decimal values into characters
+               Parameters:
+                  Unicode values
+               Returns:
+                  Converted characters as a string.
+               Throws:
+                  IllegalArgumentException - if parameter is no unicode value
+               Example:
+                  String.fromCharCode 72 69 76 76 79
+                  >>>HELLO 
+                  String.fromCharCode  9601 9602 9603 9604 9605 9606 9607 9608
+                  >>>▁▂▃▄▅▆▇█
+               ";;&
+         String.hexDigits|hexDigits|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.hexDigits
+               Parameters:
+                  None
+               Returns:
+                  The string '0123456789abcdefABCDEF' 
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.hexDigits
+                  >>>0123456789abcdefABCDEF 
+               ";;&
+         String.octDigits|octDigits|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               String.octDigits
+               Parameters:
+                  None
+               Returns:
+                  The string '01234567'
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  String.octDigits
+                  >>>01234567
+               ";;&
          base64Decode|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -2403,131 +2528,6 @@ String.help() {
                   a.startsWith d 3
                   >>>true
             ";;&
-         String|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String
-                  Constructor for the String objects.
-               Parameters:
-                  objectname 
-                  string
-               Returns:
-                  None
-               Throws:
-                  IllegalArgumentException - if number of arguments != 2
-                                           - if objectname is not valid
-                                           - if objectname is a keyword
-                                           - if objectname contains full stop character
-                                           - if objectname contains slash character
-               Example:
-                  String a teststring
-            ";;& 
-         String.asciiLetters|asciiLetters|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String.asciiLetters
-               Parameters:
-                  None
-               Returns:
-                  The concatenation of the String.asciiLettersLowerCase and 
-                  String.asciiLettersUpperCase. 
-                  This value is not locale-dependent.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  String.asciiLetters
-                  >>>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ  
-               ";;&
-         String.asciiLettersLowerCase|asciiLettersLowerCase|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String.asciiLettersLowerCase
-               Parameters:
-                  None
-               Returns:
-                  The lowercase letters 'abcdefghijklmnopqrstuvwxyz'. 
-                  This value is not locale-dependent and will not change.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  String.asciiLettersLowerCase
-                  >>>abcdefghijklmnopqrstuvwxyz    
-               ";;&
-         String.asciiLettersUpperCase|asciiLettersUpperCase|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String.asciiLettersUpperCase
-               Parameters:
-                  None
-               Returns:
-                  The uppercase letters 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'. 
-                  This value is not locale-dependent and will not change.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  String.asciiLettersUpperCase
-                  >>>ABCDEFGHIJKLMNOPQRSTUVWXYZ
-               ";;&
-          String.digits|digits|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String.digits
-               Parameters:
-                  None
-               Returns:
-                  The string '0123456789'
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example
-                  String.digits
-                  >>>0123456789
-               ";;&
-         String.fromCharCode|fromCharCode|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String.fromCharCode
-                  This function is only available, if bash4 has at least minor version number 2.
-                  Converts Unicode decimal values into characters
-               Parameters:
-                  Unicode values
-               Returns:
-                  Converted characters as a string.
-               Throws:
-                  IllegalArgumentException - if parameter is no unicode value
-               Example:
-                  String.fromCharCode 72 69 76 76 79
-                  >>>HELLO 
-                  String.fromCharCode  9601 9602 9603 9604 9605 9606 9607 9608
-                  >>>▁▂▃▄▅▆▇█
-               ";;&
-         String.hexDigits|hexDigits|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String.hexDigits
-               Parameters:
-                  None
-               Returns:
-                  The string '0123456789abcdefABCDEF' 
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  String.hexDigits
-                  >>>0123456789abcdefABCDEF 
-               ";;&
-         String.octDigits|octDigits|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               String.octDigits
-               Parameters:
-                  None
-               Returns:
-                  The string '01234567'
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  String.octDigits
-                  >>>01234567
-               ";;&
          substring|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "

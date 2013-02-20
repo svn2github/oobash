@@ -162,20 +162,7 @@ Boolean.help() {
                Example:
                   Boolean a \"True\" produces a Boolean object that represents true.
                   Boolean a \"yes\"  produces a Boolean object that represents false.
-            ";;& 
-         Boolean.TRUE|TRUE|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               Boolean.TRUE
-                  The Boolean object corresponding to the primitive value true. 
-               Parameters:
-                  None
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  Boolean.TRUE
-                  >>>true   
-               ";;&
+            ";;&
          Boolean.FALSE|FALSE|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -208,6 +195,47 @@ Boolean.help() {
                   Boolean.parseBoolean \"yes\"
                   >>>false
             ";;& 
+         Boolean.TRUE|TRUE|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Boolean.TRUE
+                  The Boolean object corresponding to the primitive value true. 
+               Parameters:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Boolean.TRUE
+                  >>>true   
+               ";;&
+         compareTo|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               compareTo
+                  Compares this Boolean instance with another Boolean instance. 
+               Parameters:
+                  bool - a Boolean object.
+               Returns:
+                  zero if this object represents the same boolean value as the argument; 
+                  a positive value if this object represents \"true\" and the argument 
+                  represents \"false\"; and a negative value if this object represents \"false\"
+                  and the argument represents \"true\"
+               Throws:
+                  WrongClassException  - if argument has the wrong class  
+                  IllegalArgumentException - if argument is no object
+                                             if number of arguments != 1
+               Example:
+                  Boolean a true
+                  Boolean b xxx
+                  a.compareTo a
+                  >>>0
+                  a.compareTo b
+                  >>>1
+                  b.compareTo b
+                  >>>0
+                  b.compareTo a
+                  >>>-1
+            ";;&
          equals|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -244,24 +272,6 @@ Boolean.help() {
                   b.getClass
                   >>>class Boolean
             ";;&
-         toString|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               toString
-                  Returns a String object representing this Boolean's value. 
-                  If this object represents the value true, a string equal to \"true\" 
-                  is returned. Otherwise, a string equal to \"false\" is returned. 
-               Parameters:
-                  None
-               Throws:
-                  NotInPathException - if sort not in path
-                                     - if tr not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  Boolean b xxx
-                  b.toString
-                  >>>false            
-            ";;&
          hashCode|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -279,33 +289,23 @@ Boolean.help() {
                   b.hashCode
                   >>>1237          
             ";;&
-         compareTo|all)
+         toString|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               compareTo
-                  Compares this Boolean instance with another Boolean instance. 
+               toString
+                  Returns a String object representing this Boolean's value. 
+                  If this object represents the value true, a string equal to \"true\" 
+                  is returned. Otherwise, a string equal to \"false\" is returned. 
                Parameters:
-                  bool - a Boolean object.
-               Returns:
-                  zero if this object represents the same boolean value as the argument; 
-                  a positive value if this object represents \"true\" and the argument 
-                  represents \"false\"; and a negative value if this object represents \"false\"
-                  and the argument represents \"true\"
+                  None
                Throws:
-                  WrongClassException  - if argument has the wrong class  
-                  IllegalArgumentException - if argument is no object
-                                             if number of arguments != 1
+                  NotInPathException - if sort not in path
+                                     - if tr not in path
+                  IllegalArgumentException - if number of arguments != 0
                Example:
-                  Boolean a true
                   Boolean b xxx
-                  a.compareTo a
-                  >>>0
-                  a.compareTo b
-                  >>>1
-                  b.compareTo b
-                  >>>0
-                  b.compareTo a
-                  >>>-1
+                  b.toString
+                  >>>false            
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  

@@ -714,6 +714,45 @@ Process.help() {
    do
       local match=$(Boolean.FALSE)
       case $1 in
+         Process|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Process
+                  Constructor for the Process objects.
+               Parameters:
+                  objectname
+                  <pid>
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if number of arguments != 2
+                                           - if pid < 1
+                                           - if objectname is not valid
+                                           - if objectname is a keyword
+                                           - if objectname contains full stop character
+                                           - if objectname contains slash character
+                  ProcessException - if process can't be managed
+               Example:
+                  Process a <pid> 
+            ";;&
+         Process.create|create|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               Process.create
+                  Processbuilder using the given command. Stdin and stderr
+                  of the command go to /dev/null.
+               Parameters:
+                  objectname
+                  command
+               Returns:
+                  true if a Process object is constructed, else false.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if given command not in path
+               Example:
+                  Process.create a \"sleep 500\"
+                  >>>true
+            ";;&
          equals|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -998,45 +1037,6 @@ Process.help() {
                   Process b 1
                   b.kill
                   >>>false
-            ";;&
-         Process|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               Process
-                  Constructor for the Process objects.
-               Parameters:
-                  objectname
-                  <pid>
-               Returns:
-                  None
-               Throws:
-                  IllegalArgumentException - if number of arguments != 2
-                                           - if pid < 1
-                                           - if objectname is not valid
-                                           - if objectname is a keyword
-                                           - if objectname contains full stop character
-                                           - if objectname contains slash character
-                  ProcessException - if process can't be managed
-               Example:
-                  Process a <pid> 
-            ";;&
-         Process.create|create|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               Process.create
-                  Processbuilder using the given command. Stdin and stderr
-                  of the command go to /dev/null.
-               Parameters:
-                  objectname
-                  command
-               Returns:
-                  true if a Process object is constructed, else false.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if given command not in path
-               Example:
-                  Process.create a \"sleep 500\"
-                  >>>true
             ";;&
          setPriority|all)
             match=$(Boolean.TRUE)
