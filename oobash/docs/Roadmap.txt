@@ -3,6 +3,13 @@
 1a)
 clean startmessage ?
 
+1b)
+fix docs for fileLength
+--> rename to size ?
+
+1c)
+Remove (word-)sort dependeny
+
 3)
 sort all functions and the help cases + manpages ?
 
@@ -114,7 +121,6 @@ error in throw
 
  
 # 0.43
-# -Remove sort dependeny ?
 # -tput: terminal info
 
 # 0.44
