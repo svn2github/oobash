@@ -6,9 +6,25 @@ clean startmessage ?
 1b)
 fix docs for fileLength
 --> rename to size ?
+--> use stat instead of wc
 
 1c)
 Remove (word-)sort dependeny
+
+1d) 
+remove wc dependency
+
+1e)
+remove unused private functions
+
+1f) 
+0.39.12 ??
+
+1g)
+colored ps4 output ?
+
+2) 
+color management ?
 
 3)
 sort all functions and the help cases + manpages ?
@@ -95,11 +111,11 @@ sha1sum
 toString
 touch
 
-5)
-Logging
-info in command_not_found_handle
-error in throw
-...
+# 0.40
+# -Logging
+# info in command_not_found_handle ?
+# error in throw ?
+# ...
 
 # 0.40.1
 # -optimize logging
