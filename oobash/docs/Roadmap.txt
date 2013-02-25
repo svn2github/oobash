@@ -17,9 +17,6 @@ remove wc dependency
 1e)
 remove unused private functions
 
-1f) 
-0.39.12 ??
-
 1g)
 colored ps4 output ?
 
