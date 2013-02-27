@@ -2358,10 +2358,16 @@ __size() {
       local this="$1"
       local file="$("$this".toString)"
       if command -v stat >/dev/null 2>&1; then
+        local size
         if __gnustatCheck; then
             size="$(stat -Lc '%s' "${file}" 2>/dev/null)"
         else
             size="$(stat -Lf '%z' "${file}" 2>/dev/null)"
+            # remove '+' char
+            size="${size:1}"
+        fi
+        if [[ -z "${size}" ]]; then
+           size=0
         fi
         System.out.println "${size}"
       else
