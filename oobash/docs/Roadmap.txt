@@ -5,16 +5,9 @@ clean startmessage ?
 
 1b)
 fix docs for size
---> use stat instead of wc
 
 1c)
 Remove (word-)sort dependeny
-
-1d) 
-remove wc dependency
-
-1e)
-remove unused private functions
 
 1g)
 colored ps4 output ?
@@ -119,6 +112,7 @@ touch
 # -tput: color management (use in PS4?)
 # -better docs for the private package ?
 # -cleanup generator code
+# -remove unused private functions
 
 # 0.41
 # -chained return values

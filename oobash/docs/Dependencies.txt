@@ -23,4 +23,3 @@ stat/gstat (GNU!)
 touch
 tr
 vim
-wc
