@@ -9,12 +9,6 @@ fix docs for size
 1c)
 Remove (word-)sort dependeny
 
-1g)
-colored ps4 output ?
-
-2) 
-color management ?
-
 3)
 sort all functions and the help cases + manpages ?
 
