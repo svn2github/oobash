@@ -4,8 +4,7 @@
 clean startmessage ?
 
 1b)
-fix docs for fileLength
---> rename to size ?
+fix docs for size
 --> use stat instead of wc
 
 1c)
@@ -47,7 +46,7 @@ deleteRecursively
 delLine
 equals
 exists    
-fileLength 
+size
 getAbsolutePath
 getBase
 getCanonicalPath

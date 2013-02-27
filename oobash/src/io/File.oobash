@@ -505,36 +505,6 @@ __exists() {
    return $returnValue
 }
 
-__fileLength() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   local class="$2"
-   if (( $# == 2 )); then
-      local this="$1"
-      local str="$("$this".toString)"
-      if command -v wc >/dev/null 2>&1; then
-         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
-            result="$(wc -c -- < "${str}")"
-            shopt -s extglob
-            # trimming...
-            local result="${result##+([[:space:]])}"
-            System.out.println "$result"
-         else
-            System.out.println 0
-         fi
-      else
-         __throw "NotInPathException" ": wc not in path"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}" 
-      fi
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
 __getAbsolutePath() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -2380,6 +2350,36 @@ __sha1sum() {
    return $returnValue
 }
 
+__size() {
+   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local class="$2"
+   if (( $# == 2 )); then
+      local this="$1"
+      local str="$("$this".toString)"
+      if command -v wc >/dev/null 2>&1; then
+         if [[ "$("$this".canRead)" == "$(Boolean.TRUE)" && "$("$this".isDirectory)" == "$(Boolean.FALSE)" ]]; then
+            result="$(wc -c -- < "${str}")"
+            shopt -s extglob
+            # trimming...
+            local result="${result##+([[:space:]])}"
+            System.out.println "$result"
+         else
+            System.out.println 0
+         fi
+      else
+         __throw "NotInPathException" ": wc not in path"
+         returnValue=$?
+         __handleErrorMessage "$2" "${FUNCNAME:2}" 
+      fi
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 __touch() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
@@ -2423,7 +2423,7 @@ File.help() {
       -isDirectory -exists -toString -lastAccessed
       -canRead -canWrite -canExecute -setLastAccessed
       -isHidden -isFile -mkdir -mkdirs -getParent
-      -getClass -equals -isSymbolicLink -fileLength
+      -getClass -equals -isSymbolicLink -size
       -isNamedPipe -hasStickyBit -isSocket -hashCode 
       -isCharacterSpecial -isBlockSpecial -compareTo
       -setExecutable -setReadable -setWritable -touch
@@ -3287,11 +3287,11 @@ File.help() {
                   a.canWrite
                   >>>false
                ";;&
-         fileLength|all)
+         size|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               fileLength
-                  Returns the length of the file denoted by this abstract pathname. 
+               size
+                  Returns the size of the file denoted by this abstract pathname. 
                   The return value is unspecified if this pathname denotes a directory.
                Parameters:
                   None  
@@ -3302,7 +3302,7 @@ File.help() {
                Example:
                   File a /tmp/abc
                   echo abc > /tmp/abc
-                  a.fileLength
+                  a.size
                   >>>4
                ";;&
          toString|all)

@@ -145,7 +145,7 @@ declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUppe
 
 declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
 
-declare -a __FileMethods__=(canRead canWrite canExecute fileLength getName isDirectory exists isFile isHidden mkdir
+declare -a __FileMethods__=(canRead canWrite canExecute size getName isDirectory exists isFile isHidden mkdir
                             mkdirs getParent isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial
                             isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath 
                             lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText 
