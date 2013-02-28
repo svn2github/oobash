@@ -125,48 +125,46 @@ declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir sta
                              tr pwd ps kill renice openssl ssh scp vim diff pod2man pod2usage podselect)
 
 # All optional variables
-declare -a __OptionalVars__=(__QUIET__ __AUTHOR__ __EMAIL__ __COMPANY__)
+declare -a __OptionalVars__=(__AUTHOR__ __COMPANY__ __EMAIL__ __QUIET__ )
 
 # Arrays for framework methods and inheritance happens here:
-declare -a __ObjectMethods__=(getClass toString hashCode equals)
+declare -a __ObjectMethods__=(equals getClass hashCode toString)
 
 declare -a __ComparableMethods__=(compareTo)
 
 declare -a __BooleanMethods__=()
 
-declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+declare -a __Boolean__=(${__BooleanMethods__[@]} ${__ComparableMethods__[@]} ${__ObjectMethods__[@]})
 
-declare -a __StringMethods__=(base64Encode base64Decode count isLowerCase isUpperCase isAlnum isAlpha
-                              isAscii isDigit isHexDigit isPrintable isSpace isVisible zfill capitalize
-                              center swapCase title   toUpperCase toLowerCase length concat trim contains
-                              isEmpty startsWith lastIndexOf indexOf charAt charCodeAt endsWith replaceFirst replaceAll
-                              reverse substring equalsIgnoreCase matches rstrip lstrip isTitle compareToIgnoreCase
-                              containsOnly containsNone indexOfDifference) 
+declare -a __StringMethods__=(base64Decode base64Encode capitalize center charAt charCodeAt compareToIgnoreCase 
+                              concat contains containsNone containsOnly count endsWith equalsIgnoreCase indexOf 
+                              indexOfDifference isAlnum isAlpha isAscii isDigit isEmpty isHexDigit isLowerCase 
+                              isPrintable isSpace isTitle isUpperCase isVisible lastIndexOf length lstrip matches 
+                              replaceAll replaceFirst reverse rstrip startsWith substring swapCase title toLowerCase 
+                              toUpperCase trim zfill)
 
-declare -a __String__=(${__StringMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]}) 
+declare -a __String__=(${__ComparableMethods__[@]} ${__ObjectMethods__[@]} ${__StringMethods__[@]}) 
 
-declare -a __FileMethods__=(canRead canWrite canExecute size getName isDirectory exists isFile isHidden mkdir
-                            mkdirs getParent isSymbolicLink isNamedPipe hasStickyBit isSocket isCharacterSpecial
-                            isBlockSpecial setExecutable setReadable setWritable getAbsolutePath getCanonicalPath 
-                            lastModified setLastModified setReadOnly getPath isAbsolute delete createNewFile setText 
-                            getText append clear linecount linematch sha1sum md5sum getTotalSpace getFreeSpace 
-                            getUsableSpace getInode getBase getExtension getPosixFilePermissions setPosixFilePermissions
-                            getLine delLine replaceLine insertAfterLine insertBeforeLine indexOfExtension getOwner 
-                            getGroup indexOfLastSeparator deleteRecursively lastChanged lastAccessed setLastAccessed
-                            isOlderThan isNewerThan touch setuid setgid setStickyBit hasUidBit hasGidBit)
+declare -a __FileMethods__=(append canExecute canRead canWrite clear createNewFile delete deleteRecursively delLine 
+                            exists getAbsolutePath getBase getCanonicalPath getExtension getFreeSpace getGroup getInode 
+                            getLine getName getOwner getParent getPath getPosixFilePermissions getText getTotalSpace 
+                            getUsableSpace hasGidBit hasStickyBit hasUidBit indexOfExtension indexOfLastSeparator insertAfterLine 
+                            insertBeforeLine isAbsolute isBlockSpecial isCharacterSpecial isDirectory isFile isHidden isNamedPipe 
+                            isNewerThan isOlderThan isSocket isSymbolicLink lastAccessed lastChanged lastModified linecount 
+                            linematch md5sum mkdir mkdirs replaceLine setExecutable setgid setLastAccessed setLastModified 
+                            setPosixFilePermissions setReadable setReadOnly setStickyBit setText setuid setWritable sha1sum size touch)
 
-declare -a __File__=(${__FileMethods__[@]} ${__ObjectMethods__[@]} ${__ComparableMethods__[@]})
+declare -a __File__=(${__ComparableMethods__[@]} ${__FileMethods__[@]} ${__ObjectMethods__[@]})
 
+declare -a __ProcessMethods__=(getCommand getEffectiveUserId getMemorySize getParentPid getPid getPriority getRealUserId 
+                               getStartTime getStatus getUser isDaemon kill setPriority threadCount)
 
-declare -a __ProcessMethods__=(getPid getParentPid getUser getStatus getCommand getPriority setPriority kill 
-                               isDaemon getEffectiveUserId getRealUserId getMemorySize getStartTime threadCount)
+declare -a __Process__=(${__ObjectMethods__[@]} ${__ProcessMethods__[@]})
 
-declare -a __Process__=(${__ProcessMethods__[@]} ${__ObjectMethods__[@]})
+declare -a __SshMethods__=(command connect copy diffFile diffFiletree execModule getSshHost getSshPort getSshUser 
+                           grep grepIgnoreCase grepInvertMatch vimEdit)
 
-declare -a __SshMethods__=(getSshHost getSshUser getSshPort diffFile diffFiletree command vimEdit connect grep 
-                           grepIgnoreCase grepInvertMatch copy execModule)
-
-declare -a __Ssh__=(${__SshMethods__[@]} ${__ObjectMethods__[@]})
+declare -a __Ssh__=(${__ObjectMethods__[@]} ${__SshMethods__[@]})
 
 # register function:
 ####################
@@ -477,8 +475,7 @@ fi
 ##################################################
 
 # Do we have logging propeties to use ?
-__lookForLoggingPropertiesFile "$(caller)"
-if (( $? == 0 )); then
+if __lookForLoggingPropertiesFile "$(caller)"; then
 
    declare -a __LayoutMethods__=(getContentType getHeader getFooter)
    __registerVar __LayoutMethods__
