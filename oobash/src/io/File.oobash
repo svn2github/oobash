@@ -2363,11 +2363,12 @@ __size() {
             size="$(stat -Lc '%s' "${file}" 2>/dev/null)"
         else
             size="$(stat -Lf '%z' "${file}" 2>/dev/null)"
-            # remove '+' char
-            size="${size:1}"
         fi
         if [[ -z "${size}" ]]; then
            size=0
+        fi
+        if [[ "${size:0:1}" == "+" ]]; then
+            size="${size:1}"
         fi
         System.out.println "${size}"
       else
