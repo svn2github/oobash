@@ -426,7 +426,7 @@ if [[ $(Boolean.parseBoolean "${__QUIET__}") != "$(Boolean.TRUE)" ]] && [[ -n "$
    System.out.println "  -toString -toUpperCase -trim -zfill"
    System.out.println " File:"
    System.out.println " -File.createTempDir -File.createTempFile -File.createTemporaryDir -File.createTemporaryFile"
-   System.out.println " -append -canExecute -canRead -canWrite -clear -createNewFile -delete -deleteRecursively"
+   System.out.println " -append -canExecute -canRead -canWrite -clear -compareTo -createNewFile -delete -deleteRecursively"
    System.out.println " -delLine -equals -exists -fileLength -getAbsolutePath -getBase -getCanonicalPath -getClass" 
    System.out.println " -getExtension -getFreeSpace -getGroup -getInode -getLine -getName -getOwner -getParent"
    System.out.println " -getPath -getPosixFilePermissions -getText -getTotalSpace -getUsableSpace -hasGidBit"

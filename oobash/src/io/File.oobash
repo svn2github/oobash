@@ -2474,81 +2474,750 @@ File.help() {
                Example:
                   File a testfile
             ";;&
-         setuid|all)
+         File.createTempDir|createTempDir|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               setuid
-                  Sets the setuid (short for \"set user ID upon execution\") bit for this file
-                  to \"1\", if possible.
+               File.createTempDir
+                  Creates an empty directory in the default temporary-file directory, using the given prefix
+                  and suffix to generate its name. Invoking this method is equivalent to invoking
+                  createTempFile.
+
+                  The createTemporaryDir method provides an alternative method to create an empty file
+                  in the temporary-file directory. Files created by that method may have more restrictive
+                  access permissions to directories created by this method and so may be more suited to
+                  security-sensitive applications.
                Parameters:
-                  None
+                  prefix - The prefix string to be used in generating the directory's name; must be at least
+                  three characters long
+                  suffix - The suffix string to be used in generating the directory's name is optional. If
+                  missing the suffix ".tmp" will be used
                Returns:
-                  true if the setuid operation was successful, false otherwise
+                  An abstract pathname denoting a newly-created empty directory
                Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  IOException - if file does not exist
-                  NotInPathException - if stat is not in path
+                  IllegalArgumentException - if number of arguments !=1 AND !=2
+               Example:
+                  File.createTempDir fff
+                  >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
+                  File.createTempDir fff xxx
+                  >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
+            ";;&
+         File.createTempFile|createTempFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "   
+               File.createTempFile
+                  Creates an empty file in the default temporary-file directory, using the given prefix 
+                  and suffix to generate its name. Invoking this method is equivalent to invoking 
+                  createTempFile.
+
+                  The createTemporaryFile method provides an alternative method to create an empty file 
+                  in the temporary-file directory. Files created by that method may have more restrictive 
+                  access permissions to files created by this method and so may be more suited to 
+                  security-sensitive applications.
+               Parameters:
+                  prefix - The prefix string to be used in generating the file's name; must be at least 
+                  three characters long
+                  suffix - The suffix string to be used in generating the file's name is optional. If 
+                  missing the suffix ".tmp" will be used
+               Returns:
+                  An abstract pathname denoting a newly-created empty file
+               Throws:
+                  IllegalArgumentException - if number of arguments !=1 AND !=2
+               Example:
+                  File.createTempFile fff
+                  >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
+                  File.createTempFile fff xxx
+                  >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
+            ";;&
+         File.createTemporaryDir|createTemporaryDir|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               File.createTemporaryDir
+                  Creates an empty directory in the default temporary-file directory, using the given prefix and
+                  suffix to generate its name.
+
+                  The attrs parameter is an optional primitive string of attributes to set when creating
+                  the file.
+
+                  When using the attrs parameter the resulting directory may have more restrictive access
+                  permissions than directories created by the createTempDir method.
+                  The attrs parameter is a String representing the permissions. It has 9 characters that
+                  are interpreted as three sets of three. The first set refers to the owner's permissions;
+                  the next to the group permissions and the last to others. Within each set, the first
+                  character is 'r' to indicate permission to read ( view the directory's contents), the second
+                  character is 'w' to indicate permission to write (create new files or delete file(s) in the directory),
+                  and the third character is 'x' for execute permission (user can cd into the directory). Where a
+                  permission is not set then the corresponding character is set to '-'.
+               Parameters:
+                  prefix - The prefix string to be used in generating the file's name; must be at least three characters long
+                  suffix - The suffix string to be used in generating the file's name
+                  attrs - An optional list of file attributes to set when creating the file
+               Returns:
+                  An abstract pathname denoting a newly-created empty directory
+               Throws:
+                  IllegalArgumentException - if the prefix argument contains fewer than three characters
+                                           - if number of arguments !=2 AND !=3
+                                           - if attrs is given, but is no posixFilePermission
+                  IOException - if directory could not be created
+                  NotInPathException - if mktemp is not in path
                                      - if chmod is not in path
                Example:
-                  File a /tmp/iExist
-                  a.setuid
-                  >>>true
+                  File.createTemporaryDir xxx .tmp rwxrwxrwx
+                  >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  ll /tmp
+                  >>>drwxrwxrwx    2 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  TMPDIR=/
+                  File.createTemporaryDir xxx .tmp
+                  >>>IOException: File could not be created
             ";;&
-         setgid|all)
+         File.createTemporaryFile|createTemporaryFile|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               setgid
-                  Sets the setgid (short for \"set group ID upon execution\") bit for this file
-                  to \"1\", if possible.
+            System.${printStream}.println "   
+               File.createTemporaryFile
+                  Creates an empty file in the default temporary-file directory, using the given prefix and 
+                  suffix to generate its name.
+
+                  The attrs parameter is an optional primitive string of attributes to set when creating 
+                  the file. 
+
+                  When using the attrs parameter the resulting file may have more restrictive access 
+                  permissions than files created by the createTempFile method.
+                  The attrs parameter is a String representing the permissions. It has 9 characters that 
+                  are interpreted as three sets of three. The first set refers to the owner's permissions; 
+                  the next to the group permissions and the last to others. Within each set, the first 
+                  character is 'r' to indicate permission to read, the second character is 'w' to indicate 
+                  permission to write, and the third character is 'x' for execute permission. Where a 
+                  permission is not set then the corresponding character is set to '-'. 
+
                Parameters:
-                  None
+                  prefix - The prefix string to be used in generating the file's name; must be at least three characters long
+                  suffix - The suffix string to be used in generating the file's name
+                  attrs - An optional list of file attributes to set when creating the file
                Returns:
-                  true if the setgid operation was successful, false otherwise
+                  An abstract pathname denoting a newly-created empty file
                Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  IOException - if file does not exist
-                  NotInPathException - if stat is not in path
+                  IllegalArgumentException - if the prefix argument contains fewer than three characters
+                                           - if number of arguments !=2 AND !=3
+                                           - if attrs is given, but is no posixFilePermission
+                  IOException - if file could not be created 
+                  NotInPathException - if mktemp is not in path
                                      - if chmod is not in path
                Example:
-                  File a /tmp/iExist
-                  a.setgid
-                  >>>true
+                  File.createTemporaryFile xxx .tmp rwxrwxrwx
+                  >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  ll /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  >>>-rwxrwxrwx 1 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
+                  TMPDIR=/
+                  File.createTemporaryFile xxx .tmp
+                  >>>IOException: File could not be created
             ";;&
-         setStickyBit|all)
+         append|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               setStickyBit
-                  Sets the sticky bit for this file to \"1\", if possible.
+               append
+                  Appends string to content of file.
+               Parameters:
+                  String object
+               Returns:
+                  true if the append operation was successful; false otherwise
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+                  File a /tmp/iExist
+                  String x \"Hello, i am a last line\"
+                  a.append x
+                  >>>true
+            ";;&
+         canExecute|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               canExecute
+                  Tests whether the application can execute the file 
+                  denoted by this abstract pathname.
                Parameters:
                   None
                Returns:
-                  true if the setStickyBit operation was successful, false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  IOException - if file does not exist
-                  NotInPathException - if stat is not in path
-                                     - if chmod is not in path
-               Example:
-                  File a /tmp/iExist
-                  a.setStickyBit
-                  >>>true
-            ";;&
-         hasUidBit|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               hasUidBit
-                  Tests if the setuid (short for \"set user ID upon execution\") bit is active (\"1\")
-                  for this file.
-               Parameters:
-                  None
-               Returns:
-                  true if setuid bit is \"1\"; false otherwise
+                  true if and only if the file specified by this abstract pathname exists
+                  and can be executed by the application; false otherwise
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
-                  File a /tmp/iExist
-                  a.hasUidBit
+                  File a /XXX/yyy
+                  a.canExecute
                   >>>false
+            ";;&
+         canRead|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               canRead
+                  Tests whether the application can read the file 
+                  denoted by this abstract pathname.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file specified by this abstract pathname exists
+                  and can be read by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.canRead
+                  >>>false
+            ";;&
+         canWrite|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               canWrite
+                  Tests whether the application can write the file 
+                  denoted by this abstract pathname.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file specified by this abstract pathname exists
+                  and can be written by the application; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.canWrite
+                  >>>false
+               ";;&
+         clear|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               clear
+                  Deletes content of file.
+               Parameters:
+                  None
+               Returns:
+                  true if the clear operation was successful; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot write file
+               Example:
+                  File a /tmp/xxx
+                  a.clear
+                  >>>true
+            ";;&
+         compareTo|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               compareTo
+                  Compares two abstract pathnames lexicographically. 
+                  The ordering defined by this method depends upon the underlying system. 
+                  Alphabetic case is significant in comparing pathnames.
+               Parameters:
+                  f - a File object
+               Returns:
+                  Zero if the argument is equal to this abstract pathname, a value less 
+                  than zero if this abstract pathname is lexicographically less than the 
+                  argument, or a value greater than zero if this abstract pathname is 
+                  lexicographically greater than the argument
+               Throws:
+                  WrongClassException  - if argument has the wrong class
+                  IllegalArgumentException - argument is no object
+                                           - if number of arguments != 1
+               Example:
+                  File a abcd
+                  File b abcd
+                  a.compareTo b
+                  >>>0
+                  File b ab
+                  a.compareTo b
+                  >>>2
+                  File b abcde
+                  a.compareTo b
+                  >>>-1
+                  File b ""
+                  a.compareTo b
+                  >>>4
+                  File b x
+                  a.compareTo b
+                  >>>-23
+                  File b \"ab c\"
+                  a.compareTo b
+                  >>>67
+            ";;&
+         createNewFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "          
+               createNewFile  
+                  Creates a new, empty file named by this abstract pathname if and only if a file with 
+                  this name does not yet exist. 
+               Parameters:
+                  None
+               Returns:
+                  true if the named file does not exist and was successfully created; false if the 
+                  named file already exists
+               Throws:
+                  NotInPathException - if touch is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.createNewFile
+                  >>>true
+            ";;&
+         delete|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               delete
+                  Deletes the file or directory denoted by this abstract pathname. If this pathname 
+                  denotes a directory, then the directory must be empty in order to be deleted.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file or directory is successfully deleted; false otherwise
+               Throws:
+                  NotInPathException - if rm is not in path
+                  NotInPathException - if rmdir is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.delete
+                  >>>true
+            ";;&
+         deleteRecursively|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               deleteRecursively
+                  Deletes a file or directory and all contents recursively.
+                  If the file argument is a symbolic link the link will be deleted 
+                  but not the target of the link. If the argument is a directory, 
+                  symbolic links within the directory will not be followed. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file or directory is successfully recursively deleted; false otherwise
+               Throws:
+                  NotInPathException - if rm is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.deleteRecursively
+                  >>>true
+            ";;&
+         delLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               delLine
+                  Deletes line with given number in this file.
+                  Caution! This method can corrupt this file. 
+               Parameters:
+                  integer that represents line number
+               Returns:
+                  None
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+                              - if write permission is missing for this file
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  a.delLine 2
+                  a.getText
+                  >>>1
+                  >>>3                  
+            ";;&
+         equals|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               equals
+                  Tests this abstract pathname for equality with the given object. 
+                  Returns true if and only if the argument is an 
+                  abstract pathname that denotes the same file or directory as this 
+                  abstract pathname.
+               Parameters:
+                  anObject - The object to be compared with
+               Returns:
+                  true if and only if the objects are the same; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  File a yyy
+                  File b yyy
+                  File c xxx
+                  a.equals c
+                  >>>false
+                  a.equals b
+                  >>>true
+            ";;&
+         exists|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               exists
+                  Tests whether the file or directory denoted by this abstract pathname exists. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file or directory denoted by this abstract pathname 
+                  exists; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.exists
+                  >>>false
+            ";;&
+         getAbsolutePath|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               getAbsolutePath            
+                  Returns the absolute pathname string of this abstract pathname.
+                  If this abstract pathname is already absolute, then the pathname string is simply 
+                  returned as if by the getPath() method. If this abstract pathname is the empty 
+                  abstract pathname then the pathname string of the current user directory is returned. 
+                  Otherwise this pathname is resolved in a system-dependent way. On UNIX systems, a 
+                  relative pathname is made absolute by resolving it against the current user directory.
+               Parameters:
+                  None
+               Returns:
+                  The absolute pathname string denoting the same file or directory as this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.getAbsolutePath
+                  >>>/tmp/abc
+            ";;&
+         getBase|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getBase
+                  Returns the basename and path of this file, without extension suffix 
+                  and without the splitting \".\" character.
+               Parameters:
+                  None
+               Returns:
+                  Returns the baename of this file
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x docs/Readme.txt
+                  x.getBase
+                  >>>docs/Readme
+            ";;&
+         getCanonicalPath|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               getCanonicalPath
+                  Returns the canonical pathname string of this abstract pathname.
+
+                  A canonical pathname is both absolute and unique. This method first converts this pathname to absolute 
+                  form if necessary, as if by invoking the getAbsolutePath() method, and then maps it to its unique form 
+                  in a system-dependent way. This typically involves removing redundant names such as "." and ".." from 
+                  the pathname, resolving symbolic links on UNIX platforms.
+
+                  Every pathname that denotes an existing file or directory has a unique canonical form. Every pathname 
+                  that denotes a nonexistent file or directory also has a unique canonical form. The canonical form of 
+                  the pathname of a nonexistent file or directory may be different from the canonical form of the same 
+                  pathname after the file or directory is created. Similarly, the canonical form of the pathname of an 
+                  existing file or directory may be different from the canonical form of the same pathname after the file 
+                  or directory is deleted.
+               Parameters:
+                  None
+               Returns:
+                  The canonical pathname string denoting the same file or directory as this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if pwd is not in path
+                                     - if readlink is not in path
+               Example:
+                  File a /xxx/s
+                  a.getCanonicalPath
+                  >>>/xxx/s              
+            ";;&
+         getClass|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getClass
+                  Returns the runtime class of this Object.
+               Parameters:
+                 None
+               Returns:
+                  The Class object that represents the runtime class of this object.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a xxx
+                  a.getClass
+                  >>>class File
+            ";;&
+         getExtension|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getExtension
+                  Returns the extension suffix of this file.
+               Parameters:
+                  None
+               Returns:
+                  Returns suffix
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x docs/Readme.txt
+                  x.getExtension
+                  >>>txt
+            ";;&
+         getFreeSpace|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getFreeSpace
+                  Returns the number of unallocated bytes in the partition named by this 
+                  abstract path name.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
+               Parameters:
+                  None
+               Returns:
+                  The number of unallocated bytes on the partition 0 if the abstract pathname 
+                  does not name a partition. This value will be less than or equal to the total 
+                  file system size returned by getTotalSpace.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if GNU stat is not in path
+               Example:
+                  File x /etc/passwd
+                  x.getFreeSpace
+                  >>>41473142784
+                  File x /iDoNotExist
+                  x.getFreeSpace
+                  >>>0
+            ";;&
+         getGroup|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getGroup
+                  Returns the group of the owner of this file.
+               Parameters:
+                  None 
+               Returns:
+                  Name of group
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/oratab
+                  x.getGroup
+                  >>>dba
+            ";;&
+         getInode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getInode
+                  Returns the inode number.
+                  getInode does not follow links.
+               Parameters:
+                  None
+               Returns:
+                  Returns the inode number
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat is not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/passwd
+                  x.getInode
+                  >>>2499132
+            ";;&
+         getLine|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getLine
+                  Gets line with given number from this file. 
+               Parameters:
+                  integer that represents line number
+               Returns:
+                  string
+                Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 1
+                  IndexOutOfBoundsException - if line index is out of range
+                  IOException - if this file is not a regular file
+               Example:
+                  File a /tmp/iExist
+                  a.getText
+                  >>>1
+                  >>>2
+                  >>>3
+                  a.getLine 2
+                  >>>2
+            ";;&
+         getName|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getName
+                  This is just the last name in the pathname's name sequence.
+               Parameters:
+                  None
+               Returns:
+                  The name of the file or directory denoted by this abstract
+                  pathname. This is just the last name in the pathname's name
+                  sequence. If the pathname's name sequence is empty, then the
+                  empty string is returned.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.getName
+                  >>>abc
+               ";;&
+         getOwner|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getOwner
+                  Returns the name of the owner of this file.
+               Parameters:
+                  None 
+               Returns:
+                  Name of owner
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/oratab
+                  x.getOwner
+                  >>>oracle
+            ";;&
+         getParent|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getParent
+                  Returns the pathname string of this abstract pathname's parent, 
+                  or "." if this pathname does not name a parent directory.
+                  The parent of an abstract pathname consists of the pathname's prefix, 
+                  if any, and each name in the pathname's name sequence except for the last. 
+                  If the name sequence is empty then the pathname does not name a parent directory.
+               Parameters:
+                  None
+               Returns:
+                  The pathname string of the parent directory named by this abstract pathname, 
+                  or "." if this pathname does not name a parent
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File x dfve
+                  x.getParent
+                  >>>.
+                  File x /tmp/ee/ergr
+                  x.getParent
+                  >>>/tmp/ee
+            ";;&
+         getPath|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "          
+               getPath
+                  Converts this abstract pathname into a pathname string. 
+               Parameters:
+                  None
+               Returns:
+                  The string form of this abstract pathname
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.getPath
+                  >>>/tmp/abc
+            ";;&
+         getPosixFilePermissions|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getPosixFilePermissions
+                  Returns primitive string of permission attributes.
+                  By default, symbolic links are followed and the file attribute
+                  of the final target of the link is read.
+               Parameters:
+                  None
+               Returns:
+                  Returns primitive string of permission attributes
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat is not in path
+                  IOException - if file does not exist
+               Example:
+                  File x /etc/passwd
+                  x.getPosixFilePermissions
+                  >>>-rw-r--r--
+            ";;&
+         getText|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getText
+                  Returns string that is the content of file.successful.
+               Parameters:
+                  None
+               Returns:
+                  Content of file as string
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File b /etc/passwd
+                  b.getText | head -2
+                  >>>root:x:0:0:root:/root:/bin/bash
+                  >>>bin:x:1:1:bin:/bin:/sbin/nologin
+            ";;&
+         getTotalSpace|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getTotalSpace
+                  Returns the size of the partition named by this abstract pathname.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
+               Parameters:
+                  None
+               Returns:
+                  The size, in bytes, of the partition or 0 if this abstract pathname
+                  does not name a partition
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if GNU stat is not in path
+               Example:
+                  File x /etc/passwd
+                  x.getTotalSpace
+                  >>>52844687360
+                  File x /iDoNotExist
+                  x.getTotalSpace
+                  >>>0
+            ";;&
+         getUsableSpace|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getUsableSpace
+                  Returns the number of bytes available to this virtual machine on the partition 
+                  named by this abstract pathname. When possible, this method checks for write 
+                  permissions and other operating system restrictions and will therefore usually 
+                  provide a more accurate estimate of how much new data can actually be written 
+                  than getFreeSpace.
+                  The returned number of available bytes is a hint, but not a guarantee, that it 
+                  is possible to use most or any of these bytes. 
+               Parameters:
+                  None
+               Returns:
+                  The number of available bytes on the partition or 0 if the abstract pathname 
+                  does not name a partition. On systems where this information is not available, 
+                  this method will be equivalent to a call to getFreeSpace.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if GNU stat is not in path
+               Example:
+                  File x /etc/passwd
+                  x.getUsableSpace
+                  >>>38788788224
+                  File x /iDoNotExist
+                  x.getUsableSpace
+                  >>>0
             ";;&
          hasGidBit|all)
             match=$(Boolean.TRUE)
@@ -2567,62 +3236,60 @@ File.help() {
                   a.hasGidBit
                   >>>false
             ";;&
-         isOlderThan|all)
+         hashCode|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               isOlderThan
-                  Tests whether the file denoted by this abstract pathname is older (modification date)
-                  than the given one.
-               Parameters:
-                  aFileObject - The File object to be compared with
-               Returns:
-                  true if and only if the file denoted by this abstract pathname is older; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                                           -if argument is no File object
-                                           -if argument is no object
-               Example:
-                  File a /XXX
-                  a.isOlderThan b
-                  >>>false 
-            ";;&
-         isNewerThan|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isNewerThan
-                  Tests whether the file denoted by this abstract pathname is newer (modification date)
-                  than the given one.            
-               Parameters:
-                  aFileObject - The File object to be compared with
-               Returns:
-                  true if and only if the file denoted by this abstract pathname is newer; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                                           -if argument is no File object
-                                           -if argument is no object
-               Example:
-                  File a /XXX
-                  a.isNewerThan b
-                  >>>true
-            ";;&
-         touch|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               touch
-                  Creates an empty file or updates the last updated timestamp on 
-                  the same as the unix command of the same name.
+               hashCode
+                  Computes a hash code for this abstract pathname. Because 
+                  equality of abstract pathnames is inherently system-dependent, 
+                  so is the computation of their hash codes. On UNIX systems, the 
+                  hash code of an abstract pathname is equal to the exclusive or of 
+                  the hash code of its pathname string and the decimal value 1234321.
                Parameters:
                   None 
                Returns:
-                  true if and only if the touch is successful; false otherwise
+                  A hash code for this abstract pathname
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if touch is not in path
                Example:
-                  File x /tmp/xxx
-                  x.touch
-                  >>>true
-            ";;& 
+                  File a /tmp/abc
+                  a.hashCode
+                  >>>-889608758
+            ";;&
+         hasStickyBit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hasStickyBit
+                  Tests whether the stick bit is set on the file denoted by this abstract pathname. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the stick bit is set on the file denoted by this abstract pathname; 
+                  false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.hasStickyBit
+                  >>>false 
+            ";;&
+         hasUidBit|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hasUidBit
+                  Tests if the setuid (short for \"set user ID upon execution\") bit is active (\"1\")
+                  for this file.
+               Parameters:
+                  None
+               Returns:
+                  true if setuid bit is \"1\"; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/iExist
+                  a.hasUidBit
+                  >>>false
+            ";;&
          indexOfExtension|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -2658,42 +3325,6 @@ File.help() {
                   File x /123/56
                   x.indexOfLastSeparator
                   >>>4
-            ";;&
-         getGroup|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getGroup
-                  Returns the group of the owner of this file.
-               Parameters:
-                  None 
-               Returns:
-                  Name of group
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if stat not in path
-                  IOException - if file does not exist
-               Example:
-                  File x /etc/oratab
-                  x.getGroup
-                  >>>dba
-            ";;&
-         getOwner|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getOwner
-                  Returns the name of the owner of this file.
-               Parameters:
-                  None 
-               Returns:
-                  Name of owner
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if stat not in path
-                  IOException - if file does not exist
-               Example:
-                  File x /etc/oratab
-                  x.getOwner
-                  >>>oracle
             ";;&
          insertAfterLine|all)
             match=$(Boolean.TRUE)
@@ -2761,6 +3392,355 @@ File.help() {
                   >>>2
                   >>>3
             ";;&
+         isAbsolute|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               isAbsolute
+                  Tests whether this abstract pathname is absolute. The definition of absolute 
+                  pathname is system dependent. On UNIX systems, a pathname is absolute if its prefix is "/".
+               Parameters:
+                  None
+               Returns:
+                  true if this abstract pathname is absolute, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.isAbsolute
+                  >>>true
+            ";;&
+         isBlockSpecial|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isBlockSpecial
+                  Tests whether the file denoted by this abstract pathname is a block special. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a block special; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isBlockSpecial
+                  >>>false 
+            ";;&
+         isCharacterSpecial|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isCharacterSpecial
+                  Tests whether the file denoted by this abstract pathname is a character 
+                  special. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a character special; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isCharacterSpecial
+                  >>>false 
+            ";;&
+         isDirectory|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isDirectory
+                  Tests whether the file denoted by this abstract pathname is a directory. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a directory; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX/yyy
+                  a.isDirectory
+                  >>>false
+            ";;&
+         isFile|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isFile
+                  Tests whether the file denoted by this abstract pathname is a normal file. 
+                  A file is normal if it is not a directory and, in addition, satisfies other 
+                  system-dependent criteria.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a normal file; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isFile
+                  >>>false 
+            ";;&
+         isHidden|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isHidden
+                  Tests whether the file named by this abstract pathname is a hidden file. 
+                  The exact definition of hidden is system-dependent. On UNIX systems, a file 
+                  is considered to be hidden if its name begins with a period character ('.').
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname is hidden 
+                  according to the conventions of the underlying platform.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.isHidden
+                  >>>false
+                  File a /tmp/.abc
+                  >>>true
+            ";;&
+         isNamedPipe|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isNamedPipe
+                  Tests whether the file denoted by this abstract pathname is a named pipe. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a named pipe; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isNamedPipe
+                  >>>false 
+            ";;&
+         isNewerThan|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isNewerThan
+                  Tests whether the file denoted by this abstract pathname is newer (modification date)
+                  than the given one.            
+               Parameters:
+                  aFileObject - The File object to be compared with
+               Returns:
+                  true if and only if the file denoted by this abstract pathname is newer; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                                           -if argument is no File object
+                                           -if argument is no object
+               Example:
+                  File a /XXX
+                  a.isNewerThan b
+                  >>>true
+            ";;&
+         isOlderThan|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isOlderThan
+                  Tests whether the file denoted by this abstract pathname is older (modification date)
+                  than the given one.
+               Parameters:
+                  aFileObject - The File object to be compared with
+               Returns:
+                  true if and only if the file denoted by this abstract pathname is older; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                                           -if argument is no File object
+                                           -if argument is no object
+               Example:
+                  File a /XXX
+                  a.isOlderThan b
+                  >>>false 
+            ";;&
+         isSocket|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isSocket
+                  Tests whether the file denoted by this abstract pathname is a socket. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a socket; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isSocket
+                  >>>false 
+            ";;&
+         isSymbolicLink|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               isSymbolicLink
+                  Tests whether the file denoted by this abstract pathname is a symbolic link. 
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the file denoted by this abstract pathname exists and 
+                  is a symbolic link; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /XXX
+                  a.isSymbolicLink
+                  >>>false 
+            ";;&
+         lastAccessed|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               lastAccessed
+                  Returns the time that the file denoted by this abstract pathname was last accessed.
+               Parameters:
+                  None
+               Returns:
+                  A long value representing the time the file was last accessed, measured in milliseconds
+                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
+                  an I/O error occurs
+               Throws:
+                  NotInPathException - if stat is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.lastAccessed
+                  >>>1297000
+            ";;&
+         lastChanged|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               lastChanged
+                  Returns the time that the file denoted by this abstract pathname was last cahnged.
+               Parameters:
+                  None
+               Returns:
+                  A long value representing the time the file was last changed, measured in milliseconds
+                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
+                  an I/O error occurs
+               Throws:
+                  NotInPathException - if stat is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.lastChanged
+                  >>>1297000
+            ";;&
+         lastModified|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               lastModified
+                  Returns the time that the file denoted by this abstract pathname was last modified.
+               Parameters:
+                  None
+               Returns:
+                  A long value representing the time the file was last modified, measured in milliseconds 
+                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if 
+                  an I/O error occurs
+               Throws:
+                  NotInPathException - if stat is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/abc
+                  a.lastModified
+                  >>>1297000
+            ";;&
+         linecount|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               linecount
+                  Counts the number of lines in file.
+               Parameters:
+                  None
+               Returns:
+                  Number of lines in file
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.linecount
+                  >>>40
+            ";;&
+         linematch|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               linematch
+                  Looks for matching lines.
+               Parameters:
+                  regex - the regular expression to which every line of file is to be matched
+               Returns:
+                  All matching lines.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+               Example:
+                  File x /etc/passwd
+                  x.linematch \"^root.*$\"
+                  >>>root:x:0:0:root:/root:/bin/bash
+            ";;&
+         md5sum|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               md5sum
+                  Print MD5 (128-bit) checksum
+               Parameters:
+                  None
+               Returns:
+                  md5sum checksum.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if object does not represent a regular file
+                              - if cannot read file
+                  NotInPathException - if openssl is not in path
+               Example:
+                  File x /etc/passwd
+                  x.md5sum
+                  >>>02ee96097be33fdba99700e68a8c0365
+            ";;&
+         mkdir|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               mkdir
+                  Creates the directory named by this abstract pathname.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the directory was created; false otherwise
+               Throws:
+                  NotInPathException - if mkdir is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/a/b/c
+                  a.mkdir
+                  >>>false
+                  File a /tmp/a
+                  a.mkdir
+                  >>>true
+            ";;&
+         mkdirs|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               mkdirs
+                  Creates the directory named by this abstract pathname, including 
+                  any necessary but nonexistent parent directories.
+               Parameters:
+                  None
+               Returns:
+                  true if and only if the directory was created, along with all 
+                  necessary parent directories; false otherwise
+               Throws:
+                  NotInPathException - if mkdir is not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  File a /tmp/a/b/c
+                  a.mkdirs
+                  >>>true
+            ";;&
          replaceLine|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -2793,276 +3773,185 @@ File.help() {
                   >>>i want to be line 2
                   >>>3
             ";;&
-         getLine|all)
+         setExecutable|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getLine
-                  Gets line with given number from this file. 
+            System.${printStream}.println " 
+               setExecutable
+                  Sets the owner's or everybody's execute permission for this abstract pathname.
                Parameters:
-                  integer that represents line number
+                  executable - If true, sets the access permission to allow execute operations; if false to disallow 
+                  execute operations
+                  [ownerOnly - If true, the execute permission applies only to the owner's execute permission; 
+                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
+                  execute permission from that of others, then the permission will apply to everybody, 
+                  regardless of this value.
+                  Default: true]                
                Returns:
-                  string
-                Throws:
-                  IllegalArgumentException - if the parameter cannot be treated as a number
-                                           - if number of arguments != 1
-                  IndexOutOfBoundsException - if line index is out of range
-                  IOException - if this file is not a regular file
+                  true if and only if the operation succeeded. The operation will fail if the user does not have 
+                  permission to change the access permissions of this abstract pathname. If executable is false 
+                  and the underlying file system does not implement an execute permission, then the operation will fail.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
                Example:
                   File a /tmp/iExist
-                  a.getText
-                  >>>1
-                  >>>2
-                  >>>3
-                  a.getLine 2
-                  >>>2
+                  a.setExecutable true
+                  >>>true
+                  a.setExecutable true false
+                  >>>true               
             ";;&
-         delLine|all)
+         setgid|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               delLine
-                  Deletes line with given number in this file.
-                  Caution! This method can corrupt this file. 
-               Parameters:
-                  integer that represents line number
-               Returns:
-                  None
-               Throws:
-                  IllegalArgumentException - if the parameter cannot be treated as a number
-                                           - if number of arguments != 1
-                  IndexOutOfBoundsException - if line index is out of range
-                  IOException - if this file is not a regular file
-                              - if write permission is missing for this file
-               Example:
-                  File a /tmp/iExist
-                  a.getText
-                  >>>1
-                  >>>2
-                  >>>3
-                  a.delLine 2
-                  a.getText
-                  >>>1
-                  >>>3                  
-            ";;&
-         getBase|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getBase
-                  Returns the basename and path of this file, without extension suffix 
-                  and without the splitting \".\" character.
+               setgid
+                  Sets the setgid (short for \"set group ID upon execution\") bit for this file
+                  to \"1\", if possible.
                Parameters:
                   None
                Returns:
-                  Returns the baename of this file
+                  true if the setgid operation was successful, false otherwise
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File x docs/Readme.txt
-                  x.getBase
-                  >>>docs/Readme
-            ";;&
-         getExtension|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getExtension
-                  Returns the extension suffix of this file.
-               Parameters:
-                  None
-               Returns:
-                  Returns suffix
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File x docs/Readme.txt
-                  x.getExtension
-                  >>>txt
-            ";;&
-         getInode|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getInode
-                  Returns the inode number.
-                  getInode does not follow links.
-               Parameters:
-                  None
-               Returns:
-                  Returns the inode number
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if file does not exist
                   NotInPathException - if stat is not in path
+                                     - if chmod is not in path
+               Example:
+                  File a /tmp/iExist
+                  a.setgid
+                  >>>true
+            ";;&
+         setLastAccessed|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setLastAccessed
+                  Sets the last-accessed time of the file or directory named by this abstract pathname.
+                  All platforms support file-access times to the nearest second, but some provide
+                  more precision. The argument will be truncated to fit the supported precision. If the
+                  operation succeeds and no intervening operations on the file take place, then the next
+                  invocation of the lastAccessed method will return the (possibly truncated) time
+                  argument that was passed to this method.
+               Parameters:
+                  time - The new last-accessed time, measured in milliseconds since the
+                  epoch (00:00:00 GMT, January 1, 1970)
+               Returns:
+                  true if and only if the operation succeeded; false otherwise
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 3
+                  NotInPathException - if date is not in path
+                                     - if touch is not in path
+               Example:
+                  File a /tmp/abc
+                  a.setLastAccessed 1297632
+                  >>>true
+                  a.lastAccessed
+                  >>>1297000
+            ";;&
+         setLastModified|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "         
+               setLastModified
+                  Sets the last-modified time of the file or directory named by this abstract pathname.
+                  All platforms support file-modification times to the nearest second, but some provide 
+                  more precision. The argument will be truncated to fit the supported precision. If the 
+                  operation succeeds and no intervening operations on the file take place, then the next 
+                  invocation of the lastModified() method will return the (possibly truncated) time 
+                  argument that was passed to this method.
+               Parameters:
+                  time - The new last-modified time, measured in milliseconds since the 
+                  epoch (00:00:00 GMT, January 1, 1970)
+               Returns:
+                  true if and only if the operation succeeded; false otherwise
+               Throws:
+                  IllegalArgumentException - if the parameter cannot be treated as a number
+                                           - if number of arguments != 3
+                  NotInPathException - if date is not in path
+                                     - if touch is not in path
+               Example:
+                  File a /tmp/abc
+                  a.setLastModified 1297632
+                  >>>true
+                  a.lastModified
+                  >>>1297000
+            ";;&
+         setPosixFilePermissions|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               setPosixFilePermissions
+                  Sets a file's POSIX permissions.
+               Parameters:
+                  attrs - A list of file attributes to set
+               Returns:
+                  Returns true, if the permissions are set successfully, false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+                                           - if attrs is given, but is no posixFilePermission 
+                  NotInPathException - if chmod is not in path
                   IOException - if file does not exist
                Example:
                   File x /etc/passwd
-                  x.getInode
-                  >>>2499132
+                  x.setPosixFilePermissions \"-rw-r--r--\"
+                  >>>false
             ";;&
-         getTotalSpace|all)
+         setReadable|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getTotalSpace
-                  Returns the size of the partition named by this abstract pathname.
-                  The returned number of available bytes is a hint, but not a guarantee, that it 
-                  is possible to use most or any of these bytes. 
+            System.${printStream}.println " 
+               setReadable
+                  Sets the owner's or everybody's read permission for this abstract pathname.
+               Parameters:
+                  readable - If true, sets the access permission to allow read operations; 
+                  if false to disallow read operations
+                  [ownerOnly - If true, the read permission applies only to the owner's read permission; 
+                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
+                  read permission from that of others, then the permission will apply to everybody, regardless of this value.
+                  Default: true]               
+               Returns:
+                  true if and only if the operation succeeded. The operation will fail if the user does not have permission
+                  to change the access permissions of this abstract pathname. If readable is false and the underlying file 
+                  system does not implement a read permission, then the operation will fail.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
+               Example:
+                  File a /tmp/iExist
+                  a.setReadable true
+                  >>>true
+                  a.setReadable true false
+                  >>>true               
+            ";;&
+         setReadOnly|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               setReadOnly
+                  Marks the file or directory named by this abstract pathname so that only read operations are allowed. 
                Parameters:
                   None
                Returns:
-                  The size, in bytes, of the partition or 0 if this abstract pathname
-                  does not name a partition
+                  true if and only if the operation succeeded; false otherwise
                Throws:
+                  NotInPathException - if chmod is not in path
                   IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if GNU stat is not in path
                Example:
-                  File x /etc/passwd
-                  x.getTotalSpace
-                  >>>52844687360
-                  File x /iDoNotExist
-                  x.getTotalSpace
-                  >>>0
+                  File a /tmp/iExist
+                  a.setReadOnly
+                  >>>true           
             ";;&
-         getFreeSpace|all)
+         setStickyBit|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               getFreeSpace
-                  Returns the number of unallocated bytes in the partition named by this 
-                  abstract path name.
-                  The returned number of available bytes is a hint, but not a guarantee, that it 
-                  is possible to use most or any of these bytes. 
+               setStickyBit
+                  Sets the sticky bit for this file to \"1\", if possible.
                Parameters:
                   None
                Returns:
-                  The number of unallocated bytes on the partition 0 if the abstract pathname 
-                  does not name a partition. This value will be less than or equal to the total 
-                  file system size returned by getTotalSpace.
+                  true if the setStickyBit operation was successful, false otherwise
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if GNU stat is not in path
+                  IOException - if file does not exist
+                  NotInPathException - if stat is not in path
+                                     - if chmod is not in path
                Example:
-                  File x /etc/passwd
-                  x.getFreeSpace
-                  >>>41473142784
-                  File x /iDoNotExist
-                  x.getFreeSpace
-                  >>>0
-            ";;&
-         getUsableSpace|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getUsableSpace
-                  Returns the number of bytes available to this virtual machine on the partition 
-                  named by this abstract pathname. When possible, this method checks for write 
-                  permissions and other operating system restrictions and will therefore usually 
-                  provide a more accurate estimate of how much new data can actually be written 
-                  than getFreeSpace.
-                  The returned number of available bytes is a hint, but not a guarantee, that it 
-                  is possible to use most or any of these bytes. 
-               Parameters:
-                  None
-               Returns:
-                  The number of available bytes on the partition or 0 if the abstract pathname 
-                  does not name a partition. On systems where this information is not available, 
-                  this method will be equivalent to a call to getFreeSpace.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if GNU stat is not in path
-               Example:
-                  File x /etc/passwd
-                  x.getUsableSpace
-                  >>>38788788224
-                  File x /iDoNotExist
-                  x.getUsableSpace
-                  >>>0
-            ";;&
-         md5sum|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               md5sum
-                  Print MD5 (128-bit) checksum
-               Parameters:
-                  None
-               Returns:
-                  md5sum checksum.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  IOException - if object does not represent a regular file
-                              - if cannot read file
-                  NotInPathException - if openssl is not in path
-               Example:
-                  File x /etc/passwd
-                  x.md5sum
-                  >>>02ee96097be33fdba99700e68a8c0365
-            ";;&
-         sha1sum|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               sha1sum
-                  Print SHA1 (160-bit) checksum.
-               Parameters:
-                  None
-               Returns:
-                  sha1sum checksum.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  IOException - if object does not represent a regular file
-                              - if cannot read file
-                  NotInPathException - if openssl is not in path
-               Example:
-                  File x /etc/passwd
-                  x.sha1sum
-                  >>>848a8bd73c5d0a95a8bd860402e45c4a62046f10
-            ";;&
-         linematch|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               linematch
-                  Looks for matching lines.
-               Parameters:
-                  regex - the regular expression to which every line of file is to be matched
-               Returns:
-                  All matching lines.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1
-                  IOException - if object does not represent a regular file
-                              - if cannot read file
-               Example:
-                  File x /etc/passwd
-                  x.linematch \"^root.*$\"
-                  >>>root:x:0:0:root:/root:/bin/bash
-            ";;&
-         linecount|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               linecount
-                  Counts the number of lines in file.
-               Parameters:
-                  None
-               Returns:
-                  Number of lines in file
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  IOException - if object does not represent a regular file
-                              - if cannot read file
-               Example:
-                  File x /etc/passwd
-                  x.linecount
-                  >>>40
-            ";;&
-         getText|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getText
-                  Returns string that is the content of file.successful.
-               Parameters:
-                  None
-               Returns:
-                  Content of file as string
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  IOException - if object does not represent a regular file
-                              - if cannot read file
-               Example:
-                  File b /etc/passwd
-                  b.getText | head -2
-                  >>>root:x:0:0:root:/root:/bin/bash
-                  >>>bin:x:1:1:bin:/bin:/sbin/nologin
+                  File a /tmp/iExist
+                  a.setStickyBit
+                  >>>true
             ";;&
          setText|all)
             match=$(Boolean.TRUE)
@@ -3086,211 +3975,70 @@ File.help() {
                   a.setText x
                   >>>true
             ";;&
-         append|all)
+         setuid|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               append
-                  Appends string to content of file.
+               setuid
+                  Sets the setuid (short for \"set user ID upon execution\") bit for this file
+                  to \"1\", if possible.
                Parameters:
-                  String object
+                  None
                Returns:
-                  true if the append operation was successful; false otherwise
+                  true if the setuid operation was successful, false otherwise
                Throws:
-                  WrongClassException  - if argument has the wrong class
-                  IllegalArgumentException - argument is no object
-                                           - if number of arguments != 1
-                  IOException - if object does not represent a regular file
-                              - if cannot write file
+                  IllegalArgumentException - if number of arguments != 0
+                  IOException - if file does not exist
+                  NotInPathException - if stat is not in path
+                                     - if chmod is not in path
                Example:
                   File a /tmp/iExist
-                  String x \"Hello, i am a last line\"
-                  a.append x
+                  a.setuid
                   >>>true
             ";;&
-         clear|all)
+         setWritable|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println " 
+               setWritable
+                  Sets the owner's or everybody's write permission for this abstract pathname.
+               Parameters:
+                  writable - If true, sets the access permission to allow write operations; 
+                  if false to disallow write operations
+                  [ownerOnly - If true, the write permission applies only to the owner's write permission; 
+                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
+                  write permission from that of others, then the permission will apply to everybody, regardless 
+                  of this value.
+                  Default: true]
+               Returns:
+                  true if and only if the operation succeeded. The operation will fail if the user does not have 
+                  permission to change the access permissions of this abstract pathname.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1 AND !=2
+               Example:
+                  File a /tmp/iExist
+                  a.setWritable true
+                  >>>true
+                  a.setWritable true false
+                  >>>true               
+            ";;&
+         sha1sum|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               clear
-                  Deletes content of file.
+               sha1sum
+                  Print SHA1 (160-bit) checksum.
                Parameters:
                   None
                Returns:
-                  true if the clear operation was successful; false otherwise
+                  sha1sum checksum.
                Throws:
-                  IllegalArgumentException - if number of arguments != 1
+                  IllegalArgumentException - if number of arguments != 0
                   IOException - if object does not represent a regular file
-                              - if cannot write file
+                              - if cannot read file
+                  NotInPathException - if openssl is not in path
                Example:
-                  File a /tmp/xxx
-                  a.clear
-                  >>>true
+                  File x /etc/passwd
+                  x.sha1sum
+                  >>>848a8bd73c5d0a95a8bd860402e45c4a62046f10
             ";;&
-         compareTo|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               compareTo
-                  Compares two abstract pathnames lexicographically. 
-                  The ordering defined by this method depends upon the underlying system. 
-                  Alphabetic case is significant in comparing pathnames.
-               Parameters:
-                  f - a File object
-               Returns:
-                  Zero if the argument is equal to this abstract pathname, a value less 
-                  than zero if this abstract pathname is lexicographically less than the 
-                  argument, or a value greater than zero if this abstract pathname is 
-                  lexicographically greater than the argument
-               Throws:
-                  WrongClassException  - if argument has the wrong class
-                  IllegalArgumentException - argument is no object
-                                           - if number of arguments != 1
-               Example:
-                  File a abcd
-                  File b abcd
-                  a.compareTo b
-                  >>>0
-                  File b ab
-                  a.compareTo b
-                  >>>2
-                  File b abcde
-                  a.compareTo b
-                  >>>-1
-                  File b ""
-                  a.compareTo b
-                  >>>4
-                  File b x
-                  a.compareTo b
-                  >>>-23
-                  File b \"ab c\"
-                  a.compareTo b
-                  >>>67
-            ";;&
-         exists|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               exists
-                  Tests whether the file or directory denoted by this abstract pathname exists. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file or directory denoted by this abstract pathname 
-                  exists; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX/yyy
-                  a.exists
-                  >>>false
-            ";;&
-         equals|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               equals
-                  Tests this abstract pathname for equality with the given object. 
-                  Returns true if and only if the argument is an 
-                  abstract pathname that denotes the same file or directory as this 
-                  abstract pathname.
-               Parameters:
-                  anObject - The object to be compared with
-               Returns:
-                  true if and only if the objects are the same; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1
-               Example:
-                  File a yyy
-                  File b yyy
-                  File c xxx
-                  a.equals c
-                  >>>false
-                  a.equals b
-                  >>>true
-            ";;&
-         getClass|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getClass
-                  Returns the runtime class of this Object.
-               Parameters:
-                 None
-               Returns:
-                  The Class object that represents the runtime class of this object.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a xxx
-                  a.getClass
-                  >>>class File
-            ";;& 
-         isDirectory|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isDirectory
-                  Tests whether the file denoted by this abstract pathname is a directory. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname exists and 
-                  is a directory; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX/yyy
-                  a.isDirectory
-                  >>>false
-            ";;&
-         canRead|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               canRead
-                  Tests whether the application can read the file 
-                  denoted by this abstract pathname.
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file specified by this abstract pathname exists
-                  and can be read by the application; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX/yyy
-                  a.canRead
-                  >>>false
-            ";;&
-         canExecute|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               canExecute
-                  Tests whether the application can execute the file 
-                  denoted by this abstract pathname.
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file specified by this abstract pathname exists
-                  and can be executed by the application; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX/yyy
-                  a.canExecute
-                  >>>false
-            ";;&
-         canWrite|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               canWrite
-                  Tests whether the application can write the file 
-                  denoted by this abstract pathname.
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file specified by this abstract pathname exists
-                  and can be written by the application; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX/yyy
-                  a.canWrite
-                  >>>false
-               ";;&
          size|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -3327,772 +4075,24 @@ File.help() {
                   a.toString
                   >>>/tmp/abc
                ";;&
-         hashCode|all)
+         touch|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               hashCode
-                  Computes a hash code for this abstract pathname. Because 
-                  equality of abstract pathnames is inherently system-dependent, 
-                  so is the computation of their hash codes. On UNIX systems, the 
-                  hash code of an abstract pathname is equal to the exclusive or of 
-                  the hash code of its pathname string and the decimal value 1234321.
+               touch
+                  Creates an empty file or updates the last updated timestamp on 
+                  the same as the unix command of the same name.
                Parameters:
                   None 
                Returns:
-                  A hash code for this abstract pathname
+                  true if and only if the touch is successful; false otherwise
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.hashCode
-                  >>>-889608758
-            ";;&
-         getParent|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getParent
-                  Returns the pathname string of this abstract pathname's parent, 
-                  or "." if this pathname does not name a parent directory.
-                  The parent of an abstract pathname consists of the pathname's prefix, 
-                  if any, and each name in the pathname's name sequence except for the last. 
-                  If the name sequence is empty then the pathname does not name a parent directory.
-               Parameters:
-                  None
-               Returns:
-                  The pathname string of the parent directory named by this abstract pathname, 
-                  or "." if this pathname does not name a parent
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File x dfve
-                  x.getParent
-                  >>>.
-                  File x /tmp/ee/ergr
-                  x.getParent
-                  >>>/tmp/ee
-            ";;&
-         mkdirs|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               mkdirs
-                  Creates the directory named by this abstract pathname, including 
-                  any necessary but nonexistent parent directories.
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the directory was created, along with all 
-                  necessary parent directories; false otherwise
-               Throws:
-                  NotInPathException - if mkdir is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/a/b/c
-                  a.mkdirs
-                  >>>true
-            ";;&
-         mkdir|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               mkdir
-                  Creates the directory named by this abstract pathname.
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the directory was created; false otherwise
-               Throws:
-                  NotInPathException - if mkdir is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/a/b/c
-                  a.mkdir
-                  >>>false
-                  File a /tmp/a
-                  a.mkdir
-                  >>>true
-            ";;&
-         isHidden|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isHidden
-                  Tests whether the file named by this abstract pathname is a hidden file. 
-                  The exact definition of hidden is system-dependent. On UNIX systems, a file 
-                  is considered to be hidden if its name begins with a period character ('.').
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname is hidden 
-                  according to the conventions of the underlying platform.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.isHidden
-                  >>>false
-                  File a /tmp/.abc
-                  >>>true
-            ";;&
-         isFile|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isFile
-                  Tests whether the file denoted by this abstract pathname is a normal file. 
-                  A file is normal if it is not a directory and, in addition, satisfies other 
-                  system-dependent criteria.
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname exists and 
-                  is a normal file; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX
-                  a.isFile
-                  >>>false 
-            ";;&
-         isSymbolicLink|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isSymbolicLink
-                  Tests whether the file denoted by this abstract pathname is a symbolic link. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname exists and 
-                  is a symbolic link; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX
-                  a.isSymbolicLink
-                  >>>false 
-            ";;&
-         isNamedPipe|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isNamedPipe
-                  Tests whether the file denoted by this abstract pathname is a named pipe. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname exists and 
-                  is a named pipe; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX
-                  a.isNamedPipe
-                  >>>false 
-            ";;&
-         hasStickyBit|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               hasStickyBit
-                  Tests whether the stick bit is set on the file denoted by this abstract pathname. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the stick bit is set on the file denoted by this abstract pathname; 
-                  false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX
-                  a.hasStickyBit
-                  >>>false 
-            ";;&
-         isSocket|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isSocket
-                  Tests whether the file denoted by this abstract pathname is a socket. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname exists and 
-                  is a socket; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX
-                  a.isSocket
-                  >>>false 
-            ";;&
-         isCharacterSpecial|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isCharacterSpecial
-                  Tests whether the file denoted by this abstract pathname is a character 
-                  special. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname exists and 
-                  is a character special; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX
-                  a.isCharacterSpecial
-                  >>>false 
-            ";;&
-         isBlockSpecial|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               isBlockSpecial
-                  Tests whether the file denoted by this abstract pathname is a block special. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file denoted by this abstract pathname exists and 
-                  is a block special; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /XXX
-                  a.isBlockSpecial
-                  >>>false 
-            ";;&
-         setWritable|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println " 
-               setWritable
-                  Sets the owner's or everybody's write permission for this abstract pathname.
-               Parameters:
-                  writable - If true, sets the access permission to allow write operations; 
-                  if false to disallow write operations
-                  [ownerOnly - If true, the write permission applies only to the owner's write permission; 
-                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
-                  write permission from that of others, then the permission will apply to everybody, regardless 
-                  of this value.
-                  Default: true]
-               Returns:
-                  true if and only if the operation succeeded. The operation will fail if the user does not have 
-                  permission to change the access permissions of this abstract pathname.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1 AND !=2
-               Example:
-                  File a /tmp/iExist
-                  a.setWritable true
-                  >>>true
-                  a.setWritable true false
-                  >>>true               
-            ";;&
-         setReadable|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println " 
-               setReadable
-                  Sets the owner's or everybody's read permission for this abstract pathname.
-               Parameters:
-                  readable - If true, sets the access permission to allow read operations; 
-                  if false to disallow read operations
-                  [ownerOnly - If true, the read permission applies only to the owner's read permission; 
-                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
-                  read permission from that of others, then the permission will apply to everybody, regardless of this value.
-                  Default: true]               
-               Returns:
-                  true if and only if the operation succeeded. The operation will fail if the user does not have permission
-                  to change the access permissions of this abstract pathname. If readable is false and the underlying file 
-                  system does not implement a read permission, then the operation will fail.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1 AND !=2
-               Example:
-                  File a /tmp/iExist
-                  a.setReadable true
-                  >>>true
-                  a.setReadable true false
-                  >>>true               
-            ";;&
-         setExecutable|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println " 
-               setExecutable
-                  Sets the owner's or everybody's execute permission for this abstract pathname.
-               Parameters:
-                  executable - If true, sets the access permission to allow execute operations; if false to disallow 
-                  execute operations
-                  [ownerOnly - If true, the execute permission applies only to the owner's execute permission; 
-                  otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's 
-                  execute permission from that of others, then the permission will apply to everybody, 
-                  regardless of this value.
-                  Default: true]                
-               Returns:
-                  true if and only if the operation succeeded. The operation will fail if the user does not have 
-                  permission to change the access permissions of this abstract pathname. If executable is false 
-                  and the underlying file system does not implement an execute permission, then the operation will fail.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1 AND !=2
-               Example:
-                  File a /tmp/iExist
-                  a.setExecutable true
-                  >>>true
-                  a.setExecutable true false
-                  >>>true               
-            ";;&
-         getCanonicalPath|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               getCanonicalPath
-                  Returns the canonical pathname string of this abstract pathname.
-
-                  A canonical pathname is both absolute and unique. This method first converts this pathname to absolute 
-                  form if necessary, as if by invoking the getAbsolutePath() method, and then maps it to its unique form 
-                  in a system-dependent way. This typically involves removing redundant names such as "." and ".." from 
-                  the pathname, resolving symbolic links on UNIX platforms.
-
-                  Every pathname that denotes an existing file or directory has a unique canonical form. Every pathname 
-                  that denotes a nonexistent file or directory also has a unique canonical form. The canonical form of 
-                  the pathname of a nonexistent file or directory may be different from the canonical form of the same 
-                  pathname after the file or directory is created. Similarly, the canonical form of the pathname of an 
-                  existing file or directory may be different from the canonical form of the same pathname after the file 
-                  or directory is deleted.
-               Parameters:
-                  None
-               Returns:
-                  The canonical pathname string denoting the same file or directory as this abstract pathname
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if pwd is not in path
-                                     - if readlink is not in path
-               Example:
-                  File a /xxx/s
-                  a.getCanonicalPath
-                  >>>/xxx/s              
-            ";;&        
-         setReadOnly|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println " 
-               setReadOnly
-                  Marks the file or directory named by this abstract pathname so that only read operations are allowed. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the operation succeeded; false otherwise
-               Throws:
-                  NotInPathException - if chmod is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/iExist
-                  a.setReadOnly
-                  >>>true           
-            ";;&      
-         lastModified|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               lastModified
-                  Returns the time that the file denoted by this abstract pathname was last modified.
-               Parameters:
-                  None
-               Returns:
-                  A long value representing the time the file was last modified, measured in milliseconds 
-                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if 
-                  an I/O error occurs
-               Throws:
-                  NotInPathException - if stat is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.lastModified
-                  >>>1297000
-            ";;& 
-         setLastModified|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               setLastModified
-                  Sets the last-modified time of the file or directory named by this abstract pathname.
-                  All platforms support file-modification times to the nearest second, but some provide 
-                  more precision. The argument will be truncated to fit the supported precision. If the 
-                  operation succeeds and no intervening operations on the file take place, then the next 
-                  invocation of the lastModified() method will return the (possibly truncated) time 
-                  argument that was passed to this method.
-               Parameters:
-                  time - The new last-modified time, measured in milliseconds since the 
-                  epoch (00:00:00 GMT, January 1, 1970)
-               Returns:
-                  true if and only if the operation succeeded; false otherwise
-               Throws:
-                  IllegalArgumentException - if the parameter cannot be treated as a number
-                                           - if number of arguments != 3
-                  NotInPathException - if date is not in path
-                                     - if touch is not in path
-               Example:
-                  File a /tmp/abc
-                  a.setLastModified 1297632
-                  >>>true
-                  a.lastModified
-                  >>>1297000
-            ";;&
-         lastAccessed|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               lastAccessed
-                  Returns the time that the file denoted by this abstract pathname was last accessed.
-               Parameters:
-                  None
-               Returns:
-                  A long value representing the time the file was last accessed, measured in milliseconds
-                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
-                  an I/O error occurs
-               Throws:
-                  NotInPathException - if stat is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.lastAccessed
-                  >>>1297000
-            ";;&
-         setLastAccessed|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               setLastAccessed
-                  Sets the last-accessed time of the file or directory named by this abstract pathname.
-                  All platforms support file-access times to the nearest second, but some provide
-                  more precision. The argument will be truncated to fit the supported precision. If the
-                  operation succeeds and no intervening operations on the file take place, then the next
-                  invocation of the lastAccessed method will return the (possibly truncated) time
-                  argument that was passed to this method.
-               Parameters:
-                  time - The new last-accessed time, measured in milliseconds since the
-                  epoch (00:00:00 GMT, January 1, 1970)
-               Returns:
-                  true if and only if the operation succeeded; false otherwise
-               Throws:
-                  IllegalArgumentException - if the parameter cannot be treated as a number
-                                           - if number of arguments != 3
-                  NotInPathException - if date is not in path
-                                     - if touch is not in path
-               Example:
-                  File a /tmp/abc
-                  a.setLastAccessed 1297632
-                  >>>true
-                  a.lastAccessed
-                  >>>1297000
-            ";;&
-         lastChanged|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               lastChanged
-                  Returns the time that the file denoted by this abstract pathname was last cahnged.
-               Parameters:
-                  None
-               Returns:
-                  A long value representing the time the file was last changed, measured in milliseconds
-                  since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if
-                  an I/O error occurs
-               Throws:
-                  NotInPathException - if stat is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.lastChanged
-                  >>>1297000
-            ";;&
-         delete|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               delete
-                  Deletes the file or directory denoted by this abstract pathname. If this pathname 
-                  denotes a directory, then the directory must be empty in order to be deleted.
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file or directory is successfully deleted; false otherwise
-               Throws:
-                  NotInPathException - if rm is not in path
-                  NotInPathException - if rmdir is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.delete
-                  >>>true
-            ";;& 
-         deleteRecursively|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               deleteRecursively
-                  Deletes a file or directory and all contents recursively.
-                  If the file argument is a symbolic link the link will be deleted 
-                  but not the target of the link. If the argument is a directory, 
-                  symbolic links within the directory will not be followed. 
-               Parameters:
-                  None
-               Returns:
-                  true if and only if the file or directory is successfully recursively deleted; false otherwise
-               Throws:
-                  NotInPathException - if rm is not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.deleteRecursively
-                  >>>true
-            ";;& 
-         isAbsolute|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               isAbsolute
-                  Tests whether this abstract pathname is absolute. The definition of absolute 
-                  pathname is system dependent. On UNIX systems, a pathname is absolute if its prefix is "/".
-               Parameters:
-                  None
-               Returns:
-                  true if this abstract pathname is absolute, false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.isAbsolute
-                  >>>true
-            ";;& 
-         getAbsolutePath|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "         
-               getAbsolutePath            
-                  Returns the absolute pathname string of this abstract pathname.
-                  If this abstract pathname is already absolute, then the pathname string is simply 
-                  returned as if by the getPath() method. If this abstract pathname is the empty 
-                  abstract pathname then the pathname string of the current user directory is returned. 
-                  Otherwise this pathname is resolved in a system-dependent way. On UNIX systems, a 
-                  relative pathname is made absolute by resolving it against the current user directory.
-               Parameters:
-                  None
-               Returns:
-                  The absolute pathname string denoting the same file or directory as this abstract pathname
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.getAbsolutePath
-                  >>>/tmp/abc
-            ";;& 
-         getPath|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "          
-               getPath
-                  Converts this abstract pathname into a pathname string. 
-               Parameters:
-                  None
-               Returns:
-                  The string form of this abstract pathname
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.getPath
-                  >>>/tmp/abc
-            ";;& 
-         createNewFile|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "          
-               createNewFile  
-                  Creates a new, empty file named by this abstract pathname if and only if a file with 
-                  this name does not yet exist. 
-               Parameters:
-                  None
-               Returns:
-                  true if the named file does not exist and was successfully created; false if the 
-                  named file already exists
-               Throws:
                   NotInPathException - if touch is not in path
-                  IllegalArgumentException - if number of arguments != 0
                Example:
-                  File a /tmp/abc
-                  a.createNewFile
+                  File x /tmp/xxx
+                  x.touch
                   >>>true
             ";;&
-         getName|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getName
-                  This is just the last name in the pathname's name sequence.
-               Parameters:
-                  None
-               Returns:
-                  The name of the file or directory denoted by this abstract
-                  pathname. This is just the last name in the pathname's name
-                  sequence. If the pathname's name sequence is empty, then the
-                  empty string is returned.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  File a /tmp/abc
-                  a.getName
-                  >>>abc
-               ";;&
-         getPosixFilePermissions|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getPosixFilePermissions
-                  Returns primitive string of permission attributes.
-                  By default, symbolic links are followed and the file attribute
-                  of the final target of the link is read.
-               Parameters:
-                  None
-               Returns:
-                  Returns primitive string of permission attributes
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if stat is not in path
-                  IOException - if file does not exist
-               Example:
-                  File x /etc/passwd
-                  x.getPosixFilePermissions
-                  >>>-rw-r--r--
-            ";;&
-         setPosixFilePermissions|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               setPosixFilePermissions
-                  Sets a file's POSIX permissions.
-               Parameters:
-                  attrs - A list of file attributes to set
-               Returns:
-                  Returns true, if the permissions are set successfully, false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1
-                                           - if attrs is given, but is no posixFilePermission 
-                  NotInPathException - if chmod is not in path
-                  IOException - if file does not exist
-               Example:
-                  File x /etc/passwd
-                  x.setPosixFilePermissions \"-rw-r--r--\"
-                  >>>false
-            ";;&
-         File.createTempFile|createTempFile|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "   
-               File.createTempFile
-                  Creates an empty file in the default temporary-file directory, using the given prefix 
-                  and suffix to generate its name. Invoking this method is equivalent to invoking 
-                  createTempFile.
-
-                  The createTemporaryFile method provides an alternative method to create an empty file 
-                  in the temporary-file directory. Files created by that method may have more restrictive 
-                  access permissions to files created by this method and so may be more suited to 
-                  security-sensitive applications.
-               Parameters:
-                  prefix - The prefix string to be used in generating the file's name; must be at least 
-                  three characters long
-                  suffix - The suffix string to be used in generating the file's name is optional. If 
-                  missing the suffix ".tmp" will be used
-               Returns:
-                  An abstract pathname denoting a newly-created empty file
-               Throws:
-                  IllegalArgumentException - if number of arguments !=1 AND !=2
-               Example:
-                  File.createTempFile fff
-                  >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
-                  File.createTempFile fff xxx
-                  >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
-            ";;&    
-         File.createTemporaryFile|createTemporaryFile|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "   
-               File.createTemporaryFile
-                  Creates an empty file in the default temporary-file directory, using the given prefix and 
-                  suffix to generate its name.
-
-                  The attrs parameter is an optional primitive string of attributes to set when creating 
-                  the file. 
-
-                  When using the attrs parameter the resulting file may have more restrictive access 
-                  permissions than files created by the createTempFile method.
-                  The attrs parameter is a String representing the permissions. It has 9 characters that 
-                  are interpreted as three sets of three. The first set refers to the owner's permissions; 
-                  the next to the group permissions and the last to others. Within each set, the first 
-                  character is 'r' to indicate permission to read, the second character is 'w' to indicate 
-                  permission to write, and the third character is 'x' for execute permission. Where a 
-                  permission is not set then the corresponding character is set to '-'. 
-
-               Parameters:
-                  prefix - The prefix string to be used in generating the file's name; must be at least three characters long
-                  suffix - The suffix string to be used in generating the file's name
-                  attrs - An optional list of file attributes to set when creating the file
-               Returns:
-                  An abstract pathname denoting a newly-created empty file
-               Throws:
-                  IllegalArgumentException - if the prefix argument contains fewer than three characters
-                                           - if number of arguments !=2 AND !=3
-                                           - if attrs is given, but is no posixFilePermission
-                  IOException - if file could not be created 
-                  NotInPathException - if mktemp is not in path
-                                     - if chmod is not in path
-               Example:
-                  File.createTemporaryFile xxx .tmp rwxrwxrwx
-                  >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
-                  ll /tmp/xxxStlt01lvAKe1P3se8i.tmp
-                  >>>-rwxrwxrwx 1 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
-                  TMPDIR=/
-                  File.createTemporaryFile xxx .tmp
-                  >>>IOException: File could not be created
-            ";;&
-         File.createTemporaryDir|createTemporaryDir|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               File.createTemporaryDir
-                  Creates an empty directory in the default temporary-file directory, using the given prefix and
-                  suffix to generate its name.
-
-                  The attrs parameter is an optional primitive string of attributes to set when creating
-                  the file.
-
-                  When using the attrs parameter the resulting directory may have more restrictive access
-                  permissions than directories created by the createTempDir method.
-                  The attrs parameter is a String representing the permissions. It has 9 characters that
-                  are interpreted as three sets of three. The first set refers to the owner's permissions;
-                  the next to the group permissions and the last to others. Within each set, the first
-                  character is 'r' to indicate permission to read ( view the directory's contents), the second
-                  character is 'w' to indicate permission to write (create new files or delete file(s) in the directory),
-                  and the third character is 'x' for execute permission (user can cd into the directory). Where a
-                  permission is not set then the corresponding character is set to '-'.
-               Parameters:
-                  prefix - The prefix string to be used in generating the file's name; must be at least three characters long
-                  suffix - The suffix string to be used in generating the file's name
-                  attrs - An optional list of file attributes to set when creating the file
-               Returns:
-                  An abstract pathname denoting a newly-created empty directory
-               Throws:
-                  IllegalArgumentException - if the prefix argument contains fewer than three characters
-                                           - if number of arguments !=2 AND !=3
-                                           - if attrs is given, but is no posixFilePermission
-                  IOException - if directory could not be created
-                  NotInPathException - if mktemp is not in path
-                                     - if chmod is not in path
-               Example:
-                  File.createTemporaryDir xxx .tmp rwxrwxrwx
-                  >>>/tmp/xxxStlt01lvAKe1P3se8i.tmp
-                  ll /tmp
-                  >>>drwxrwxrwx    2 $USER $USER 0 14. Feb 22:22 /tmp/xxxStlt01lvAKe1P3se8i.tmp
-                  TMPDIR=/
-                  File.createTemporaryDir xxx .tmp
-                  >>>IOException: File could not be created
-            ";;&
-         File.createTempDir|createTempDir|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               File.createTempDir
-                  Creates an empty directory in the default temporary-file directory, using the given prefix
-                  and suffix to generate its name. Invoking this method is equivalent to invoking
-                  createTempFile.
-
-                  The createTemporaryDir method provides an alternative method to create an empty file
-                  in the temporary-file directory. Files created by that method may have more restrictive
-                  access permissions to directories created by this method and so may be more suited to
-                  security-sensitive applications.
-               Parameters:
-                  prefix - The prefix string to be used in generating the directory's name; must be at least
-                  three characters long
-                  suffix - The suffix string to be used in generating the directory's name is optional. If
-                  missing the suffix ".tmp" will be used
-               Returns:
-                  An abstract pathname denoting a newly-created empty directory
-               Throws:
-                  IllegalArgumentException - if number of arguments !=1 AND !=2
-               Example:
-                  File.createTempDir fff
-                  >>>/tmp/fff1K1S1FQmOsSF4XC8RD.tmp
-                  File.createTempDir fff xxx
-                  >>>/tmp/fffREtAnRWdPUCAsFR0msxxx
-            ";;&    
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
                        No help found for $1
