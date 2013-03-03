@@ -1,8 +1,5 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-1a)
-clean startmessage ?
-
 1b)
 fix docs for size
 
