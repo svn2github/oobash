@@ -397,14 +397,14 @@ Man.generator() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    declare -i returnValue=0
    local base="$1"
-   local type
+   local type destination
    local user=${__AUTHOR__:-$USER}
    if (( $# == 1 )) && [[ ! -z $($1.help 2>/dev/null) ]]; then
-      local destination=""${__OODIR__}"/man/man3/$base.3"
-      local type="classpage"
+      destination=""${__OODIR__}"/man/man3/${base}.3"
+      type="classpage"
    elif (( $# == 1 )) && [[ -r ""${__OODIR__}"/scripts/$1" ]]; then
-      local destination=""${__OODIR__}"/man/man1/${base}.1"
-      local type="scriptpage"
+      destination=""${__OODIR__}"/man/man1/${base}.1"
+      type="scriptpage"
    else
       if __isatty STDERR; then
          System.err.println
@@ -423,7 +423,7 @@ Man.generator() {
 
       System.out.println "
 .\\\" The MIT License
-.\\\" Copyright (c) <$(date +%Y 2>/dev/null)> $user
+.\\\" Copyright (c) <$(date +%Y 2>/dev/null)> ${user}
 .\\\"
 .\\\" Permission is hereby granted, free of charge, to any person obtaining a copy
 .\\\" of this software and associated documentation files (the \"Software\"), to deal
@@ -453,8 +453,8 @@ Man.generator() {
          System.out.println ".SH NAME" >> "${destination}"
          for line in $($base.help)
          do
-            if [[ "$line" =~ ^.*-.*$ ]]; then
-               for funcname in $line
+            if [[ "${line}" =~ ^.*-.*$ ]]; then
+               for funcname in ${line}
                do
                   System.out.print "${funcname//-/} " >> "${destination}"
                done
@@ -481,7 +481,7 @@ Man.generator() {
          done
 
          System.out.println ".SH AUTHOR">>"${destination}"
-         System.out.println "$user" >> "${destination}"
+         System.out.println "${user}" >> "${destination}"
          if $(declare -p __EMAIL__ 2>/dev/null 1>&2); then
             System.out.println ".SH BUG REPORTS">>"${destination}"
             System.out.println "Mail to ${__EMAIL__}" >> "${destination}"
@@ -578,7 +578,7 @@ $1
 
 =head1 AUTHOR
 
-Written by $user
+Written by ${user}
 ">> "${destination}"
       if command -v date >/dev/null 2>&1; then
          System.out.println "=head1 HISTORY" >> "${destination}"
