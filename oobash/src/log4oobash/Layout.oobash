@@ -38,6 +38,25 @@ __getContentType() {
 }
 __registerFunction __getContentType
 
+__getFooter() {
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local class="$2"
+      case $class in
+         HTMLLayout) System.out.println '</table>
+<br>
+</body></html>';;
+      esac
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+__registerFunction __getFooter
+
+
 __getHeader() {
    declare -i returnValue=0
    if (( $# == 4 )); then
@@ -78,20 +97,3 @@ Log session start time '"$(date)"'<br>
 }
 __registerFunction __getHeader
    
-__getFooter() {
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local class="$2"
-      case $class in
-         HTMLLayout) System.out.println '</table>
-<br>
-</body></html>';;
-      esac
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-__registerFunction __getFooter
