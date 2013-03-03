@@ -468,7 +468,7 @@ Man.generator() {
          local empty
          "${base}".help all | while IFS='' read -r line
          do
-            if [[ "${line}" == "" ]]; then
+            if [[ "$(echo -n ${line//[:space:]]/})" == "" ]]; then
                empty="true"
                System.out.println "" >> "${destination}"
             else
