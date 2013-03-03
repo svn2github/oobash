@@ -62,21 +62,6 @@ __registerClass Level
 #                   #
 #####################
 
-__toInt() {
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local pointer
-      pointer="$(__getObjectPointer "${this}")"
-      System.out.println "${__ATTRIBUTEPOOL__[${pointer}@level]}" 
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
-   fi
-   return $returnValue
-}
-
 __getSyslogEquivalent() {
    declare -i returnValue=0
    if (( $# == 2 )); then
@@ -125,6 +110,21 @@ __isGreaterOrEqual() {
    return $returnValue
 }
 
+__toInt() {
+   declare -i returnValue=0
+   if (( $# == 2 )); then
+      local this="$1"
+      local pointer
+      pointer="$(__getObjectPointer "${this}")"
+      System.out.println "${__ATTRIBUTEPOOL__[${pointer}@level]}" 
+   else
+      __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
+      returnValue=$?
+      __handleErrorMessage "$2" "${FUNCNAME:2}"
+   fi
+   return $returnValue
+}
+
 #################
 #               #
 #     HELP      # 
@@ -140,13 +140,13 @@ Level.help() {
       System.${printStream}.println "
                     Usage: Level.help all|methodname
                     Available methods:
+                    -equals
                     -getClass
+                    -getSyslogEquivalent
+                    -hashCode
+                    -isGreaterOrEqual
                     -toInt
                     -toString
-                    -getSyslogEquivalent
-                    -isGreaterOrEqual
-                    -equals
-                    -hashCode
                     Constructor: 
                     -Level
                  " 
@@ -179,22 +179,39 @@ Level.help() {
                Example:
                   Level a <level> <levelStr> <syslogEquivalent> 
             ";;& 
-      toInt|all)
+      equals|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
-               toInt
-                  Returns the value of level
+               equals
+                  Two priorities are equal if their level fields are equal.
+               Parameters:
+                  anObject - The object to be compared with
+               Returns:
+                  true if and only if the objects have the same level field; false otherwise
+               Throws:
+                  IllegalArgumentException - if number of arguments != 1
+               Example:
+                  Level a 1000 "FATAL" 0
+                  Level b 1000 "MYLEVEL" 0
+                  a.equals b
+                  >>>true
+            ";;&
+      getClass|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               getClass
+                  Returns the runtime class of this Object.
                Parameters:
                   None
                Returns:
-                  The value of level.
+                  The Class object that represents the runtime class of this object.
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   Level b 2 3 4
-                  b.toInt
-                  >>>2 
-            ";;& 
+                  b.getClass
+                  >>>class Level
+            ";;&
       getSyslogEquivalent|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -211,6 +228,23 @@ Level.help() {
                   b.getSyslogEquivalent  
                   >>>4
             ";;& 
+      hashCode|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               hashCode
+                  Returns a hash code for this Level object.
+               Parameters:
+                  None
+               Returns:
+                  a hash code for this Level.
+               Throws:
+                  NotInPathException - if bc not in path
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Level INFO 20000 INFO  6
+                  INFO.hashCode
+                  >>>2251950
+            ";;&
       isGreaterOrEqual|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -230,6 +264,22 @@ Level.help() {
                   a.isGreaterOrEqual b
                   >>>true
             ";;&
+      toInt|all)
+            match=$(Boolean.TRUE)
+            System.${printStream}.println "
+               toInt
+                  Returns the value of level
+               Parameters:
+                  None
+               Returns:
+                  The value of level.
+               Throws:
+                  IllegalArgumentException - if number of arguments != 0
+               Example:
+                  Level b 2 3 4
+                  b.toInt
+                  >>>2 
+            ";;& 
       toString|all)
             match=$(Boolean.TRUE)
             System.${printStream}.println "
@@ -245,56 +295,6 @@ Level.help() {
                   Level b 2 3 4
                   b.toString
                   >>>3
-            ";;&
-      hashCode|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               hashCode
-                  Returns a hash code for this Level object.
-               Parameters:
-                  None
-               Returns:
-                  a hash code for this Level.
-               Throws:
-                  NotInPathException - if bc not in path
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  Level INFO 20000 INFO  6
-                  INFO.hashCode
-                  >>>2251950
-            ";;&
-      getClass|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               getClass
-                  Returns the runtime class of this Object.
-               Parameters:
-                  None
-               Returns:
-                  The Class object that represents the runtime class of this object.
-               Throws:
-                  IllegalArgumentException - if number of arguments != 0
-               Example:
-                  Level b 2 3 4
-                  b.getClass
-                  >>>class Level
-            ";;&
-      equals|all)
-            match=$(Boolean.TRUE)
-            System.${printStream}.println "
-               equals
-                  Two priorities are equal if their level fields are equal.
-               Parameters:
-                  anObject - The object to be compared with
-               Returns:
-                  true if and only if the objects have the same level field; false otherwise
-               Throws:
-                  IllegalArgumentException - if number of arguments != 1
-               Example:
-                  Level a 1000 "FATAL" 0
-                  Level b 1000 "MYLEVEL" 0
-                  a.equals b
-                  >>>true
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
                  System.${printStream}.println "                                  
