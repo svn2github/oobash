@@ -550,15 +550,9 @@ __getCanonicalPath() {
          if (( $? == 0 )); then
             System.out.println "$result"
          else
-            if command -v pwd >/dev/null 2>&1; then
-               cd -P -- "$(__dirname "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(__basename "${file}")"
-               if (( $? != 0 )); then
-                  readlink -m -- "${file}" 2>/dev/null
-               fi
-            else
-               __throw "NotInPathException" ": pwd not in path"
-               returnValue=$?
-               __handleErrorMessage "$2" "${FUNCNAME:2}"
+            cd -P -- "$(__dirname "${file}")" &> /dev/null && System.out.println "$(pwd -P)/$(__basename "${file}")"
+            if (( $? != 0 )); then
+               readlink -m -- "${file}" 2>/dev/null
             fi
          fi
       else
@@ -2481,7 +2475,6 @@ File.help() {
                   Creates an empty directory in the default temporary-file directory, using the given prefix
                   and suffix to generate its name. Invoking this method is equivalent to invoking
                   createTempFile.
-
                   The createTemporaryDir method provides an alternative method to create an empty file
                   in the temporary-file directory. Files created by that method may have more restrictive
                   access permissions to directories created by this method and so may be more suited to
@@ -2508,7 +2501,6 @@ File.help() {
                   Creates an empty file in the default temporary-file directory, using the given prefix 
                   and suffix to generate its name. Invoking this method is equivalent to invoking 
                   createTempFile.
-
                   The createTemporaryFile method provides an alternative method to create an empty file 
                   in the temporary-file directory. Files created by that method may have more restrictive 
                   access permissions to files created by this method and so may be more suited to 
@@ -2534,10 +2526,8 @@ File.help() {
                File.createTemporaryDir
                   Creates an empty directory in the default temporary-file directory, using the given prefix and
                   suffix to generate its name.
-
                   The attrs parameter is an optional primitive string of attributes to set when creating
                   the file.
-
                   When using the attrs parameter the resulting directory may have more restrictive access
                   permissions than directories created by the createTempDir method.
                   The attrs parameter is a String representing the permissions. It has 9 characters that
@@ -2575,10 +2565,8 @@ File.help() {
                File.createTemporaryFile
                   Creates an empty file in the default temporary-file directory, using the given prefix and 
                   suffix to generate its name.
-
                   The attrs parameter is an optional primitive string of attributes to set when creating 
                   the file. 
-
                   When using the attrs parameter the resulting file may have more restrictive access 
                   permissions than files created by the createTempFile method.
                   The attrs parameter is a String representing the permissions. It has 9 characters that 
@@ -2587,7 +2575,6 @@ File.help() {
                   character is 'r' to indicate permission to read, the second character is 'w' to indicate 
                   permission to write, and the third character is 'x' for execute permission. Where a 
                   permission is not set then the corresponding character is set to '-'. 
-
                Parameters:
                   prefix - The prefix string to be used in generating the file's name; must be at least three characters long
                   suffix - The suffix string to be used in generating the file's name
@@ -2928,8 +2915,7 @@ File.help() {
                   The canonical pathname string denoting the same file or directory as this abstract pathname
                Throws:
                   IllegalArgumentException - if number of arguments != 0
-                  NotInPathException - if pwd is not in path
-                                     - if readlink is not in path
+                  NotInPathException - if readlink is not in path
                Example:
                   File a /xxx/s
                   a.getCanonicalPath

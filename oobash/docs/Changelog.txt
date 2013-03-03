@@ -336,7 +336,7 @@
 # Version:      0.39.12
 #    -Added stepper and xtrace option in script skeleton (Script.generator)
 #    -renamed __fileLength to __size
-#    -removed dependencies: wc
+#    -removed dependencies: wc, pwd
 #    -now the output of Class.generator is alphabetically sorted 
 #    -Fixes and small improvements
 

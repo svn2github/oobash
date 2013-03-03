@@ -11,7 +11,6 @@ pod2man
 pod2usage
 podselect
 ps
-pwd
 readlink/greadlink (GNU!)
 renice
 rm
