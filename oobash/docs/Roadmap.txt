@@ -12,10 +12,6 @@ Remove (word-)sort dependency
 1d)
 Remove tr dependency
 
-3)
-sort all functions and the help cases + manpages ?
-
-String startmessage --> sort statics
 
 # 0.40
 # -Logging
