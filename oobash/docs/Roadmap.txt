@@ -4,6 +4,8 @@ still 2 sort cals in generator...
 
 docs for wordSort
 
+printf "%q\n"  in wordSort ?
+
 # 0.40
 # -Logging
 # info in command_not_found_handle ?
