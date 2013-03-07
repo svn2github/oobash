@@ -1,12 +1,5 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-1c)
-Remove (word-)sort dependency
-
-1d)
-Remove tr dependency
-
-
 # 0.40
 # -Logging
 # info in command_not_found_handle ?

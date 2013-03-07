@@ -2609,8 +2609,6 @@ String.help() {
                Returns:
                   the string itself.
                Throws:
-                  NotInPathException - if sort not in path
-                                     - if tr not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   String a abc

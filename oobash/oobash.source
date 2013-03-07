@@ -121,8 +121,8 @@ fi
 unset signal sig counter unsetAtEnd
 
 # All external commands used in this framework:
-declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch sort 
-                             tr ps kill renice openssl ssh scp vim diff pod2man pod2usage podselect)
+declare -a __Dependencies__=(bc chmod date mkdir mktemp mv readlink rm rmdir stat touch
+                             ps kill renice openssl ssh scp vim diff pod2man pod2usage podselect)
 
 # All optional variables
 declare -a __OptionalVars__=(__AUTHOR__ __COMPANY__ __EMAIL__ __QUIET__ )

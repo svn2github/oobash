@@ -16,9 +16,7 @@ renice
 rm
 rmdir
 scp
-sort
 ssh
 stat/gstat (GNU!)
 touch
-tr
 vim

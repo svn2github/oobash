@@ -897,8 +897,6 @@ Ssh.help() {
                Parameters:
                   None
                Throws:
-                  NotInPathException - if sort not in path
-                                     - if tr not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   Ssh b 1 2 3

@@ -331,23 +331,11 @@ done
                Parameters:
                   None
                Throws:
-                  NotInPathException - if sort not in path
-                                     - if tr not in path
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   ${userClass} b $(eval echo {1..${#attributes[@]}})
                   b.toString" >> "${destination}"
-      if command -v tr >/dev/null 2>&1; then
-         if command -v sort  >/dev/null 2>&1; then
-            declare -a special=($(echo "${attributes[@]}"  | tr " " "\n" | sort | tr "\n" " " ))
-         else
-            __throw "NotInPathException" ": sort not in path"
-            return $?
-         fi
-      else
-         __throw "NotInPathException" ": tr not in path"
-         return $?
-      fi
+      declare -a special=($(__wordSort $(echo "${attributes[@]}")))
       System.out.print "                  >>>" >> "${destination}"
       for (( i=0; i < ${#special[@]}; i++))
       do
