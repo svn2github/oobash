@@ -4031,12 +4031,14 @@ File.help() {
                size
                   Returns the size of the file denoted by this abstract pathname. 
                   The return value is unspecified if this pathname denotes a directory.
+                  If file does not exist, size is 0.
                Parameters:
                   None  
                Returns:
                   The length, in bytes, of the file denoted by this abstract pathname. 
                Throws:
                   IllegalArgumentException - if number of arguments != 0
+                  NotInPathException - if stat is not in path
                Example:
                   File a /tmp/abc
                   echo abc > /tmp/abc

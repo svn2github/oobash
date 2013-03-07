@@ -1,8 +1,5 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
-1b)
-fix docs for size
-
 1c)
 Remove (word-)sort dependency
 
