@@ -1,5 +1,7 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
+still 2 sort cals in generator...
+
 # 0.40
 # -Logging
 # info in command_not_found_handle ?
