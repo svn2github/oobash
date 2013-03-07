@@ -1404,6 +1404,29 @@ __setPS4() {
 }
 __registerFunction __setPS4
 
+__wordSort() {
+   declare -a array=("$@")
+   declare -i j i
+   local temp word result=''
+   for (( i=${#array[@]}-1; i>0; i-- )); do
+      for (( j=1; j<=i; j++ )); do
+         if [[ "${array[j-1]}" == "${array[j]}" ]] ||\
+            [[ "${array[j-1]}" <  "${array[j]}" ]] ; then
+            continue
+         fi
+         temp="${array[j]}"
+         array[j]="${array[j-1]}"
+         array[j-1]="$temp"
+      done
+   done
+   for word in "${array[@]}"
+   do
+      result+="${word} "
+   done
+   System.out.println "${result}"
+}
+__registerFunction __wordSort
+
 ##########
 # UNUSED #
 ##########
