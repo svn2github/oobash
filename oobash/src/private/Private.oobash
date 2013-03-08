@@ -55,6 +55,7 @@
 # __isXTRACEFDAvailable() checks if BASH_XTRACEFD is available with this bash version
 # __getFreeFD() tries to return a free file descriptor
 # __setPS4() sets PS4 prompt for a better prefix during tracing output
+# __wordSort(): sorts some words (alphabetically)
 ##########
 # UNUSED #
 ##########
@@ -1404,6 +1405,10 @@ __setPS4() {
 }
 __registerFunction __setPS4
 
+# private
+# good enough to sort some words
+# possible argument: words to sort
+# called by:
 __wordSort() {
    declare -a array=("$@")
    declare -i j i

@@ -140,11 +140,7 @@ System.out.println "
 
 " >> "${destination}"
       
-if command -v sort  >/dev/null 2>&1; then      
-   local list="$(printf '%s\n' ${attributes[@]} | sort)"
-else
-   local list="$(printf '%s\n' ${attributes[@]})"
-fi
+local list="$(__wordSort $(printf '%s\n' ${attributes[@]}))"
 local att
 for att in ${list}
 do
@@ -187,11 +183,7 @@ ${userClass}.help() {
                     Usage: ${userClass}.help all|methodname
                     Available methods:
                     -equals" >> "${destination}"
-		if command -v sort  >/dev/null 2>&1; then      
-			list="$(printf '%s\n' getClass $(for att in ${attributes[@]}; do printf '%s '  get${userClass}$(__strUpper ${att:0:1})${att:1}; done) | sort )"
-		else
-			list="$(printf '%s\n' getClass $(for att in ${attributes[@]}; do printf '%s '  get${userClass}$(__strUpper ${att:0:1})${att:1}; done))"
-		fi
+      list="$(__wordSort $(printf '%s\n' getClass $(for att in ${attributes[@]}; do printf '%s '  get${userClass}$(__strUpper ${att:0:1})${att:1}; done)))"
 		for att in ${list}
 		do
          System.out.println "                    -${att}" >> "${destination}" 
