@@ -1409,6 +1409,8 @@ __registerFunction __setPS4
 # good enough to sort some words
 # possible argument: words to sort
 # called by:
+# toString
+# Class.generator
 __wordSort() {
    declare -a array=("$@")
    declare -i j i
