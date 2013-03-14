@@ -2064,7 +2064,7 @@ String.help() {
                Parameters:
                   aString - The String object to compare this String against
                Returns:
-                  true if the argument is not null and it represents an equivalent String ignoring case; 
+                  true if the argument represents an equivalent String ignoring case; 
                   false otherwise
                Throws:
                   WrongClassException - if argument has the wrong class  
