@@ -640,7 +640,8 @@ version() {
    declare -i exitValue=0
    if (( \$# == 0 )); then
       if command -v podselect >/dev/null 2>&1; then
-         podselect -section HISTORY \"\$0\"
+         returnString=\"\$(podselect -section HISTORY \"\$0\")\"
+         System.out.println \"\${returnString:7}\"
       else
          __throw \"NotInPathException\" \": podselect not in path\"
          exitValue=\$?
