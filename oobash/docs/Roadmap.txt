@@ -1,6 +1,7 @@
 # MAYBE ROADMAP (very unstable ;-) ):
 
 # 0.40
+# -autocompletion for generated scripts
 # -Logging
 # info in command_not_found_handle ?
 # error in throw ?
