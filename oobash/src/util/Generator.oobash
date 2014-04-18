@@ -630,7 +630,8 @@ help() {
 stepper() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i returnValue=0
-   set -o functrace
+   # makes it really verbose:
+   # set -o functrace
    trap '(read -p \"[\${BASH_SOURCE##*/}:\${LINENO}] \${BASH_COMMAND}? \")' DEBUG
    return \$returnValue
 }
@@ -683,10 +684,10 @@ if (( \$# == 0 )); then
    System.err.println
  
    # If you want to see a stacktrace and catch the return value for exit:
-   #__throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
-   #returnValue=\$?
-   #__handleErrorMessage
-   #System.err.println
+   # __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+   # returnValue=\$?
+   # __handleErrorMessage
+   # System.err.println
 
    help \$returnValue
 fi
