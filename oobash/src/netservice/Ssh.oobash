@@ -603,6 +603,7 @@ Ssh.help() {
                   command stdout output
                Throws:
                   IllegalArgumentException - if number of arguments != 1
+                  NotInPathException -if ssh not in path
                Example:
                   Ssh mymachine mymachine.mydom.org mysshaccount
                   mymachine.command \"date\"
