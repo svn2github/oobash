@@ -62,7 +62,7 @@ printer4() {
 @calling
 printer5() {
    __decoratorCheck "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   System.out.println "I see return value is $?, because of @false, but @false could be a validator!"
+   System.out.println "I see return value is $?, because of @false. @false could be a validator!"
    System.out.println "i print printer5"
    System.out.println "---------------------------"
    System.out.println
