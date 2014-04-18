@@ -681,10 +681,13 @@ xtrace() {
 # To avoid accidents: exit if no arguments
 if (( \$# == 0 )); then
    System.err.println
-   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
-   returnValue=\$?
-   __handleErrorMessage
-   System.err.println
+ 
+   # If you want to see a stacktrace and catch the return value for exit:
+   #__throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+   #returnValue=\$?
+   #__handleErrorMessage
+   #System.err.println
+
    help \$returnValue
 fi
 
@@ -711,7 +714,7 @@ do
                xtrace
             ;;
             *)
-               # Disable error handling by setting OPTERR=0
+               # You can disable error handling by setting OPTERR=0
                if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
                   System.err.println
                   I18n.err.println 'Unknown option: --\${OPTARG}'
@@ -737,7 +740,7 @@ do
          xtrace \"\$OPTARG\"
       ;;
       *)
-         # Disable error handling by setting OPTERR=0
+         # You can disable error handling by setting OPTERR=0
          if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
             System.err.println
             I18n.err.println 'Non-option argument: -\${OPTARG}'
