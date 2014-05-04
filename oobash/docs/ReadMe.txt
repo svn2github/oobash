@@ -180,7 +180,7 @@ H) Autocompletion
 
 I) I18N
 ########
-The i18n of the bash uses the GNU gettext package (if not existing, there is a fall back to the $"..." syntax).
+The i18n is done by the GNU gettext package (if not existing, there is a fallback to the $"..." syntax).
 
 if you want to make your own oobash.po, oobash.mo file for i18n,
 then:
