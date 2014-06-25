@@ -654,7 +654,7 @@ Ssh.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                diffFile
-                  if the first [ optional: and 3rd argument] defines a regular file, then
+                  if the first [optional: and 3rd] argument defines a regular file, then
                   the output is a diff of the two files.
                   Stderr is not redirected.
                Parameters:
@@ -718,6 +718,7 @@ Ssh.help() {
             match=$(Boolean.TRUE)
             System.${printStream}.println "
                execModule
+                  Looks for the module in the netservice/modules directory.
                   Executes given module on this Ssh object.
                   The module has to be readable and you do not have to
                   escape anything in the module.
