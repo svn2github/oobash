@@ -492,16 +492,11 @@ __registerFunction __strLower
 __mathConverter() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local input="$1"
-   if [[ "${input}" == "NaN" ]]; then
-      System.out.println "NaN"
-      return 0
-   elif [[ "${input}" == "Infinity" ]]; then
-      System.out.println "Infinity"
-      return 0    
-   elif [[ "${input}" == "-Infinity" ]]; then
-      System.out.println "-Infinity"
-      return 0  
-   fi 
+
+   case "${input}" in
+      NaN|Infinity|-Infinity) System.out.println "${input}"
+                              return 0;;
+   esac
 
    if [[ "${input}" =~ ^[-]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -o noglob
