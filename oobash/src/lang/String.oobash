@@ -1440,14 +1440,15 @@ __title() {
       local str="$("$this".toLowerCase)"
       local output="${str~}"
       # "${str~}" does not work with big sharp s --> let's loop ;-(
+      # "${str~}" does not work with CYGWIN_NT
       local next="$(Boolean.TRUE)"
       local result=''
       local char
       for ((i=0; i < ${#output}; i++))
       do
          char="${output:i:1}"
-         if [[ "${next}" == "$(Boolean.TRUE)" && "${char}" == "ß" ]]; then
-            char="ẞ"
+         if [[ "${next}" == "$(Boolean.TRUE)" ]]; then
+            char="$(__strUpper  "${char}")"         
          fi
          if [[ "$(__strUpper  "${char}")" == "$(__strLower  "${char}")" ]]; then
             next="$(Boolean.TRUE)"
