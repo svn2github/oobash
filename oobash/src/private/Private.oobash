@@ -788,7 +788,7 @@ __cleanUpFunctions() {
    for value in ${!__Registry__[@]}
    do 
       if [[ "${__Registry__[$value]}" == "function" ]]; then
-         unset -o noglob "${value}" 
+         unset -f "${value}" 
       fi
    done
    return 0
@@ -807,11 +807,11 @@ __cleanUpClasses() {
    do 
       if [[ "${__Registry__[$value]}" == "class" ]]; then
          for meth in $(eval echo \${__${value}__[@]})
-         do 
-            unset -o noglob __${meth}
+         do
+            unset -f "__${meth}"
          done
          unset $(eval echo __${value}__  __${value}Methods__)
-         unset -o noglob $(eval echo $value ${value}.help)
+         unset -f $(eval echo $value ${value}.help)
       fi
    done
    return 0
@@ -828,7 +828,7 @@ __cleanUpVars() {
    for value in ${!__Registry__[@]}
    do 
       if [[ "${__Registry__[$value]}" == "var" ]]; then
-         unset ${value}
+         unset "${value}"
       fi
    done   
    return 0

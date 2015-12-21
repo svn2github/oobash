@@ -52,7 +52,7 @@ __cleanUp() {
          unset ${var}
       fi
    done
-
+   
    __cleanUpObjectsPool
    __cleanUpClasses
    __cleanUpFunctions
