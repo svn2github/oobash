@@ -361,7 +361,7 @@ command_not_found_handle() {
       fi
    done
 
-   if [[ $(Boolean.parseBoolean "$objectExists") == $(Boolean.TRUE) ]]; then 
+   if [[ "$(Boolean.parseBoolean "$objectExists")" == "$(Boolean.TRUE)" ]]; then 
       local class
       local string="${__OBJECTPOOL__["$this"]}"
       for ((i=0; i < ${#string}; i++))
