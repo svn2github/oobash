@@ -1424,7 +1424,7 @@ __registerFunction __ps4IndirectionLevelIndentation
 # called by:
 # all oobash scripts if in trace mode
 __setPS4() {
-   local ps4=${1:-' $(__ps4IndirectionLevelIndentation)${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): '}
+   local ps4=${1:-' $(__ps4IndirectionLevelIndentation)Running ${SECONDS} sec:${BASH_SOURCE##*/}:${LINENO}:${FUNCNAME[0]}(): '}
    export PS4="$ps4"
    return 0
 }
