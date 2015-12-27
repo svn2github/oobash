@@ -2,8 +2,7 @@
 # oobash #
 ##########
 
-oobash is a fun project to have a proof of concept for some ideas and no, 
-there are no real objects and no real decorators, but who cares... ;-).
+oobash is a fun project to have a proof of concept for some ideas.
 There is no downward compatibility until version 1.0.
 
 Fast start
@@ -205,7 +204,7 @@ J) "Decorators"
 Will only work if shell is used in script.
 You can see an example script using "decorators" in the docs/examples directory.
 __decoratorCheck calls the "decorators" and returns the sum (if below 256 otherwise $((sum%256)) ) of all decorator return values.
-Decorators use stderr for echos, because the framework communication is on stdout.
+Decorators use stderr for echos, because the internal framework communication is on stdout.
 If you want to create an own decorator function: Do NOT use a framework command (e.g. System.out.println) in this decorator function!
 
 Available decorators:
@@ -214,7 +213,7 @@ Available decorators:
 Prints to stderr: 
 "Calling: functionname arguments"
 Example output:
-Calling: printer3 Arg1 Arg2
+Calling: function1 Arg1 Arg2
 Returns: 0
 Dependeny: None
 
@@ -234,7 +233,7 @@ Dependency: GNU date
 Prints to stderr:
 "DeprecatedWarning for functionname"
 Example output:
-DeprecatedWarning for printer3
+DeprecatedWarning for function1
 Returns 0
 Dependeny: None
 
