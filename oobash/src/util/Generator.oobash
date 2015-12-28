@@ -532,6 +532,11 @@ $1 [OPTIONS]
     Informs the user about what command is
     to be executed and waits for his
     confirmation to do so.
+    
+-S
+   :same as -s, but functrace is set.
+   So any traps on DEBUG are inherited by 
+   shell functions -- really verbose.
 
 -v, --version
    :output version information and exit
@@ -630,8 +635,9 @@ help() {
 stepper() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i returnValue=0
-   # makes it really verbose:
-   # set -o functrace
+   if [[ \"\$1\" == \"functrace\" ]]; then
+      set -o functrace
+   fi
    trap '(read -p \"[\${BASH_SOURCE##*/}:\${LINENO}] \${BASH_COMMAND}? \")' DEBUG
    return \$returnValue
 }
@@ -695,7 +701,7 @@ fi
 # Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
 
 # disable the verbose error handling by preceeding the whole option string with a colon (:): 
-optspec=\":hsvxX:-:\"
+optspec=\":hsSvxX:-:\"
 while getopts \"\$optspec\" optchar
 do
    case \"\${optchar}\" in
@@ -730,6 +736,9 @@ do
       ;;
       s)
          stepper
+      ;;
+      S)
+         stepper \"functrace\"
       ;;
       v)
          version

@@ -340,6 +340,12 @@
 #    -now the output of Class.generator is alphabetically sorted
 #    -code/help/man is alphabetically sorted
 #    -Fixes and small improvements
+# Version:      0.39.13
+#    -Stacktrace and String title work in cywin environemnt
+#    -fixed __cleanUp
+#    -added __ps4IndirectionLevelIndentation
+#    -changed PS4 pattern in __setPS4
+#    -new -S option for the script skeleton (code-stepping + functrace)
 
 #################################################################
 # Features:
