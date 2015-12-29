@@ -689,11 +689,10 @@ xtrace() {
 if (( \$# == 0 )); then
    System.err.println
  
-   # If you want to see a stacktrace and catch the return value for exit:
-   # __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
-   # returnValue=\$?
-   # __handleErrorMessage
-   # System.err.println
+   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
+   returnValue=\$?
+   __handleErrorMessage
+   System.err.println
 
    help \$returnValue
 fi
