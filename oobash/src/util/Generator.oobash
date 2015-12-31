@@ -685,7 +685,7 @@ xtrace() {
 # OPTION PARSING #
 ##################
 
-# To avoid accidents: exit with IllegalArgumentException return value if no arguments.
+# To avoid accidents: exit if no arguments.
 if (( \$# == 0 )); then
    help 142
 fi
@@ -718,7 +718,7 @@ do
                   System.err.println
                   System.err.println 'Unknown option: --\${OPTARG}'
                   System.err.println
-                  help 1
+                  help 142
                fi
             ;;
          esac;;
@@ -747,7 +747,7 @@ do
             System.err.println
             System.err.println 'Non-option argument: -\${OPTARG}'
             System.err.println
-            help 1
+            help 142
          fi
       ;;
    esac   
