@@ -51,7 +51,7 @@ Class.generator() {
       if $(declare -p __COMPANY__ 2>/dev/null 1>&2); then
          System.out.println "# Company: ${__COMPANY__}">>"${destination}"
       fi
-System.out.println "# Copyright (c) <$(date +%Y 2>/dev/null)> <$mail>
+System.out.println "# Copyright (c) <$(date +%Y 2>/dev/null)> <${mail}>
 #############################################################
 
  
@@ -516,7 +516,7 @@ source "${__OODIR__}"/oobash.source
 : <<=cut =pod
 =head1 NAME
 
-$1 - describe in few words 
+$1 - describe here in few words 
 
 =head1 SYNOPSIS
 
