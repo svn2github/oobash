@@ -745,7 +745,7 @@ do
          # You can disable error handling by setting OPTERR=0
          if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
             System.err.println
-            I18n.err.println 'Non-option argument: -\${OPTARG}'
+            System.err.println 'Non-option argument: -\${OPTARG}'
             System.err.println
             help 1
          fi
