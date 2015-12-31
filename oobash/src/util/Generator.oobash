@@ -687,14 +687,7 @@ xtrace() {
 
 # To avoid accidents: exit if no arguments
 if (( \$# == 0 )); then
-   System.err.println
- 
-   __throw \"IllegalArgumentException\" \": Wrong number of arguments \$#\"
-   returnValue=\$?
-   __handleErrorMessage
-   System.err.println
-
-   help \$returnValue
+   help 142
 fi
 
 # Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
