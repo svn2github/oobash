@@ -685,7 +685,7 @@ xtrace() {
 # OPTION PARSING #
 ##################
 
-# To avoid accidents: exit if no arguments
+# To avoid accidents: exit with IllegalArgumentException return value if no arguments.
 if (( \$# == 0 )); then
    help 142
 fi
