@@ -345,7 +345,8 @@
 #    -fixed __cleanUp
 #    -added __ps4IndirectionLevelIndentation
 #    -changed PS4 pattern in __setPS4
-#    -new -S option for the script skeleton (code-stepping + functrace)
+#    -script skeleton (Script.generator) refactoring (new option handling, bugfixing, 
+#     new -S option (code-stepping + functrace)...)
 
 #################################################################
 # Features:
