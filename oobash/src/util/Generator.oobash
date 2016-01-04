@@ -692,7 +692,6 @@ fi
 
 # Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
 
-# disable the verbose error handling by preceeding the whole option string with a colon (:): 
 optspec=\":hsSvxX:-:\"
 while getopts \"\$optspec\" optchar
 do
@@ -718,13 +717,10 @@ do
                   break
                fi
 
-               # You can disable error handling by setting OPTERR=0
-               if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
-                  System.err.println
-                  System.err.println \"Unknown option: --\${OPTARG}\"
-                  System.err.println
-                  help 142
-               fi
+               System.err.println
+               System.err.println \"Invalid option: --\${OPTARG}\"
+               System.err.println
+               help 142
             ;;
          esac;;
       # short options:
@@ -746,14 +742,17 @@ do
       X)
          xtrace \"\$OPTARG\"
       ;;
-      *)
-         # You can disable error handling by setting OPTERR=0
-         if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
-            System.err.println
-            System.err.println \"Non-option argument: -\${OPTARG}\"
-            System.err.println
-            help 142
-         fi
+     \?)
+         System.err.println
+         System.err.println \"Invalid option: -\${OPTARG}\"
+         System.err.println
+         help 142
+      ;;
+      :)
+         System.err.println
+         System.err.println \"Option -\$OPTARG requires an argument.\"
+         System.err.println
+         help 142
       ;;
    esac   
 done
