@@ -713,6 +713,11 @@ do
                xtrace
             ;;
             *)
+               # -- -> end of options
+               if [[ -z \"\${OPTARG}\" ]]; then
+                  break
+               fi
+
                # You can disable error handling by setting OPTERR=0
                if (( \$OPTERR == 1 )) && [[ \"\${optspec:0:1}\" == \":\" ]]; then
                   System.err.println
