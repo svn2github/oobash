@@ -524,6 +524,9 @@ $1 [OPTIONS]
 
 =head1 OPTIONS AND ARGUMENTS
 
+--do
+   :run the script
+
 -h, --help
    :display this help and exit
 
@@ -559,7 +562,7 @@ Your description of $1
 
 =head1 EXAMPLES
 
-$1
+$1 --do
 
 =head1 AUTHOR
 
@@ -685,14 +688,14 @@ xtrace() {
 # OPTION PARSING #
 ##################
 
-options_found=0
-
-# Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
-
+optionsFound=0
+doMain=0
+# You should implement an option to run your main code e.g.: --doIt
+# Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial :
 optspec=\":hsSvxX:-:\"
 while getopts \"\$optspec\" optchar
 do
-   options_found=1
+   optionsFound=1
    case \"\${optchar}\" in
       -)
          # long options:
@@ -708,6 +711,9 @@ do
             ;;
             xtrace)
                xtrace
+            ;;
+            do)
+               doMain=1
             ;;
             *)
                # -- -> end of options
@@ -756,7 +762,7 @@ do
 done
 
 # To avoid accidents: exit if no options
-if ((!options_found)); then
+if ((!optionsFound)); then
   help \${__ExceptionValues__[IllegalArgumentException]}
 fi
 
@@ -764,8 +770,12 @@ fi
 # MAIN #
 ########
 
-# Now your code...
-
+if ((doMain)); then
+   # Now your code...
+   System.out.println 
+   System.out.println \"This is my script!\"
+   System.out.println 
+fi
 
 ###########
 # FINALLY #
