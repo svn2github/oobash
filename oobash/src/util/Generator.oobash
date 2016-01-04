@@ -684,6 +684,15 @@ xtrace() {
    return \$returnValue
 }
 
+unknownOptionHandler() {
+   __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
+   local message=\"\$1\"
+   System.err.println
+   System.err.println \"\${message}\"
+   System.err.println
+   help \${__ExceptionValues__[IllegalArgumentException]}
+}
+
 ##################
 # OPTION PARSING #
 ##################
@@ -720,11 +729,7 @@ do
                if [[ -z \"\${OPTARG}\" ]]; then
                   break
                fi
-
-               System.err.println
-               System.err.println \"Invalid option: --\${OPTARG}\"
-               System.err.println
-               help \${__ExceptionValues__[IllegalArgumentException]}
+               unknownOptionHandler \"Invalid option: --\${OPTARG}\"
             ;;
          esac;;
       # short options:
@@ -747,16 +752,10 @@ do
          xtrace \"\$OPTARG\"
       ;;
      \?)
-         System.err.println
-         System.err.println \"Invalid option: -\${OPTARG}\"
-         System.err.println
-         help \${__ExceptionValues__[IllegalArgumentException]}
+         unknownOptionHandler \"Invalid option: -\${OPTARG}\"
       ;;
       :)
-         System.err.println
-         System.err.println \"Option -\$OPTARG requires an argument.\"
-         System.err.println
-         help \${__ExceptionValues__[IllegalArgumentException]}
+         unknownOptionHandler \"Option -\$OPTARG requires an argument.\"
       ;;
    esac   
 done
