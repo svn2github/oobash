@@ -699,7 +699,7 @@ unknownOptionHandler() {
 
 optionsFound=0
 doMain=0
-# You should implement an option to run your main code e.g.: --doIt
+
 # Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial :
 optspec=\":hsSvxX:-:\"
 while getopts \"\$optspec\" optchar
