@@ -685,16 +685,14 @@ xtrace() {
 # OPTION PARSING #
 ##################
 
-# To avoid accidents: exit if no arguments.
-if (( \$# == 0 )); then
-   help 142
-fi
+options_found=0
 
 # Small getopts tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial:
 
 optspec=\":hsSvxX:-:\"
 while getopts \"\$optspec\" optchar
 do
+   options_found=1
    case \"\${optchar}\" in
       -)
          # long options:
@@ -720,7 +718,7 @@ do
                System.err.println
                System.err.println \"Invalid option: --\${OPTARG}\"
                System.err.println
-               help 142
+               help \${__ExceptionValues__[IllegalArgumentException]}
             ;;
          esac;;
       # short options:
@@ -746,16 +744,21 @@ do
          System.err.println
          System.err.println \"Invalid option: -\${OPTARG}\"
          System.err.println
-         help 142
+         help \${__ExceptionValues__[IllegalArgumentException]}
       ;;
       :)
          System.err.println
          System.err.println \"Option -\$OPTARG requires an argument.\"
          System.err.println
-         help 142
+         help \${__ExceptionValues__[IllegalArgumentException]}
       ;;
    esac   
 done
+
+# To avoid accidents: exit if no options
+if ((!options_found)); then
+  help \${__ExceptionValues__[IllegalArgumentException]}
+fi
 
 ########
 # MAIN #
