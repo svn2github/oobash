@@ -31,16 +31,15 @@ Class.generator() {
       declare -i i
       for ((i=0; i < ${#attributes[@]}; i++))
       do
-         eval local \'"${attributes[$i]}"\'=test 2>/dev/null
+         (eval local \'"${attributes[${i}]}"\'=test 2>/dev/null)
          if (( $? != 0 )); then
-            local attribute="${attributes[$i]}"
+            local attribute="${attributes[${i}]}"
             I18n.err.println "Sorry, no valid attribute name: '\$attribute'"
             return 1
-         else
-            getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[$i]:0:1})${attributes[$i]:1}")
+         else            
+            getters+=("get$(__strUpper ${userClass:0:1})${userClass:1}$(__strUpper ${attributes[${i}]:0:1})${attributes[${i}]:1}")
          fi             
       done
-
       local user=${__AUTHOR__:-$USER}
       local mail=${__EMAIL__:-$user}
       local destination=""${__OODIR__}"/src/myClassFiles/${userClass}.oobash"
@@ -91,10 +90,10 @@ $userClass() {
    __decoratorCheck  \"\${FUNCNAME[0]}\" \"\${BASH_SOURCE[0]}\" \"\$@\"
    declare -i returnValue=0
    if (( \$# == $((${#attributes[@]} + 1 )) )); then
-      local this=\"\$1\"" >> "${destination}"
+      local this=\"\${1}\"" >> "${destination}"
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "      local ${attributes[$i]}=\"\$$(( i + 2 ))\"" >> "${destination}"
+         System.out.println "      local ${attributes[${i}]}=\"\${$(( i + 2 ))}\"" >> "${destination}"
       done
       System.out.println "
       __isObjectnameValid 
@@ -110,7 +109,7 @@ $userClass() {
 
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "         __attribute ${attributes[$i]} \"\${${attributes[$i]}}\"" >> "${destination}"
+         System.out.println "         __attribute ${attributes[${i}]} \"\${${attributes[${i}]}}\"" >> "${destination}"
       done
       System.out.println "
       else
@@ -209,7 +208,7 @@ System.out.println "                    -hashCode
 
       for (( i=0; i < ${#attributes[@]}; i++))
       do
-         System.out.println "                  <${attributes[$i]}>" >> "${destination}"
+         System.out.println "                  <${attributes[${i}]}>" >> "${destination}"
       done
    System.out.println "              Returns:
                   None
@@ -223,7 +222,7 @@ System.out.println "                    -hashCode
    System.out.print "                  ${userClass} a " >> "${destination}"
    for (( i=0; i < ${#attributes[@]}; i++))
    do
-      System.out.print  "<${attributes[$i]}> " >> "${destination}"
+      System.out.print  "<${attributes[${i}]}> " >> "${destination}"
    done
    System.out.println "
             \";;& 
@@ -332,9 +331,9 @@ done
       for (( i=0; i < ${#special[@]}; i++))
       do
          if (( $i != 0 )); then
-            System.out.print                 \|\<"${special[$i]}"\> >> "${destination}"
+            System.out.print                 \|\<"${special[${i}]}"\> >> "${destination}"
          else
-            System.out.print                 \<"${special[$i]}"\> >> "${destination}"
+            System.out.print                 \<"${special[${i}]}"\> >> "${destination}"
          fi
       done
    System.out.println "
