@@ -347,17 +347,4 @@
 #    -changed PS4 pattern in __setPS4
 #    -script skeleton (Script.generator) refactoring (new option handling, bugfixing, 
 #     new -S option (code-stepping + functrace), -- = end of options, --do option, unknownOptionHandler, ...)
-
-#################################################################
-# Features:
-# String manipulation with umlauts and other special characters
-# Math methods accept arguments with scientific notation
-# Math methods accept arguments float numbers with "." or ","
-# Developer support: Class.generator, Man.generator, Script.generator
-# Use of bash autocompletion
-# Registry for environment cleanUp
-# i18n
-# man pages
-# "decorators" for your functions (with almost pythonic look)
-# Manage your system processes
-#################################################################
+#    -Fixes and small improvements
