@@ -1446,8 +1446,10 @@ __wordSort() {
    declare -a array=("$@")
    declare -i j i
    local temp word result=''
-   for (( i=${#array[@]}-1; i>0; i-- )); do
-      for (( j=1; j<=i; j++ )); do
+   for (( i=${#array[@]}-1; i>0; i-- ))
+   do
+      for (( j=1; j<=i; j++ ))
+      do
          if [[ "${array[j-1]}" == "${array[j]}" ]] ||\
             [[ "${array[j-1]}" <  "${array[j]}" ]] ; then
             continue
