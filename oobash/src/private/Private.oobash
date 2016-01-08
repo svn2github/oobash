@@ -90,7 +90,7 @@ __getObjectPointer() {
          for ((i=0; i < ${#str}; i++))
          do
             char="${str:i:1}"
-            if [[ $char == "@" ]]; then
+            if [[ "${char}" == "@" ]]; then
                j=$((++i))
                pointer="${str:j}"
                found=1
@@ -114,8 +114,8 @@ __registerFunction __getObjectPointer
 __getFileBase() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    arg="$1"
-   local file="$(__basename "$arg")"
-   local path="$(__dirname "$arg")"
+   local file="$(__basename "${arg}")"
+   local path="$(__dirname "${arg}")"
    # test for hidden file
    if [[ ! -z "${file%.*}" ]]; then
       System.out.println "$(__stripPath "${path}"/"${file%.*}")"
@@ -259,8 +259,8 @@ __throw() {
    local message="$2"
    __tracebackHeader
    System.err.println "${exception}${message}"
-   if [[ ! -z "${__ExceptionValues__[$exception]}" ]]; then
-      returnValue=${__ExceptionValues__[$exception]}
+   if [[ ! -z "${__ExceptionValues__[${exception}]}" ]]; then
+      returnValue=${__ExceptionValues__[${exception}]}
    else   
       returnValue=${__ExceptionValues__[Unknown]}
    fi
@@ -276,8 +276,8 @@ __attribute() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local key="$1"
    local value="$2"
-   __OBJECTPOOL__["${this}"]=$class@$pointer
-   __ATTRIBUTEPOOL__["${pointer}"@"${key}"]="$value"
+   __OBJECTPOOL__["${this}"]=${class}@${pointer}
+   __ATTRIBUTEPOOL__["${pointer}"@"${key}"]="${value}"
    return 0
 }
 __registerFunction __attribute
@@ -313,7 +313,6 @@ __destruct() {
             unset __ATTRIBUTEPOOL__["${key}"]
          fi      
       done
-
       __unalias "$this" "$lastClass"
    fi
    return 0
@@ -393,7 +392,7 @@ __strUpper() {
    for ((i=0; i < ${#str}; i++))
    do
       char="${str:i:1}"
-      valueOf=$(__charCode "$char")
+      valueOf=$(__charCode "${char}")
       case "${valueOf}" in
          # small sharp s 
          223 )                  
@@ -436,8 +435,8 @@ __strLower() {
    for ((i=0; i < ${#str}; i++))
    do
       char="${str:i:1}"
-      valueOf=$(__charCode "$char")
-      case $valueOf in
+      valueOf=$(__charCode "${char}")
+      case "${valueOf}" in
          # uppercase sharp s
          7838)
             lower="${lower}""ß";;
@@ -759,7 +758,7 @@ __i18nMessage() {
        System.${printStream}.${print} ""
    else
       if command -v eval_gettext >/dev/null 2>&1; then
-         System.${printStream}.${print} "$(eval_gettext "$message")"
+         System.${printStream}.${print} "$(eval_gettext "${message}")"
       else
          # fall back to old school bash i18n
          System.${printStream}.${print} "$(eval System.out.println \$"\"${message}\"")"
@@ -818,7 +817,7 @@ __cleanUpClasses() {
             unset -f "__${meth}"
          done
          unset $(eval echo __${value}__  __${value}Methods__)
-         unset -f $(eval echo $value ${value}.help)
+         unset -f $(eval echo ${value} ${value}.help)
       fi
    done
    return 0
@@ -1187,7 +1186,7 @@ __isBashInteger() {
       shopt -u extglob
    fi
 
-   if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
+   if [[ "$(Boolean.parseBoolean "${bool}")" == "$(Boolean.TRUE)" ]]; then
       return 0
    else
       return 1
@@ -1273,7 +1272,7 @@ __charCode() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local char="${1:0:1}"
    declare -i code
-   code=$(printf '%d\n' "'$char")
+   code=$(printf '%d\n' "'${char}")
    System.out.println "${code}" 
    return 0
 }
@@ -1384,7 +1383,7 @@ __getFreeFD() {
                   fi
                fi
             done
-            if [[ "$(Boolean.parseBoolean "$bool")" == "$(Boolean.TRUE)" ]]; then
+            if [[ "$(Boolean.parseBoolean "${bool}")" == "$(Boolean.TRUE)" ]]; then
                break
             fi
          done
