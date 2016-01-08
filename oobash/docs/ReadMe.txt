@@ -129,11 +129,13 @@ Examples:
 Class.generator Person name age
 source oobash/src/myClassFiles/Person.oobash
 Man.generator Person
+man Person
 
 OR 
 
 Script.generator greatScript.sh
 Man.generator greatScript.sh
+man greatScript.sh
 
 F) Methods declaration
 ######################
