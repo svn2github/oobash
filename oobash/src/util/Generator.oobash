@@ -758,6 +758,7 @@ do
       ;;
    esac   
 done
+shift \"\$((OPTIND - 1))\"
 
 # To avoid accidents: exit if no options
 if ((!optionsFound)); then
