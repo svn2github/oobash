@@ -110,6 +110,10 @@ The tool will return the path and name of the created script file.
 1) Call the Script.generator <scriptname>
 2) Use the skeleton to write your script
 3) Edit embedded pod docs
+4) If you implement new options in your script, you should implement these options
+   in the option autocomplete file, too. You can find the option autocomplete files
+   in the hidden directory .completions in the scripts directory. The name of the file
+   is the name of your script plus the extension .comp.
 
 Example:
 Script.generator greatScript.sh
@@ -178,6 +182,11 @@ H) Autocompletion
    complete -W  "$(echo ${__$Class__[@]}) all $Class" $Class.help
    This way an argument wordlist for the $Class.help function is generated and used by the bash autocompletion.  
    The content of the wordlist is every method that can be used by a $Class "object" plus the consructor of the $Class class and the keyword 'all'.
+
+ * for the own scripts
+   --------------------
+   There is a hidden directory named .completions, that contains the files for the option autocompletion
+   of the scripts.
 
 I) I18N
 ########
