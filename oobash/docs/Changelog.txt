@@ -341,10 +341,12 @@
 #    -code/help/man is alphabetically sorted
 #    -Fixes and small improvements
 # Version:      0.39.13
-#    -Stacktrace and String title work in cywin environemnt
+#    -Stacktrace and String title work in cygwin environemnt
 #    -fixed __cleanUp
 #    -added __ps4IndirectionLevelIndentation
 #    -changed PS4 pattern in __setPS4
 #    -script skeleton (Script.generator) refactoring (new option handling, bugfixing, 
 #     new -S option (code-stepping + functrace), -- = end of options, --do option, unknownOptionHandler, ...)
+#    -option autocompletion file for the script skeleton; completion files in hidden scripts/.completions
+#    directory
 #    -Fixes and small improvements

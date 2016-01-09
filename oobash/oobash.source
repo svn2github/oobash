@@ -229,7 +229,7 @@ __registerVar __STARTTIME__
 __registerVar TEXTDOMAINDIR
 __registerVar TEXTDOMAIN
 
-# source all your class files
+# source all your class files and script completions
 globstarActive=$(Boolean.FALSE) 
 shopt -q globstar
 if (( $? == 1 )); then
@@ -238,7 +238,11 @@ if (( $? == 1 )); then
 fi 
 for class in "${__OODIR__}"/src/myClassFiles/**/*.oobash
 do
-   source ${class} 2>/dev/null
+   source "${class}" 2>/dev/null
+done
+for comp in "${__OODIR__}"/scripts/.completions/*.comp
+do
+   source "${comp}" 2>/dev/null
 done
 if [[ "${globstarActive}" == "$(Boolean.TRUE)" ]]; then
    shopt -u globstar
