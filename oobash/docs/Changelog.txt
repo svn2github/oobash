@@ -341,7 +341,6 @@
 #    -code/help/man is alphabetically sorted
 #    -Fixes and small improvements
 # Version:      0.39.13
-#    -Stacktrace and String title work in cygwin environemnt
 #    -fixed __cleanUp
 #    -added __ps4IndirectionLevelIndentation
 #    -changed PS4 pattern in __setPS4
