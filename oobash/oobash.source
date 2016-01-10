@@ -247,7 +247,7 @@ done
 if [[ "${globstarActive}" == "$(Boolean.TRUE)" ]]; then
    shopt -u globstar
 fi
-unset class globstarActive
+unset class globstarActive comp
 
 # Export scriptpath + scriptname if oobash is sourced by script
 if [[ -z "$PS1" ]]; then
