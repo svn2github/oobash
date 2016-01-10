@@ -1,7 +1,11 @@
 # MAYBE ROADMAP (very unstable ;-) ):
+   
+# 0.39.14
+# some new File methods
+# System.exit: negative exit values
+# Process kill: -L results
 
 # 0.40
-# -autocompletion for generated scripts
 # -Logging
 # info in command_not_found_handle ?
 # error in throw ?
@@ -9,7 +13,6 @@
 
 # 0.40.1
 # -optimize logging
-# -script skeleton options: -- option delimiter ?
 # -tput: color management (use in PS4?)
 # -better docs for the private package ?
 # -cleanup generator code
