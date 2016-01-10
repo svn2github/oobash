@@ -606,7 +606,7 @@ help() {
    if (( \$# <= 1 )); then
       if (( \$# == 1 )); then
          if ! __isBashInteger \"\$1\"; then
-            __throw \"IllegalArgumentException\" \": Illegal argument: \"\$1\"\"
+            __throw \"IllegalArgumentException\" \": Illegal argument: \$1\"
             exitValue=\$?
             __handleErrorMessage
             System.exit \$exitValue
@@ -616,7 +616,7 @@ help() {
       fi
       if command -v pod2usage >/dev/null 2>&1; then
          local out
-         if (( \$exitValue == 0 )); then
+         if (( exitValue == 0 )); then
             out='>&STDOUT'
          else
             out='>&STDERR'
@@ -690,7 +690,7 @@ unknownOptionHandler() {
    System.err.println
    System.err.println \"\${message}\"
    System.err.println
-   help \${__ExceptionValues__[IllegalArgumentException]}
+   help \"\${__ExceptionValues__[IllegalArgumentException]}\"
 }
 
 ##################
@@ -760,7 +760,7 @@ shift \"\$((OPTIND - 1))\"
 
 # To avoid accidents: exit if no options
 if ((!optionsFound)); then
-  help \${__ExceptionValues__[IllegalArgumentException]}
+  help \"\${__ExceptionValues__[IllegalArgumentException]}\"
 fi
 
 ########
