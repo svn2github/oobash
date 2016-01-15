@@ -123,7 +123,7 @@ complete -W  "$(echo ${__String__[@]}) all Boolean parseBoolean TRUE FALSE" Bool
 Boolean.help() {  
    local printStream=${printStream:-out};
    if (( $# == 0 )); then
-      System.${printStream}.println "
+      System."${printStream}".println "
       Usage: Boolean.help all|methodname|constructor|constant
       Available methods:
       -Boolean.parseBoolean -equals -hashCode
@@ -141,7 +141,7 @@ Boolean.help() {
       case $1 in
          Boolean|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                Boolean
                   Constructor for the Boolean objects.
                   Allocates a Boolean object representing the value true 
@@ -165,7 +165,7 @@ Boolean.help() {
             ";;&
          Boolean.FALSE|FALSE|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                Boolean.FALSE
                   The Boolean object corresponding to the primitive value false. 
                Parameters:
@@ -178,7 +178,7 @@ Boolean.help() {
             ";;&
          Boolean.parseBoolean|parseBoolean|all)  
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                Boolean.parseBoolean
                   Parses the primitive string argument as a boolean. The boolean 
                   returned represents the value true if the string argument 
@@ -197,7 +197,7 @@ Boolean.help() {
             ";;& 
          Boolean.TRUE|TRUE|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                Boolean.TRUE
                   The Boolean object corresponding to the primitive value true. 
                Parameters:
@@ -210,7 +210,7 @@ Boolean.help() {
                ";;&
          compareTo|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                compareTo
                   Compares this Boolean instance with another Boolean instance. 
                Parameters:
@@ -238,7 +238,7 @@ Boolean.help() {
             ";;&
          equals|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                equals
                   Returns true if and only if the argument is a Boolean object that 
                   represents the same boolean value as this object. 
@@ -258,7 +258,7 @@ Boolean.help() {
             ";;&
          getClass|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getClass
                   Returns the runtime class of this Object.
                Parameters:
@@ -274,7 +274,7 @@ Boolean.help() {
             ";;&
          hashCode|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                hashCode
                   Returns a hash code for this Boolean object.
                Parameters:
@@ -291,7 +291,7 @@ Boolean.help() {
             ";;&
          toString|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                toString
                   Returns a String object representing this Boolean's value. 
                   If this object represents the value true, a string equal to \"true\" 
@@ -306,7 +306,7 @@ Boolean.help() {
                   >>>false            
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System.${printStream}.println "                                  
+                 System."${printStream}".println "                                  
                        No help found for $1
                     "   
               fi

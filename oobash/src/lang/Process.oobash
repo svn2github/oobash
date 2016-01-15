@@ -697,7 +697,7 @@ complete -W  "$(echo ${__Process__[@]}) create all Process" Process.help
 Process.help() {  
    local printStream=${printStream:-out}  
    if (( $# == 0 )); then
-      System.${printStream}.println "
+      System."${printStream}".println "
                     Usage: Process.help all|methodname
                     Available methods:
                     -equals -getClass -getCommand
@@ -716,7 +716,7 @@ Process.help() {
       case $1 in
          Process|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                Process
                   Constructor for the Process objects.
                Parameters:
@@ -737,7 +737,7 @@ Process.help() {
             ";;&
          Process.create|create|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                Process.create
                   Processbuilder using the given command. Stdin and stderr
                   of the command go to /dev/null.
@@ -755,7 +755,7 @@ Process.help() {
             ";;&
          equals|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                equals
                   Returns true if and only if the argument is a Process object that 
                   represents the same Process value as this object. 
@@ -774,7 +774,7 @@ Process.help() {
             ";;&
          getClass|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getClass
                   Returns the runtime class of this Object.
                Parameters:
@@ -790,7 +790,7 @@ Process.help() {
             ";;&
          getCommand|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getCommand
                   Returns the executable name of this process
                Parameters:
@@ -808,7 +808,7 @@ Process.help() {
             ";;&
          getEffectiveUserId|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getEffectiveUser
                   Returns effective user id
                Parameters:
@@ -826,7 +826,7 @@ Process.help() {
             ";;&
          getMemorySize|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getMemorySize
                   Returns the resident set size, the non-swapped physical memory 
                   that a task has used (in kiloBytes).
@@ -845,7 +845,7 @@ Process.help() {
             ";;&
          getParentPid|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getParentPid
                   Returns the pid of the parent process. If there is no parent pid
                   0 is returned.
@@ -864,7 +864,7 @@ Process.help() {
             ";;&
          getPid|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getPid
                   Returns the value of pid
                Parameters:
@@ -882,7 +882,7 @@ Process.help() {
             ";;&
          getPriority|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getPriority
                   Returns nice value. This ranges from 19 (nicest) 
                   to -20 (not nice to other processes)
@@ -901,7 +901,7 @@ Process.help() {
             ";;&
          getRealUserId|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getRealUser
                   Returns real user id
                Parameters:
@@ -919,7 +919,7 @@ Process.help() {
             ";;&
          getStartTime|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getStartTime
                   Returns the time the command started.
                   Format: \"+%a %b %d %H:%M:%S %Y\"
@@ -938,7 +938,7 @@ Process.help() {
             ";;&
          getStatus|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getStatus
                   Returns the status of this procss
                   Possible values (depends on operating system):
@@ -964,7 +964,7 @@ Process.help() {
             ";;&
          getUser|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getUser
                   Returns the username of this process
                Parameters:
@@ -982,7 +982,7 @@ Process.help() {
             ";;&
          hashCode|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                hashCode
                   Returns a hash code for this Process object.
                Parameters:
@@ -999,7 +999,7 @@ Process.help() {
             ";;&
          isDaemon|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isDaemon
                   Checks if there is any controlling terminal. If yes,
                   false is returned otherwise true.
@@ -1018,7 +1018,7 @@ Process.help() {
             ";;&
          kill|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                kill
                   Sends signal to process.
                   You can see all valid signals, if you use the command
@@ -1040,7 +1040,7 @@ Process.help() {
             ";;&
          setPriority|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                setPriority
                   Alters the scheduling priority of this running process.
                   Users other than the super-user may only alter the priority of processes they own,
@@ -1063,7 +1063,7 @@ Process.help() {
             ";;&
          threadCount|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                threadCount
                   Returns the number of threads of this Process.
                Parameters:
@@ -1081,7 +1081,7 @@ Process.help() {
             ";;&
          toString|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                toString
                   Returns a String object representing this Process object in sorted order. 
                Parameters:
@@ -1094,7 +1094,7 @@ Process.help() {
                   >>>1
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System.${printStream}.println "                                  
+                 System."${printStream}".println "                                  
                        No help found for $1
                     "   
               fi

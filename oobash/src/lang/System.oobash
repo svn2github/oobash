@@ -187,7 +187,7 @@ complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println ou
 System.help() {  
    local printStream=${printStream:-out}
    if (( $# == 0 )); then
-      System.${printStream}.println "
+      System."${printStream}".println "
       Usage: System.help all|methodname
       Available methods:
       -System.currentTimeMillis -System.currentTimeNanos
@@ -205,7 +205,7 @@ System.help() {
       case $1 in 
          System.currentTimeMillis|currentTimeMillis|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.currentTimeMillis
                Returns the current time in milliseconds. Note that while 
                the unit of time of the return value is a millisecond, the 
@@ -225,7 +225,7 @@ System.help() {
             ";;&
          System.currentTimeNanos|currentTimeNanos|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.currentTimeNanos
                Returns the current time in nanoseconds. Note that while 
                the unit of time of the return value is a nanosecond, the 
@@ -245,7 +245,7 @@ System.help() {
             ";;&
          System.err.print|err.print|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.err.print
                Print a primitive string to \"standard\" error output
             Parameters:
@@ -258,7 +258,7 @@ System.help() {
             ";;&
          System.err.println|err.println|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.err.println
                Print a primitive string and then terminate the line to \"standard\" error output
             Parameters:
@@ -271,7 +271,7 @@ System.help() {
             ";;&
          System.exit|exit|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.exit
                Terminates the currently running bash. 
                The argument serves as a status code; by convention, a 
@@ -285,7 +285,7 @@ System.help() {
             ";;&
          System.out.print|out.print|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.out.print
                Print a primitive string to \"standard\" output 
             Parameters:
@@ -298,7 +298,7 @@ System.help() {
             ";;&
          System.out.println|out.println|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.out.println
                Print a primitive string and then terminate the line to \"standard\" output 
             Parameters:
@@ -311,7 +311,7 @@ System.help() {
             ";;&
          System.runtime|runtime|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
             System.runtime
                Returns the current runtime in nanosecond precision (if GNU date and bc exists).
                If bc or GNU date is missing the current runtime is returned in seconds.
@@ -326,7 +326,7 @@ System.help() {
                >>>Runtime: 1.536150153 [seconds.nanoseconds]
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System.${printStream}.println "                                  
+                 System."${printStream}".println "                                  
                        No help found for $1
                     "   
               fi

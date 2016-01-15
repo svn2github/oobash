@@ -176,9 +176,9 @@ complete -W  \"\$(echo \${__${userClass}__[@]}) all ${userClass}\" ${userClass}.
 #################
 
 ${userClass}.help() {  
-   local printStream=\${printStream:-out}  
+   local printStream=\"\${printStream:-out}\"  
    if (( \$# == 0 )); then
-      System.\${printStream}.println \"
+      System.\"\${printStream}\".println \"
                     Usage: ${userClass}.help all|methodname
                     Available methods:
                     -equals" >> "${destination}"
@@ -200,7 +200,7 @@ System.out.println "                    -hashCode
       case \$1 in
          ${userClass}|all)
             match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
+            System.\"\${printStream}\".println \"
                ${userClass}
                   Constructor for the ${userClass} objects.
                Parameters:
@@ -228,7 +228,7 @@ System.out.println "                    -hashCode
             \";;& 
          equals|all)
             match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
+            System.\"\${printStream}\".println \"
                equals
                   Returns true if and only if the argument is a ${userClass} object that 
                   represents the same ${userClass} value as this object. 
@@ -264,7 +264,7 @@ do
        
       System.out.println "         ${getter}|all)
             match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
+            System.\"\${printStream}\".println \"
                ${getter}
                   Returns the value of ${att,,}.
                Parameters:
@@ -282,7 +282,7 @@ do
    else
       System.out.println "         getClass|all)
             match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
+            System.\"\${printStream}\".println \"
                getClass
                   Returns the runtime class of this Object.
                Parameters:
@@ -300,7 +300,7 @@ do
 done      
    System.out.println "         hashCode|all)
             match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
+            System.\"\${printStream}\".println \"
                hashCode
                   Returns a hash code for this ${userClass} object.
                Parameters:
@@ -316,7 +316,7 @@ done
             \";;&
          toString|all)
             match=\$(Boolean.TRUE)
-            System.\${printStream}.println \"
+            System.\"\${printStream}\".println \"
                toString
                   Returns a String object representing this ${userClass} object in sorted order. 
                Parameters:
@@ -339,7 +339,7 @@ done
    System.out.println "
             \";;&
          *)   if [[ \"\${match}\" == \"\$(Boolean.FALSE)\" ]]; then
-                 System.\${printStream}.println \"                                  
+                 System.\"\${printStream}\".println \"                                  
                        No help found for \$1
                     \"   
               fi
@@ -809,6 +809,7 @@ __"${scriptname}"() {
   fi
   return 0
 }
+
 complete -F __"${scriptname}" "${scriptname}"" > "${compdestination}"
          source "${compdestination}" 2>/dev/null
    else

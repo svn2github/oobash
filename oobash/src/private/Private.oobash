@@ -755,13 +755,13 @@ __i18nMessage() {
    local message="$1"
    # msgid "" can be mapped to meta informations 
    if [[ "${message}" == "" ]]; then
-       System.${printStream}.${print} ""
+       System."${printStream}".${print} ""
    else
       if command -v eval_gettext >/dev/null 2>&1; then
-         System.${printStream}.${print} "$(eval_gettext "${message}")"
+         System."${printStream}".${print} "$(eval_gettext "${message}")"
       else
          # fall back to old school bash i18n
-         System.${printStream}.${print} "$(eval System.out.println \$"\"${message}\"")"
+         System."${printStream}".${print} "$(eval System.out.println \$"\"${message}\"")"
       fi
    fi
    return 0

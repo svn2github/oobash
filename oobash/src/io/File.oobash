@@ -2415,7 +2415,7 @@ complete -W  "$(echo ${__File__[@]}) all File createTempFile createTemporaryFile
 File.help() {  
    local printStream=${printStream:-out}
    if (( $# == 0 )); then
-      System.${printStream}.println "
+      System."${printStream}".println "
       Usage: File.help all|methodname|constructor
       Available methods:
       -isDirectory -exists -toString -lastAccessed
@@ -2451,7 +2451,7 @@ File.help() {
       case $1 in
          File|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                File
                   Constructor for the File objects.
                Parameters:
@@ -2470,7 +2470,7 @@ File.help() {
             ";;&
          File.createTempDir|createTempDir|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                File.createTempDir
                   Creates an empty directory in the default temporary-file directory, using the given prefix
                   and suffix to generate its name. Invoking this method is equivalent to invoking
@@ -2496,7 +2496,7 @@ File.help() {
             ";;&
          File.createTempFile|createTempFile|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "   
+            System."${printStream}".println "   
                File.createTempFile
                   Creates an empty file in the default temporary-file directory, using the given prefix 
                   and suffix to generate its name. Invoking this method is equivalent to invoking 
@@ -2522,7 +2522,7 @@ File.help() {
             ";;&
          File.createTemporaryDir|createTemporaryDir|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                File.createTemporaryDir
                   Creates an empty directory in the default temporary-file directory, using the given prefix and
                   suffix to generate its name.
@@ -2561,7 +2561,7 @@ File.help() {
             ";;&
          File.createTemporaryFile|createTemporaryFile|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "   
+            System."${printStream}".println "   
                File.createTemporaryFile
                   Creates an empty file in the default temporary-file directory, using the given prefix and 
                   suffix to generate its name.
@@ -2599,7 +2599,7 @@ File.help() {
             ";;&
          append|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                append
                   Appends string to content of file.
                Parameters:
@@ -2620,7 +2620,7 @@ File.help() {
             ";;&
          canExecute|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                canExecute
                   Tests whether the application can execute the file 
                   denoted by this abstract pathname.
@@ -2638,7 +2638,7 @@ File.help() {
             ";;&
          canRead|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                canRead
                   Tests whether the application can read the file 
                   denoted by this abstract pathname.
@@ -2656,7 +2656,7 @@ File.help() {
             ";;&
          canWrite|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                canWrite
                   Tests whether the application can write the file 
                   denoted by this abstract pathname.
@@ -2674,7 +2674,7 @@ File.help() {
                ";;&
          clear|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                clear
                   Deletes content of file.
                Parameters:
@@ -2692,7 +2692,7 @@ File.help() {
             ";;&
          compareTo|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                compareTo
                   Compares two abstract pathnames lexicographically. 
                   The ordering defined by this method depends upon the underlying system. 
@@ -2731,7 +2731,7 @@ File.help() {
             ";;&
          createNewFile|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "          
+            System."${printStream}".println "          
                createNewFile  
                   Creates a new, empty file named by this abstract pathname if and only if a file with 
                   this name does not yet exist. 
@@ -2750,7 +2750,7 @@ File.help() {
             ";;&
          delete|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "         
+            System."${printStream}".println "         
                delete
                   Deletes the file or directory denoted by this abstract pathname. If this pathname 
                   denotes a directory, then the directory must be empty in order to be deleted.
@@ -2769,7 +2769,7 @@ File.help() {
             ";;&
          deleteRecursively|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "         
+            System."${printStream}".println "         
                deleteRecursively
                   Deletes a file or directory and all contents recursively.
                   If the file argument is a symbolic link the link will be deleted 
@@ -2789,7 +2789,7 @@ File.help() {
             ";;&
          delLine|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                delLine
                   Deletes line with given number in this file.
                   Caution! This method can corrupt this file. 
@@ -2816,7 +2816,7 @@ File.help() {
             ";;&
          equals|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                equals
                   Tests this abstract pathname for equality with the given object. 
                   Returns true if and only if the argument is an 
@@ -2839,7 +2839,7 @@ File.help() {
             ";;&
          exists|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                exists
                   Tests whether the file or directory denoted by this abstract pathname exists. 
                Parameters:
@@ -2856,7 +2856,7 @@ File.help() {
             ";;&
          getAbsolutePath|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "         
+            System."${printStream}".println "         
                getAbsolutePath            
                   Returns the absolute pathname string of this abstract pathname.
                   If this abstract pathname is already absolute, then the pathname string is simply 
@@ -2877,7 +2877,7 @@ File.help() {
             ";;&
          getBase|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getBase
                   Returns the basename and path of this file, without extension suffix 
                   and without the splitting \".\" character.
@@ -2894,7 +2894,7 @@ File.help() {
             ";;&
          getCanonicalPath|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "         
+            System."${printStream}".println "         
                getCanonicalPath
                   Returns the canonical pathname string of this abstract pathname.
 
@@ -2923,7 +2923,7 @@ File.help() {
             ";;&
          getClass|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getClass
                   Returns the runtime class of this Object.
                Parameters:
@@ -2939,7 +2939,7 @@ File.help() {
             ";;&
          getExtension|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getExtension
                   Returns the extension suffix of this file.
                Parameters:
@@ -2955,7 +2955,7 @@ File.help() {
             ";;&
          getFreeSpace|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getFreeSpace
                   Returns the number of unallocated bytes in the partition named by this 
                   abstract path name.
@@ -2980,7 +2980,7 @@ File.help() {
             ";;&
          getGroup|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getGroup
                   Returns the group of the owner of this file.
                Parameters:
@@ -2998,7 +2998,7 @@ File.help() {
             ";;&
          getInode|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getInode
                   Returns the inode number.
                   getInode does not follow links.
@@ -3017,7 +3017,7 @@ File.help() {
             ";;&
          getLine|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getLine
                   Gets line with given number from this file. 
                Parameters:
@@ -3040,7 +3040,7 @@ File.help() {
             ";;&
          getName|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getName
                   This is just the last name in the pathname's name sequence.
                Parameters:
@@ -3059,7 +3059,7 @@ File.help() {
                ";;&
          getOwner|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getOwner
                   Returns the name of the owner of this file.
                Parameters:
@@ -3077,7 +3077,7 @@ File.help() {
             ";;&
          getParent|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getParent
                   Returns the pathname string of this abstract pathname's parent, 
                   or "." if this pathname does not name a parent directory.
@@ -3101,7 +3101,7 @@ File.help() {
             ";;&
          getPath|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "          
+            System."${printStream}".println "          
                getPath
                   Converts this abstract pathname into a pathname string. 
                Parameters:
@@ -3117,7 +3117,7 @@ File.help() {
             ";;&
          getPosixFilePermissions|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getPosixFilePermissions
                   Returns primitive string of permission attributes.
                   By default, symbolic links are followed and the file attribute
@@ -3137,7 +3137,7 @@ File.help() {
             ";;&
          getText|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getText
                   Returns string that is the content of file.successful.
                Parameters:
@@ -3156,7 +3156,7 @@ File.help() {
             ";;&
          getTotalSpace|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getTotalSpace
                   Returns the size of the partition named by this abstract pathname.
                   The returned number of available bytes is a hint, but not a guarantee, that it 
@@ -3179,7 +3179,7 @@ File.help() {
             ";;&
          getUsableSpace|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getUsableSpace
                   Returns the number of bytes available to this virtual machine on the partition 
                   named by this abstract pathname. When possible, this method checks for write 
@@ -3207,7 +3207,7 @@ File.help() {
             ";;&
          hasGidBit|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                hasGidBit
                   Tests if the setgid (short for \"set group ID upon execution\") bit is active (\"1\")
                   for this file.
@@ -3224,7 +3224,7 @@ File.help() {
             ";;&
          hashCode|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                hashCode
                   Computes a hash code for this abstract pathname. Because 
                   equality of abstract pathnames is inherently system-dependent, 
@@ -3244,7 +3244,7 @@ File.help() {
             ";;&
          hasStickyBit|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                hasStickyBit
                   Tests whether the stick bit is set on the file denoted by this abstract pathname. 
                Parameters:
@@ -3261,7 +3261,7 @@ File.help() {
             ";;&
          hasUidBit|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                hasUidBit
                   Tests if the setuid (short for \"set user ID upon execution\") bit is active (\"1\")
                   for this file.
@@ -3278,7 +3278,7 @@ File.help() {
             ";;&
          indexOfExtension|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                indexOfExtension
                   Returns the index of the last extension separator character, which is a dot.
                   This method also checks that there is no directory separator, which is a /
@@ -3296,7 +3296,7 @@ File.help() {
             ";;&
          indexOfLastSeparator|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                indexOfLastSeparator
                   Returns the index of the last directory separator character, which is a /.
                   This method will handle a file in either Unix or Windows format. The position 
@@ -3314,7 +3314,7 @@ File.help() {
             ";;&
          insertAfterLine|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                insertAfterLine
                   Inserts given String after given line in this file.
                   Caution! This method can corrupt this file. 
@@ -3347,7 +3347,7 @@ File.help() {
             ";;&
          insertBeforeLine|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                insertBeforeLine
                   Inserts given String before given line in this file.
                   Caution! This method can corrupt this file. 
@@ -3380,7 +3380,7 @@ File.help() {
             ";;&
          isAbsolute|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "         
+            System."${printStream}".println "         
                isAbsolute
                   Tests whether this abstract pathname is absolute. The definition of absolute 
                   pathname is system dependent. On UNIX systems, a pathname is absolute if its prefix is "/".
@@ -3397,7 +3397,7 @@ File.help() {
             ";;&
          isBlockSpecial|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isBlockSpecial
                   Tests whether the file denoted by this abstract pathname is a block special. 
                Parameters:
@@ -3414,7 +3414,7 @@ File.help() {
             ";;&
          isCharacterSpecial|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isCharacterSpecial
                   Tests whether the file denoted by this abstract pathname is a character 
                   special. 
@@ -3432,7 +3432,7 @@ File.help() {
             ";;&
          isDirectory|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isDirectory
                   Tests whether the file denoted by this abstract pathname is a directory. 
                Parameters:
@@ -3449,7 +3449,7 @@ File.help() {
             ";;&
          isFile|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isFile
                   Tests whether the file denoted by this abstract pathname is a normal file. 
                   A file is normal if it is not a directory and, in addition, satisfies other 
@@ -3468,7 +3468,7 @@ File.help() {
             ";;&
          isHidden|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isHidden
                   Tests whether the file named by this abstract pathname is a hidden file. 
                   The exact definition of hidden is system-dependent. On UNIX systems, a file 
@@ -3489,7 +3489,7 @@ File.help() {
             ";;&
          isNamedPipe|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isNamedPipe
                   Tests whether the file denoted by this abstract pathname is a named pipe. 
                Parameters:
@@ -3506,7 +3506,7 @@ File.help() {
             ";;&
          isNewerThan|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isNewerThan
                   Tests whether the file denoted by this abstract pathname is newer (modification date)
                   than the given one.            
@@ -3525,7 +3525,7 @@ File.help() {
             ";;&
          isOlderThan|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isOlderThan
                   Tests whether the file denoted by this abstract pathname is older (modification date)
                   than the given one.
@@ -3544,7 +3544,7 @@ File.help() {
             ";;&
          isSocket|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isSocket
                   Tests whether the file denoted by this abstract pathname is a socket. 
                Parameters:
@@ -3561,7 +3561,7 @@ File.help() {
             ";;&
          isSymbolicLink|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                isSymbolicLink
                   Tests whether the file denoted by this abstract pathname is a symbolic link. 
                Parameters:
@@ -3578,7 +3578,7 @@ File.help() {
             ";;&
          lastAccessed|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                lastAccessed
                   Returns the time that the file denoted by this abstract pathname was last accessed.
                Parameters:
@@ -3597,7 +3597,7 @@ File.help() {
             ";;&
          lastChanged|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                lastChanged
                   Returns the time that the file denoted by this abstract pathname was last cahnged.
                Parameters:
@@ -3616,7 +3616,7 @@ File.help() {
             ";;&
          lastModified|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "         
+            System."${printStream}".println "         
                lastModified
                   Returns the time that the file denoted by this abstract pathname was last modified.
                Parameters:
@@ -3635,7 +3635,7 @@ File.help() {
             ";;&
          linecount|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                linecount
                   Counts the number of lines in file.
                Parameters:
@@ -3653,7 +3653,7 @@ File.help() {
             ";;&
          linematch|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                linematch
                   Looks for matching lines.
                Parameters:
@@ -3671,7 +3671,7 @@ File.help() {
             ";;&
          md5sum|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                md5sum
                   Print MD5 (128-bit) checksum
                Parameters:
@@ -3690,7 +3690,7 @@ File.help() {
             ";;&
          mkdir|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                mkdir
                   Creates the directory named by this abstract pathname.
                Parameters:
@@ -3710,7 +3710,7 @@ File.help() {
             ";;&
          mkdirs|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                mkdirs
                   Creates the directory named by this abstract pathname, including 
                   any necessary but nonexistent parent directories.
@@ -3729,7 +3729,7 @@ File.help() {
             ";;&
          replaceLine|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                replaceLine
                   Replace line in this file with given String.
                   Caution! This method can corrupt this file. 
@@ -3761,7 +3761,7 @@ File.help() {
             ";;&
          setExecutable|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println " 
+            System."${printStream}".println " 
                setExecutable
                   Sets the owner's or everybody's execute permission for this abstract pathname.
                Parameters:
@@ -3787,7 +3787,7 @@ File.help() {
             ";;&
          setgid|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                setgid
                   Sets the setgid (short for \"set group ID upon execution\") bit for this file
                   to \"1\", if possible.
@@ -3807,7 +3807,7 @@ File.help() {
             ";;&
          setLastAccessed|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                setLastAccessed
                   Sets the last-accessed time of the file or directory named by this abstract pathname.
                   All platforms support file-access times to the nearest second, but some provide
@@ -3834,7 +3834,7 @@ File.help() {
             ";;&
          setLastModified|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "         
+            System."${printStream}".println "         
                setLastModified
                   Sets the last-modified time of the file or directory named by this abstract pathname.
                   All platforms support file-modification times to the nearest second, but some provide 
@@ -3861,7 +3861,7 @@ File.help() {
             ";;&
          setPosixFilePermissions|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                setPosixFilePermissions
                   Sets a file's POSIX permissions.
                Parameters:
@@ -3880,7 +3880,7 @@ File.help() {
             ";;&
          setReadable|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println " 
+            System."${printStream}".println " 
                setReadable
                   Sets the owner's or everybody's read permission for this abstract pathname.
                Parameters:
@@ -3905,7 +3905,7 @@ File.help() {
             ";;&
          setReadOnly|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println " 
+            System."${printStream}".println " 
                setReadOnly
                   Marks the file or directory named by this abstract pathname so that only read operations are allowed. 
                Parameters:
@@ -3922,7 +3922,7 @@ File.help() {
             ";;&
          setStickyBit|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                setStickyBit
                   Sets the sticky bit for this file to \"1\", if possible.
                Parameters:
@@ -3941,7 +3941,7 @@ File.help() {
             ";;&
          setText|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                setText
                   Sets string as content of file.
                Parameters:
@@ -3963,7 +3963,7 @@ File.help() {
             ";;&
          setuid|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                setuid
                   Sets the setuid (short for \"set user ID upon execution\") bit for this file
                   to \"1\", if possible.
@@ -3983,7 +3983,7 @@ File.help() {
             ";;&
          setWritable|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println " 
+            System."${printStream}".println " 
                setWritable
                   Sets the owner's or everybody's write permission for this abstract pathname.
                Parameters:
@@ -4008,7 +4008,7 @@ File.help() {
             ";;&
          sha1sum|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                sha1sum
                   Print SHA1 (160-bit) checksum.
                Parameters:
@@ -4027,7 +4027,7 @@ File.help() {
             ";;&
          size|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                size
                   Returns the size of the file denoted by this abstract pathname. 
                   The return value is unspecified if this pathname denotes a directory.
@@ -4047,7 +4047,7 @@ File.help() {
                ";;&
          toString|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                toString
                   Returns the pathname string of this abstract pathname. 
                Parameters:
@@ -4063,7 +4063,7 @@ File.help() {
                ";;&
          touch|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                touch
                   Creates an empty file or updates the last updated timestamp on 
                   the same as the unix command of the same name.
@@ -4080,7 +4080,7 @@ File.help() {
                   >>>true
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System.${printStream}.println "                                  
+                 System."${printStream}".println "                                  
                        No help found for $1
                     "   
               fi

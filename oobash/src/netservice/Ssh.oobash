@@ -545,7 +545,7 @@ complete -W  "$(echo ${__Ssh__[@]}) all Ssh" Ssh.help
 Ssh.help() {
    local printStream=${printStream:-out}  
    if (( $# == 0 )); then
-      System.${printStream}.println "
+      System."${printStream}".println "
                     Usage: Ssh.help all|methodname
                     Available methods:
                     -command -connect -copy -diffFile 
@@ -565,7 +565,7 @@ Ssh.help() {
       case $1 in
          Ssh|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                Ssh
                   Constructor for the Ssh objects, checks if passwordless auth
                   is possible with name and user.
@@ -590,7 +590,7 @@ Ssh.help() {
             ";;&
          command|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                command
                   Calls given command on remote host.
                   If shell is interactive and the given command fails,
@@ -611,7 +611,7 @@ Ssh.help() {
             ";;&
          connect|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                connect
                   Opens a ssh shell on remote host
                Parameters:
@@ -627,7 +627,7 @@ Ssh.help() {
             ";;&
          copy|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                copy
                   Copies file or directory from this Ssh object to another.
                   All errors are redirected to /dev/null.
@@ -652,7 +652,7 @@ Ssh.help() {
             ";;&
          diffFile|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                diffFile
                   if the first [optional: and 3rd] argument defines a regular file, then
                   the output is a diff of the two files.
@@ -675,7 +675,7 @@ Ssh.help() {
             ";;&
          diffFiletree|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                diffFiletree
                   Compares the filetrees and returns the difference.
                   Stderr is not redirected.
@@ -697,7 +697,7 @@ Ssh.help() {
             ";;&
          equals|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                equals
                   Returns true if and only if the argument is a SshHost object that 
                   represents the same SshHost value as this object. 
@@ -716,7 +716,7 @@ Ssh.help() {
             ";;&
          execModule|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                execModule
                   Looks for the module in the netservice/modules directory.
                   Executes given module on this Ssh object.
@@ -738,7 +738,7 @@ Ssh.help() {
             ";;&
          getClass|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getClass
                   Returns the runtime class of this Object.
                Parameters:
@@ -754,7 +754,7 @@ Ssh.help() {
             ";;&
          getSshHost|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getSshHost
                   Returns the value of name
                Parameters:
@@ -770,7 +770,7 @@ Ssh.help() {
             ";;&
          getSshPort|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getSshPort
                   Returns the value of port (ssh-port)
                Parameters:
@@ -789,7 +789,7 @@ Ssh.help() {
             ";;&
          getSshUser|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                getSshUser
                   Returns the value of user (ssh-user)
                Parameters:
@@ -805,7 +805,7 @@ Ssh.help() {
             ";;&
          grep|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                grep
                   grep searches the given file (or recursive all files of the given directory)
                   for lines containing a match to the given pattern. By default, grep prints 
@@ -830,7 +830,7 @@ Ssh.help() {
             ";;&
          grepIgnoreCase|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                grepIgnoreCase
                   grepIgnoreCase searches the given file (or recursive all files of the given directory)
                   for lines containing a match to the given pattern. By default, grepIgnoreCase prints
@@ -856,7 +856,7 @@ Ssh.help() {
             ";;&
          grepInvertMatch|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                grepInvertMatch
                   grepInvertMatch searches the given file (or recursive all files of the given directory)
                   for non-matching lines to the given pattern. By default, grepInvertMatch prints 
@@ -877,7 +877,7 @@ Ssh.help() {
             ";;&
          hashCode|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                hashCode
                   Returns a hash code for this SshHost object.
                Parameters:
@@ -893,7 +893,7 @@ Ssh.help() {
             ";;&
          toString|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                toString
                   Returns a String object representing this SshHost object in sorted order. 
                Parameters:
@@ -907,7 +907,7 @@ Ssh.help() {
             ";;&
          vimEdit|all)
             match=$(Boolean.TRUE)
-            System.${printStream}.println "
+            System."${printStream}".println "
                vimEdit
                   Opens a remote file with the local vim
                Parameters:
@@ -921,7 +921,7 @@ Ssh.help() {
                   mymachine.vimEdit /etc/passwd
             ";;&
          *)   if [[ $match == $(Boolean.FALSE) ]]; then
-                 System.${printStream}.println "                                  
+                 System."${printStream}".println "                                  
                        No help found for $1
                     "   
               fi
