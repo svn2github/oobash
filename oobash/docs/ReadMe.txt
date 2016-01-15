@@ -96,8 +96,7 @@ If needed, you can use subfolders under src/myClassFiles to organize your files
 Example:
 src/myClassFile/my/my.oobash
 
-Next time you source the oobash.source, this file gets sourced too. But if you 
-want to use it at once after the creation, you certainly can source the file manually.
+Next time you source the oobash.source, this file gets sourced too.
 
 b) Create own scripts
 ------------------------
@@ -131,7 +130,6 @@ The tool will return the path and name of the created man file.
 Examples:
 
 Class.generator Person name age
-source oobash/src/myClassFiles/Person.oobash
 Man.generator Person
 man Person
 
