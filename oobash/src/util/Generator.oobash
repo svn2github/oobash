@@ -720,7 +720,7 @@ do
             xtrace)
                xtrace
             ;;
-            do)
+            \"do\")
                doMain=1
             ;;
             *)
