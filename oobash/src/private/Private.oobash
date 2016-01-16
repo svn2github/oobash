@@ -168,7 +168,7 @@ __keywordCheck() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local word="$1"
    local keyword
-   for keyword in ${__Keywords__[@]}
+   for keyword in "${__Keywords__[@]}"
    do 
       if [[ "${word}" == "${keyword}" ]]; then
          return 1
@@ -264,7 +264,7 @@ __throw() {
    else   
       returnValue=${__ExceptionValues__[Unknown]}
    fi
-   return $returnValue
+   return "${returnValue}"
 }
 __registerFunction __throw
 
@@ -577,7 +577,7 @@ __mathConverter() {
       fi     
       return 0
    elif [[ "${input}" =~ ^[-]?([0-9]*\.[0-9]+|[0-9]+)$ ]]; then
-      System.out.println $input
+      System.out.println "${input}"
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
       fi     
@@ -708,26 +708,26 @@ __posixFilePermissionToOctal() {
       do
          perm="${permissions:i:1}"
          case ${perm} in
-            r)octalPerm=$(($octalPerm+4));;
-            w)octalPerm=$(($octalPerm+2));;
-            s)octalPerm=$(($octalPerm+1))
-              if (( $i == 2)); then
-                 highOrderOctal=$(($highOrderOctal+4))
+            r)octalPerm=$(( octalPerm+4 ));;
+            w)octalPerm=$(( octalPerm+2 ));;
+            s)octalPerm=$(( octalPerm+1 ))
+              if (( i == 2)); then
+                 highOrderOctal=$(( highOrderOctal+4 ))
               else
-                 highOrderOctal=$(($highOrderOctal+2))
+                 highOrderOctal=$(( highOrderOctal+2 ))
               fi;;
-            S)if (( $i == 2)); then
-                 highOrderOctal=$(($highOrderOctal+4))
+            S)if (( i == 2)); then
+                 highOrderOctal=$(( highOrderOctal+4 ))
               else
-                 highOrderOctal=$(($highOrderOctal+2))
+                 highOrderOctal=$(( highOrderOctal+2 ))
               fi;;
-            x)octalPerm=$(($octalPerm+1));;
-            t)octalPerm=$(($octalPerm+1))
-              highOrderOctal=$(($highOrderOctal+1));;
-            T)highOrderOctal=$(($highOrderOctal+1));;
+            x)octalPerm=$(( octalPerm+1 ));;
+            t)octalPerm=$(( octalPerm+1 ))
+              highOrderOctal=$(( highOrderOctal+1 ));;
+            T)highOrderOctal=$(( highOrderOctal+1 ));;
          esac
          # starting with 0
-         if (( $i == 2 || $i == 5 || $i== 8 )); then
+         if (( i == 2 || i == 5 || i== 8 )); then
             octal=${octal}${octalPerm}
             octalPerm=0  
          fi        
@@ -755,13 +755,13 @@ __i18nMessage() {
    local message="$1"
    # msgid "" can be mapped to meta informations 
    if [[ "${message}" == "" ]]; then
-       System."${printStream}".${print} ""
+       System."${printStream}"."${print}" ""
    else
       if command -v eval_gettext >/dev/null 2>&1; then
-         System."${printStream}".${print} "$(eval_gettext "${message}")"
+         System."${printStream}"."${print}" "$(eval_gettext "${message}")"
       else
          # fall back to old school bash i18n
-         System."${printStream}".${print} "$(eval System.out.println \$"\"${message}\"")"
+         System."${printStream}"."${print}" "$(eval System.out.println \$"\"${message}\"")"
       fi
    fi
    return 0
@@ -776,7 +776,7 @@ __registerFunction __i18nMessage
 __cleanUpObjectsPool() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local obj
-   for obj in ${!__OBJECTPOOL__[@]} 
+   for obj in "${!__OBJECTPOOL__[@]}" 
    do 
       __destruct "${obj}"
    done
@@ -791,7 +791,7 @@ __cleanUpObjectsPool() {
 __cleanUpFunctions() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
-   for value in ${!__Registry__[@]}
+   for value in "${!__Registry__[@]}"
    do 
       if [[ "${__Registry__[$value]}" == "function" ]]; then
          unset -f "${value}" 
@@ -809,7 +809,7 @@ __cleanUpClasses() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
    local meth
-   for value in ${!__Registry__[@]}
+   for value in "${!__Registry__[@]}"
    do 
       if [[ "${__Registry__[$value]}" == "class" ]]; then
          for meth in $(eval echo \${__${value}__[@]})
@@ -831,7 +831,7 @@ __cleanUpClasses() {
 __cleanUpVars() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local value
-   for value in ${!__Registry__[@]}
+   for value in "${!__Registry__[@]}"
    do 
       if [[ "${__Registry__[$value]}" == "var" ]]; then
          unset "${value}"
@@ -852,7 +852,7 @@ __dependencyCheck() {
    declare -i i
    for ((i=0; i < ${#__Dependencies__[@]}; i++))
    do
-      if ! command -v ${__Dependencies__[i]} >/dev/null 2>&1; then
+      if ! command -v "${__Dependencies__[i]}" >/dev/null 2>&1; then
          bool="$(Boolean.FALSE)"
          __throw "NotInPathException" ": ${__Dependencies__[i]} not in path"
       else
@@ -961,7 +961,7 @@ if [[ ! -z "$PS1" ]]; then
          local printStream=err
          local class="$1"
          local func="$2"
-         ${class}.help ${func}
+         "${class}".help "${func}"
       fi
       return 0
    }
@@ -998,7 +998,7 @@ __stacktrace() {
    declare -i i=1
    until [[ "${FUNCNAME[$i]}" = "main" ]]
    do
-      if (( $i == 1 )); then
+      if (( i == 1 )); then
          System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line $((${BASH_LINENO[$i]}-2)), in ${FUNCNAME[$i+1]}"
       else
          System.err.println "   File \"${BASH_SOURCE[$i+1]}\", line ${BASH_LINENO[$i]}, in ${FUNCNAME[$i+1]}, calling ${FUNCNAME[$i]}"
@@ -1017,21 +1017,21 @@ __stacktrace() {
    if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
       declare -i index=0
       declare -a status
-      while (( $pid >= 1 ))
+      while (( pid >= 1 ))
       do
-         mapfile status </proc/$pid/status
+         mapfile status </proc/"${pid}"/status
          until [[ ${status[$index]:0:4} == "PPid" ]]
          do
             ((index++))
          done
-         command=$(</proc/$pid/cmdline)
+         command=$(</proc/"${pid}"/cmdline)
          System.err.println "   Process ${command}, pid ${pid}"
          pid=${status[$index]/PPid:/}
       done
    elif  [[ "$(uname -s 2>/dev/null)" == CYGWIN_NT-* ]]; then
       declare -i index=0
       declare -a status
-      while (( $pid > 1 ))
+      while (( pid > 1 ))
       do
          mapfile status </proc/$pid/status
          until [[ ${status[$index]:0:4} == "PPid" ]]
@@ -1043,12 +1043,12 @@ __stacktrace() {
          pid=${status[$index]/PPid:/}
       done
    else
-      if command -v ps 2>&1 1>/dev/null; then
+      if command -v ps 1>/dev/null 2>&1; then
          local process showpid
-         while (( $pid >= 1 ))
+         while (( pid >= 1 ))
          do
-            process="$(ps -p $pid -o command="" 2>/dev/null 2>/dev/null)"
-            showpid="$(ps -p $pid -o pid="" 2>/dev/null 2>/dev/null)"
+            process="$(ps -p "${pid}" -o command="" 2>/dev/null 2>/dev/null)"
+            showpid="$(ps -p "${pid}" -o pid="" 2>/dev/null 2>/dev/null)"
             System.out.print "   Process ${process##+([[:space:]])}"
             System.out.println ", pid ${showpid##+([[:space:]])}"               
             pid=$(ps -p "${pid}"  -o ppid="" 2>/dev/null 2>/dev/null)
@@ -1290,7 +1290,7 @@ __lookForLoggingPropertiesFile() {
       local directory="$(__dirname "${call}" 2>/dev/null)"
       local base="$(__getFileBase "${call}" 2>/dev/null)"
       local filebase="$(__basename "${base}")"
-      local logfile="log4-"${filebase}".properties"
+      local logfile="log4-${filebase}.properties"
       if [[ -r "${directory}"/"${logfile}" ]]; then
          return 0
       fi
@@ -1307,7 +1307,7 @@ __terminalSupportsColors() {
    declare -i returnValue=1
    if command -v tput >/dev/null 2>&1; then
       declare -i numberOfColors=$(tput colors 2>/dev/null)
-      if (( $numberOfColors >= 8 )); then
+      if (( numberOfColors >= 8 )); then
          returnValue=0
       fi
    fi
@@ -1318,7 +1318,7 @@ __registerFunction __terminalSupportsColors
 # private
 # returns a timestamp (for a logevent)
 # called by:
-if command -v date 2>&1 1>/dev/null; then
+if command -v date 1>/dev/null 2>&1; then
    __getLoggingTimestamp() {
       date "+${LOG_DATE_PATTERN}"
       return 0
@@ -1336,7 +1336,7 @@ __registerFunction __getLoggingTimestamp
 # called by:
 # all oobash scripts if in logging trace mode
 __isXTRACEFDAvailable() {
-   if (( ${BASH_VERSINFO[1]} != 0 )); then
+   if (( BASH_VERSINFO[1] != 0 )); then
       return 0
    else
       return 1
@@ -1360,7 +1360,7 @@ __getFreeFD() {
    maxFDCount=$(ulimit -n)
 
    if [[ "$(uname -s 2>/dev/null)" == "Linux" ]]; then
-      while [[ -e /proc/$$/fd/${freeFD} ]] && (( ${freeFD} < ${maxFDCount} ))
+      while [[ -e /proc/$$/fd/${freeFD} ]] && (( freeFD < maxFDCount ))
       do
          ((freeFD++))
       done
@@ -1368,7 +1368,7 @@ __getFreeFD() {
       if command -v lsof >/dev/null 2>&1; then
          declare -i i
          local bool fd
-         for ((freeFD=0; freeFD < ${maxFDCount}; freeFD++))
+         for ((freeFD=0; freeFD < maxFDCount; freeFD++))
          do
             bool="$(Boolean.TRUE)"
             for fd in $(lsof -p $$ -F f)
@@ -1376,7 +1376,7 @@ __getFreeFD() {
                if [[ "$fd" == f* ]]; then
                   fd="${fd:1}"
                   if [[ -z "${fd##+([[:digit:]])}" ]]; then
-                     if (( $fd == $freeFD)); then
+                     if (( fd == freeFD)); then
                         bool="$(Boolean.FALSE)"
                         break
                      fi
@@ -1397,7 +1397,7 @@ __getFreeFD() {
       returnValue=1
    fi
 
-   if (( $returnValue == 0 )); then
+   if (( returnValue == 0 )); then
       System.out.println ${freeFD}
    fi
 
@@ -1414,7 +1414,7 @@ __registerFunction __getFreeFD
 # PS4
 __ps4IndirectionLevelIndentation() {
    local indentation=""
-   for ((i=0;i<$((${BASH_SUBSHELL}));i++))
+   for ((i=0;i<$((BASH_SUBSHELL));i++))
    do 
       indentation="${indentation}  "
    done
