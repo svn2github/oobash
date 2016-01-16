@@ -29,7 +29,7 @@ File() {
 
       __isObjectnameValid
       returnValue=$?
-      if (( $returnValue == 0 )); then
+      if (( returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))
          local class="${FUNCNAME}"
 
@@ -122,8 +122,8 @@ File.createTemporaryDir() {
                __handleErrorMessage "File" "${FUNCNAME}"
                return $returnValue
             fi
-            if [[ -n ${permissions} ]]; then
-               chmod ${permissions} "${temporaryFile}"
+            if [[ -n "${permissions}" ]]; then
+               chmod "${permissions}" "${temporaryFile}"
             fi
             System.out.println "${temporaryFile}"
          else
@@ -454,7 +454,7 @@ __delLine() {
             if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                local file="$("$this".toString)"
                mapfile FILE < "${file}"
-               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+               if (( index < 0 )) || (( index > $((${#FILE[@]}-1)) )); then
                   __throw "IndexOutOfBoundsException" ": Line index out of range: \"${line}\""
                   returnValue=$?
                   __handleErrorMessage "$2" "${FUNCNAME:2}"
@@ -462,7 +462,7 @@ __delLine() {
                   > "${file}" 1>/dev/null 2>/dev/null
                   for indx in "${!FILE[@]}"
                   do
-                     if (( $(($indx+1)) != $line)); then
+                     if (( $((indx+1)) != line)); then
                         System.out.print "${FILE[indx]}" >> "${file}"
                      fi
                   done
@@ -697,7 +697,7 @@ __getLine() {
             if [[ "$("$this".isFile)" == "$(Boolean.TRUE)" ]]; then
                local file="$("$this".toString)"
                mapfile FILE < "${file}"
-               if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+               if (( index < 0 )) || (( index > $((${#FILE[@]}-1)) )); then
                   __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                   returnValue=$?
                   __handleErrorMessage "$2" "${FUNCNAME:2}"
@@ -987,8 +987,8 @@ __indexOfExtension() {
       declare -i dot
       sep=$("${this}".lastIndexOf "/")
       dot=$("${this}".lastIndexOf ".")
-      if (( $dot > $sep )); then
-         System.out.println $dot
+      if (( dot > sep )); then
+         System.out.println "$dot"
       else
          System.out.println -1
       fi
@@ -1008,7 +1008,7 @@ __indexOfLastSeparator() {
       String "${this}" "$("${this}".toString)"
       declare -i sep
       sep=$("${this}".lastIndexOf "/")
-      System.out.println $sep
+      System.out.println "$sep"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
       returnValue=$?
@@ -1039,7 +1039,7 @@ __insertAfterLine() {
                      local file="$("$this".toString)"
                      local text="$("$argobject".toString)"
                      mapfile FILE < "${file}"
-                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                     if (( index < 0 )) || (( index > $((${#FILE[@]}-1)) )); then
                         __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                         returnValue=$?
                         __handleErrorMessage "$2" "${FUNCNAME:2}"
@@ -1047,7 +1047,7 @@ __insertAfterLine() {
                         > "${file}" 1>/dev/null 2>/dev/null
                         for indx in "${!FILE[@]}"
                         do
-                           if (( $(($indx+1)) != $line)); then
+                           if (( $((indx+1)) != line)); then
                               System.out.print "${FILE[indx]}" >> "${file}"
                            else
                               System.out.print "${FILE[indx]}" >> "${file}"
@@ -1106,7 +1106,7 @@ __insertBeforeLine() {
                      local file="$("$this".toString)"
                      local text="$("$argobject".toString)"
                      mapfile FILE < "${file}"
-                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                     if (( index < 0 )) || (( index > $((${#FILE[@]}-1)) )); then
                         __throw "IndexOutOfBoundsException" ": Line index out of range: \"${line}\""
                         returnValue=$?
                         __handleErrorMessage "$2" "${FUNCNAME:2}"
@@ -1114,7 +1114,7 @@ __insertBeforeLine() {
                         > "${file}" 1>/dev/null 2>/dev/null
                         for indx in "${!FILE[@]}"
                         do
-                           if (( $(($indx+1)) != $line)); then
+                           if (( $((indx+1)) != line)); then
                               System.out.print "${FILE[indx]}" >> "${file}"
                            else
                               System.out.println "$("${argobject}".toString)" >> "${file}"
@@ -1295,8 +1295,8 @@ __isNewerThan() {
       thatclass="$("$that".getClass 2>/dev/null)"
       if (( $? == 0 )); then
          if [[ "class File" == "$thatclass" ]]; then
-            local thisFile="$($this.toString)"
-            local thatFile="$($that.toString)"
+            local thisFile="$("$this".toString)"
+            local thatFile="$("$that".toString)"
             if [[ "${thisFile}" -nt "${thatFile}" ]]; then
                Boolean.TRUE
             else
@@ -1330,8 +1330,8 @@ __isOlderThan() {
       thatclass="$("$that".getClass 2>/dev/null)"
       if (( $? == 0 )); then
          if [[ "class File" == "$thatclass" ]]; then
-            local thisFile="$($this.toString)"
-            local thatFile="$($that.toString)"
+            local thisFile="$($"this".toString)"
+            local thatFile="$($"that".toString)"
             if [[ "${thisFile}" -ot "${thatFile}" ]]; then
                Boolean.TRUE
             else
@@ -1405,13 +1405,13 @@ __lastAccessed() {
             result=$(stat -L -c  "+%X" -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
                if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result:1}000"
                   else
                      System.out.println "0"
                   fi
                else
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result}000"
                   else
                      System.out.println "0"
@@ -1424,13 +1424,13 @@ __lastAccessed() {
             result=$(stat -L -f '%a' -t '+%X' -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
                if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result:1}000"
                   else
                      System.out.println "0"
                   fi
                else
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result}000"
                   else
                      System.out.println "0"
@@ -1465,13 +1465,13 @@ __lastChanged() {
             result=$(stat -L -c  "+%Z" -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
                if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result:1}000"
                   else
                      System.out.println "0"
                   fi
                else
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result}000"
                   else
                      System.out.println "0"
@@ -1484,13 +1484,13 @@ __lastChanged() {
             result=$(stat -L -f '%c' -t '+%Z' -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
                if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result:1}000"
                   else
                      System.out.println "0"
                   fi
                else
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result}000"
                   else
                      System.out.println "0"
@@ -1525,13 +1525,13 @@ __lastModified() {
             result=$(stat -L -c  "+%Y" -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
                if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result:1}000"
                   else
                      System.out.println "0"
                   fi
                else
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result}000"
                   else
                      System.out.println "0"
@@ -1544,13 +1544,13 @@ __lastModified() {
             result=$(stat -L -f '%m' -t '+%Y' -- "${file}" 2>/dev/null)
             if (( $? == 0 )); then
                if [[ ${result:0:1} == "+" ]]; then
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result:1}000"
                   else
                      System.out.println "0"
                   fi
                else
-                  if (( ${result} != 0 )); then
+                  if (( result != 0 )); then
                      System.out.println "${result}000"
                   else
                      System.out.println "0"
@@ -1679,7 +1679,7 @@ __mkdir() {
       if command -v mkdir >/dev/null 2>&1; then 
          mkdir -- "${file}" >/dev/null 2>&1
          returnValue=$?
-         if (( $returnValue == 0 )); then
+         if (( returnValue == 0 )); then
             Boolean.TRUE
          else
             Boolean.FALSE
@@ -1706,7 +1706,7 @@ __mkdirs() {
       if command -v mkdir >/dev/null 2>&1; then 
          mkdir -p -- "${file}" >/dev/null 2>&1
          returnValue=$?
-         if (( $returnValue == 0 )); then
+         if (( returnValue == 0 )); then
             Boolean.TRUE
          else
             Boolean.FALSE
@@ -1746,7 +1746,7 @@ __replaceLine() {
                      local file="$("$this".toString)"
                      local text="$("$argobject".toString)"
                      mapfile FILE < "${file}"
-                     if (( $index < 0 )) || (( $index > $((${#FILE[@]}-1)) )); then
+                     if (( index < 0 )) || (( index > $((${#FILE[@]}-1)) )); then
                         __throw "IndexOutOfBoundsException" ": Line index out of range: \"$line\""
                         returnValue=$?
                         __handleErrorMessage "$2" "${FUNCNAME:2}"
@@ -1754,7 +1754,7 @@ __replaceLine() {
                         > "${file}" 1>/dev/null 2>/dev/null
                         for indx in "${!FILE[@]}"
                         do
-                           if (( $(($indx+1)) != ${line})); then
+                           if (( $((indx+1)) != line )); then
                               System.out.print "${FILE[indx]}" >> "${file}"
                            else
                               System.out.println "$("${argobject}".toString)" >> "${file}"
@@ -1853,7 +1853,7 @@ __setgid() {
             highOrderOctal=${posixFilePermission:0:1}
             case ${highOrderOctal} in
                0|1|4|5)
-               highOrderOctal=$((${highOrderOctal}+2))
+               highOrderOctal=$(( highOrderOctal+2 ))
                if command -v chmod >/dev/null 2>&1; then
                   chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
                   if (( $? == 0 )); then
@@ -1900,7 +1900,7 @@ __setLastAccessed() {
             return $returnValue
          fi
          declare -i milliSeconds="$3"
-         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+         if (( milliSeconds > 1000 )) || (( milliSeconds < -1000 )); then
             declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
             declare -i epochSeconds=${milliSeconds:0:secondsLength}
          else
@@ -1926,7 +1926,7 @@ __setLastAccessed() {
             __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
-         touch -a -t ${timestamp} -- "${file}" 2>/dev/null
+         touch -a -t "${timestamp}" -- "${file}" 2>/dev/null
          if (( $? == 0 )); then
             Boolean.TRUE
          else
@@ -1959,7 +1959,7 @@ __setLastModified() {
             return $returnValue
          fi
          declare -i milliSeconds="$3"
-         if (( $milliSeconds > 1000 )) || (( $milliSeconds < -1000 )); then
+         if (( milliSeconds > 1000 )) || (( milliSeconds < -1000 )); then
             declare -i secondsLength=$(( ${#milliSeconds}- 3 ))
             declare -i epochSeconds=${milliSeconds:0:secondsLength}
          else
@@ -1985,7 +1985,7 @@ __setLastModified() {
             __handleErrorMessage "$2" "${FUNCNAME:2}"
             return $returnValue
          fi
-         touch -m -t ${timestamp} -- "${file}" 2>/dev/null
+         touch -m -t "${timestamp}" -- "${file}" 2>/dev/null
          if (( $? == 0 )); then
             Boolean.TRUE
          else
@@ -2231,7 +2231,7 @@ __setuid() {
             highOrderOctal=${posixFilePermission:0:1}
             case ${highOrderOctal} in
                0|1|2|3)
-               highOrderOctal=$((${highOrderOctal}+4))
+               highOrderOctal=$(( highOrderOctal+4 ))
                if command -v chmod >/dev/null 2>&1; then
                   chmod "${highOrderOctal}${posixFilePermission:1}" "${file}" 2>/dev/null
                   if (( $? == 0 )); then
