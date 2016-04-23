@@ -47,7 +47,7 @@ Ssh() {
 
       __isObjectnameValid
       returnValue=$?
-      if (( $returnValue != 0 )); then
+      if (( returnValue != 0 )); then
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
          return $returnValue
       fi
@@ -56,7 +56,7 @@ Ssh() {
          # Test for passwordless ssh login
          ssh -p "${port}" -q -o "BatchMode yes" "${user}@${name}" : 1>/dev/null 2>&1
          returnValue=$?
-         if (( $returnValue != 0 )); then
+         if (( returnValue != 0 )); then
             __throw "AuthException" ": no passwordless authentication possible with SshHost '${name}' and user '${user}' on port '${port}' "
             returnValue=$?
             __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"

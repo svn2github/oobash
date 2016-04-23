@@ -76,7 +76,7 @@ __compareTo() {
             return $returnValue
          fi
       fi
-      if (( $length == -1 )); then
+      if (( length == -1 )); then
          declare -i result=$(($("$this".length)-${#str}))
          if (( $("$this".length) < ${#str} )); then
             length=$("$this".length)
@@ -85,14 +85,14 @@ __compareTo() {
          fi
       fi	
       declare -i i=0
-      for ((i=0; i < $length; i++))
+      for ((i=0; i < length; i++))
       do    
          local charArg="${str:i:1}"
          declare -i valueArg=$(__charCode "$charArg")
          local charStr="$("$this".charAt $i)"
          declare -i valueStr=$(__charCode "$charStr")
-         if (( $valueStr != $valueArg )); then
-            System.out.println $(( $valueStr - $valueArg ))
+         if (( valueStr != valueArg )); then
+            System.out.println $(( valueStr-valueArg ))
             return $returnValue
          fi	
       done

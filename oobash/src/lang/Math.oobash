@@ -84,14 +84,14 @@ Math.acos() {
             # arccos(x)=arctan(sqrt(1-(x^2 )/x)
             output="$(bc -l <<< "a(sqrt(1-($val*$val))/$val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -154,7 +154,7 @@ Math.adder() {
             fi 
             shift
          done
-         if (( $returnValue != 0 )); then
+         if (( returnValue != 0 )); then
             return $returnValue
          fi
          if [[ "${neginf}" == "yes" && "${posinf}" == "yes" ]]; then
@@ -169,14 +169,14 @@ Math.adder() {
          fi 
          output=$(bc -l <<< "$str")
          if [[ "${output:0:2}" == '-.' ]]; then
-            System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+            System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
             return $returnValue
          fi
          if [[ "${output:0:1}" == "." ]]; then
-            System.out.println $(__rstripDoubleZeros 0"${output}")
+            System.out.println "$(__rstripDoubleZeros 0"${output}")"
             return $returnValue 
          fi
-         System.out.println $(__rstripDoubleZeros "${output}")
+         System.out.println "$(__rstripDoubleZeros "${output}")"
       else
          __throw "NotInPathException" ": bc not in path"
          returnValue=$?
@@ -221,14 +221,14 @@ Math.asin() {
             # arcsin(x)=arctan(x/sqrt(1-(x^2))
             output="$(bc -l <<< "a($val/sqrt(1-($val*$val)))")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -260,22 +260,22 @@ Math.atan() {
                System.out.println "NaN"
                return $returnValue
             elif [[ "${val}" == "Infinity" ]]; then
-               System.out.println $(__rstripDoubleZeros $(Math.multiplier $(Math.PI) 0.5))
+               System.out.println "$(__rstripDoubleZeros $(Math.multiplier $(Math.PI) 0.5))"
                return $returnValue            
             elif [[ "${val}" == "-Infinity" ]]; then
-               System.out.println $(__rstripDoubleZeros $(Math.multiplier $(Math.PI) -0.5))
+               System.out.println "$(__rstripDoubleZeros $(Math.multiplier $(Math.PI) -0.5))"
                return $returnValue                    
             fi
             output="$(bc -l <<< "a($val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -331,14 +331,14 @@ Math.cbrt() {
                               }"
             output="$(bc -l <<< "$cbrt_func;cbrt($val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -418,14 +418,14 @@ Math.cos() {
             fi 
             output="$(bc -l <<< "c($val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -466,14 +466,14 @@ Math.cosh() {
             # (e^x + e^-x)/2
             output="$(bc -l <<< "(e($val)+e(-1*$val))/2")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -527,14 +527,14 @@ Math.exp() {
             fi 
             output="$(bc -l <<< "e($val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -574,14 +574,14 @@ Math.expm1() {
             fi 
             output="$(bc -l <<< "e($val)-1")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -667,14 +667,14 @@ Math.hypot() {
                # sqrt(x^2 + y^2)
                output="$(bc -l <<< "sqrt((($val1)*($val1))+(($val2)*($val2)))")"
                if [[ "${output:0:2}" == '-.' ]]; then
-                  System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+                  System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                   return $returnValue
                fi
                if [[ "${output:0:1}" == "." ]]; then
-                  System.out.println $(__rstripDoubleZeros 0"${output}")
+                  System.out.println "$(__rstripDoubleZeros 0"${output}")"
                   return $returnValue 
                fi
-               System.out.println $(__rstripDoubleZeros "${output}")
+               System.out.println "$(__rstripDoubleZeros "${output}")"
             else
                __throw "NotInPathException" ": bc not in path"
                returnValue=$?
@@ -722,14 +722,14 @@ Math.log() {
             fi 
             output="$(bc -l <<< "l($val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -772,14 +772,14 @@ Math.log10() {
             fi 
             output="$(bc -l <<< "l($val)/l(10)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -822,14 +822,14 @@ Math.log1p() {
             fi                            
             output="$(bc -l <<< "l($val+1)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -1000,7 +1000,7 @@ Math.multiplier() {
             fi 
             shift
          done
-         if (( $returnValue != 0 )); then
+         if (( returnValue != 0 )); then
             return $returnValue
          fi
          if [[ $neginf == "yes" && $posinf == "yes" ]]; then
@@ -1015,14 +1015,14 @@ Math.multiplier() {
          fi    
          output=$(bc -l <<< "$str")
          if [[ "${output:0:2}" == '-.' ]]; then
-            System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+            System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
             return $returnValue
          fi
          if [[ "${output:0:1}" == "." ]]; then
-            System.out.println $(__rstripDoubleZeros 0"${output}")
+            System.out.println "$(__rstripDoubleZeros 0"${output}")"
             return $returnValue 
          fi
-         System.out.println $(__rstripDoubleZeros "${output}")
+         System.out.println "$(__rstripDoubleZeros "${output}")"
       else
          __throw "NotInPathException" ": bc not in path"
          returnValue=$?
@@ -1061,7 +1061,7 @@ Math.random() {
       do 
          result+=$(printf "%s" "$(( $RANDOM % 10  ))")
       done
-      System.out.println $(__rstripDoubleZeros "${result}")
+      System.out.println "$(__rstripDoubleZeros "${result}")"
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
@@ -1209,14 +1209,14 @@ Math.sin() {
             fi 
             output="$(bc -l <<< "s($val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -1257,14 +1257,14 @@ Math.sinh() {
             # (e^x - e^-x)/2
             output="$(bc -l <<< "(e($val)-e(-1*$val))/2")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -1306,14 +1306,14 @@ Math.sqrt() {
             fi 
             output="$(bc -l <<< "sqrt($val)")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -1348,7 +1348,7 @@ Math.tan() {
             local cos
             cos=$(Math.cos "${val}")
             returnValue=$?
-            if (( $returnValue != 0 )); then
+            if (( returnValue != 0 )); then
                return $returnValue
             fi
             zerodivtest=$(bc -l <<< "$cos==0")
@@ -1363,11 +1363,11 @@ Math.tan() {
             fi
             output="$(bc -l <<< "$(Math.sin "$val")/$cos")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
             System.out.println $(__rstripDoubleZeros "${output}")
@@ -1411,14 +1411,14 @@ Math.tanh() {
             # (e^x - e^-x)/(e^x + e^-x)
             output="$(bc -l <<< "(e($val)-e(-1*$val))/(e($val)+e(-1*$val))")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -1458,14 +1458,14 @@ Math.toDegrees() {
             fi 
             output="$(bc -l <<< "(180/$(Math.PI))*$val")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?
@@ -1505,14 +1505,14 @@ Math.toRadians() {
             fi 
             output="$(bc -l <<< "($(Math.PI)/180)*$val")"
             if [[ "${output:0:2}" == '-.' ]]; then
-               System.out.println  $(__rstripDoubleZeros -0."${output:2}")
+               System.out.println  "$(__rstripDoubleZeros -0."${output:2}")"
                return $returnValue
             fi
             if [[ "${output:0:1}" == "." ]]; then
-               System.out.println $(__rstripDoubleZeros 0"${output}")
+               System.out.println "$(__rstripDoubleZeros 0"${output}")"
                return $returnValue 
             fi
-            System.out.println $(__rstripDoubleZeros "${output}")
+            System.out.println "$(__rstripDoubleZeros "${output}")"
          else
             __throw "NotInPathException" ": bc not in path"
             returnValue=$?

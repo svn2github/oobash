@@ -130,12 +130,12 @@ __hashCode() {
             hash=$(bc <<< "${hash}*31+${valueOf}")
          done
          hash=$(bc <<< "${hash}-((2^32)*(${hash}/(2^32)))") 
-         if (( ${hash} > 2147483647 )); then
+         if (( hash > 2147483647 )); then
             hash=$(bc <<< "${hash}-(2^32)")
          fi
          case ${class} in
             File)
-               System.out.println $((${hash}^1234321));;
+               System.out.println $(( hash^1234321 ));;
             Boolean)
                if [[ "${str}" == "$(Boolean.TRUE)" ]]; then
                   System.out.println 1231
@@ -143,7 +143,7 @@ __hashCode() {
                   System.out.println 1237
                fi;;
             *)
-               System.out.println ${hash};;   
+               System.out.println "${hash}";;   
          esac  
       else
          __throw "NotInPathException" ": bc not in path"

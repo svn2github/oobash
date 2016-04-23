@@ -42,11 +42,11 @@ if [ "${0##*/}" = "${__FILENAME__}" ]; then
    exit 0
 fi
 
-export __OODIR__="$(cd -P "${BASH_ARGV[0]%/*}" 2>/dev/null; echo ${PWD})"
+export __OODIR__="$(cd -P "${BASH_ARGV[0]%/*}" 2>/dev/null; echo "${PWD}")"
 export TEXTDOMAINDIR="${__OODIR__}/locale"
 
 # you need a bash 4 
-if [ $BASH_VERSINFO -lt 4 ]; then
+if [ "$BASH_VERSINFO" -lt 4 ]; then
    echo $"Sorry, you need a bash version 4..."
    unset __FILENAME__
    unset __VERSION__
@@ -180,7 +180,7 @@ __registerFunction __registerFunction
 ##################
 __import() {
    local packageOrClass="${1/"oobash."/}"
-   source "${__OODIR__}"/src/${packageOrClass//"."/"/"}.oobash
+   source "${__OODIR__}"/src/"${packageOrClass//"."/"/"}".oobash
    return 0
 }
 __registerFunction __import

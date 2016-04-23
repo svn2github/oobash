@@ -29,7 +29,7 @@ Boolean() {
      
       __isObjectnameValid 
       returnValue=$?
-      if (( $returnValue == 0 )); then
+      if (( returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))
          local class="${FUNCNAME}"
 

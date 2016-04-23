@@ -29,7 +29,7 @@ String() {
 
       __isObjectnameValid
       returnValue=$?
-      if (( $returnValue == 0 )); then
+      if (( returnValue == 0 )); then
          local pointer=$((__OBJCOUNTER__++))
          local class="${FUNCNAME}"
 
@@ -249,7 +249,7 @@ if (( ${BASH_VERSINFO[1]} >= 2 )); then
          fi
          shift
       done
-      if (( $returnValue == 0 )); then
+      if (( returnValue == 0 )); then
          System.out.println "${result}"
       fi
       return $returnValue
@@ -1329,13 +1329,13 @@ __startsWith() {
          returnValue=$?
          __handleErrorMessage "$2" "${FUNCNAME:2}";;
    esac
-   if (( $returnValue == 0 )); then
+   if (( returnValue == 0 )); then
       local this="$1"
       declare -i length=$("$this".length)
       local sub
       sub="$("$this".substring ${toffset} $(($length-1)))"
       returnValue=$?
-      if (( $returnValue == 0 )); then
+      if (( returnValue == 0 )); then
          if [[ "${sub}" == "$3"* ]]; then
             Boolean.TRUE
          else
