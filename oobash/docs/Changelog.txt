@@ -349,3 +349,10 @@
 #    -option autocompletion file for the script skeleton; completion files in hidden scripts/.completions
 #    directory
 #    -Fixes and small improvements
+# Version:      0.39.14
+#    -removed: __handleErrorMessage, __tracebackHeader
+#    -TODO: cleaning code
+#    -TODO: throw + handle zusammenführen
+#    -TODO: random rewrite
+#    -first checks then main code
+

@@ -39,8 +39,6 @@
 # __dependencyCheck() check for external commands (element of __Dependencies__ array) that are used in this framework
 # __gnudateCheck() check for gnu date
 # __gnustatCheck() checks for gnu stat
-# __handleErrorMessage() decision: call stacktrace or help or nothing
-# __tracebackHeader() prints the traceback header to stderr
 # __stacktrace() generates stacktrace
 # __isAssocArray() checks if given parameter is an associative array
 # __stripPath() strips double and trailing "/" characters in given path
@@ -146,8 +144,8 @@ __visibilityCheck() {
    if [[ "$str" != "" ]]; then
       if [[ "${str##+([[:graph:]])}" == "" ]]; then
          bool="$(Boolean.TRUE)"
-      fi      
-   fi       
+      fi
+   fi
    if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
    fi
@@ -224,49 +222,30 @@ __registerFunction __slashCheck
 # cales by:
 # every constructor
 __isObjectnameValid() {
+
    if ! __visibilityCheck "$this"; then
-      __throw "IllegalArgumentException" ": Objectname '$this' is not valid"
+      __throw "IllegalArgumentException" ": Objectname '$this' is not valid" "${class}" "${func}"
       return $?
    fi
 
    if ! __keywordCheck "$this"; then
-      __throw "IllegalArgumentException" ": Objectname '$this' is a keyword"
+      __throw "IllegalArgumentException" ": Objectname '$this' is a keyword" "${class}" "${func}"
       return $?
    fi
 
    if ! __periodCheck "$this"; then
-      __throw "IllegalArgumentException" ": No full stop character allowed in objectname"
+      __throw "IllegalArgumentException" ": No full stop character allowed in objectname" "${class}" "${func}"
       return $?
    fi
-   
+
    if ! __slashCheck "$this"; then
-      __throw "IllegalArgumentException" ": No slash character allowed in objectname"
+      __throw "IllegalArgumentException" ": No slash character allowed in objectname" "${class}" "${func}"
       return $?
    fi
+
    return 0
 }
 __registerFunction __isObjectnameValid
-
-# private
-# throws an exception with name of exception and message
-# called by:
-# every public method
-# and __dependencyCheck
-__throw() {
-   __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   local exception="$1"
-   local message="$2"
-   __tracebackHeader
-   System.err.println "${exception}${message}"
-   if [[ ! -z "${__ExceptionValues__[${exception}]}" ]]; then
-      returnValue=${__ExceptionValues__[${exception}]}
-   else   
-      returnValue=${__ExceptionValues__[Unknown]}
-   fi
-   return "${returnValue}"
-}
-__registerFunction __throw
 
 # private  
 # stores an attribute of an object
@@ -305,13 +284,13 @@ __destruct() {
          fi
       done
       unset __OBJECTPOOL__["${this}"]
-      
+
       local key
       for key in "${!__ATTRIBUTEPOOL__[@]}"
       do
          if [[ "${key}" == "${pointer}"@* ]]; then
             unset __ATTRIBUTEPOOL__["${key}"]
-         fi      
+         fi 
       done
       __unalias "$this" "$lastClass"
    fi
@@ -409,14 +388,14 @@ __strUpper() {
          1088|1089|1090|1091|1092|1093|1094|1095|\
          1096|1097|1098|1099|1100|1101|1102|1103|\
          1104|1105|1106|1107|1108|1109|1110|1111|\
-         1112|1113|1114|1115|1116|1117|1118|1119)  
-            upper="${upper}""${char~}";;       
+         1112|1113|1114|1115|1116|1117|1118|1119)
+            upper="${upper}""${char~}";;
          * ) 
             upper="${upper}""${char}" ;;
       esac
    done
    System.out.println "${upper}"
-   return 0   
+   return 0
 }
 __registerFunction __strUpper
 
@@ -453,8 +432,8 @@ __strLower() {
          1048|1049|1050|1051|1052|1053|1054|1055|\
          1056|1057|1058|1059|1060|1061|1062|1063|\
          1064|1065|1066|1067|1068|1069|1070|1071)
-            lower="${lower}""${char~}";; 
-         * ) 
+            lower="${lower}""${char~}";;
+         * )
             lower="${lower}""${char}" ;;
       esac
    done
@@ -510,7 +489,7 @@ __mathConverter() {
       set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\.?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -o noglob
@@ -519,7 +498,7 @@ __mathConverter() {
       set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[-]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -o noglob
@@ -528,25 +507,25 @@ __mathConverter() {
       set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\,?[0-9]+([eE][-]?[0-9]+)+$ ]]; then
       set -o noglob
       output="${input/[eE]/ * 10 ^ }"
       output="${output:1}"
       System.out.println "${output/,/.}"
-      set +o noglob 
+      set +o noglob
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[-]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -o noglob
       System.out.println "${input/[eE]+/ * 10 ^ }"
-      set +o noglob 
+      set +o noglob
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\.?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -o noglob
@@ -555,7 +534,7 @@ __mathConverter() {
       set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[-]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -o noglob
@@ -564,7 +543,7 @@ __mathConverter() {
       set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]*\,?[0-9]+([eE][+]?[0-9]+)+$ ]]; then
       set -o noglob
@@ -574,49 +553,49 @@ __mathConverter() {
       set +o noglob 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[-]?([0-9]*\.[0-9]+|[0-9]+)$ ]]; then
       System.out.println "${input}"
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[+]?([0-9]*\.[0-9]+|[0-9]+)$ ]]; then
       System.out.println "${input:1}"
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[-]?([0-9]*\,[0-9]+|[0-9]+)$ ]]; then
       System.out.println "${input/,/.}"
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[+]?([0-9]*\,[0-9]+|[0-9]+)$ ]]; then
       output="${input:1}"
       System.out.println "${output/,/.}" 
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
       return 0
    elif [[ "${input}" =~ ^[-]?[0-9]+$ ]]; then
       System.out.println "${input}"
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi  
+      fi
       return 0
    elif [[ "${input}" =~ ^[+]?[0-9]+$ ]]; then
       System.out.println "${input:1}"
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi  
+      fi
       return 0
    fi
    if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
       shopt -u extglob
-   fi  
+   fi
    # Cannot recognize...
    return 1
 }
@@ -667,7 +646,7 @@ __rstripDoubleZeros() {
       fi
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
          shopt -u extglob
-      fi     
+      fi
    fi
    System.out.println "${result}"
    return $returnValue
@@ -729,8 +708,8 @@ __posixFilePermissionToOctal() {
          # starting with 0
          if (( i == 2 || i == 5 || i== 8 )); then
             octal=${octal}${octalPerm}
-            octalPerm=0  
-         fi        
+            octalPerm=0
+         fi
       done
    else
       if [[ "${unsetAtEnd}" == "$(Boolean.TRUE)" ]]; then
@@ -777,7 +756,7 @@ __cleanUpObjectsPool() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
    local obj
    for obj in "${!__OBJECTPOOL__[@]}" 
-   do 
+   do
       __destruct "${obj}"
    done
    return 0
@@ -810,7 +789,7 @@ __cleanUpClasses() {
    local value
    local meth
    for value in "${!__Registry__[@]}"
-   do 
+   do
       if [[ "${__Registry__[$value]}" == "class" ]]; then
          for meth in $(eval echo \${__${value}__[@]})
          do
@@ -836,7 +815,7 @@ __cleanUpVars() {
       if [[ "${__Registry__[$value]}" == "var" ]]; then
          unset "${value}"
       fi
-   done   
+   done
    return 0
 }
 
@@ -868,7 +847,7 @@ __dependencyCheck() {
             readlink) if ! __gnureadlinkCheck; then
                          bool="$(Boolean.FALSE)"
                          __throw "NotInPathException" ": GNU readlink not in path"
-                      fi;;                      
+                      fi;;
          esac
       fi
    done
@@ -951,42 +930,42 @@ __gnureadlinkCheck() {
 __registerFunction __gnureadlinkCheck
 
 # private
-# Script: stacktrace / Interactive: help
+# throws an exception with name of exception and message
 # called by:
-# every funtion that throws an exception
-if [[ ! -z "$PS1" ]]; then
-   __handleErrorMessage() {
-      __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-      if [[ "$(Boolean.parseBoolean "${__HELP__}")" == "$(Boolean.TRUE)" ]]; then
-         local printStream=err
-         local class="$1"
-         local func="$2"
-         "${class}".help "${func}"
-      fi
-      return 0
-   }
-else
-   __handleErrorMessage() {
-      if [[ "$(Boolean.parseBoolean "${__STACKTRACE__}")" == "$(Boolean.TRUE)" ]]; then
-         __stacktrace
-      fi
-      return 0
-   }
-fi
-__registerFunction __handleErrorMessage
-
-# private
-# prints or prints not the traceback header to stderr
-# called by:
-# __throw
-__tracebackHeader() {
+# every public method
+# and __dependencyCheck
+__throw() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
+   declare -i returnValue=0
+   local exception="$1"
+   local message="$2"
+   local printStream=err
+
    if [[ $(Boolean.parseBoolean "$__STACKTRACE__") == "$(Boolean.TRUE)" ]] && [[ -z "$PS1" ]];  then
       System.err.println "Traceback (most recent call first):"
    fi
-   return 0
+
+   System.err.println "${exception}${message}"
+   if [[ ! -z "${__ExceptionValues__[${exception}]}" ]]; then
+      returnValue="${__ExceptionValues__[${exception}]}"
+   else
+      returnValue="${__ExceptionValues__[Unknown]}"
+   fi
+
+   if [[ ! -z "$PS1" ]]; then
+      if [[ "$(Boolean.parseBoolean "${__HELP__}")" == "$(Boolean.TRUE)" ]]; then
+         "${class}".help "${func}"
+      fi
+   else
+      if [[ "$(Boolean.parseBoolean "${__STACKTRACE__}")" == "$(Boolean.TRUE)" ]]; then
+         __stacktrace
+      fi
+   fi
+
+   return "${returnValue}"
 }
-__registerFunction __tracebackHeader
+__registerFunction __throw
+
 
 # private 
 # generates stacktrace

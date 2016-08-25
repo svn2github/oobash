@@ -42,7 +42,7 @@ Level() {
          __attribute level "${level}"
          __attribute levelStr "${levelStr}"
          __attribute syslogEquivalent "${syslogEquivalent}"
-         
+
          __Keywords__+=("${this}")
       else
          __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
@@ -297,12 +297,12 @@ Level.help() {
                   >>>3
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System."${printStream}".println "                                  
+                 System."${printStream}".println "
                        No help found for $1
-                    "   
+                    "
               fi
               ;;& 
-      esac               
+      esac
       shift
    done 
 }

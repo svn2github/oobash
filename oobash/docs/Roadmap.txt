@@ -5,6 +5,15 @@
 # System.exit: negative exit values
 # Process kill: -L results
 
+a.  The `helptopic' completion action now maps to all the help topics, not just
+    the shell builtins.
+
+b.  The `help' builtin no longer does prefix substring matching first, so
+    `help read' does not match `readonly', but will do it if exact string
+    matching fails.
+
+help for oobash?
+
 # 0.40
 # -Logging
 # info in command_not_found_handle ?

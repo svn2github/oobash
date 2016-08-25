@@ -327,12 +327,12 @@ __clear() {
          else
             __throw "IOException" ":\"$("$this".toString)\" is not a regular file"
             returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"            
+            __handleErrorMessage "$2" "${FUNCNAME:2}"
          fi
       else
          __throw "IOException" ": Cannot write file \"$("$this".toString)\""
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
@@ -362,7 +362,7 @@ __createNewFile() {
       else
          __throw "NotInPathException" ": touch not in path"
          returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"         
+         __handleErrorMessage "$2" "${FUNCNAME:2}"
       fi
    else
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"

@@ -1,6 +1,6 @@
 ##################################################################
-# Author:  andreas.gregor.frank@googlemail.com                                
-#     
+# Author:  andreas.gregor.frank@googlemail.com
+#
 # License: The MIT License
 #
 # Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
@@ -22,157 +22,177 @@
 
 System.currentTimeMillis() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      if __gnudateCheck; then
-         local dat=$(date +%s%N)
-         System.out.println ${dat:0:13}
-      else
-         __throw "NotInPathException" ": GNU date not in path"
-         returnValue=$?
-         __handleErrorMessage "System" "${FUNCNAME}"
-      fi
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   if ! __gnudateCheck; then
+      __throw "NotInPathException" ": GNU date not in path"
+      return $?
+   fi
+
+   local dat="$(date +%s%N)"
+   System.out.println "${dat:0:13}"
+
+   return 0
 }
 __registerFunction System.currentTimeMillis
 
 System.currentTimeNanos() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      if __gnudateCheck; then
-         date "+%s%N"
-      else
-         __throw "NotInPathException" ": GNU date not in path"
-         returnValue=$?
-         __handleErrorMessage "System" "${FUNCNAME}"
-      fi
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   if ! __gnudateCheck; then
+      __throw "NotInPathException" ": GNU date not in path"
+      return $?
+   fi
+
+   date "+%s%N"
+
+   return 0
 }
 __registerFunction System.currentTimeNanos
 
 
 System.err.print() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# <= 1  )); then
-      local message="$1"
-      printf "%s" "${message}" >&2
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+
+   if (( $# > 1  )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   local message="$1"
+   printf "%s" "${message}" >&2
+
+   return 0
 }
 __registerFunction System.err.print
 
 
 System.err.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# <= 1  )); then
-      local message="$1"
-      printf "%s\n" "${message}" >&2
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+
+   if (( $# > 1  )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   local message="$1"
+   printf "%s\n" "${message}" >&2
+
+   return 0
 }
 __registerFunction System.err.println
 
 
 System.exit() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 1 )); then
-      if ! __isBashInteger "$1"; then
-         __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-         returnValue=$?
-         __handleErrorMessage "System" "${FUNCNAME}"
-      else
-         declare -i status="$1"
-         if (( ${status} >= 0 && ${status} <= 255 )); then
-            exit $status
-         else
-            __throw "IllegalArgumentException" ": Illegal argument: \"$status\" - has to be between 0 and 255"
-            returnValue=$?
-            __handleErrorMessage "System" "${FUNCNAME}"
-         fi
-      fi
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+   declare -i status="$1"
+
+   if (( $# != 1 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   if ! __isBashInteger "$1"; then
+      __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
+      return $?
+   fi
+
+   if (( status < 0 || status > 255 )); then
+      __throw "IllegalArgumentException" ": Illegal argument: \"${status}\" - has to be between 0 and 255"
+      return $?
+   fi
+
+   exit ${status}
+
+   return 0
 }
 __registerFunction System.exit
 
 
 System.out.print() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# <= 1  )); then
-      local message="$1"
-      printf "%s" "${message}"
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+
+   if (( $# > 1  )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
       returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
    fi
-   return $returnValue
+
+   local message="$1"
+   printf "%s" "${message}"
+
+   return 0
 }
 __registerFunction System.out.print
 
 
 System.out.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# <= 1  )); then
-      local message="$1"
-      printf "%s\n" "${message}"
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+
+   if (( $# > 1 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   local message="$1"
+   printf "%s\n" "${message}"
+
+   return 0
 }
 __registerFunction System.out.println
 
 
 System.runtime() { 
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      if __gnudateCheck && command -v bc >/dev/null 2>&1; then
-         local time="$(bc -l <<< "$(date +"%s.%N")-$__STARTTIME__")"
-         if [[ "${time:0:1}" == "." ]]; then
-            time=0"${time}"
-         fi
-         System.out.println "Runtime: ${time} [seconds.nanoseconds]"
-     else
-        System.out.println "Runtime: ${SECONDS} [seconds]"
-     fi
-   else
+
+   local class="System"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "System" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   if __gnudateCheck && command -v bc >/dev/null 2>&1; then
+      local time="$(bc -l <<< "$(date +"%s.%N")-$__STARTTIME__")"
+      if [[ "${time:0:1}" == "." ]]; then
+         time=0"${time}"
+      fi
+      System.out.println "Runtime: ${time} [seconds.nanoseconds]"
+   else
+      System.out.println "Runtime: ${SECONDS} [seconds]"
+   fi
+
+   return 0
 }
 __registerFunction System.runtime
 
@@ -184,7 +204,7 @@ __registerFunction System.runtime
 
 complete -W  "exit currentTimeMillis currentTimeNanos out.println err.println out.print err.print runtime all" System.help
 
-System.help() {  
+System.help() {
    local printStream=${printStream:-out}
    if (( $# == 0 )); then
       System."${printStream}".println "
@@ -194,15 +214,15 @@ System.help() {
       -System.err.print -System.err.println 
       -System.exit -System.out.print 
       -System.out.println -System.runtime 
-      Constructor: 
+      Constructor:
       None
                  "
       return 0
    fi
    while (($#))
    do
-      local match=$(Boolean.FALSE)  
-      case $1 in 
+      local match=$(Boolean.FALSE)
+      case $1 in
          System.currentTimeMillis|currentTimeMillis|all)
             match=$(Boolean.TRUE)
             System."${printStream}".println "
@@ -326,13 +346,13 @@ System.help() {
                >>>Runtime: 1.536150153 [seconds.nanoseconds]
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System."${printStream}".println "                                  
+                 System."${printStream}".println "
                        No help found for $1
-                    "   
+                    "
               fi
               ;;& 
-      esac    
+      esac
       shift
-   done            
+   done
 }
 __registerFunction System.help

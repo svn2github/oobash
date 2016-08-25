@@ -1,6 +1,6 @@
 ##################################################################
-# Author:  andreas.gregor.frank@googlemail.com                                
-#     
+# Author:  andreas.gregor.frank@googlemail.com
+#
 # License: The MIT License
 #
 # Copyright (c) <2011> <andreas.gregor.frank@googlemail.com>
@@ -15,72 +15,76 @@
 
 I18n.err.print() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
+
    local printStream=err
-   if (( $# <= 1  )); then
-      local message="$1"
-      local print=print
-      __i18nMessage "${message}"
-   else
+   local message="$1"
+   local print=print
+
+   if (( $# > 1  )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "I18n" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue   
+
+   __i18nMessage "${message}"
+
+   return 0
 }
 __registerFunction I18n.err.print
 
 
 I18n.err.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
+
    local printStream=err
-   if (( $# <= 1  )); then
-      local message="$1"
-      local print=println
-      __i18nMessage "${message}"
-   else
+   local message="$1"
+   local print=println
+
+   if (( $# > 1  )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "I18n" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue   
+
+   __i18nMessage "${message}"
+
+   return 0
 }
 __registerFunction I18n.err.println
 
 
 I18n.out.print() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# <= 1  )); then
-      local printStream=out
-      local message="$1"
-      local print=print
-      __i18nMessage "${message}"
-   else
+
+   local printStream=out
+   local message="$1"
+   local print=print
+
+   if (( $# > 1  )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "I18n" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   __i18nMessage "${message}"
+
+   return 0
 }
 __registerFunction I18n.out.print
 
 
 I18n.out.println() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# <= 1  )); then
-      local printStream=out
-      local message="$1"
-      local print=println
-      __i18nMessage "${message}"
-   else
+
+   local printStream=out
+   local message="$1"
+   local print=println
+
+   if (( $# > 1  )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "I18n" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   __i18nMessage "${message}"
+
+   return 0
 }
 __registerFunction I18n.out.println
 
@@ -173,13 +177,13 @@ I18n.help() {
                I18n.out.println \"Sorry, no valid classname: '\\\$userClass'\"
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System."${printStream}".println "                                  
+                 System."${printStream}".println "
                        No help found for $1
-                    "   
+                    "
               fi
               ;;& 
-      esac    
+      esac
       shift
-   done           
+   done
 }
 __registerFunction I18n.help

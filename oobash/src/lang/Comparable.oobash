@@ -1,6 +1,6 @@
 ##################################################################
-# Author:  andreas.gregor.frank@googlemail.com                                
-#     
+# Author:  andreas.gregor.frank@googlemail.com
+#
 # License: The MIT License
 #
 # Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
@@ -22,85 +22,83 @@
 
 __compareTo() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
+
+   local this="$1"
    local class="$2"
-   if (( $# == 3 )); then
-      local this="$1"
-      local class="$2"
-      local argobject="$3"
-      local argclass
-      local str
-      argclass="$("$argobject".getClass 2>/dev/null)" 
-      if (( $? == 0 )) || [[ "$class" == "String" ]]; then
-         if [[ "$("$this".getClass)" == "$argclass" || "$class" == "String" ]]; then
-            case $class in
-               String)  str="$3"
-                        ;;
-               Boolean) if [[ "$("$this".toString)" == $(Boolean.TRUE) ]]; then
-                           if [[ "$("$argobject".toString)" == "$(Boolean.TRUE)" ]]; then
-                              System.out.println 0
-                           else
-                              System.out.println 1
-                           fi
-                        else
-                           if [[ "$("$argobject".toString)" == "$(Boolean.TRUE)" ]]; then
-                              System.out.println -1
-                           else
-                              System.out.println 0
-                           fi
-                        fi
-                        return $returnValue
-                        ;;
-               *)       String "$argobject" "$("$argobject".toString)"
-                        String "$this" "$("$this".toString)"
-                        str="$("$argobject".toString)"
-                        ;;
-            esac
-         else
-            __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("$argobject".getClass)" 
-            returnValue=$?
-            __handleErrorMessage "$2" "${FUNCNAME:2}"
-            return $returnValue
-         fi
-      else
-         __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
-         returnValue=$?
-         __handleErrorMessage "$2" "${FUNCNAME:2}"
-         return $returnValue
-      fi                    
-      declare -i length=-1
-      if (( $("$this".length) == ${#str} )); then
-         length=${#str}
-         if [[ "$("$this".toString)" == "$str" ]]; then
-            System.out.println 0
-            return $returnValue
-         fi
-      fi
-      if (( length == -1 )); then
-         declare -i result=$(($("$this".length)-${#str}))
-         if (( $("$this".length) < ${#str} )); then
-            length=$("$this".length)
-         else
-            length=${#str}
-         fi
-      fi	
-      declare -i i=0
-      for ((i=0; i < length; i++))
-      do    
-         local charArg="${str:i:1}"
-         declare -i valueArg=$(__charCode "$charArg")
-         local charStr="$("$this".charAt $i)"
-         declare -i valueStr=$(__charCode "$charStr")
-         if (( valueStr != valueArg )); then
-            System.out.println $(( valueStr-valueArg ))
-            return $returnValue
-         fi	
-      done
-      System.out.println $result
-   else
+   local argobject="$3"
+   local func="${FUNCNAME:2}"
+   local argclass
+   local str
+
+   if (( $# != 3 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $(($#-2))"
-      returnValue=$?
-      __handleErrorMessage "$2" "${FUNCNAME:2}"
+      return $?
    fi
-   return $returnValue
+
+   argclass="$("${argobject}".getClass 2>/dev/null)" 
+   if (( $? != 0 )) && [[ "${class}" != "String" ]]; then
+      __throw "IllegalArgumentException" ": Illegal argument: \"$3\" is no object"
+      return $?
+   fi
+
+   if [[ "$("$this".getClass)" != "${argclass}" && "${class}" != "String" ]]; then
+      __throw "WrongClassException" ": Illegal argument: \"${argobject}\": $("${argobject}".getClass)" 
+      return $?
+   fi
+
+   case "${class}" in
+      String)  str="$3"
+               ;;
+      Boolean) if [[ "$("$this".toString)" == $(Boolean.TRUE) ]]; then
+                  if [[ "$("${argobject}".toString)" == "$(Boolean.TRUE)" ]]; then
+                     System.out.println 0
+                  else
+                     System.out.println 1
+                  fi
+               else
+                  if [[ "$("${argobject}".toString)" == "$(Boolean.TRUE)" ]]; then
+                     System.out.println -1
+                  else
+                     System.out.println 0
+                  fi
+               fi
+               return 0
+               ;;
+      *)       String "${argobject}" "$("${argobject}".toString)"
+               String "$this" "$("$this".toString)"
+               str="$("${argobject}".toString)"
+               ;;
+   esac
+
+   declare -i length=-1
+   if (( $("$this".length) == ${#str} )); then
+      length=${#str}
+      if [[ "$("$this".toString)" == "$str" ]]; then
+         System.out.println 0
+         return 0
+      fi
+   fi
+   if (( length == -1 )); then
+      declare -i result=$(($("$this".length)-${#str}))
+      if (( $("$this".length) < ${#str} )); then
+         length=$("$this".length)
+      else
+         length=${#str}
+      fi
+   fi	
+   declare -i i=0
+   for ((i=0; i < length; i++))
+   do
+      local charArg="${str:i:1}"
+      declare -i valueArg=$(__charCode "$charArg")
+      local charStr="$("$this".charAt $i)"
+      declare -i valueStr=$(__charCode "$charStr")
+      if (( valueStr != valueArg )); then
+         System.out.println $(( valueStr-valueArg ))
+         return $returnValue
+      fi	
+   done
+   System.out.println $result
+
+   return 0
 }

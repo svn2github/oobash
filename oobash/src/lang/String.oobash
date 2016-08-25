@@ -1,6 +1,6 @@
 ##################################################################
 # Author:  andreas.gregor.frank@googlemail.com                                
-#     
+#
 # License: The MIT License
 #
 # Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
@@ -20,34 +20,33 @@
 #                       #
 #########################
 
+
+
 String() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local string="$2"
 
-      __isObjectnameValid
-      returnValue=$?
-      if (( returnValue == 0 )); then
-         local pointer=$((__OBJCOUNTER__++))
-         local class="${FUNCNAME}"
+   local this="$1"
+   local string="$2"
+   local class="${FUNCNAME}"
+   local func="${FUNCNAME}"
 
-         __destruct "${this}"
-
-         __alias "${this}" "${FUNCNAME}"
-         
-         __attribute string "${string}" 
-       
-      else
-         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
-      fi   
-   else
+   if (( $# != 2 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   __isObjectnameValid "${FUNCNAME}" || return $?
+
+   local pointer=$((__OBJCOUNTER__++))
+
+
+   __destruct "${this}"
+
+   __alias "${this}" "${FUNCNAME}"
+
+   __attribute string "${string}" 
+
+   return 0
 }
 __registerClass String
 
@@ -59,229 +58,237 @@ __registerClass String
 
 String.asciiLetters() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
+
+   local class="String"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#" || return $?
    fi
-   return $returnValue
+
+   System.out.println 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+   return 0
 }
 __registerFunction String.asciiLetters
 
 String.asciiLettersLowerCase() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'abcdefghijklmnopqrstuvwxyz'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
+
+   local class="String"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#" || return $?
    fi
-   return $returnValue
+
+   System.out.println 'abcdefghijklmnopqrstuvwxyz'
+
+   return 0
 }
 __registerFunction String.asciiLettersLowerCase
 
 String.asciiLettersUpperCase() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
+
+   local class="String"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#" || return $?
    fi
-   return $returnValue
+
+   System.out.println 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+   return 0
 }
 __registerFunction String.asciiLettersUpperCase
 
 String.digits() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println '0123456789'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
+
+   local class="String"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#" || return $?
    fi
-   return $returnValue
+
+   System.out.println '0123456789'
+
+   return 0
 }
 __registerFunction String.digits
 
 if (( ${BASH_VERSINFO[1]} >= 2 )); then
    String.fromCharCode() {
       __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-      declare -i returnValue=0
+
+      local class="String"
+      local func="${FUNCNAME}"
       local hexValue
       local result=""
+
       if (( $# == 0 )); then
-         __throw "IllegalArgumentException" ": Wrong number of arguments 0"
-         returnValue=$?
-         __handleErrorMessage "String" "${FUNCNAME}"
+         __throw "IllegalArgumentException" ": Wrong number of arguments 0" || return $?
       fi
+
       while (($#))
       do
          if ! __isBashInteger "$1"; then
-            __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-            returnValue=$?
-            __handleErrorMessage "String" "${FUNCNAME}"
-            break
-         else
-            if (( "$1" < 0 )) || (( "$1" > 65535 )); then
-               __throw "IllegalArgumentException" ": Illegal argument: \"$1\""
-               returnValue=$?
-               __handleErrorMessage "String" "${FUNCNAME}"
-               break
-            else
-               case $1 in
-                  10)  result+="
-"
-                  ;;
-                  # 128 to 159 (x0080 - x009F) are not printable ("C1 control codes")
-                  160) result+=" ";;
-                  161) result+=¡;;
-                  162) result+=¢;;
-                  163) result+=£;;
-                  164) result+=¤;;
-                  165) result+=¥;;
-                  166) result+=¦;;
-                  167) result+=§;;
-                  168) result+=¨;;
-                  169) result+=©;;
-                  170) result+=ª;;
-                  171) result+=«;;
-                  172) result+=¬;;
-                  # http://www.cs.tut.fi/~jkorpela/shy.html
-                  # --> ??? for soft hyphen:
-                  173) result+=-;;
-                  174) result+=®;;
-                  175) result+=¯;;
-                  176) result+=°;;
-                  177) result+=±;;
-                  178) result+=²;;
-                  179) result+=³;;
-                  180) result+=´;;
-                  181) result+=µ;;
-                  182) result+=¶;;
-                  183) result+=·;;
-                  184) result+=¸;;
-                  185) result+=¹;;
-                  186) result+=º;;
-                  187) result+=»;;
-                  188) result+=¼;;
-                  189) result+=½;;
-                  190) result+=¾;;
-                  191) result+=¿;;
-                  192) result+=À;;
-                  193) result+=Á;;
-                  194) result+=Â;;
-                  195) result+=Ã;;
-                  196) result+=Ä;;
-                  197) result+=Å;;
-                  198) result+=Æ;;
-                  199) result+=Ç;;
-                  200) result+=È;;
-                  201) result+=É;;
-                  202) result+=Ê;;
-                  203) result+=Ë;;
-                  204) result+=Ì;;
-                  205) result+=Í;;
-                  206) result+=Î;;
-                  207) result+=Ï;;
-                  208) result+=Ð;;
-                  209) result+=Ñ;;
-                  210) result+=Ò;;
-                  211) result+=Ó;;
-                  212) result+=Ô;;
-                  213) result+=Õ;;
-                  214) result+=Ö;;
-                  215) result+=×;;
-                  216) result+=Ø;;
-                  217) result+=Ù;;
-                  218) result+=Ú;;
-                  219) result+=Û;;
-                  220) result+=Ü;;
-                  221) result+=Ý;;
-                  222) result+=Þ;;
-                  223) result+=ß;;
-                  224) result+=à;;
-                  225) result+=á;;
-                  226) result+=â;;
-                  227) result+=ã;;
-                  228) result+=ä;;
-                  229) result+=å;;
-                  230) result+=æ;;
-                  231) result+=ç;;
-                  232) result+=è;;
-                  233) result+=é;;
-                  234) result+=ê;;
-                  235) result+=ë;;
-                  236) result+=ì;;
-                  237) result+=í;;
-                  238) result+=î;;
-                  239) result+=ï;;
-                  240) result+=ð;;
-                  241) result+=ñ;;
-                  242) result+=ò;;
-                  243) result+=ó;;
-                  244) result+=ô;;
-                  245) result+=õ;;
-                  246) result+=ö;;
-                  247) result+=÷;;
-                  248) result+=ø;;
-                  249) result+=ù;;
-                  250) result+=ú;;
-                  251) result+=û;;
-                  252) result+=ü;;
-                  253) result+=ý;;
-                  254) result+=þ;;
-                  255) result+=ÿ;;
-                  *)
-                     hexValue=$(printf %x "$1")
-                     result+="$(printf "%b" "\u${hexValue}")";;
-               esac
-            fi
+            __throw "IllegalArgumentException" ": Illegal argument: \"$1\"" || return $?
          fi
+
+         if (( "$1" < 0 )) || (( "$1" > 65535 )); then
+            __throw "IllegalArgumentException" ": Illegal argument: \"$1\"" || return $?
+         fi
+
+         case $1 in
+            10)  result+="
+"
+            ;;
+            # 128 to 159 (x0080 - x009F) are not printable ("C1 control codes")
+            160) result+=" ";;
+            161) result+=¡;;
+            162) result+=¢;;
+            163) result+=£;;
+            164) result+=¤;;
+            165) result+=¥;;
+            166) result+=¦;;
+            167) result+=§;;
+            168) result+=¨;;
+            169) result+=©;;
+            170) result+=ª;;
+            171) result+=«;;
+            172) result+=¬;;
+            # http://www.cs.tut.fi/~jkorpela/shy.html
+            # --> ??? for soft hyphen:
+            173) result+=-;;
+            174) result+=®;;
+            175) result+=¯;;
+            176) result+=°;;
+            177) result+=±;;
+            178) result+=²;;
+            179) result+=³;;
+            180) result+=´;;
+            181) result+=µ;;
+            182) result+=¶;;
+            183) result+=·;;
+            184) result+=¸;;
+            185) result+=¹;;
+            186) result+=º;;
+            187) result+=»;;
+            188) result+=¼;;
+            189) result+=½;;
+            190) result+=¾;;
+            191) result+=¿;;
+            192) result+=À;;
+            193) result+=Á;;
+            194) result+=Â;;
+            195) result+=Ã;;
+            196) result+=Ä;;
+            197) result+=Å;;
+            198) result+=Æ;;
+            199) result+=Ç;;
+            200) result+=È;;
+            201) result+=É;;
+            202) result+=Ê;;
+            203) result+=Ë;;
+            204) result+=Ì;;
+            205) result+=Í;;
+            206) result+=Î;;
+            207) result+=Ï;;
+            208) result+=Ð;;
+            209) result+=Ñ;;
+            210) result+=Ò;;
+            211) result+=Ó;;
+            212) result+=Ô;;
+            213) result+=Õ;;
+            214) result+=Ö;;
+            215) result+=×;;
+            216) result+=Ø;;
+            217) result+=Ù;;
+            218) result+=Ú;;
+            219) result+=Û;;
+            220) result+=Ü;;
+            221) result+=Ý;;
+            222) result+=Þ;;
+            223) result+=ß;;
+            224) result+=à;;
+            225) result+=á;;
+            226) result+=â;;
+            227) result+=ã;;
+            228) result+=ä;;
+            229) result+=å;;
+            230) result+=æ;;
+            231) result+=ç;;
+            232) result+=è;;
+            233) result+=é;;
+            234) result+=ê;;
+            235) result+=ë;;
+            236) result+=ì;;
+            237) result+=í;;
+            238) result+=î;;
+            239) result+=ï;;
+            240) result+=ð;;
+            241) result+=ñ;;
+            242) result+=ò;;
+            243) result+=ó;;
+            244) result+=ô;;
+            245) result+=õ;;
+            246) result+=ö;;
+            247) result+=÷;;
+            248) result+=ø;;
+            249) result+=ù;;
+            250) result+=ú;;
+            251) result+=û;;
+            252) result+=ü;;
+            253) result+=ý;;
+            254) result+=þ;;
+            255) result+=ÿ;;
+            *)
+               hexValue=$(printf %x "$1")
+               result+="$(printf "%b" "\u${hexValue}")";;
+         esac
          shift
       done
-      if (( returnValue == 0 )); then
-         System.out.println "${result}"
-      fi
-      return $returnValue
+
+      System.out.println "${result}"
+
+      return 0
    }
    __registerFunction String.fromCharCode
 fi
 
 String.hexDigits() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println '0123456789abcdefABCDEF'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
+
+   local class="String"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#" || return $?
    fi
-   return $returnValue
+
+   System.out.println '0123456789abcdefABCDEF'
+
+   return 0
 }
 __registerFunction String.hexDigits
 
 String.octDigits() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println '01234567'
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
-      returnValue=$?
-      __handleErrorMessage "String" "${FUNCNAME}"
+
+   local class="String"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#" || return 0
    fi
-   return $returnValue
+
+   System.out.println '01234567'
+
+   return 0
 }
 __registerFunction String.octDigits
 
@@ -2674,13 +2681,13 @@ String.help() {
                   >>>00abc
             ";;&
          *)   
-            if [[ "${match}" == "$(Boolean.FALSE)" ]]; then   
-               System."${printStream}".println "                                  
+            if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
+               System."${printStream}".println "
                      No help found for $1
-                  "   
-            fi         
+                  "
+            fi
             ;;&
-      esac                
+      esac
       shift
    done
 }

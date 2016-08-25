@@ -1,6 +1,6 @@
 ##################################################################
-# Author:  andreas.gregor.frank@googlemail.com                                
-#     
+# Author:  andreas.gregor.frank@googlemail.com
+#
 # License: The MIT License
 #
 # Copyright (c) <2010> <andreas.gregor.frank@googlemail.com>
@@ -22,32 +22,26 @@
 
 Boolean() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 2 )); then
-      local this="$1"
-      local bool="$2"
-     
-      __isObjectnameValid 
-      returnValue=$?
-      if (( returnValue == 0 )); then
-         local pointer=$((__OBJCOUNTER__++))
-         local class="${FUNCNAME}"
 
-         __destruct "${this}"
+   local this="$1"
+   local bool="$2"
+   local class="${FUNCNAME}"
+   local func="${FUNCNAME}"
 
-         __alias "${this}" "${FUNCNAME}"
+   if (( $# != 2 )); then
+      __throw "IllegalArgumentException" ": Wrong number of arguments $#"
+      return $?
+   fi
 
-         __attribute bool "$(Boolean.parseBoolean "${bool}")"  
+   __isObjectnameValid "${FUNCNAME}" || return $?
 
-      else
-         __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
-      fi      
-   else
-      __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-      returnValue=$?                                                                 
-      __handleErrorMessage "${FUNCNAME}" "${FUNCNAME}"
-   fi                                           
-   return $returnValue
+   __destruct "${this}"
+
+   __alias "${this}" "${FUNCNAME}"
+
+   __attribute bool "$(Boolean.parseBoolean "${bool}")"
+
+   return 0
 }
 __registerClass Boolean
 
@@ -67,48 +61,57 @@ __registerClass Boolean
 
 Boolean.TRUE() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'true'
-   else
+
+   local class="Boolean"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-      returnValue=$?
-      __handleErrorMessage "Boolean" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   System.out.println 'true'
+
+   return 0
 }
 __registerFunction Boolean.TRUE
 
 Boolean.FALSE() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 0 )); then
-      System.out.println 'false'
-   else
+
+   local class="Boolean"
+   local func="${FUNCNAME}"
+
+   if (( $# != 0 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-      returnValue=$?
-      __handleErrorMessage "Boolean" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   System.out.println 'false'
+
+   return 0
 }
 __registerFunction Boolean.FALSE
 
 Boolean.parseBoolean() {
    __decoratorCheck  "${FUNCNAME[0]}" "${BASH_SOURCE[0]}" "$@"
-   declare -i returnValue=0
-   if (( $# == 1 )); then
-      declare -l bool="$1"
-      if [[ "${bool}" == "$(Boolean.TRUE)" ]]; then
-         Boolean.TRUE
-      else
-         Boolean.FALSE
-      fi
-   else
+
+   local class="Boolean"
+   local func="${FUNCNAME}"
+   declare -l bool="$1"
+
+   if (( $# != 1 )); then
       __throw "IllegalArgumentException" ": Wrong number of arguments $#"  
-      returnValue=$?
-      __handleErrorMessage "Boolean" "${FUNCNAME}"
+      return $?
    fi
-   return $returnValue
+
+   if [[ "${bool}" == "$(Boolean.TRUE)" ]]; then
+      Boolean.TRUE
+   else
+      Boolean.FALSE
+   fi
+
+   return 0
 }
 __registerFunction Boolean.parseBoolean
 
@@ -136,7 +139,7 @@ Boolean.help() {
       return 0
    fi
    while (($#))
-   do  
+   do
       local match=$(Boolean.FALSE)
       case $1 in
          Boolean|all)
@@ -167,14 +170,14 @@ Boolean.help() {
             match=$(Boolean.TRUE)
             System."${printStream}".println "
                Boolean.FALSE
-                  The Boolean object corresponding to the primitive value false. 
+                  The Boolean object corresponding to the primitive value false.
                Parameters:
                   None
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   Boolean.FALSE
-                  >>>false  
+                  >>>false
             ";;&
          Boolean.parseBoolean|parseBoolean|all)  
             match=$(Boolean.TRUE)
@@ -199,29 +202,29 @@ Boolean.help() {
             match=$(Boolean.TRUE)
             System."${printStream}".println "
                Boolean.TRUE
-                  The Boolean object corresponding to the primitive value true. 
+                  The Boolean object corresponding to the primitive value true.
                Parameters:
                   None
                Throws:
                   IllegalArgumentException - if number of arguments != 0
                Example:
                   Boolean.TRUE
-                  >>>true   
+                  >>>true
                ";;&
          compareTo|all)
             match=$(Boolean.TRUE)
             System."${printStream}".println "
                compareTo
-                  Compares this Boolean instance with another Boolean instance. 
+                  Compares this Boolean instance with another Boolean instance.
                Parameters:
                   bool - a Boolean object.
                Returns:
-                  zero if this object represents the same boolean value as the argument; 
-                  a positive value if this object represents \"true\" and the argument 
+                  zero if this object represents the same boolean value as the argument;
+                  a positive value if this object represents \"true\" and the argument
                   represents \"false\"; and a negative value if this object represents \"false\"
                   and the argument represents \"true\"
                Throws:
-                  WrongClassException  - if argument has the wrong class  
+                  WrongClassException  - if argument has the wrong class
                   IllegalArgumentException - if argument is no object
                                              if number of arguments != 1
                Example:
@@ -287,7 +290,7 @@ Boolean.help() {
                Example:
                   Boolean b xxx
                   b.hashCode
-                  >>>1237          
+                  >>>1237
             ";;&
          toString|all)
             match=$(Boolean.TRUE)
@@ -303,15 +306,15 @@ Boolean.help() {
                Example:
                   Boolean b xxx
                   b.toString
-                  >>>false            
+                  >>>false
             ";;&
          *)   if [[ "${match}" == "$(Boolean.FALSE)" ]]; then
-                 System."${printStream}".println "                                  
+                 System."${printStream}".println "
                        No help found for $1
-                    "   
+                    "
               fi
               ;;& 
-      esac          
+      esac
       shift
-   done      
+   done
 }
